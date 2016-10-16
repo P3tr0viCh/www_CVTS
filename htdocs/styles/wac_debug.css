@@ -1,0 +1,35 @@
+html {
+    overflow: auto;
+}
+
+.wac--cell.header.datetime {
+    background-color: yellow;
+}
+
+.wac--header-text.left {
+    background-color: #d7a70e;
+}
+
+.wac--header-text.right {
+    background-color: #876a0c;
+}
+
+.wac--cell.header.text {
+    background-color: #c9c900;
+}
+
+.wac--cell.name.department {
+    background-color: blue;
+}
+
+.wac--cell.name.company {
+    background-color: green;
+}
+
+.wac--cell.counter.department {
+    background-color: darkblue;
+}
+
+.wac--cell.counter.company {
+    background-color: #005000;
+}

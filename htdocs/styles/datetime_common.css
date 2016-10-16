@@ -1,0 +1,82 @@
+html {
+    overflow: hidden;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+body.night {
+    background-color: black;
+}
+
+a {
+    color: inherit;
+    cursor: inherit;
+}
+
+.set-night-mode {
+    position: absolute;
+    margin: 8px;
+    right: 0;
+    cursor: pointer;
+    color: #d0d0d0;
+}
+
+.set-night-mode.night {
+    color: #333333;
+}
+
+.datetime {
+    display: table;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.datetime--row {
+    display: table-row;
+}
+
+.datetime--row.date {
+    height: 25%;
+}
+
+.datetime--cell {
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: normal;
+    text-align: center;
+    line-height: 1;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.datetime--cell.date {
+}
+
+.datetime--cell.time {
+}
+
+.datetime--copyright {
+    position: absolute;
+    bottom: 0;
+    margin: 8px;
+    font-size: 6pt;
+    color: #DDD;
+}
+
+.datetime--copyright.night {
+    color: #1D1D1D;
+}
+
+.datetime--copyright.left-section {
+    left: 0;
+}
+
+.datetime--copyright.right-section {
+    right: 0;
+}

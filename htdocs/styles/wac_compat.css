@@ -1,0 +1,40 @@
+body {
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+    color: #0D0D0D;
+}
+
+body.night {
+    color: orange;
+}
+
+.wac--cell.header.datetime {
+    font-size: 80px;
+}
+
+.wac--cell.header.text {
+    font-size: 44px;
+}
+
+.wac--cell.name.department {
+    font-size: 80px;
+}
+
+.wac--cell.name.company {
+    font-size: 70px;
+}
+
+.wac--cell.counter {
+    font-size: 250px;
+}
+
+.color-text--darkgrey {
+    color: #A9A9A9;
+}
+
+.show-on-hover:hover {
+    color: #0D0D0D;
+}
+
+.show-on-hover.night:hover {
+    color: white;
+}

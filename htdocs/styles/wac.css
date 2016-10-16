@@ -1,0 +1,40 @@
+body {
+    font-family: Roboto, Verdana, Helvetica, Arial, sans-serif;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+body.night {
+    color: rgba(255, 165, 0, 0.87);
+}
+
+.wac--cell.header {
+    font-size: 4.5vw;
+}
+
+.wac--cell.header.datetime {
+    font-size: 6vw;
+}
+
+.wac--cell.name {
+    font-size: 8vmin;
+}
+
+.wac--cell.name.company {
+    font-size: 5vmin;
+}
+
+.wac--cell.counter {
+    font-size: 32vmin;
+}
+
+.color-text--darkgrey {
+    color: #a6a6a6;
+}
+
+.show-on-hover:hover {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.show-on-hover.night:hover {
+    color: rgba(255, 255, 255, 0.87);
+}

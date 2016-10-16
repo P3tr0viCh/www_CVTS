@@ -1,0 +1,11 @@
+html {
+    overflow: auto;
+}
+
+.datetime--row.date {
+    background-color: blue;
+}
+
+.datetime--row.time {
+    background-color: green;
+}

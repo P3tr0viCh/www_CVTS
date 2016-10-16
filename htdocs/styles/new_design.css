@@ -1,0 +1,192 @@
+/*  Цвет primary
+    Blue Grey
+    #607D8B
+    rgb(96, 125, 139) */
+
+/*noinspection CssOptimizeSimilarProperties*/
+body {
+    font-family: "Roboto", "Verdana", "Helvetica", "Arial", sans-serif;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+h1 {
+    font-size: 16pt;
+    font-weight: normal;
+    line-height: 1;
+}
+
+h2 {
+    font-size: 12pt;
+    font-weight: normal;
+    line-height: 1;
+}
+
+h6 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+a {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.mdl-layout__content {
+    overflow-x: auto;
+}
+
+.mdl-button {
+    margin: 5px;
+}
+
+tr.rowclick:hover {
+    cursor: pointer;
+}
+
+.material-icons.material-icons--for-header {
+    margin-right: 8px;
+    vertical-align: text-top;
+}
+
+.color--grey {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.cursor-pointer:hover {
+    cursor: pointer;
+}
+
+.cursor-help:hover {
+    cursor: help;
+}
+
+/*noinspection CssOptimizeSimilarProperties*/
+.mdl-data-table {
+    font-size: 8pt;
+    white-space: normal;
+    border-left-color: rgb(225, 225, 225);
+    border-right-color: rgb(225, 225, 225);
+    border-top-color: rgb(225, 225, 225);
+    border-bottom-color: rgb(225, 225, 225);
+}
+
+.mdl-data-table th {
+    word-wrap: break-word;
+    text-align: center;
+}
+
+/*noinspection CssOptimizeSimilarProperties*/
+.mdl-data-table th.compare {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+/*noinspection CssOptimizeSimilarProperties*/
+.mdl-data-table th, .mdl-data-table td {
+    font-size: 8pt;
+    line-height: 1.5;
+    height: 20px;
+    vertical-align: middle;
+    padding: 0 4px;
+    border-collapse: collapse;
+    border-left-color: rgb(225, 225, 225);
+    border-right-color: rgb(225, 225, 225);
+    border-top-color: rgb(225, 225, 225);
+    border-bottom-color: rgb(225, 225, 225);
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+.mdl-data-table td {
+    height: 24px;
+    text-align: center;
+}
+
+.mdl-data-table td:first-of-type, .mdl-data-table th:first-of-type {
+    padding-left: 4px;
+}
+
+.mdl-data-table td:last-of-type, .mdl-data-table th:last-of-type {
+    padding-right: 4px;
+}
+
+.mdl-data-table th.mdl-data-table__cell--add-padding, .mdl-data-table td.mdl-data-table__cell--add-padding {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.mdl-data-table tbody tr {
+    height: 24px;
+}
+
+.mdl-textfield__label {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.field--checkbox {
+    padding: 8px 0;
+}
+
+.input-width80 {
+    width: 80px;
+    padding-right: 10px;
+}
+
+.rowlink::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.div-help {
+    outline: none;
+}
+
+.div-help.for-header {
+    position: relative;
+    left: 100px;
+    top: 4px;
+}
+
+.mdl-button.for-header {
+    margin-top: -4px;
+    left: 100px;
+}
+
+.mdl-layout__drawer-button {
+    outline: none;
+    padding-top: 10px;
+    height: 38px;
+}
+
+.mdl-navigation__link.mdl-navigation__link--padding-left {
+    padding-left: 8px;
+    padding-right: 0;
+    margin-right: 24px;
+}
+
+.mdl-layout-title__subtitle {
+    font-size: 18px;
+}
+
+.mdl-tooltip {
+    text-align: start;
+}
+
+.mdl-grid {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.row-color--odd {
+    background: #FFFFFF;
+}
+
+.row-color--even {
+    background: #E2E8EA;
+}

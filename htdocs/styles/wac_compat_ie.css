@@ -1,0 +1,52 @@
+table {
+    color: #0D0D0D;
+    background-color: white;
+}
+
+th {
+    color: #0D0D0D;
+    background-color: white;
+}
+
+td {
+    color: #0D0D0D;
+    background-color: white;
+}
+
+.wac--header-text {
+    color: #0D0D0D;
+    background-color: white;
+}
+
+table.night {
+    color: orange;
+    background-color: black;
+}
+
+th.night {
+    color: orange;
+    background-color: black;
+}
+
+td.night {
+    color: orange;
+    background-color: black;
+}
+
+.night .wac--header-text {
+    color: orange;
+    background-color: black;
+}
+
+.night .wac--copyright {
+    color: #1D1D1D;
+    background-color: black;
+}
+
+a {
+    color: #D0D0D0;
+}
+
+a.night {
+    color: #333333;
+}

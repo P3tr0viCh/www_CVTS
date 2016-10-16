@@ -1,0 +1,207 @@
+body {
+    font-family: Verdana, Arial, helvetica, sans-serif;
+    font-size: 8pt;
+    margin: 0;
+    background-color: #FFFFFF;
+}
+
+h1 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    color: #063139;
+}
+
+h1.main-header {
+    font-size: 16pt;
+    text-align: center;
+}
+
+h2, h3, h4, h5 {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #063139;
+}
+
+h6 {
+    font-size: 8pt;
+    color: #063139;
+}
+
+h2 {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+h3, h4, h5, h6 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+ul {
+    margin: 12px 0;
+    padding-left: 16px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border: 1px solid #063139;
+    color: #063139;
+}
+
+.text-align--center {
+    text-align: center;
+}
+
+.text-align--left {
+    text-align: left;
+}
+
+td, th {
+    border: 1px solid #063139;
+    padding: 1px 4px;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #ECEFF1;
+}
+
+th.compare {
+}
+
+.padding-big {
+    font-size: 10pt;
+    padding: 4px 16px 4px 16px;
+}
+
+.div-content {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+input, select, textarea {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #3F3A36;
+    background-color: white;
+}
+
+button {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #3F3A36;
+    margin: 4px;
+    padding: 0 8px;
+    height: 24px;
+    min-width: 80px;
+}
+
+.input-label-width {
+    display: inline-block;
+    width: 140px;
+}
+
+.field--text-input {
+    display: inline-block;
+    padding: 8px 0;
+}
+
+.field--checkbox {
+    display: block;
+    padding: 4px 0;
+}
+
+.checkbox {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    height: 16px;
+    line-height: 16px;
+}
+
+.checkbox__input {
+    position: absolute;
+    display: block;
+    margin: 1px 0 0;
+    padding: 0;
+    height: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+
+.checkbox__label {
+    position: relative;
+    display: inline;
+    vertical-align: middle;
+    left: 24px;
+    cursor: pointer;
+}
+
+.position--top-right {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 150px;
+}
+
+a {
+    color: #063139;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+div.main-layout {
+}
+
+div.header {
+    padding: 8px;
+}
+
+div.main {
+}
+
+div.footer {
+    padding: 8px;
+}
+
+table.footer {
+    border-style: none;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td.footer {
+    height: 18px;
+    vertical-align: middle;
+    border-style: none;
+    padding: 0;
+}
+
+td.footer--right-section {
+    text-align: right;
+}
+
+.row-color--odd {
+    background: #FFFFFF;
+}
+
+.row-color--even {
+    background: #BADBF3;
+}
+
+img.main-logo {
+    height: 60px;
+    padding-bottom: 8px;
+}
