@@ -255,7 +255,6 @@ function echoEndBody($newDesign, $endScript = null)
         echo PHP_EOL;
 
         if (is_string($endScript)) {
-            echo PHP_EOL;
             echo S::TAB;
             echo $endScript . PHP_EOL;
         } elseif (is_array($endScript)) {

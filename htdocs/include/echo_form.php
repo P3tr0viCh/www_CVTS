@@ -37,10 +37,10 @@ function echoHidden($name, $value)
 function echoButton($newDesign, $text, $name, $value)
 {
     $buttonClass = $newDesign ?
-        " class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'" : null;
+        "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'" : "query";
 
     echo S::TAB . S::TAB;
-    echo "<button$buttonClass name='$name' value='$value'>";
+    echo "<button class='$buttonClass' name='$name' value='$value'>";
     echo $text;
     echo "</button>";
     echo PHP_EOL . S::TAB . S::TAB;
@@ -87,19 +87,22 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
         echo S::TAB . S::TAB . S::TAB;
         echo '<span class="mdl-textfield__error">' . S::ERROR_ERROR . '</span>' . PHP_EOL;
     } else {
-        echo "<div class='field--text-input'>" . PHP_EOL;
+        echo "<div class='text-input__field'>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        $class = $showName ? " class='input-label-width'" : null;
-        echo "<label$class for='$id'>";
+        $labelClass = 'text-input__label';
         if ($showName) {
-            echo $name;
+            $labelClass .= ' text-input__label--width';
         }
-        echo '</label>' . PHP_EOL;
+        echo "<label class='$labelClass' for='$id'>";
+        if ($showName) {
+            echo "<span>$name</span>";
+        }
+        echo "</label>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        echo "<input type='text' id='$id' name='$id' size='$size' maxlength='$maxLength'>" . PHP_EOL;
+        echo "<input class='text-input__input' type='text' id='$id' name='$id' size='$size' maxlength='$maxLength'>" . PHP_EOL;
     }
     echo S::TAB . S::TAB;
-    echo '</div>' . PHP_EOL;
+    echo "</div>" . PHP_EOL;
 }
 
 /**

@@ -50,7 +50,7 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 
 function formatFieldValue($fieldName, $fieldValue, $full)
 {
-    if ($fieldValue !== "" && $fieldValue !== null) {
+    if (!empty($fieldValue)) {
         switch ($fieldName) {
             case C::DATETIME:
             case C::DATETIME_END:
@@ -168,7 +168,8 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 return $fieldValue;
         }
     } else {
-        return "";
+        // IE6 fix.
+        return "<span style='zoom: 1;'></span>";
     }
 }
 

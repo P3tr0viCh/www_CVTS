@@ -32,7 +32,6 @@ function updateContentMinHeightOnEndBody() {
 }
 
 function updateContentMinHeight() {
-    console.log("updateContentMinHeight");
     var windowHeight = window.innerHeight || document.documentElement.clientHeight,
         headerHeight = document.getElementById("divHeader").clientHeight,
         footerHeight = document.getElementById("divFooter").clientHeight,

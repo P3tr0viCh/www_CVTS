@@ -87,16 +87,16 @@ if (!$resultMessage) {
         echo '<div class="mdl-cell mdl-cell--4-col mdl-cell--stretch">' . PHP_EOL;
     } else {
         echo S::TAB;
-        echo '<table width="100%">' . PHP_EOL;
+        echo '<table class="query">' . PHP_EOL;
 
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<th class="padding-big">';
+        echo '<th class="query">';
         echo S::HEADER_INFO;
         echo '</th>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<th class="padding-big">';
+        echo '<th class="query">';
         echo S::HEADER_PERIOD;
         echo '</th>' . PHP_EOL;
         echo S::TAB;
@@ -105,7 +105,7 @@ if (!$resultMessage) {
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<td class="padding-big" valign="top" rowspan="6">' . PHP_EOL;
+        echo '<td class="query" rowspan="6">' . PHP_EOL;
     }
 
     switch ($scaleInfo->getType()) {
@@ -247,7 +247,7 @@ if (!$resultMessage) {
         echo '</ul>' . PHP_EOL;
     } else {
         echo S::TAB . S::TAB;
-        echo '<td class="padding-big" valign="top">';
+        echo '<td class="query">';
     }
 
     echo PHP_EOL;
@@ -258,25 +258,25 @@ if (!$resultMessage) {
     echoInput($newDesign, ParamName::DATETIME_START_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>.</span>' . PHP_EOL;
+        echo '<span class="text-input__field"> . </span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_START_MONTH, S::INPUT_MONTH, S::INPUT_MONTH_HELP, S::INPUT_MONTH_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>.</span>' . PHP_EOL;
+        echo '<span class="text-input__field"> . </span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_START_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
     echo S::TAB . S::TAB;
-    echo $newDesign ? '<br>' : '<span>&nbsp</span>';
+    echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
     echo PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_START_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>:</span>' . PHP_EOL;
+        echo '<span class="text-input__field"> : </span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_START_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
@@ -292,13 +292,13 @@ if (!$resultMessage) {
     echoInput($newDesign, ParamName::DATETIME_END_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>.</span>' . PHP_EOL;
+        echo '<span class="text-input__field">.</span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_END_MONTH, S::INPUT_MONTH, S::INPUT_MINUTES_HELP, S::INPUT_MONTH_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>.</span>' . PHP_EOL;
+        echo '<span class="text-input__field">.</span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_END_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
@@ -310,7 +310,7 @@ if (!$resultMessage) {
     echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
         echo S::TAB . S::TAB;
-        echo '<span>:</span>' . PHP_EOL;
+        echo '<span class="text-input__field">:</span>' . PHP_EOL;
     }
 
     echoInput($newDesign, ParamName::DATETIME_END_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
@@ -354,7 +354,7 @@ if (!$resultMessage) {
             echo S::TAB;
             echo '<tr>' . PHP_EOL;
             echo S::TAB . S::TAB;
-            echo '<th class="padding-big">';
+            echo '<th class="query">';
         }
 
         echo S::HEADER_SEARCH;
@@ -389,7 +389,7 @@ if (!$resultMessage) {
             echo S::TAB;
             echo '<tr>' . PHP_EOL;
             echo S::TAB . S::TAB;
-            echo '<td class="padding-big" valign="top">' . PHP_EOL;
+            echo '<td class="query">' . PHP_EOL;
         }
 
         if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
@@ -397,16 +397,13 @@ if (!$resultMessage) {
         ) {
             echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_VAN_NUMBER, S::INPUT_VAN_NUMBER_HELP,
                 S::INPUT_VAN_NUMBER_PATTERN, 10, 8);
-
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
         } elseif ($scaleInfo->getType() == ScaleType::AUTO) {
             echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_AUTO_NUMBER, S::INPUT_AUTO_NUMBER_HELP,
                 S::INPUT_AUTO_NUMBER_PATTERN, 10, 9);
-
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
         }
+
+        echo S::TAB . S::TAB;
+        echo '<br>' . PHP_EOL;
 
         if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
             $scaleInfo->getType() == ScaleType::WMR ||
@@ -477,7 +474,7 @@ if (!$resultMessage) {
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<th class="padding-big">';
+        echo '<th class="query">';
     }
 
     echo S::HEADER_SETTINGS;
@@ -494,7 +491,7 @@ if (!$resultMessage) {
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<td class="padding-big" valign="top">' . PHP_EOL;
+        echo '<td class="query">' . PHP_EOL;
     }
 
     // TODO: delete
@@ -536,7 +533,7 @@ if (!$resultMessage) {
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<td class="padding-big" valign="top" align="center">' . PHP_EOL;
+        echo '<td class="query text-align--center">' . PHP_EOL;
 
         echoButtonReset();
 

@@ -116,6 +116,8 @@ if ($mysqli) {
                             }
                     }
 
+                    $field = formatFieldValue($column, $field, true);
+
                     echoTableTD($field, $class,
                         !$newDesign &&
                         ($column == Database\Columns::SCALE_NUM ||
