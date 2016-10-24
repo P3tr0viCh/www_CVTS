@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    background-color: white;
+}
+
 h1.result-message {
     font-size: 16pt;
     font-weight: normal;
@@ -77,6 +82,8 @@ div.hr {
 .div-center-outer--center {
     display: table;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
@@ -117,6 +124,10 @@ td.color--yellow {
 td.color--gray {
     color: black;
     background-color: #E9E9E9;
+}
+
+.bk-color--white {
+    background-color: white;
 }
 
 input:-webkit-autofill {

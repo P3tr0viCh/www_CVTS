@@ -49,7 +49,7 @@ echo "<div class='datetime'>" . PHP_EOL;
 echo S::TAB;
 echo "<div class='datetime--row date'>" . PHP_EOL;
 echo S::TAB . S::TAB;
-echo "<div id='date' class='datetime--cell date'>" . S::ERROR_JS_DISABLED . "</div>" . PHP_EOL;
+echo "<div id='date' class='datetime--cell date'></div>" . PHP_EOL;
 echo S::TAB;
 echo "</div>" . PHP_EOL;
 
@@ -78,6 +78,8 @@ if ($nightMode !== null) {
     echo "<a onclick='toggleNightMode()'>" . S::TEXT_NIGHT_MODE . "</a>" . PHP_EOL;
     echo "</div>" . PHP_EOL;
 }
+
+echoJSDisabled();
 
 $javaScripts = array();
 $javaScripts[] = 'startHideCursor();';

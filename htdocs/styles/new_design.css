@@ -3,13 +3,8 @@
     #607D8B
     rgb(96, 125, 139) */
 
-/*noinspection CssOptimizeSimilarProperties*/
 body {
     font-family: "Roboto", "Verdana", "Helvetica", "Arial", sans-serif;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
 }
 
 h1 {

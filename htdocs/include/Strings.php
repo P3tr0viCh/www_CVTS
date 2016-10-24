@@ -17,24 +17,6 @@ class Strings
     const MAIN_HEADER_LOGO_ALT = 'Металлоинвест | Уральская сталь';
     const MYSQL_DATETIME_HEADER = 'Дата и время сервера MySQL';
 
-    const ERROR_JS_DISABLED = 'JavaScript отключен';
-
-    const ERROR_404 = '404';
-    const ERROR_404_TITLE = '404';
-    const ERROR_404_HEADER = 'Такой страницы нет';
-    const ERROR_404_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
-
-    const ERROR_403 = '403';
-    const ERROR_403_TITLE = '403';
-    const ERROR_403_HEADER = 'Доступ запрещён';
-    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
-
-    const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
-    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
-
-    const ERROR_GOTO_START = 'Перейти на начальную страницу';
-    const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';
-
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
     const DRAWER_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
@@ -210,4 +192,23 @@ class Strings
     const ERROR_MYSQL_ZERO = 'Неверный запрос к базе данных';
     const ERROR_MYSQL_BAD_SCALE_NUM = 'Весы с номером %d в базе данных не найдены';
     const ERROR_MYSQL_MAX_LIMIT = 'Результат запроса превысил допустимые пределы<br>Попробуйте указать меньший период времени<br>и/или задайте параметры поиска.';
+
+    const ERROR_JS_DISABLED = 'JavaScript отключен';
+    const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';
+
+    const ERROR_404 = '404';
+    const ERROR_404_TITLE = '404';
+    const ERROR_404_HEADER = 'Такой страницы нет';
+    const ERROR_404_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+
+    const ERROR_403 = '403';
+    const ERROR_403_TITLE = '403';
+    const ERROR_403_HEADER = 'Доступ запрещён';
+    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+
+    const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
+    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+
+    const ERROR_GOTO_START = 'Перейти на начальную страницу';
+    const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';
 }

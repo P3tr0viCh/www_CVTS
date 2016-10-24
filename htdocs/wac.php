@@ -141,6 +141,9 @@ if (!$resultMessage) {
 } else {
     $javaScripts = null;
 }
+
+echoJSDisabled();
+
 echoEndBody($newDesign, $javaScripts);
 
 echoEndPage();

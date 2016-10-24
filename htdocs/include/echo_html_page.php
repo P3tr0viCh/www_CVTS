@@ -96,6 +96,12 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
     } else {
         echo S::TAB;
         echo '<link rel="stylesheet" href="/styles/compat.css">' . PHP_EOL;
+        echo S::TAB;
+        echo "<!--[if lt IE 9]>" . PHP_EOL;
+        echo S::TAB . S::TAB;
+        echo '<link rel="stylesheet" href="/styles/compat_ie.css">' . PHP_EOL;
+        echo S::TAB;
+        echo "<![endif]-->" . PHP_EOL;
     }
 
     if ($styles) {
@@ -243,6 +249,32 @@ function echoErrorPage($error, $errorDetails)
     echo '</div>' . PHP_EOL;
 }
 
+function echoJSDisabled()
+{
+    echo PHP_EOL;
+    echo "<noscript>" . PHP_EOL;
+
+    echo '<div class="div-center-outer--center bk-color--white">' . PHP_EOL;
+    echo S::TAB;
+    echo '<div class="div-center-middle">' . PHP_EOL;
+    echo S::TAB . S::TAB;
+    echo '<div class="div-center-inner">' . PHP_EOL;
+
+    echo S::TAB . S::TAB . S::TAB;
+    echo '<h1 class="result-message color-text--error">' . S::ERROR_JS_DISABLED . '</h1>' . PHP_EOL;
+
+    echo S::TAB . S::TAB . S::TAB;
+    echo '<h2 class="result-message color-text--secondary">' . S::ERROR_JS_DISABLED_DETAILS . '</h2>' . PHP_EOL;
+
+    echo S::TAB . S::TAB;
+    echo '</div>' . PHP_EOL;
+    echo S::TAB;
+    echo '</div>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
+
+    echo "</noscript>" . PHP_EOL;
+}
+
 function echoEndBody($newDesign, $endScript = null)
 {
     if ($newDesign) {
@@ -255,6 +287,7 @@ function echoEndBody($newDesign, $endScript = null)
         echo PHP_EOL;
 
         if (is_string($endScript)) {
+            echo PHP_EOL;
             echo S::TAB;
             echo $endScript . PHP_EOL;
         } elseif (is_array($endScript)) {
