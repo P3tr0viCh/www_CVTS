@@ -535,7 +535,7 @@ if (!$resultMessage) {
         echo S::TAB . S::TAB;
         echo '<td class="query text-align--center">' . PHP_EOL;
 
-        echoButtonReset();
+        echoButtonReset($newDesign);
 
         echo S::TAB . S::TAB;
         echo '</td>' . PHP_EOL;

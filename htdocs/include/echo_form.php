@@ -37,25 +37,34 @@ function echoHidden($name, $value)
 function echoButton($newDesign, $text, $name, $value)
 {
     $buttonClass = $newDesign ?
-        "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'" : "query";
+        "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" : "input-button submit";
 
     echo S::TAB . S::TAB;
-    echo "<button class='$buttonClass' name='$name' value='$value'>";
-    echo $text;
-    echo "</button>";
+    if ($newDesign) {
+        echo "<button class='$buttonClass' name='$name' value='$value'>";
+        echo $text;
+        echo "</button>";
+    } else {
+        $name = $name . "_" . $value;
+        echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";
+    }
     echo PHP_EOL . S::TAB . S::TAB;
     echo "<br>";
 
     echo PHP_EOL;
 }
 
-function echoButtonReset()
+function echoButtonReset($newDesign)
 {
+    $text = S::BUTTON_CLEAR;
     echo S::TAB . S::TAB;
-    echo "<button type='reset'>";
-    echo S::BUTTON_CLEAR;
-    echo "</button>";
-
+    if ($newDesign) {
+        echo "<button type='reset'>";
+        echo $text;
+        echo "</button>";
+    } else {
+        echo "<input class='input-button reset' type='reset' value='$text'>";
+    }
     echo PHP_EOL;
 }
 
@@ -131,9 +140,9 @@ function echoCheckBox($newDesign, $id, $name, $checked = false)
     echo S::TAB . S::TAB;
     echo "<div class='field--checkbox'>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB;
-    echo "<label class='$labelClass'>" . PHP_EOL;
+    echo "<label class='$labelClass' for='$id'>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB . S::TAB;
-    echo "<input type='checkbox' name='$id' $params>" . PHP_EOL;
+    echo "<input type='checkbox' id='$id' name='$id' $params>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB . S::TAB;
     echo "<span class='$spanClass'>$name</span>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB;

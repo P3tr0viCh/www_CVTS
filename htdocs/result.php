@@ -67,6 +67,46 @@ switch ($reportType) {
 
         $resultType = getPOSTParam(ParamName::RESULT_TYPE);
 
+        if (empty($resultType)) {
+
+            function getResultType($type)
+            {
+                $param = getPOSTParam(ParamName::RESULT_TYPE . "_" . $type);
+                return empty($param) ? null : $type;
+            }
+
+            $resultTypes = array(
+                ResultType::VAN_DYNAMIC_BRUTTO,
+                ResultType::VAN_DYNAMIC_TARE,
+                ResultType::VAN_STATIC_BRUTTO,
+                ResultType::VAN_STATIC_TARE,
+
+                ResultType::TRAIN_DYNAMIC,
+                ResultType::TRAIN_DYNAMIC_ONE,
+
+                ResultType::AUTO_BRUTTO,
+                ResultType::AUTO_TARE,
+
+                ResultType::KANAT,
+
+                ResultType::DP,
+                ResultType::DP_SUM,
+
+                ResultType::CARGO_LIST_DYNAMIC,
+                ResultType::CARGO_LIST_STATIC,
+                ResultType::CARGO_LIST_AUTO,
+
+                ResultType::COMPARE_DYNAMIC,
+                ResultType::COMPARE_STATIC);
+
+            foreach ($resultTypes as $result) {
+                $resultType = getResultType($result);
+                if (!empty($resultType)) {
+                    break;
+                }
+            }
+        }
+
         $dtStartDay = getPOSTParam(ParamName::DATETIME_START_DAY);
         $dtStartMonth = getPOSTParam(ParamName::DATETIME_START_MONTH);
         $dtStartYear = getPOSTParam(ParamName::DATETIME_START_YEAR);

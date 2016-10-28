@@ -13,6 +13,10 @@ body.night {
     background-color: black;
 }
 
+.night div.hr {
+    background-color: #9F8274;
+}
+
 table {
     white-space: nowrap;
     color: inherit;

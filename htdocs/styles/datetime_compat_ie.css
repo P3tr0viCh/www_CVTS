@@ -5,3 +5,19 @@
 .datetime--row.time {
     height: 400px;
 }
+
+.datetime--row.night {
+    color: orange;
+}
+
+.night .datetime--copyright {
+    color: #1D1D1D;
+}
+
+a {
+    color: #D0D0D0;
+}
+
+a.night {
+    color: #333333;
+}
