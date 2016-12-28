@@ -10,7 +10,7 @@ function startHideCursor() {
 
 function hideCursor() {
     mouseTimer = null;
-    document.body.style.cursor = "none";
+    document.body.style.cursor = "url('/images/none.cur'), auto";
     cursorVisible = false;
 }
 

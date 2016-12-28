@@ -16,7 +16,7 @@ function containsClass(classNames, c) {
         index = -1;
 
     for (var i = 0, l = classNames.length; i < l; i++) {
-        if (classNames[i].toLowerCase() == c) {
+        if (classNames[i].toLowerCase() === c) {
             index = i;
             break;
         }
@@ -30,11 +30,11 @@ function addClassOld(e, c) {
         className = e.className,
         classNames = e.className.split(" ");
 
-    if (containsClass(classNames, c) != -1) {
+    if (containsClass(classNames, c) !== -1) {
         return;
     }
 
-    if (className != '') {
+    if (className !== '') {
         c = ' ' + c;
     }
 
@@ -46,7 +46,7 @@ function removeClassOld(e, c) {
         classNames = e.className.split(" "),
         r = containsClass(classNames, c);
 
-    if (r != -1) {
+    if (r !== -1) {
         classNames.splice(r, 1);
 
         e.className = classNames.join(" ");
@@ -63,7 +63,7 @@ function nightMode(nightMode) {
         removeClass = removeClassOld;
     }
 
-    if (nightMode == null) {
+    if (nightMode === null) {
         checkNightMode();
     } else {
         setNightMode(nightMode);
@@ -98,11 +98,11 @@ function setElementNightMode(element, nightMode) {
 
 function validTag(tagName) {
     tagName = tagName.toLowerCase();
-    return tagName == "div" || tagName == "table" || tagName == "th" || tagName == "td" || tagName == "a";
+    return tagName === "div" || tagName === "table" || tagName === "th" || tagName === "td" || tagName === "a";
 }
 
 function setNightMode(nightMode) {
-    if (isNightMode == nightMode) return;
+    if (isNightMode === nightMode) return;
 
     isNightMode = nightMode;
 

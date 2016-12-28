@@ -320,7 +320,7 @@ class QueryResult extends QueryBase
             case ResultType::DP:
             case ResultType::DP_SUM:
                 if ($this->filter->isOnlyChark()) {
-                    $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL, 'Кокс');
+                    $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL, 'РљРѕРєСЃ');
                 }
         }
 

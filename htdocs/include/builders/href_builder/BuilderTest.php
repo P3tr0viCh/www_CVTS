@@ -115,14 +115,14 @@ class BuilderTest
                 ->setParam("param_float", 123.456)
                 ->setParam("param_bool", false)
                 ->setParam("param_str", "param")
-                ->setParam("param_str_int", "параметр")
+                ->setParam("param_str_int", "РїР°СЂР°РјРµС‚СЂ")
                 ->build(),
             "url.html?" .
             "param_int=123&" .
             "param_float=123.456&" .
             "param_bool=false&" .
             "param_str=param&" .
-            "param_str_int=" . urlencode("параметр")
+            "param_str_int=" . urlencode("РїР°СЂР°РјРµС‚СЂ")
             , __LINE__);
     }
 }

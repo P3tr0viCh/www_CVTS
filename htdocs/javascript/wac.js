@@ -40,7 +40,7 @@ function startWAC(companyDateMySQL, departmentDateMySQL) {
 
         timeDelimiter = ":";
 
-        if (currentTime.getSeconds() % 2 == 0) {
+        if (currentTime.getSeconds() % 2 === 0) {
             timeDelimiter = "<span class='color-text--darkgrey'>" + timeDelimiter + "</span>";
         }
 

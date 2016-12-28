@@ -1,4 +1,4 @@
-// Функции используются в query_scales.php, show_page.php
+// Р¤СѓРЅРєС†РёРё РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ query_scales.php, show_page.php
 
 //noinspection JSUnusedGlobalSymbols
 function reloadData() {

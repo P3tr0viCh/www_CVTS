@@ -1,0 +1,27 @@
+.page-content {
+    margin: 32px 8px 12px 64px;
+}
+
+ul {
+    font-size: 12pt;
+    font-weight: normal;
+    margin: 12px 0;
+    padding-left: 16px;
+}
+
+li {
+    margin: 8px;
+}
+
+a {
+    font-weight: inherit;
+}
+
+.versions {
+    font-size: 12pt;
+    line-height: 24px;
+    margin-top: 24px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 12px;
+}

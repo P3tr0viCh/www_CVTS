@@ -41,7 +41,7 @@ function dateTime(showSeconds) {
 
         timeDelimiter = ":";
 
-        if (!showSeconds && (currentTime.getSeconds() % 2 == 0)) {
+        if (!showSeconds && (currentTime.getSeconds() % 2 === 0)) {
             timeDelimiter = "<span class='color-text--darkgrey'>" + timeDelimiter + "</span>";
         }
 
@@ -58,7 +58,7 @@ function dateTime(showSeconds) {
     }
 
     function setElementText(element, text) {
-        if (element.innerHTML != text) {
+        if (element.innerHTML !== text) {
             element.innerHTML = text;
             updateFontSize(element, text);
         }

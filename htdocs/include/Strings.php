@@ -7,208 +7,219 @@ class Strings
     const EXCEL_SEPARATOR = ";";
     const EXCEL_EOL = "\n";
 
-    const MAIN_TITLE = 'Сервер весовых систем';
-    const DATETIME_TITLE = 'Дата и время';
-    const WAC_TITLE = 'Травматизм';
-    const MYSQL_DATETIME_TITLE = 'Дата и время сервера';
-    const ERROR_INCOMPATIBLE_BROWSER_TITLE = 'Несовместимый браузер';
+    const MAIN_TITLE = 'РЎРµСЂРІРµСЂ РІРµСЃРѕРІС‹С… СЃРёСЃС‚РµРј';
+    const DATETIME_TITLE = 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ';
+    const WAC_TITLE = 'РўСЂР°РІРјР°С‚РёР·Рј';
+    const MYSQL_DATETIME_TITLE = 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРµСЂРІРµСЂР°';
+    const ERROR_INCOMPATIBLE_BROWSER_TITLE = 'РќРµСЃРѕРІРјРµСЃС‚РёРјС‹Р№ Р±СЂР°СѓР·РµСЂ';
+    const A_TITLE = 'РљР°СЂС‚Р° СЃР°Р№С‚Р°';
 
-    const MAIN_HEADER = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
-    const MAIN_HEADER_LOGO_ALT = 'Металлоинвест | Уральская сталь';
-    const MYSQL_DATETIME_HEADER = 'Дата и время сервера MySQL';
+    const MAIN_HEADER = 'Р¦Р•РҐ Р’Р•РЎРћРР—РњР•Р РРўР•Р›Р¬РќР«РҐ РўР•РҐРќРћР›РћР“РР§Р•РЎРљРРҐ РЎРРЎРўР•Рњ';
+    const MAIN_HEADER_LOGO_ALT = 'РњРµС‚Р°Р»Р»РѕРёРЅРІРµСЃС‚ | РЈСЂР°Р»СЊСЃРєР°СЏ СЃС‚Р°Р»СЊ';
+    const MYSQL_DATETIME_HEADER = 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРµСЂРІРµСЂР° MySQL';
+    const A_HEADER = 'РљР°СЂС‚Р° СЃР°Р№С‚Р°';
 
-    const DRAWER_TITLE = 'Весы';
-    const DRAWER_START_PAGE = 'Общий список';
-    const DRAWER_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
+    const DRAWER_TITLE = 'Р’РµСЃС‹';
+    const DRAWER_START_PAGE = 'РћР±С‰РёР№ СЃРїРёСЃРѕРє';
+    const DRAWER_ALL_TRAIN_SCALES = 'Р’СЃРµ Р¶РµР»РµР·РЅРѕРґРѕСЂРѕР¶РЅС‹Рµ РІРµСЃС‹';
 
-    const FOOTER_LEFT_SECTION = 'МЕТАЛЛОИНВЕСТ, Уральская Сталь';
-    const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович, ЦВТС, 2004-2016';
+    const FOOTER_LEFT_SECTION = 'РњР•РўРђР›Р›РћРРќР’Р•РЎРў, РЈСЂР°Р»СЊСЃРєР°СЏ РЎС‚Р°Р»СЊ';
+    const FOOTER_RIGHT_SECTION = 'В© Р”СѓСЂР°РµРІ РљРѕРЅСЃС‚Р°РЅС‚РёРЅ РџРµС‚СЂРѕРІРёС‡, Р¦Р’РўРЎ, 2004-2016';
 
-    const ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
+    const ALL_TRAIN_SCALES = 'РЎРІРѕРґРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РїРѕ РІСЃРµРј Р¶РµР»РµР·РЅРѕРґРѕСЂРѕР¶РЅС‹Рј РІРµСЃР°Рј';
 
-    const SCALE_INFO_ALL_TRAIN_PLACE = 'ЖД весы';
-    const SCALE_INFO_ALL_TRAIN_HEADER = 'Сводная информация по всем железнодорожным весам';
-    const SCALE_INFO_HEADER = '%s, весы №%d';
+    const SCALE_INFO_ALL_TRAIN_PLACE = 'Р–Р” РІРµСЃС‹';
+    const SCALE_INFO_ALL_TRAIN_HEADER = 'РЎРІРѕРґРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РїРѕ РІСЃРµРј Р¶РµР»РµР·РЅРѕРґРѕСЂРѕР¶РЅС‹Рј РІРµСЃР°Рј';
+    const SCALE_INFO_HEADER = '%s, РІРµСЃС‹ в„–%d';
 
-    const HEADER_INFO = 'Информация';
-    const HEADER_DYNAMIC = 'Динамическое взвешивание';
-    const HEADER_STATIC = 'Статическое взвешивание';
-    const HEADER_RESULTS = 'Результаты взвешиваний';
-    const HEADER_PERIOD = 'Период';
-    const HEADER_PERIOD_START = 'Начальная дата и время';
-    const HEADER_PERIOD_END = 'Конечная дата и время';
-    const HEADER_SEARCH = 'Поиск';
-    const HEADER_SETTINGS = 'Настройки';
-    const HEADER_COMPARE = 'Сравнение массы';
+    const HEADER_INFO = 'РРЅС„РѕСЂРјР°С†РёСЏ';
+    const HEADER_DYNAMIC = 'Р”РёРЅР°РјРёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ';
+    const HEADER_STATIC = 'РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ';
+    const HEADER_RESULTS = 'Р РµР·СѓР»СЊС‚Р°С‚С‹ РІР·РІРµС€РёРІР°РЅРёР№';
+    const HEADER_PERIOD = 'РџРµСЂРёРѕРґ';
+    const HEADER_PERIOD_START = 'РќР°С‡Р°Р»СЊРЅР°СЏ РґР°С‚Р° Рё РІСЂРµРјСЏ';
+    const HEADER_PERIOD_END = 'РљРѕРЅРµС‡РЅР°СЏ РґР°С‚Р° Рё РІСЂРµРјСЏ';
+    const HEADER_SEARCH = 'РџРѕРёСЃРє';
+    const HEADER_SETTINGS = 'РќР°СЃС‚СЂРѕР№РєРё';
+    const HEADER_COMPARE = 'РЎСЂР°РІРЅРµРЅРёРµ РјР°СЃСЃС‹';
 
-    const HEADER_LOADING = 'Загрузка. Подождите...';
+    const HEADER_LOADING = 'Р—Р°РіСЂСѓР·РєР°. РџРѕРґРѕР¶РґРёС‚Рµ...';
 
-    const HEADER_RESULT_VN_DYN_B = 'Динамическое взвешивание, вагоны (брутто)';
-    const HEADER_RESULT_VN_DYN_T = 'Динамическое взвешивание, вагоны (тара)';
-    const HEADER_RESULT_VN_STA_B = 'Статическое взвешивание, вагоны (брутто)';
-    const HEADER_RESULT_VN_STA_T = 'Статическое взвешивание, вагоны (тара)';
-    const HEADER_RESULT_TR_DYN = 'Динамическое взвешивание, составы';
-    const HEADER_RESULT_TR_DYN_ONE = 'Провеска состава';
-    const HEADER_RESULT_AUTO_B = 'Статическое взвешивание брутто';
-    const HEADER_RESULT_AUTO_T = 'Статическое взвешивание тары';
-    const HEADER_RESULT_KANAT = 'Список провесок';
-    const HEADER_RESULT_DP = 'Список провесок';
-    const HEADER_RESULT_DP_SUM = 'Сумма провесок';
-    const HEADER_RESULT_CARGO_LIST = 'Список грузов';
-    const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
+    const HEADER_RESULT_VN_DYN_B = 'Р”РёРЅР°РјРёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ, РІР°РіРѕРЅС‹ (Р±СЂСѓС‚С‚Рѕ)';
+    const HEADER_RESULT_VN_DYN_T = 'Р”РёРЅР°РјРёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ, РІР°РіРѕРЅС‹ (С‚Р°СЂР°)';
+    const HEADER_RESULT_VN_STA_B = 'РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ, РІР°РіРѕРЅС‹ (Р±СЂСѓС‚С‚Рѕ)';
+    const HEADER_RESULT_VN_STA_T = 'РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ, РІР°РіРѕРЅС‹ (С‚Р°СЂР°)';
+    const HEADER_RESULT_TR_DYN = 'Р”РёРЅР°РјРёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ, СЃРѕСЃС‚Р°РІС‹';
+    const HEADER_RESULT_TR_DYN_ONE = 'РџСЂРѕРІРµСЃРєР° СЃРѕСЃС‚Р°РІР°';
+    const HEADER_RESULT_AUTO_B = 'РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ Р±СЂСѓС‚С‚Рѕ';
+    const HEADER_RESULT_AUTO_T = 'РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ РІР·РІРµС€РёРІР°РЅРёРµ С‚Р°СЂС‹';
+    const HEADER_RESULT_KANAT = 'РЎРїРёСЃРѕРє РїСЂРѕРІРµСЃРѕРє';
+    const HEADER_RESULT_DP = 'РЎРїРёСЃРѕРє РїСЂРѕРІРµСЃРѕРє';
+    const HEADER_RESULT_DP_SUM = 'РЎСѓРјРјР° РїСЂРѕРІРµСЃРѕРє';
+    const HEADER_RESULT_CARGO_LIST = 'РЎРїРёСЃРѕРє РіСЂСѓР·РѕРІ';
+    const HEADER_RESULT_COMPARE = 'Р’Р·РІРµС€РёРІР°РЅРёРµ РІР°РіРѕРЅРѕРІ, Р±СЂСѓС‚С‚Рѕ';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
-    const HEADER_RESULT_PERIOD_FROM = '%s с %s';
-    const HEADER_RESULT_PERIOD_TO = '%s с начала работы по %s';
-    const HEADER_RESULT_PERIOD_FROM_TO = '%s с %s по %s';
-    const HEADER_RESULT_PERIOD_ALL = '%s за всё время работы';
+    const HEADER_RESULT_PERIOD_FROM = '%s СЃ %s';
+    const HEADER_RESULT_PERIOD_TO = '%s СЃ РЅР°С‡Р°Р»Р° СЂР°Р±РѕС‚С‹ РїРѕ %s';
+    const HEADER_RESULT_PERIOD_FROM_TO = '%s СЃ %s РїРѕ %s';
+    const HEADER_RESULT_PERIOD_ALL = '%s Р·Р° РІСЃС‘ РІСЂРµРјСЏ СЂР°Р±РѕС‚С‹';
 
-    const HEADER_RESULT_SEARCH = 'Поиск:';
-    const HEADER_RESULT_SEARCH_AUTO_NUMBER = 'Номер автомобиля';
-    const HEADER_RESULT_SEARCH_VAN_NUMBER = 'Номер вагона';
-    const HEADER_RESULT_SEARCH_CARGO_TYPE = 'Род груза';
-    const HEADER_RESULT_SEARCH_INVOICE_NUM = 'Номер накладной';
-    const HEADER_RESULT_SEARCH_INVOICE_SUPPLIER = 'Грузоотправитель';
-    const HEADER_RESULT_SEARCH_INVOICE_RECIPIENT = 'Грузополучатель';
-    const HEADER_RESULT_SEARCH_SCALES = 'Номера весов';
+    const HEADER_RESULT_SEARCH = 'РџРѕРёСЃРє:';
+    const HEADER_RESULT_SEARCH_AUTO_NUMBER = 'РќРѕРјРµСЂ Р°РІС‚РѕРјРѕР±РёР»СЏ';
+    const HEADER_RESULT_SEARCH_VAN_NUMBER = 'РќРѕРјРµСЂ РІР°РіРѕРЅР°';
+    const HEADER_RESULT_SEARCH_CARGO_TYPE = 'Р РѕРґ РіСЂСѓР·Р°';
+    const HEADER_RESULT_SEARCH_INVOICE_NUM = 'РќРѕРјРµСЂ РЅР°РєР»Р°РґРЅРѕР№';
+    const HEADER_RESULT_SEARCH_INVOICE_SUPPLIER = 'Р“СЂСѓР·РѕРѕС‚РїСЂР°РІРёС‚РµР»СЊ';
+    const HEADER_RESULT_SEARCH_INVOICE_RECIPIENT = 'Р“СЂСѓР·РѕРїРѕР»СѓС‡Р°С‚РµР»СЊ';
+    const HEADER_RESULT_SEARCH_SCALES = 'РќРѕРјРµСЂР° РІРµСЃРѕРІ';
 
-    const HEADER_RESULT_SEARCH_COMPARE = 'Сравнение значений %s между весовыми (поиск %s)';
-    const HEADER_RESULT_SEARCH_COMPARE_BY_BRUTTO = 'брутто';
-    const HEADER_RESULT_SEARCH_COMPARE_BY_NETTO = 'нетто';
-    const HEADER_RESULT_SEARCH_COMPARE_FORWARD = '«вперёд»';
-    const HEADER_RESULT_SEARCH_COMPARE_BACKWARD = '«назад»';
+    const HEADER_RESULT_SEARCH_COMPARE = 'РЎСЂР°РІРЅРµРЅРёРµ Р·РЅР°С‡РµРЅРёР№ %s РјРµР¶РґСѓ РІРµСЃРѕРІС‹РјРё (РїРѕРёСЃРє %s)';
+    const HEADER_RESULT_SEARCH_COMPARE_BY_BRUTTO = 'Р±СЂСѓС‚С‚Рѕ';
+    const HEADER_RESULT_SEARCH_COMPARE_BY_NETTO = 'РЅРµС‚С‚Рѕ';
+    const HEADER_RESULT_SEARCH_COMPARE_FORWARD = 'В«РІРїРµСЂС‘РґВ»';
+    const HEADER_RESULT_SEARCH_COMPARE_BACKWARD = 'В«РЅР°Р·Р°РґВ»';
 
-    const HEADER_WAC = 'Количество дней, отработанных без травм';
-    const HEADER_WAC_DEPARTMENT = 'ЦВТС';
-    const HEADER_WAC_COMPANY = 'Общество';
+    const HEADER_WAC = 'РљРѕР»РёС‡РµСЃС‚РІРѕ РґРЅРµР№, РѕС‚СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р±РµР· С‚СЂР°РІРј';
+    const HEADER_WAC_DEPARTMENT = 'Р¦Р’РўРЎ';
+    const HEADER_WAC_COMPANY = 'РћР±С‰РµСЃС‚РІРѕ';
 
-    const TEXT_ZERO_RESULT = 'По заданным параметрам запроса данных нет';
+    const TEXT_ZERO_RESULT = 'РџРѕ Р·Р°РґР°РЅРЅС‹Рј РїР°СЂР°РјРµС‚СЂР°Рј Р·Р°РїСЂРѕСЃР° РґР°РЅРЅС‹С… РЅРµС‚';
 
-    const TEXT_COMPATIBLE_BROWSERS_START = 'Новый дизайн поддерживается следующими браузерами:';
+    const TEXT_COMPATIBLE_BROWSERS_START = 'РќРѕРІС‹Р№ РґРёР·Р°Р№РЅ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ СЃР»РµРґСѓСЋС‰РёРјРё Р±СЂР°СѓР·РµСЂР°РјРё:';
     const TEXT_COMPATIBLE_BROWSER_IE = 'Microsoft Internet Explorer %d';
     const TEXT_COMPATIBLE_BROWSER_EDGE = 'Microsoft Edge %d';
-    const TEXT_COMPATIBLE_BROWSER_CHROME = 'Google Chrome %d (включая браузеры на основе Google Chromium, например, Яндекс.Браузер)';
-    const TEXT_COMPATIBLE_BROWSERS_END = 'Версия браузера должна быть равна или быть выше указанной. JavaScript должен быть разрешён.';
+    const TEXT_COMPATIBLE_BROWSER_CHROME = 'Google Chrome %d (РІРєР»СЋС‡Р°СЏ Р±СЂР°СѓР·РµСЂС‹ РЅР° РѕСЃРЅРѕРІРµ Google Chromium, РЅР°РїСЂРёРјРµСЂ, РЇРЅРґРµРєСЃ.Р‘СЂР°СѓР·РµСЂ)';
+    const TEXT_COMPATIBLE_BROWSERS_END = 'Р’РµСЂСЃРёСЏ Р±СЂР°СѓР·РµСЂР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СЂР°РІРЅР° РёР»Рё Р±С‹С‚СЊ РІС‹С€Рµ СѓРєР°Р·Р°РЅРЅРѕР№. JavaScript РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂР°Р·СЂРµС€С‘РЅ.';
 
-    const BUTTON_TRAINS = 'Поезда, брутто';
-    const BUTTON_VANS_BRUTTO = 'Вагоны, брутто';
-    const BUTTON_VANS_TARE = 'Вагоны, тара';
-    const BUTTON_CARGOS = 'Список грузов';
-    const BUTTON_COMPARE = 'Сравнение массы';
-    const BUTTON_BRUTTO = 'Брутто';
-    const BUTTON_TARE = 'Тара';
-    const BUTTON_VIEW = 'Просмотр';
-    const BUTTON_SUM_FOR_PERIOD = 'Сумма за период';
-    const BUTTON_CLEAR = 'Очистить';
+    const BUTTON_TRAINS = 'РџРѕРµР·РґР°, Р±СЂСѓС‚С‚Рѕ';
+    const BUTTON_VANS_BRUTTO = 'Р’Р°РіРѕРЅС‹, Р±СЂСѓС‚С‚Рѕ';
+    const BUTTON_VANS_TARE = 'Р’Р°РіРѕРЅС‹, С‚Р°СЂР°';
+    const BUTTON_CARGOS = 'РЎРїРёСЃРѕРє РіСЂСѓР·РѕРІ';
+    const BUTTON_COMPARE = 'РЎСЂР°РІРЅРµРЅРёРµ РјР°СЃСЃС‹';
+    const BUTTON_BRUTTO = 'Р‘СЂСѓС‚С‚Рѕ';
+    const BUTTON_TARE = 'РўР°СЂР°';
+    const BUTTON_VIEW = 'РџСЂРѕСЃРјРѕС‚СЂ';
+    const BUTTON_SUM_FOR_PERIOD = 'РЎСѓРјРјР° Р·Р° РїРµСЂРёРѕРґ';
+    const BUTTON_CLEAR = 'РћС‡РёСЃС‚РёС‚СЊ';
 
-    const CHECKBOX_ORDER_BY_DATETIME = 'Сортировка только по дате и времени';
-    const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
-    const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
-    const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
-    const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
-    const CHECKBOX_ONLY_CHARK = 'Только кокс';
+    const CHECKBOX_ORDER_BY_DATETIME = 'РЎРѕСЂС‚РёСЂРѕРІРєР° С‚РѕР»СЊРєРѕ РїРѕ РґР°С‚Рµ Рё РІСЂРµРјРµРЅРё';
+    const CHECKBOX_ALL_FIELDS = 'РџРѕРґСЂРѕР±РЅС‹Рµ С‚Р°Р±Р»РёС†С‹';
+    const CHECKBOX_SHOW_CARGO_DATE = 'РџРѕРєР°Р·Р°С‚СЊ РІСЂРµРјСЏ РёР·РјРµРЅРµРЅРёСЏ СЂРѕРґР° РіСЂСѓР·Р°';
+    const CHECKBOX_COMPARE_FORWARD = 'РџРѕРёСЃРє В«РІРїРµСЂС‘РґВ»';
+    const CHECKBOX_COMPARE_BY_BRUTTO = 'РЎСЂР°РІРЅРёРІР°С‚СЊ Р±СЂСѓС‚С‚Рѕ';
+    const CHECKBOX_ONLY_CHARK = 'РўРѕР»СЊРєРѕ РєРѕРєСЃ';
 
-    const MENU_DATES_CURRENT_DAY = 'Начало текущего дня';
-    const MENU_DATES_CURRENT_MONTH = 'Начало текущего месяца';
-    const MENU_DATES_CURRENT_WEEK = 'Начало текущей недели';
-    const MENU_DATES_PREV_DAY = 'Прошлые сутки';
-    const MENU_DATES_FROM_5_TO_5 = 'С 05:00 прошлого дня до 04:59 текущего';
-    const MENU_DATES_FROM_20_TO_20 = 'С 20:00 прошлого дня до 19:59 текущего';
-    const MENU_DATES_CLEAR = 'Очистить';
+    const MENU_DATES_CURRENT_DAY = 'РќР°С‡Р°Р»Рѕ С‚РµРєСѓС‰РµРіРѕ РґРЅСЏ';
+    const MENU_DATES_CURRENT_MONTH = 'РќР°С‡Р°Р»Рѕ С‚РµРєСѓС‰РµРіРѕ РјРµСЃСЏС†Р°';
+    const MENU_DATES_CURRENT_WEEK = 'РќР°С‡Р°Р»Рѕ С‚РµРєСѓС‰РµР№ РЅРµРґРµР»Рё';
+    const MENU_DATES_PREV_DAY = 'РџСЂРѕС€Р»С‹Рµ СЃСѓС‚РєРё';
+    const MENU_DATES_FROM_5_TO_5 = 'РЎ 05:00 РїСЂРѕС€Р»РѕРіРѕ РґРЅСЏ РґРѕ 04:59 С‚РµРєСѓС‰РµРіРѕ';
+    const MENU_DATES_FROM_20_TO_20 = 'РЎ 20:00 РїСЂРѕС€Р»РѕРіРѕ РґРЅСЏ РґРѕ 19:59 С‚РµРєСѓС‰РµРіРѕ';
+    const MENU_DATES_CLEAR = 'РћС‡РёСЃС‚РёС‚СЊ';
 
-    const MENU_COPY_ALL = 'Копировать всё';
-    const MENU_COPY_TABLE = 'Копировать таблицу с заголовками';
-    const MENU_COPY_TABLE_BODY = 'Копировать данные из таблицы';
+    const MENU_COPY_ALL = 'РљРѕРїРёСЂРѕРІР°С‚СЊ РІСЃС‘';
+    const MENU_COPY_TABLE = 'РљРѕРїРёСЂРѕРІР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ СЃ Р·Р°РіРѕР»РѕРІРєР°РјРё';
+    const MENU_COPY_TABLE_BODY = 'РљРѕРїРёСЂРѕРІР°С‚СЊ РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹';
 
-    const NAV_LINK_CLEAR = 'ОЧИСТИТЬ';
-    const NAV_LINK_BACK = 'НАЗАД';
-    const NAV_LINK_UPDATE = 'ОБНОВИТЬ';
-    const NAV_LINK_SAVE = 'СОХРАНИТЬ В EXCEL';
-    const NAV_LINK_SAVE_OLD = 'Сохранить в Excel';
+    const NAV_LINK_CLEAR = 'РћР§РРЎРўРРўР¬';
+    const NAV_LINK_BACK = 'РќРђР—РђР”';
+    const NAV_LINK_UPDATE = 'РћР‘РќРћР’РРўР¬';
+    const NAV_LINK_SAVE = 'РЎРћРҐР РђРќРРўР¬ Р’ EXCEL';
+    const NAV_LINK_SAVE_OLD = 'РЎРѕС…СЂР°РЅРёС‚СЊ РІ Excel';
 
-    const INPUT_DAY = 'День';
-    const INPUT_DAY_HELP = 'Число от 1 до 31';
+    const INPUT_DAY = 'Р”РµРЅСЊ';
+    const INPUT_DAY_HELP = 'Р§РёСЃР»Рѕ РѕС‚ 1 РґРѕ 31';
     const INPUT_DAY_PATTERN = '0[1-9]|1[0-9]|2[0-9]|3[01]|[1-9]';
-    const INPUT_MONTH = 'Месяц';
-    const INPUT_MONTH_HELP = 'Число от 1 до 12';
+    const INPUT_MONTH = 'РњРµСЃСЏС†';
+    const INPUT_MONTH_HELP = 'Р§РёСЃР»Рѕ РѕС‚ 1 РґРѕ 12';
     const INPUT_MONTH_PATTERN = '0[1-9]|1[012]|[1-9]';
-    const INPUT_YEAR = 'Год';
-    const INPUT_YEAR_HELP = 'Четыре цифры';
+    const INPUT_YEAR = 'Р“РѕРґ';
+    const INPUT_YEAR_HELP = 'Р§РµС‚С‹СЂРµ С†РёС„СЂС‹';
     const INPUT_YEAR_PATTERN = '[0-9]{4}';
-    const INPUT_HOUR = 'Час';
-    const INPUT_HOUR_HELP = 'Число от 0 до 23';
+    const INPUT_HOUR = 'Р§Р°СЃ';
+    const INPUT_HOUR_HELP = 'Р§РёСЃР»Рѕ РѕС‚ 0 РґРѕ 23';
     const INPUT_HOUR_PATTERN = '0[0-9]|1[0-9]|2[0-3]|[0-9]';
-    const INPUT_MINUTES = 'Минуты';
-    const INPUT_MINUTES_HELP = 'Число от 0 до 59';
+    const INPUT_MINUTES = 'РњРёРЅСѓС‚С‹';
+    const INPUT_MINUTES_HELP = 'Р§РёСЃР»Рѕ РѕС‚ 0 РґРѕ 59';
     const INPUT_MINUTES_PATTERN = '0[0-9]|[0-5][0-9]|[0-9]';
-    const INPUT_VAN_NUMBER = 'Номер вагона';
-    const INPUT_VAN_NUMBER_HELP = 'Только цифры и символы % и _, максимум 8 знаков';
+    const INPUT_VAN_NUMBER = 'РќРѕРјРµСЂ РІР°РіРѕРЅР°';
+    const INPUT_VAN_NUMBER_HELP = 'РўРѕР»СЊРєРѕ С†РёС„СЂС‹ Рё СЃРёРјРІРѕР»С‹ % Рё _, РјР°РєСЃРёРјСѓРј 8 Р·РЅР°РєРѕРІ';
     const INPUT_VAN_NUMBER_PATTERN = '[0-9%_]{0,8}';
-    const INPUT_AUTO_NUMBER = 'Номер автомобиля';
-    const INPUT_AUTO_NUMBER_HELP = 'Алфавитно-цифровые символы и символы % и _, максимум 9 знаков';
-    const INPUT_AUTO_NUMBER_PATTERN = '[а-яА-ЯёЁa-zA-Z0-9%_]{0,9}';
-    const INPUT_CARGO_TYPE = 'Род груза';
-    const INPUT_INVOICE_NUM = 'Номер накладной';
-    const INPUT_INVOICE_SUPPLIER = 'Грузоотправитель';
-    const INPUT_INVOICE_RECIPIENT = 'Грузополучатель';
-    const INPUT_SCALES = 'Номера весов';
-    const INPUT_SCALES_HELP = 'Только цифры и запятые';
+    const INPUT_AUTO_NUMBER = 'РќРѕРјРµСЂ Р°РІС‚РѕРјРѕР±РёР»СЏ';
+    const INPUT_AUTO_NUMBER_HELP = 'РђР»С„Р°РІРёС‚РЅРѕ-С†РёС„СЂРѕРІС‹Рµ СЃРёРјРІРѕР»С‹ Рё СЃРёРјРІРѕР»С‹ % Рё _, РјР°РєСЃРёРјСѓРј 9 Р·РЅР°РєРѕРІ';
+    const INPUT_AUTO_NUMBER_PATTERN = '[Р°-СЏРђ-РЇС‘РЃa-zA-Z0-9%_]{0,9}';
+    const INPUT_CARGO_TYPE = 'Р РѕРґ РіСЂСѓР·Р°';
+    const INPUT_INVOICE_NUM = 'РќРѕРјРµСЂ РЅР°РєР»Р°РґРЅРѕР№';
+    const INPUT_INVOICE_SUPPLIER = 'Р“СЂСѓР·РѕРѕС‚РїСЂР°РІРёС‚РµР»СЊ';
+    const INPUT_INVOICE_RECIPIENT = 'Р“СЂСѓР·РѕРїРѕР»СѓС‡Р°С‚РµР»СЊ';
+    const INPUT_SCALES = 'РќРѕРјРµСЂР° РІРµСЃРѕРІ';
+    const INPUT_SCALES_HELP = 'РўРѕР»СЊРєРѕ С†РёС„СЂС‹ Рё Р·Р°РїСЏС‚С‹Рµ';
     const INPUT_SCALES_PATTERN = '^[0-9,]+$';
 
-    const HELP_PERIOD_OLD = '(день.месяц.год час:минуты)<br>(дату или время полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';
-    const HELP_SEARCH = 'Символ «%» (процент используется для замены группы символов, «_» (подчёркивание – для замены одного символа';
-    const HELP_SEARCH_OLD = '(используйте символ "%" для замены группы символов, "_" для замены одного символа)';
-    const HELP_SCALES = 'Номера весов вводятся через запятую';
-    const HELP_SCALES_OLD = '(номера весов вводятся через запятую)';
+    const HELP_PERIOD_OLD = '(РґРµРЅСЊ.РјРµСЃСЏС†.РіРѕРґ С‡Р°СЃ:РјРёРЅСѓС‚С‹)<br>(РґР°С‚Сѓ РёР»Рё РІСЂРµРјСЏ РїРѕР»РЅРѕСЃС‚СЊСЋ РІРІРѕРґРёС‚СЊ РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ)<br>(РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РЅРµ СѓРєР°Р·Р°РЅРѕ, РїРѕРґСЂР°Р·СѓРјРµРІР°РµС‚СЃСЏ С‚РµРєСѓС‰Р°СЏ РґР°С‚Р°)';
+    const HELP_SEARCH = 'РЎРёРјРІРѕР» В«%В» (РїСЂРѕС†РµРЅС‚ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ Р·Р°РјРµРЅС‹ РіСЂСѓРїРїС‹ СЃРёРјРІРѕР»РѕРІ, В«_В» (РїРѕРґС‡С‘СЂРєРёРІР°РЅРёРµ вЂ“ РґР»СЏ Р·Р°РјРµРЅС‹ РѕРґРЅРѕРіРѕ СЃРёРјРІРѕР»Р°';
+    const HELP_SEARCH_OLD = '(РёСЃРїРѕР»СЊР·СѓР№С‚Рµ СЃРёРјРІРѕР» "%" РґР»СЏ Р·Р°РјРµРЅС‹ РіСЂСѓРїРїС‹ СЃРёРјРІРѕР»РѕРІ, "_" РґР»СЏ Р·Р°РјРµРЅС‹ РѕРґРЅРѕРіРѕ СЃРёРјРІРѕР»Р°)';
+    const HELP_SCALES = 'РќРѕРјРµСЂР° РІРµСЃРѕРІ РІРІРѕРґСЏС‚СЃСЏ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ';
+    const HELP_SCALES_OLD = '(РЅРѕРјРµСЂР° РІРµСЃРѕРІ РІРІРѕРґСЏС‚СЃСЏ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ)';
 
-    const TEXT_SCALE_CLASS_STATIC = 'Статика';
-    const TEXT_SCALE_CLASS_DYNAMIC = 'Динамика';
-    const TEXT_SCALE_CLASS_UNKNOWN = 'Не определено';
+    const TEXT_SCALE_CLASS_STATIC = 'РЎС‚Р°С‚РёРєР°';
+    const TEXT_SCALE_CLASS_DYNAMIC = 'Р”РёРЅР°РјРёРєР°';
+    const TEXT_SCALE_CLASS_UNKNOWN = 'РќРµ РѕРїСЂРµРґРµР»РµРЅРѕ';
 
-    const TEXT_OPERATION_TYPE_CALIBRATION_DYNAMIC = 'Калибровка в динамике';
-    const TEXT_OPERATION_TYPE_CALIBRATION_STATIC = 'Калибровка в статике';
-    const TEXT_OPERATION_TYPE_VERIFICATION_DYNAMIC = 'Поверка в динамике';
-    const TEXT_OPERATION_TYPE_VERIFICATION_STATIC = 'Поверка в статике';
-    const TEXT_OPERATION_TYPE_MAINTENANCE = 'Тех. обслуживание';
-    const TEXT_OPERATION_TYPE_REPAIR = 'Ремонт';
-    const TEXT_OPERATION_TYPE_UNKNOWN = 'Не определено';
+    const TEXT_OPERATION_TYPE_CALIBRATION_DYNAMIC = 'РљР°Р»РёР±СЂРѕРІРєР° РІ РґРёРЅР°РјРёРєРµ';
+    const TEXT_OPERATION_TYPE_CALIBRATION_STATIC = 'РљР°Р»РёР±СЂРѕРІРєР° РІ СЃС‚Р°С‚РёРєРµ';
+    const TEXT_OPERATION_TYPE_VERIFICATION_DYNAMIC = 'РџРѕРІРµСЂРєР° РІ РґРёРЅР°РјРёРєРµ';
+    const TEXT_OPERATION_TYPE_VERIFICATION_STATIC = 'РџРѕРІРµСЂРєР° РІ СЃС‚Р°С‚РёРєРµ';
+    const TEXT_OPERATION_TYPE_MAINTENANCE = 'РўРµС…. РѕР±СЃР»СѓР¶РёРІР°РЅРёРµ';
+    const TEXT_OPERATION_TYPE_REPAIR = 'Р РµРјРѕРЅС‚';
+    const TEXT_OPERATION_TYPE_UNKNOWN = 'РќРµ РѕРїСЂРµРґРµР»РµРЅРѕ';
 
-    const TEXT_TARE_TYPE_MANUAL = 'Трафарет';
-    const TEXT_TARE_TYPE_DYNAMIC = 'Динамика';
-    const TEXT_TARE_TYPE_STATIC = 'Статика';
-    const TEXT_TARE_TYPE_UNKNOWN = 'Не определено';
+    const TEXT_TARE_TYPE_MANUAL = 'РўСЂР°С„Р°СЂРµС‚';
+    const TEXT_TARE_TYPE_DYNAMIC = 'Р”РёРЅР°РјРёРєР°';
+    const TEXT_TARE_TYPE_STATIC = 'РЎС‚Р°С‚РёРєР°';
+    const TEXT_TARE_TYPE_UNKNOWN = 'РќРµ РѕРїСЂРµРґРµР»РµРЅРѕ';
 
-    const TEXT_SIDE_RIGHT = 'Правая';
-    const TEXT_SIDE_LEFT = 'Левая';
-    const TEXT_SIDE_UNKNOWN = 'Не определено';
+    const TEXT_SIDE_RIGHT = 'РџСЂР°РІР°СЏ';
+    const TEXT_SIDE_LEFT = 'Р›РµРІР°СЏ';
+    const TEXT_SIDE_UNKNOWN = 'РќРµ РѕРїСЂРµРґРµР»РµРЅРѕ';
 
-    const TEXT_NIGHT_MODE = 'ДЕНЬ/НОЧЬ';
+    const TEXT_NIGHT_MODE = 'Р”Р•РќР¬/РќРћР§Р¬';
 
-    const ERROR_ERROR = 'Ошибка';
-    const ERROR_MYSQL_CONNECTION = 'Нет подключения к серверу MySQL';
-    const ERROR_MYSQL_QUERY = 'Не удалось выполнить запрос к базе данных';
-    const ERROR_MYSQL_DETAILS = 'Ошибка %d: %s';
-    const ERROR_MYSQL_CONNECTION_FILE_ERROR = 'Файл MYSQL_CONNECTION не найден или имеет неправильный формат';
-    const ERROR_MYSQL_ZERO = 'Неверный запрос к базе данных';
-    const ERROR_MYSQL_BAD_SCALE_NUM = 'Весы с номером %d в базе данных не найдены';
-    const ERROR_MYSQL_MAX_LIMIT = 'Результат запроса превысил допустимые пределы<br>Попробуйте указать меньший период времени<br>и/или задайте параметры поиска.';
+    const TEXT_APACHE_VERSION = 'Р’РµСЂСЃРёСЏ Apache: %s';
+    const TEXT_PHP_VERSION = 'Р’РµСЂСЃРёСЏ PHP: %s';
 
-    const ERROR_JS_DISABLED = 'JavaScript отключен';
-    const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';
+    const ERROR_ERROR = 'РћС€РёР±РєР°';
+    const ERROR_MYSQL_CONNECTION = 'РќРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ MySQL';
+    const ERROR_MYSQL_QUERY = 'РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ Р·Р°РїСЂРѕСЃ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…';
+    const ERROR_MYSQL_DETAILS = 'РћС€РёР±РєР° %d: %s';
+    const ERROR_MYSQL_CONNECTION_FILE_ERROR = 'Р¤Р°Р№Р» MYSQL_CONNECTION РЅРµ РЅР°Р№РґРµРЅ РёР»Рё РёРјРµРµС‚ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ С„РѕСЂРјР°С‚';
+    const ERROR_MYSQL_ZERO = 'РќРµРІРµСЂРЅС‹Р№ Р·Р°РїСЂРѕСЃ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…';
+    const ERROR_MYSQL_BAD_SCALE_NUM = 'Р’РµСЃС‹ СЃ РЅРѕРјРµСЂРѕРј %d РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С… РЅРµ РЅР°Р№РґРµРЅС‹';
+    const ERROR_MYSQL_MAX_LIMIT = 'Р РµР·СѓР»СЊС‚Р°С‚ Р·Р°РїСЂРѕСЃР° РїСЂРµРІС‹СЃРёР» РґРѕРїСѓСЃС‚РёРјС‹Рµ РїСЂРµРґРµР»С‹<br>РџРѕРїСЂРѕР±СѓР№С‚Рµ СѓРєР°Р·Р°С‚СЊ РјРµРЅСЊС€РёР№ РїРµСЂРёРѕРґ РІСЂРµРјРµРЅРё<br>Рё/РёР»Рё Р·Р°РґР°Р№С‚Рµ РїР°СЂР°РјРµС‚СЂС‹ РїРѕРёСЃРєР°.';
+
+    const ERROR_JS_DISABLED = 'JavaScript РѕС‚РєР»СЋС‡РµРЅ';
+    const ERROR_JS_DISABLED_DETAILS = 'Р”Р»СЏ РїСЂР°РІРёР»СЊРЅРѕРіРѕ С„СѓРЅРєС†РёРѕРЅРёСЂРѕРІР°РЅРёСЏ РґР°РЅРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ JavaScript РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂР°Р·СЂРµС€С‘РЅ';
 
     const ERROR_404 = '404';
     const ERROR_404_TITLE = '404';
-    const ERROR_404_HEADER = 'Такой страницы нет';
-    const ERROR_404_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_404_HEADER = 'РўР°РєРѕР№ СЃС‚СЂР°РЅРёС†С‹ РЅРµС‚';
+    const ERROR_404_SUB_HEADER = 'РќРѕ РІС‹ РґРµСЂР¶РёС‚РµСЃСЊ. Р’СЃРµРіРѕ РІР°Рј РґРѕР±СЂРѕРіРѕ, С…РѕСЂРѕС€РµРіРѕ РЅР°СЃС‚СЂРѕРµРЅРёСЏ Рё Р·РґРѕСЂРѕРІСЊСЏ';
 
     const ERROR_403 = '403';
     const ERROR_403_TITLE = '403';
-    const ERROR_403_HEADER = 'Доступ запрещён';
-    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_403_HEADER = 'Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰С‘РЅ';
+    const ERROR_403_SUB_HEADER = 'РќРѕ РІС‹ РґРµСЂР¶РёС‚РµСЃСЊ. Р’СЃРµРіРѕ РІР°Рј РґРѕР±СЂРѕРіРѕ, С…РѕСЂРѕС€РµРіРѕ РЅР°СЃС‚СЂРѕРµРЅРёСЏ Рё Р·РґРѕСЂРѕРІСЊСЏ';
 
-    const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
-    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'РќРµСЃРѕРІРјРµСЃС‚РёРјС‹Р№ Р±СЂР°СѓР·РµСЂ';
+    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'РќРѕ РІС‹ РґРµСЂР¶РёС‚РµСЃСЊ. Р’СЃРµРіРѕ РІР°Рј РґРѕР±СЂРѕРіРѕ, С…РѕСЂРѕС€РµРіРѕ РЅР°СЃС‚СЂРѕРµРЅРёСЏ Рё Р·РґРѕСЂРѕРІСЊСЏ';
 
-    const ERROR_GOTO_START = 'Перейти на начальную страницу';
-    const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';
+    const ERROR_GOTO_START = 'РџРµСЂРµР№С‚Рё РЅР° РЅР°С‡Р°Р»СЊРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ';
+    const ERROR_GOTO_START_COMPATIBLE = 'РџРµСЂРµР№С‚Рё РЅР° РЅР°С‡Р°Р»СЊРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РІ СЃС‚Р°СЂРѕРј РґРёР·Р°Р№РЅРµ';
+
+    const A_GOTO_MAIN = "РЎРїРёСЃРѕРє РІРµСЃРѕРІС‹С…";
+    const A_GOTO_MAIN_COMPATIBLE = "РЎРїРёСЃРѕРє РІРµСЃРѕРІС‹С… РІ СЃС‚Р°СЂРѕРј РґРёР·Р°Р№РЅРµ";
+    const A_GOTO_WAC = "РљРѕР»РёС‡РµСЃС‚РІРѕ РґРЅРµР№, РѕС‚СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р±РµР· С‚СЂР°РІРј";
+    const A_GOTO_DATETIME = "Р”Р°С‚Р° Рё РІСЂРµРјСЏ РЅР° РєРѕРјРїСЊСЋС‚РµСЂРµ";
+    const A_GOTO_MYSQL_DATETIME = "Р”Р°С‚Р° Рё РІСЂРµРјСЏ РЅР° СЃРµСЂРІРµСЂРµ";
 }

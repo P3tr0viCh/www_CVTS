@@ -86,7 +86,7 @@ class ResultFilter
     }
 
     /**
-     * Для доменных печей: выводить только "Кокс".
+     * Р”Р»СЏ РґРѕРјРµРЅРЅС‹С… РїРµС‡РµР№: РІС‹РІРѕРґРёС‚СЊ С‚РѕР»СЊРєРѕ "РљРѕРєСЃ".
      *
      * @param bool $onlyChark
      * @return $this
@@ -98,7 +98,7 @@ class ResultFilter
     }
 
     /**
-     * Сортировать по полю bdatetime (иначе по wtime).
+     * РЎРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ РїРѕР»СЋ bdatetime (РёРЅР°С‡Рµ РїРѕ wtime).
      *
      * @param bool $orderByDateTime
      * @return $this
@@ -110,7 +110,7 @@ class ResultFilter
     }
 
     /**
-     * Выводить время изменения рода груза.
+     * Р’С‹РІРѕРґРёС‚СЊ РІСЂРµРјСЏ РёР·РјРµРЅРµРЅРёСЏ СЂРѕРґР° РіСЂСѓР·Р°.
      *
      * @param bool $showCargoDate
      * @return $this
@@ -122,7 +122,7 @@ class ResultFilter
     }
 
     /**
-     * Показывать все поля таблицы.
+     * РџРѕРєР°Р·С‹РІР°С‚СЊ РІСЃРµ РїРѕР»СЏ С‚Р°Р±Р»РёС†С‹.
      *
      * @param bool $full
      * @return $this
@@ -178,7 +178,7 @@ class ResultFilter
     }
 
     /**
-     * Номер вагона или автомобиля.
+     * РќРѕРјРµСЂ РІР°РіРѕРЅР° РёР»Рё Р°РІС‚РѕРјРѕР±РёР»СЏ.
      *
      * @param string $vanNumber
      * @return $this
@@ -198,7 +198,7 @@ class ResultFilter
     }
 
     /**
-     * Род груза.
+     * Р РѕРґ РіСЂСѓР·Р°.
      *
      * @param string $cargoType
      * @return $this
@@ -218,7 +218,7 @@ class ResultFilter
     }
 
     /**
-     * Номер накладной.
+     * РќРѕРјРµСЂ РЅР°РєР»Р°РґРЅРѕР№.
      *
      * @param string $invoiceNum
      * @return $this
@@ -238,7 +238,7 @@ class ResultFilter
     }
 
     /**
-     * Грузополучатель.
+     * Р“СЂСѓР·РѕРїРѕР»СѓС‡Р°С‚РµР»СЊ.
      *
      * @param string $invoiceSupplier
      * @return $this
@@ -258,7 +258,7 @@ class ResultFilter
     }
 
     /**
-     * Грузоотправитель.
+     * Р“СЂСѓР·РѕРѕС‚РїСЂР°РІРёС‚РµР»СЊ.
      *
      * @param string $invoiceRecipient
      * @return $this
@@ -286,7 +286,7 @@ class ResultFilter
     }
 
     /**
-     * Номера весов.
+     * РќРѕРјРµСЂР° РІРµСЃРѕРІ.
      *
      * @param string $scalesFilter
      * @return $this

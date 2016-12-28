@@ -81,8 +81,8 @@ class Columns
     const TARE = 'tare';
     const TARE_NEAR_SIDE = 'tare_b1';
     const TARE_FAR_SIDE = 'tare_b2';
-    const TARE_FIRST_CARRIAGE = 'tare_ñ1';
-    const TARE_SECOND_CARRIAGE = 'tare_ñ2';
+    const TARE_FIRST_CARRIAGE = 'tare_c1';
+    const TARE_SECOND_CARRIAGE = 'tare_c2';
     const TARE_MANUAL = 'tare_t';
     const TARE_DYNAMIC = 'tare_d';
     const TARE_STATIC = 'tare_s';

@@ -128,7 +128,7 @@ function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLin
     }
 
     if ($newDesign) {
-        $class = $subHeader ?
+        $class = $subHeader && !$mainHeader ?
             'mdl-layout__header mdl-layout__header--waterfall' :
             'mdl-layout__header';
 
@@ -158,14 +158,16 @@ function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLin
                 $hidden = $navLink->getHidden() ? ' hidden' : '';
                 $onClick = $navLink->getOnClick();
 
-                echo "<span id='$idIcon' class='material-icons cursor-pointer$hidden' onclick='$onClick'>";
-                echo $navLink->getIcon();
-                echo '</span>' . PHP_EOL;
-                echo S::TAB . S::TAB . S::TAB;
-                echo "<span id='$idText' class='mdl-navigation__link mdl-navigation__link--padding-left cursor-pointer$hidden' onclick='$onClick'>";
-                echo $navLink->getText();
-                echo '</span>' . PHP_EOL;
-            };
+                if (isset($onClick)) {
+                    echo "<span id='$idIcon' class='material-icons cursor-pointer$hidden' onclick='$onClick'>";
+                    echo $navLink->getIcon();
+                    echo '</span>' . PHP_EOL;
+                    echo S::TAB . S::TAB . S::TAB;
+                    echo "<span id='$idText' class='mdl-navigation__link mdl-navigation__link--padding-left cursor-pointer$hidden' onclick='$onClick'>";
+                    echo $navLink->getText();
+                    echo '</span>' . PHP_EOL;
+                }
+            }
 
             echo S::TAB . S::TAB;
             echo '</nav>' . PHP_EOL;
@@ -202,7 +204,9 @@ function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLin
                 $text = $menuItem->getText();
                 $onClick = $menuItem->getOnClick();
 
-                echo "<li disabled id='$id' class='mdl-menu__item' onclick='$onClick'>$text</li>" . PHP_EOL;
+                if (isset($onClick)) {
+                    echo "<li disabled id='$id' class='mdl-menu__item' onclick='$onClick'>$text</li>" . PHP_EOL;
+                }
             }
 
             echo '</ul>' . PHP_EOL . PHP_EOL;
@@ -225,7 +229,7 @@ function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLin
 
         if ($subHeader) {
             echo S::TAB . S::TAB;
-            echo '<h2>';
+            echo $mainHeader ? '<h2 class="main-header">' : '<h2>';
             echo $subHeader;
             echo '</h2>' . PHP_EOL;
         }

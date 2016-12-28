@@ -2,8 +2,8 @@
 
 class MetaInfo
 {
-    const AUTHOR = 'Дураев Константин Петрович aka П3тр0виЧъ';
+    const AUTHOR = 'Р”СѓСЂР°РµРІ РљРѕРЅСЃС‚Р°РЅС‚РёРЅ РџРµС‚СЂРѕРІРёС‡ aka Рџ3С‚СЂ0РІРёР§СЉ';
 
-    const VERSION = '7.0.0';
-    const CREATION = '2016.09.26';
+    const VERSION = '7.0.0 alpha';
+    const CREATION = '2016.12.28';
 }

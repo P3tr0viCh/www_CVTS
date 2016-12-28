@@ -33,6 +33,7 @@ if ($scales < 0) {
     $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 }
 
+$scaleInfo = null;
 $resultMessage = null;
 
 $header = null;
@@ -183,7 +184,7 @@ if (!$resultMessage) {
     }
 
     /**
-     * Êîëîíêà "Ïåðèîä".
+     * ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° "ÐŸÐµÑ€Ð¸Ð¾Ð´".
      */
     if ($newDesign) {
         echo PHP_EOL . S::TAB;
@@ -333,7 +334,7 @@ if (!$resultMessage) {
     }
 
     /**
-     * Ïîëå "Ïîèñê".
+     * ÐŸÐ¾Ð»Ðµ "ÐŸÐ¾Ð¸ÑÐº".
      */
     if ($newDesign) {
         echo S::TAB;
@@ -459,7 +460,7 @@ if (!$resultMessage) {
     }
 
     /**
-     * Ïîëå "Íàñòðîéêè".
+     * ÐŸÐ¾Ð»Ðµ "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸".
      */
     if ($newDesign) {
         echo PHP_EOL . S::TAB . S::TAB;

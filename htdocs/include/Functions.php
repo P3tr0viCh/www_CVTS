@@ -96,8 +96,8 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::BRUTTO_FAR_SIDE:
             case C::BRUTTO_FIRST_CARRIAGE:
             case C::BRUTTO_SECOND_CARRIAGE:
-            case C::SIDE_DIFFERENCE:  // Разница между бортами
-            case C::CARRIAGE_DIFFERENCE:  // Разница между тележками
+            case C::SIDE_DIFFERENCE:  // Р Р°Р·РЅРёС†Р° РјРµР¶РґСѓ Р±РѕСЂС‚Р°РјРё
+            case C::CARRIAGE_DIFFERENCE:  // Р Р°Р·РЅРёС†Р° РјРµР¶РґСѓ С‚РµР»РµР¶РєР°РјРё
             case C::INVOICE_NETTO:
             case C::INVOICE_TARE:
                 return number_format((double)$fieldValue, 2, ",", "");
@@ -217,26 +217,26 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::VERIFIER:
         case C::COMMENT:
 
-        case C::INVOICE_SUPPLIER:    // Грузоотправитель или Номер печи
-        case C::INVOICE_RECIPIENT:   // Грузополучатель  или Получатель
+        case C::INVOICE_SUPPLIER:    // Р“СЂСѓР·РѕРѕС‚РїСЂР°РІРёС‚РµР»СЊ РёР»Рё РќРѕРјРµСЂ РїРµС‡Рё
+        case C::INVOICE_RECIPIENT:   // Р“СЂСѓР·РѕРїРѕР»СѓС‡Р°С‚РµР»СЊ  РёР»Рё РџРѕР»СѓС‡Р°С‚РµР»СЊ
 
-        case C::SIDE_DIFFERENCE:  // Разница между бортами
-        case C::CARRIAGE_DIFFERENCE:  // Разница между тележками
+        case C::SIDE_DIFFERENCE:  // Р Р°Р·РЅРёС†Р° РјРµР¶РґСѓ Р±РѕСЂС‚Р°РјРё
+        case C::CARRIAGE_DIFFERENCE:  // Р Р°Р·РЅРёС†Р° РјРµР¶РґСѓ С‚РµР»РµР¶РєР°РјРё
             return true;
 
-        case C::OVERLOAD:    // Перегруз
-        case C::CARRYING:    // Грузоподъемность
+        case C::OVERLOAD:    // РџРµСЂРµРіСЂСѓР·
+        case C::CARRYING:    // Р“СЂСѓР·РѕРїРѕРґСЉРµРјРЅРѕСЃС‚СЊ
             return
                 $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
                 $resultType == ResultType::COMPARE_DYNAMIC ||
                 $resultType == ResultType::COMPARE_STATIC;
-        case C::DEPART_STATION:     // Станция отправления
-        case C::PURPOSE_STATION:    // Станция назначения
+        case C::DEPART_STATION:     // РЎС‚Р°РЅС†РёСЏ РѕС‚РїСЂР°РІР»РµРЅРёСЏ
+        case C::PURPOSE_STATION:    // РЎС‚Р°РЅС†РёСЏ РЅР°Р·РЅР°С‡РµРЅРёСЏ
             return $scalesInfo->getType() == ScaleType::DEFAULT_TYPE;
 
-        case C::INVOICE_NETTO:      // Нетто по накладной или Чистый вес
-        case C::INVOICE_TARE:       // Тара по накладной  или Тара ПОСЛЕ
-        case C::INVOICE_OVERLOAD:   // Перегруз по накладной или Потери
+        case C::INVOICE_NETTO:      // РќРµС‚С‚Рѕ РїРѕ РЅР°РєР»Р°РґРЅРѕР№ РёР»Рё Р§РёСЃС‚С‹Р№ РІРµСЃ
+        case C::INVOICE_TARE:       // РўР°СЂР° РїРѕ РЅР°РєР»Р°РґРЅРѕР№  РёР»Рё РўР°СЂР° РџРћРЎР›Р•
+        case C::INVOICE_OVERLOAD:   // РџРµСЂРµРіСЂСѓР· РїРѕ РЅР°РєР»Р°РґРЅРѕР№ РёР»Рё РџРѕС‚РµСЂРё
             return
                 ($scalesInfo->getType() == ScaleType::WMR) ||
                 ($scalesInfo->getType() == ScaleType::AUTO);
@@ -606,11 +606,15 @@ function formatExcelData($value)
     } else {
         $value = str_replace("&shy;", "", $value);
         $value = str_replace("&nbsp;", " ", $value);
+
+        // TODO: РїСЂРѕРІРµСЂРёС‚СЊ РІ СЃС‚Р°СЂС‹С… СЌРєСЃРµР»СЏС….
+//        $value = iconv("utf-8", "windows-1251", $value);
+
         return '"' . $value . '"';
     }
 }
 
-// TODO: обновить после смены версии PHP
+// TODO: РѕР±РЅРѕРІРёС‚СЊ РїРѕСЃР»Рµ СЃРјРµРЅС‹ РІРµСЂСЃРёРё PHP
 if (!function_exists('boolval')) {
     /**
      * @param mixed $val
@@ -739,4 +743,17 @@ function getResultHeader($resultType)
 function boolToString($value)
 {
     return isset($value) ? ($value ? "true" : "false") : "null";
+}
+
+/**
+ * Р’С‹РїРѕР»РЅСЏРµС‚ РїРµСЂРµРєРѕРґРёСЂРѕРІРєСѓ СЃС‚СЂРѕРєРё РёР· latin1 РІ UTF-8.
+ *
+ * @param string $s
+ * @return string
+ * @see \Database\Info::CHARSET
+ */
+function latin1ToUtf8($s)
+{
+    $s = mb_convert_encoding($s, 'UTF-8', 'Windows-1251');
+    return $s;
 }

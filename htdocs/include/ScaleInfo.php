@@ -67,7 +67,7 @@ class ScaleInfo
 
                 if ($result->num_rows > 0) {
                     if ($row = $result->fetch_array()) {
-                        $this->place = $row[\Database\Columns::SCALE_PLACE];
+                        $this->place = latin1ToUtf8($row[\Database\Columns::SCALE_PLACE]);
 
                         $staticClass = $row[Database\Columns::SCALE_CLASS_STATIC];
                         $dynamicClass = $row[Database\Columns::SCALE_CLASS_DYNAMIC];

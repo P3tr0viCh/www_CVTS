@@ -1,6 +1,6 @@
 var hasData; // if ($numRows > 0)
 
-// Используется в result.php
+// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ result.php
 //noinspection JSUnusedGlobalSymbols
 function showContent() {
     document.getElementById("divLoading").style.display = "none";
@@ -8,7 +8,7 @@ function showContent() {
 
     document.getElementById("menuMoreList").classList.remove("hidden");
 
-    if (document.forms["formExcel"] != null) {
+    if (document.forms["formExcel"] !== null) {
         document.getElementById("saveIcon").classList.remove("hidden");
         document.getElementById("saveText").classList.remove("hidden");
     }
@@ -57,7 +57,7 @@ function createTextForCopy(copy) {
                     }
                 }
 
-                // Удаление последнего символа табуляции
+                // РЈРґР°Р»РµРЅРёРµ РїРѕСЃР»РµРґРЅРµРіРѕ СЃРёРјРІРѕР»Р° С‚Р°Р±СѓР»СЏС†РёРё
                 textTableHead = textTableHead.slice(0, -1) + '\n';
             }
         case 'tableBody':

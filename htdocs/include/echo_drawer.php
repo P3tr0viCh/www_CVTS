@@ -32,6 +32,7 @@ function echoDrawer($newDesign, $mysqli)
             ->build();
 
         echo S::TAB . S::TAB;
+        /** @noinspection JSUnusedGlobalSymbols */
         echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
         echo S::DRAWER_START_PAGE;
         echo '</a>' . PHP_EOL;
@@ -46,8 +47,9 @@ function echoDrawer($newDesign, $mysqli)
                 ->build();
 
             echo S::TAB . S::TAB;
+            /** @noinspection JSUnusedGlobalSymbols */
             echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
-            echo $row[Database\Columns::SCALE_PLACE];
+            echo latin1ToUtf8($row[Database\Columns::SCALE_PLACE]);
             echo '</a>' . PHP_EOL;
         }
 
@@ -58,6 +60,7 @@ function echoDrawer($newDesign, $mysqli)
             ->build();
 
         echo S::TAB . S::TAB;
+        /** @noinspection JSUnusedGlobalSymbols */
         echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
         echo S::DRAWER_ALL_TRAIN_SCALES;
         echo '</a>' . PHP_EOL;

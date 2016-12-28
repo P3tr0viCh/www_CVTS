@@ -14,7 +14,7 @@ class Builder
     private $params;
 
     /**
-     * Создание нового экземпляра Builder.
+     * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЌРєР·РµРјРїР»СЏСЂР° Builder.
      *
      * @return Builder
      */
@@ -24,7 +24,7 @@ class Builder
     }
 
     /**
-     * Очистка.
+     * РћС‡РёСЃС‚РєР°.
      *
      * @return $this
      */

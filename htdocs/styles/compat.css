@@ -20,6 +20,11 @@ h2, h3, h4, h5 {
     font-weight: bold;
 }
 
+h2.main-header {
+    font-size: 14pt;
+    text-align: center;
+}
+
 h6 {
     font-size: 8pt;
 }

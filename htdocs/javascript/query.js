@@ -1,4 +1,4 @@
-// Используется в query.php
+// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ query.php
 
 var inputs = [];
 
@@ -35,7 +35,7 @@ function setDates(value) {
             break;
         case "startCurrentWeek":
             var day = currDate.getDay();
-            day == 0 ? day = 6 : day--;
+            day === 0 ? day = 6 : day--;
             currDate.setDate(currDate.getDate() - day);
             values[0] = currDate.getDate();
             values[1] = currDate.getMonth() + 1;

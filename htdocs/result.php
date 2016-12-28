@@ -203,7 +203,7 @@ if ($mysqli) {
         if (!$resultMessage) {
             $header = $scaleInfo->getHeader();
 
-            $excelData = $header . S::EXCEL_EOL;
+            $excelData = "\xEF\xBB\xBF" . $header . S::EXCEL_EOL;
 
             $title = $scaleInfo->getPlace();
 
@@ -583,7 +583,9 @@ if (!$resultMessage) {
                         continue;
                     }
 
-                    $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $row[$fieldNum],
+                    $field = latin1ToUtf8($row[$fieldNum]);
+
+                    $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field,
                         $filter->isFull());
 
                     if (($fieldsInfo[$fieldNum]->name == Database\Columns::BRUTTO) &&

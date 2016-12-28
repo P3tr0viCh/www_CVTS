@@ -1,24 +1,24 @@
 <?php
 /**
- * Функции, создающие шаблон страницы.
+ * Р¤СѓРЅРєС†РёРё, СЃРѕР·РґР°СЋС‰РёРµ С€Р°Р±Р»РѕРЅ СЃС‚СЂР°РЅРёС†С‹.
  *
- * Использование:
- * echoStartPage -- начало страницы.
- *     echoHead -- вывод заголовка
- *     echoUseScripts -- подключение скриптов.
- *     echoStartBody -- начало тела страницы.
- *         echoHeader -- вывод хизера (файл {@link [echo_header.php]}).
- *         echoDrawer -- вывод главного меню (файл {@link [echo_drawer.php]}).
- *         echoStartMain -- начало главного блока.
- *             echoStartContent -- начало контента.
- *                 Контент.
- *             echoEndContent -- конец контента.
- *             echoFooter -- вывод футтера (файл {@link [echo_footer.php]}).
- *         echoEndMain -- конец главного блока.
+ * РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ:
+ * echoStartPage -- РЅР°С‡Р°Р»Рѕ СЃС‚СЂР°РЅРёС†С‹.
+ *     echoHead -- РІС‹РІРѕРґ Р·Р°РіРѕР»РѕРІРєР°
+ *     echoUseScripts -- РїРѕРґРєР»СЋС‡РµРЅРёРµ СЃРєСЂРёРїС‚РѕРІ.
+ *     echoStartBody -- РЅР°С‡Р°Р»Рѕ С‚РµР»Р° СЃС‚СЂР°РЅРёС†С‹.
+ *         echoHeader -- РІС‹РІРѕРґ С…РёР·РµСЂР° (С„Р°Р№Р» {@link [echo_header.php]}).
+ *         echoDrawer -- РІС‹РІРѕРґ РіР»Р°РІРЅРѕРіРѕ РјРµРЅСЋ (С„Р°Р№Р» {@link [echo_drawer.php]}).
+ *         echoStartMain -- РЅР°С‡Р°Р»Рѕ РіР»Р°РІРЅРѕРіРѕ Р±Р»РѕРєР°.
+ *             echoStartContent -- РЅР°С‡Р°Р»Рѕ РєРѕРЅС‚РµРЅС‚Р°.
+ *                 РљРѕРЅС‚РµРЅС‚.
+ *             echoEndContent -- РєРѕРЅРµС† РєРѕРЅС‚РµРЅС‚Р°.
+ *             echoFooter -- РІС‹РІРѕРґ С„СѓС‚С‚РµСЂР° (С„Р°Р№Р» {@link [echo_footer.php]}).
+ *         echoEndMain -- РєРѕРЅРµС† РіР»Р°РІРЅРѕРіРѕ Р±Р»РѕРєР°.
  *     echoEndBody.
  * echoEndPage.
  *
- * Если echoFooter использовать после echoEndMain, футтер будет всегда внизу окна, иначе в конце контента.
+ * Р•СЃР»Рё echoFooter РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїРѕСЃР»Рµ echoEndMain, С„СѓС‚С‚РµСЂ Р±СѓРґРµС‚ РІСЃРµРіРґР° РІРЅРёР·Сѓ РѕРєРЅР°, РёРЅР°С‡Рµ РІ РєРѕРЅС†Рµ РєРѕРЅС‚РµРЅС‚Р°.
  */
 
 require_once "MetaInfo.php";
@@ -31,6 +31,17 @@ function echoStartPage()
     echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ' .
         '"http://www.w3.org/TR/html4/loose.dtd">' . PHP_EOL . PHP_EOL;
     echo '<html>' . PHP_EOL;
+}
+
+/**
+ * @param string $name
+ * @param string $value
+ * @param string $content
+ */
+function echoMeta($name, $value, $content)
+{
+    echo S::TAB;
+    echo "<meta $name=\"$value\" content=\"$content\">" . PHP_EOL;
 }
 
 /**
@@ -49,19 +60,18 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
         echoTitle($title);
     }
 
-    echo S::TAB;
-    echo '<meta http-equiv="content-type" content="text/html; charset=windows-1251">' . PHP_EOL;
-    echo S::TAB;
-    echo '<meta http-equiv="cache-control" content="no-cache">' . PHP_EOL;
-    echo S::TAB;
-    echo '<meta name="google" content="notranslate">' . PHP_EOL . PHP_EOL;
+    echoMeta("http-equiv", "Content-Type", "text/html; charset=utf-8");
+    echoMeta("http-equiv", "Content-Language", "ru");
+    echoMeta("http-equiv", "Cache-Control", "no-cache");
+    echo PHP_EOL;
 
-    echo S::TAB;
-    echo '<meta name="author" content="' . MetaInfo::AUTHOR . '">' . PHP_EOL;
-    echo S::TAB;
-    echo '<meta name="version" content="' . MetaInfo::VERSION . '">' . PHP_EOL;
-    echo S::TAB;
-    echo '<meta name="creation" content="' . MetaInfo::CREATION . '">' . PHP_EOL . PHP_EOL;
+    echoMeta("name", "google", "notranslate");
+    echo PHP_EOL;
+
+    echoMeta("name", "author", MetaInfo::AUTHOR);
+    echoMeta("name", "version", MetaInfo::VERSION);
+    echoMeta("name", "creation", MetaInfo::CREATION);
+    echo PHP_EOL;
 
     echo S::TAB;
     echo '<link rel="icon" href="/images/logo.png" type="image/png">' . PHP_EOL;
@@ -194,10 +204,10 @@ function echoStartMain($newDesign)
 }
 
 /**
- * Начало контента.
+ * РќР°С‡Р°Р»Рѕ РєРѕРЅС‚РµРЅС‚Р°.
  *
- * Если параметр $hidden равен true, контент не отображается.
- * Необходимо отобразить его после полной загрузки страницы.
+ * Р•СЃР»Рё РїР°СЂР°РјРµС‚СЂ $hidden СЂР°РІРµРЅ true, РєРѕРЅС‚РµРЅС‚ РЅРµ РѕС‚РѕР±СЂР°Р¶Р°РµС‚СЃСЏ.
+ * РќРµРѕР±С…РѕРґРёРјРѕ РѕС‚РѕР±СЂР°Р·РёС‚СЊ РµРіРѕ РїРѕСЃР»Рµ РїРѕР»РЅРѕР№ Р·Р°РіСЂСѓР·РєРё СЃС‚СЂР°РЅРёС†С‹.
  *
  * @param bool $hidden
  */
@@ -287,7 +297,6 @@ function echoEndBody($newDesign, $endScript = null)
         echo PHP_EOL;
 
         if (is_string($endScript)) {
-            echo PHP_EOL;
             echo S::TAB;
             echo $endScript . PHP_EOL;
         } elseif (is_array($endScript)) {

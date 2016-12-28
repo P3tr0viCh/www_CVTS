@@ -78,7 +78,7 @@ if ($mysqli) {
             $hrefBuilder = \HrefBuilder\Builder::getInstance();
 
             while ($row = $result->fetch_array()) {
-                // 1981 -- номер весов для отладки
+                // 1981 -- РЅРѕРјРµСЂ РІРµСЃРѕРІ РґР»СЏ РѕС‚Р»Р°РґРєРё
                 if ($row[Database\Columns::SCALE_NUM] == 1981) continue;
 
 //            if ($row[Database\Columns::SCALE_NUM] > 50) continue;
@@ -94,7 +94,8 @@ if ($mysqli) {
                     $newDesign ? "location.href=\"$href\"" : null);
 
                 for ($i = 0; $i < $result->field_count; $i++) {
-                    $field = $row[$i];
+                    $field = latin1ToUtf8($row[$i]);
+
                     $column = $result->fetch_field_direct($i)->name;
 
                     $class = null;
