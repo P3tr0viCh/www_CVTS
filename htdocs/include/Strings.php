@@ -201,15 +201,14 @@ class Strings
     const ERROR_JS_DISABLED = 'JavaScript отключен';
     const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';
 
-    const ERROR_404 = '404';
-    const ERROR_404_TITLE = '404';
+    const ERROR_403_HEADER = 'Доступ запрещён';
+    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+
     const ERROR_404_HEADER = 'Такой страницы нет';
     const ERROR_404_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
 
-    const ERROR_403 = '403';
-    const ERROR_403_TITLE = '403';
-    const ERROR_403_HEADER = 'Доступ запрещён';
-    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
+    const ERROR_500_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
 
     const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
     const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
