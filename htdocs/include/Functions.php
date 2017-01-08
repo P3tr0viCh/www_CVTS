@@ -614,7 +614,7 @@ function formatExcelData($value)
     }
 }
 
-// TODO: обновить после смены версии PHP
+// TODO: обновить после смены версии PHP 5 >= 5.5.0, PHP 7
 if (!function_exists('boolval')) {
     /**
      * @param mixed $val
@@ -754,6 +754,6 @@ function boolToString($value)
  */
 function latin1ToUtf8($s)
 {
-    $s = mb_convert_encoding($s, 'UTF-8', 'Windows-1251');
+    $s = iconv('Windows-1251', 'UTF-8', $s);
     return $s;
 }

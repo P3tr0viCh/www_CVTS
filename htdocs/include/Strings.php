@@ -24,7 +24,7 @@ class Strings
     const DRAWER_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
 
     const FOOTER_LEFT_SECTION = 'МЕТАЛЛОИНВЕСТ, Уральская Сталь';
-    const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович, ЦВТС, 2004-2016';
+    const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович, ЦВТС, 2004-2017';
 
     const ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
 
@@ -188,6 +188,7 @@ class Strings
 
     const TEXT_APACHE_VERSION = 'Версия Apache: %s';
     const TEXT_PHP_VERSION = 'Версия PHP: %s';
+    const TEXT_SITE_VERSION = 'Версия сайта: %s от %s';
 
     const ERROR_ERROR = 'Ошибка';
     const ERROR_MYSQL_CONNECTION = 'Нет подключения к серверу MySQL';

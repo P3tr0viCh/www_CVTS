@@ -3,8 +3,9 @@ require_once "include/Strings.php";
 
 require_once "include/Functions.php";
 require_once "include/CheckBrowser.php";
-require_once "include/echo_html_page.php";
+require_once "include/MetaInfo.php";
 
+require_once "include/echo_html_page.php";
 require_once "include/echo_header.php";
 require_once "include/echo_footer.php";
 
@@ -61,6 +62,10 @@ echo "<span>" . sprintf(S::TEXT_APACHE_VERSION, $apache_version) . "</span>" . P
 echo "<br>" . PHP_EOL;
 
 echo "<span>" . sprintf(S::TEXT_PHP_VERSION, phpversion()) . "</span>" . PHP_EOL;
+
+echo "<br><br>" . PHP_EOL;
+
+echo "<span>" . sprintf(S::TEXT_SITE_VERSION, MetaInfo::VERSION, MetaInfo::CREATION) . "</span>" . PHP_EOL;
 
 echoEndContent();
 

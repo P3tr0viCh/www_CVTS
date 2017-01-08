@@ -2,15 +2,11 @@ ErrorDocument 403 /error.php?403
 ErrorDocument 404 /error.php?404
 ErrorDocument 500 /error.php?500
 
-<Files "error.php">
-    Allow from all
-</Files>
-
-#TODO
-<Files "common.css">
-    Allow from all
-</Files>
-
-<Files "new_design.css">
-    Allow from all
-</Files>
+<FilesMatch "error\.php|common\.css|new_design\.css">
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+        Allow from all
+    </IfVersion>
+</FilesMatch>
