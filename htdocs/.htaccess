@@ -1,12 +1,14 @@
+ErrorDocument 401 /error.php?401
 ErrorDocument 403 /error.php?403
 ErrorDocument 404 /error.php?404
 ErrorDocument 500 /error.php?500
 
-<FilesMatch "error\.php|common\.css|new_design\.css">
+<FilesMatch "^(error\.php|error(_common|_compat)?\.css)$">
     <IfVersion >= 2.4>
         Require all granted
     </IfVersion>
     <IfVersion < 2.4>
+        Satisfy Any
         Allow from all
     </IfVersion>
 </FilesMatch>

@@ -202,6 +202,9 @@ class Strings
     const ERROR_JS_DISABLED = 'JavaScript отключен';
     const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';
 
+    const ERROR_401_HEADER = 'Требуется аутентификация';
+    const ERROR_401_SUB_HEADER = 'Для доступа к данному ресурсу требуется указать имя пользователя и пароль';
+
     const ERROR_403_HEADER = 'Доступ запрещён';
     const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
 

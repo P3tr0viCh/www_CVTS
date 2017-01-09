@@ -15,6 +15,10 @@ $errorNum = (isset($_SERVER["QUERY_STRING"]) && ctype_digit($_SERVER["QUERY_STRI
     (int)$_SERVER["QUERY_STRING"] : 500;
 
 switch ($errorNum) {
+    case 401:
+        $errorHeader = S::ERROR_401_HEADER;
+        $errorSubHeader = S::ERROR_401_SUB_HEADER;
+        break;
     case 403:
         $errorHeader = S::ERROR_403_HEADER;
         $errorSubHeader = S::ERROR_403_SUB_HEADER;
@@ -34,7 +38,15 @@ echoStartPage();
 
 CheckBrowser::check($newDesign, false);
 
-echoHead($newDesign, $errorNum);
+$styles[] = "/styles/error_common.css";
+if ($newDesign) {
+    $styles[] = "/styles/error.css";
+    $styles[] = "/fonts/roboto/roboto.css";
+} else {
+    $styles[] = "/styles/error_compat.css";
+}
+
+echoHead($newDesign, $errorNum, $styles, null, null, false);
 
 echoStartBody($newDesign);
 

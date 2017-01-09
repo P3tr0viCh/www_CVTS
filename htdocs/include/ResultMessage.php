@@ -49,7 +49,7 @@ function connectionError($mysqli)
 {
     return new ResultMessage(
         Strings::ERROR_MYSQL_CONNECTION,
-        sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->connect_errno, $mysqli->connect_error));
+        sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->connect_errno, latin1ToUtf8($mysqli->connect_error)));
 }
 
 /**
@@ -64,5 +64,5 @@ function queryError($mysqli)
         // TODO:  == 1?
         $mysqli->errno == 1 ?
             Strings::ERROR_MYSQL_MAX_LIMIT :
-            sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->errno, $mysqli->error));
+            sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->errno, latin1ToUtf8($mysqli->error)));
 }

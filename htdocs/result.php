@@ -709,21 +709,22 @@ if (!$resultMessage) {
 
             $rawLength = strlen($excelData);
 
-            $timeStartZip = microtime(true);
+            $zipTime = microtime(true);
 
             $excelData = base64_encode(gzdeflate($excelData));
 
             $zipLength = strlen($excelData);
 
-            $zipTime = (microtime(true) - $timeStartZip);
+            $zipTime = (microtime(true) - $zipTime);
 
             echoHidden(ParamName::EXCEL_DATA, $excelData);
 
             if (!$newDesign) {
                 echo S::TAB;
-                echo "<button class='position--top-right' name='submit_excel'>";
-                echo S::NAV_LINK_SAVE_OLD;
-                echo "</button>";
+                $buttonClass ="input-button submit position--top-right";
+                $name = "submit_excel";
+                $text = S::NAV_LINK_SAVE_OLD;
+                echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";
             }
 
             echo PHP_EOL . S::TAB;

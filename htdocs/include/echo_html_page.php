@@ -50,8 +50,9 @@ function echoMeta($name, $value, $content)
  * @param null|string|string[] $styles
  * @param null|string|string[] $javaScripts
  * @param null|string|string[] $oldIEStyles
+ * @param bool $default Вывод стандартных стилей и скриптов
  */
-function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null, $oldIEStyles = null)
+function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null, $oldIEStyles = null, $default = true)
 {
     echo '<head>' . PHP_EOL;
 
@@ -73,45 +74,50 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
     echoMeta("name", "creation", MetaInfo::CREATION);
     echo PHP_EOL;
 
-    echo S::TAB;
-    echo '<link rel="icon" href="/images/logo.png" type="image/png">' . PHP_EOL;
+    if ($default) {
+        echo S::TAB;
+        echo '<link rel="icon" href="/images/logo.png" type="image/png">' . PHP_EOL;
 
-    if ($newDesign) {
-        echo S::TAB;
-        echo '<link rel="icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="shortcut icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
-    } else {
-        echo S::TAB;
-        echo '<link rel="icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
+        if ($newDesign) {
+            echo S::TAB;
+            echo '<link rel="icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="shortcut icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
+        } else {
+            echo S::TAB;
+            echo '<link rel="icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
+        }
+
+        echo PHP_EOL;
     }
 
-    echo PHP_EOL;
-    echo S::TAB;
-    echo '<link rel="stylesheet" href="/styles/common.css">' . PHP_EOL;
+    if ($default) {
+        echo S::TAB;
+        echo '<link rel="stylesheet" href="/styles/common.css">' . PHP_EOL;
 
-    if ($newDesign) {
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/mdl/material.min.css">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/styles/new_design.css">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/styles/scripts_enabled.css">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/fonts/roboto/roboto.css">' . PHP_EOL;
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/materialicons/materialicons.css">' . PHP_EOL;
-    } else {
-        echo S::TAB;
-        echo '<link rel="stylesheet" href="/styles/compat.css">' . PHP_EOL;
-        echo S::TAB;
-        echo "<!--[if lt IE 9]>" . PHP_EOL;
-        echo S::TAB . S::TAB;
-        echo '<link rel="stylesheet" href="/styles/compat_ie.css">' . PHP_EOL;
-        echo S::TAB;
-        echo "<![endif]-->" . PHP_EOL;
+        if ($newDesign) {
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/mdl/material.min.css">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/styles/new_design.css">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/styles/scripts_enabled.css">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/fonts/roboto/roboto.css">' . PHP_EOL;
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/materialicons/materialicons.css">' . PHP_EOL;
+        } else {
+            echo S::TAB;
+            echo '<link rel="stylesheet" href="/styles/compat.css">' . PHP_EOL;
+            echo S::TAB;
+            echo "<!--[if lt IE 9]>" . PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo '<link rel="stylesheet" href="/styles/compat_ie.css">' . PHP_EOL;
+            echo S::TAB;
+            echo "<![endif]-->" . PHP_EOL;
+        }
     }
 
     if ($styles) {
@@ -142,21 +148,23 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
         echo "<![endif]-->" . PHP_EOL;
     }
 
-    echo PHP_EOL;
-    if ($newDesign) {
-        echo S::TAB;
-        echo '<script src="/mdl/material.min.js" type="text/javascript"></script>' . PHP_EOL;
-    } else {
-        echo S::TAB;
-        echo '<script type="text/javascript">';
+    if ($default) {
         echo PHP_EOL;
-        echo S::TAB . S::TAB;
-        echo "document.write('";
-        echo '<link rel="stylesheet" href="/styles/scripts_enabled.css" type="text/css">';
-        echo "');" . PHP_EOL;
-        echo S::TAB;
-        echo '</script>';
-        echo PHP_EOL;
+        if ($newDesign) {
+            echo S::TAB;
+            echo '<script src="/mdl/material.min.js" type="text/javascript"></script>' . PHP_EOL;
+        } else {
+            echo S::TAB;
+            echo '<script type="text/javascript">';
+            echo PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo "document.write('";
+            echo '<link rel="stylesheet" href="/styles/scripts_enabled.css" type="text/css">';
+            echo "');" . PHP_EOL;
+            echo S::TAB;
+            echo '</script>';
+            echo PHP_EOL;
+        }
     }
 
     if ($javaScripts) {
