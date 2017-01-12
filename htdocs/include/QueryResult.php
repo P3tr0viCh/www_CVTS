@@ -298,7 +298,8 @@ class QueryResult extends QueryBase
         $this->builder
             ->where($this->scaleType == ScaleType::AUTO ?
                 C::AUTO_NUMBER :
-                C::VAN_NUMBER, B::COMPARISON_LIKE, $this->filter->getVanNumber());
+                C::VAN_NUMBER, B::COMPARISON_LIKE,
+                utf8ToLatin1($this->filter->getVanNumber()));
 
         switch ($this->resultType) {
             case ResultType::TRAIN_DYNAMIC_ONE:
@@ -308,10 +309,14 @@ class QueryResult extends QueryBase
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
                 $this->builder
-                    ->where(C::CARGO_TYPE, B::COMPARISON_LIKE, $this->filter->getCargoType())
-                    ->where(C::INVOICE_NUMBER, B::COMPARISON_LIKE, $this->filter->getInvoiceNum())
-                    ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE, $this->filter->getInvoiceSupplier())
-                    ->where(C::INVOICE_RECIPIENT, B::COMPARISON_LIKE, $this->filter->getInvoiceRecipient());
+                    ->where(C::CARGO_TYPE, B::COMPARISON_LIKE,
+                        utf8ToLatin1($this->filter->getCargoType()))
+                    ->where(C::INVOICE_NUMBER, B::COMPARISON_LIKE,
+                        utf8ToLatin1($this->filter->getInvoiceNum()))
+                    ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE,
+                        utf8ToLatin1($this->filter->getInvoiceSupplier()))
+                    ->where(C::INVOICE_RECIPIENT, B::COMPARISON_LIKE,
+                        utf8ToLatin1($this->filter->getInvoiceRecipient()));
         }
 
         $this->builder->where(C::SCALE_NUM, B::COMPARISON_IN, $this->filter->getScalesFilter());
@@ -320,7 +325,8 @@ class QueryResult extends QueryBase
             case ResultType::DP:
             case ResultType::DP_SUM:
                 if ($this->filter->isOnlyChark()) {
-                    $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL, 'Кокс');
+                    $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL,
+                        utf8ToLatin1('Кокс'));
                 }
         }
 

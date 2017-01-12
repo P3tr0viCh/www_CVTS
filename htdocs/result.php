@@ -1,4 +1,6 @@
 <?php
+const DEBUG_SHOW_QUERY = false;
+
 $timeStart = microtime(true);
 
 require_once "include/Constants.php";
@@ -380,7 +382,9 @@ if (!$resultMessage) {
 
     $query = $queryResult->getQuery();
 
-//    echo $query . "<br>";
+    if (DEBUG_SHOW_QUERY) {
+        echo latin1ToUtf8($query) . "<br>";
+    }
 
     $result = $mysqli->query($query);
 
@@ -721,7 +725,7 @@ if (!$resultMessage) {
 
             if (!$newDesign) {
                 echo S::TAB;
-                $buttonClass ="input-button submit position--top-right";
+                $buttonClass = "input-button submit position--top-right";
                 $name = "submit_excel";
                 $text = S::NAV_LINK_SAVE_OLD;
                 echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";

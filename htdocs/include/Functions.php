@@ -50,7 +50,7 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 
 function formatFieldValue($fieldName, $fieldValue, $full)
 {
-    if (!empty($fieldValue)) {
+    if ($fieldValue != "") {
         switch ($fieldName) {
             case C::DATETIME:
             case C::DATETIME_END:
@@ -754,6 +754,13 @@ function boolToString($value)
  */
 function latin1ToUtf8($s)
 {
+    if ($s == null) return null;
     $s = iconv('Windows-1251', 'UTF-8', $s);
+    return $s;
+}
+
+function utf8ToLatin1($s) {
+    if ($s == null) return null;
+    $s = iconv('UTF-8', 'Windows-1251', $s);
     return $s;
 }

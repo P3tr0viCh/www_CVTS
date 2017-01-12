@@ -33,20 +33,20 @@ class ResultFilter
 
     public function fromPOSTParams()
     {
-        $this->vanNumber = getPOSTParam(ParamName::VAN_NUMBER);
-        $this->cargoType = getPOSTParam(ParamName::CARGO_TYPE);
-        $this->invoiceNum = getPOSTParam(ParamName::INVOICE_NUM);
-        $this->invoiceSupplier = getPOSTParam(ParamName::INVOICE_SUPPLIER);
-        $this->invoiceRecipient = getPOSTParam(ParamName::INVOICE_RECIPIENT);
-        $this->onlyChark = getPOSTParam(ParamName::ONLY_CHARK);
+        $this->setVanNumber(getPOSTParam(ParamName::VAN_NUMBER));
+        $this->setCargoType(getPOSTParam(ParamName::CARGO_TYPE));
+        $this->setInvoiceNum(getPOSTParam(ParamName::INVOICE_NUM));
+        $this->setInvoiceSupplier(getPOSTParam(ParamName::INVOICE_SUPPLIER));
+        $this->setInvoiceRecipient(getPOSTParam(ParamName::INVOICE_RECIPIENT));
+        $this->setOnlyChark(getPOSTParam(ParamName::ONLY_CHARK));
 
-        $this->scalesFilter = getPOSTParam(ParamName::SCALES);
+        $this->setScalesFilter(getPOSTParam(ParamName::SCALES));
 
-        $this->full = getPOSTParam(ParamName::ALL_FIELDS);
-        $this->showCargoDate = getPOSTParam(ParamName::SHOW_CARGO_DATE);
-        $this->orderByDateTime = getPOSTParam(ParamName::ORDER_BY_DATETIME);
-        $this->compareForward = getPOSTParam(ParamName::COMPARE_FORWARD);
-        $this->compareByBrutto = getPOSTParam(ParamName::COMPARE_BY_BRUTTO);
+        $this->setFull(getPOSTParam(ParamName::ALL_FIELDS));
+        $this->setShowCargoDate(getPOSTParam(ParamName::SHOW_CARGO_DATE));
+        $this->setOrderByDateTime(getPOSTParam(ParamName::ORDER_BY_DATETIME));
+        $this->setCompareForward(getPOSTParam(ParamName::COMPARE_FORWARD));
+        $this->setCompareByBrutto(getPOSTParam(ParamName::COMPARE_BY_BRUTTO));
     }
 
     /**
