@@ -50,7 +50,7 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 
 function formatFieldValue($fieldName, $fieldValue, $full)
 {
-    if ($fieldValue != "") {
+    if ($fieldValue !== "") {
         switch ($fieldName) {
             case C::DATETIME:
             case C::DATETIME_END:

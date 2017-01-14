@@ -9,6 +9,9 @@ class ResultFilter
     private $dateTimeStart;
     private $dateTimeEnd;
 
+    private $trainUnixTime;
+    private $trainDateTime;
+
     private $vanNumber;
     private $cargoType;
     private $invoiceNum;
@@ -29,24 +32,6 @@ class ResultFilter
     public static function getInstance()
     {
         return new self();
-    }
-
-    public function fromPOSTParams()
-    {
-        $this->setVanNumber(getPOSTParam(ParamName::VAN_NUMBER));
-        $this->setCargoType(getPOSTParam(ParamName::CARGO_TYPE));
-        $this->setInvoiceNum(getPOSTParam(ParamName::INVOICE_NUM));
-        $this->setInvoiceSupplier(getPOSTParam(ParamName::INVOICE_SUPPLIER));
-        $this->setInvoiceRecipient(getPOSTParam(ParamName::INVOICE_RECIPIENT));
-        $this->setOnlyChark(getPOSTParam(ParamName::ONLY_CHARK));
-
-        $this->setScalesFilter(getPOSTParam(ParamName::SCALES));
-
-        $this->setFull(getPOSTParam(ParamName::ALL_FIELDS));
-        $this->setShowCargoDate(getPOSTParam(ParamName::SHOW_CARGO_DATE));
-        $this->setOrderByDateTime(getPOSTParam(ParamName::ORDER_BY_DATETIME));
-        $this->setCompareForward(getPOSTParam(ParamName::COMPARE_FORWARD));
-        $this->setCompareByBrutto(getPOSTParam(ParamName::COMPARE_BY_BRUTTO));
     }
 
     /**
@@ -354,6 +339,42 @@ class ResultFilter
     public function setCompareByBrutto($compareByBrutto)
     {
         $this->compareByBrutto = (bool)$compareByBrutto;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrainUnixTime()
+    {
+        return $this->trainUnixTime;
+    }
+
+    /**
+     * @param int $trainUnixTime
+     * @return $this
+     */
+    public function setTrainUnixTime($trainUnixTime)
+    {
+        $this->trainUnixTime = $trainUnixTime;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrainDateTime()
+    {
+        return $this->trainDateTime;
+    }
+
+    /**
+     * @param mixed $trainDateTime
+     * @return $this
+     */
+    public function setTrainDateTime($trainDateTime)
+    {
+        $this->trainDateTime = $trainDateTime;
         return $this;
     }
 }

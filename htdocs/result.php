@@ -41,8 +41,6 @@ $newDesign = isNewDesign();
 
 $reportType = getParamGETAsInt(ParamName::REPORT_TYPE, ReportType::TYPE_DEFAULT);
 
-$trainDateTime = null;
-
 $dtStartDay = null;
 $dtStartMonth = null;
 $dtStartYear = null;
@@ -65,7 +63,19 @@ switch ($reportType) {
         $scaleNum = getPOSTParam(ParamName::SCALE_NUM);
         $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
 
-        $filter->fromPOSTParams();
+        $filter
+            ->setVanNumber(getPOSTParam(ParamName::VAN_NUMBER))
+            ->setCargoType(getPOSTParam(ParamName::CARGO_TYPE))
+            ->setInvoiceNum(getPOSTParam(ParamName::INVOICE_NUM))
+            ->setInvoiceSupplier(getPOSTParam(ParamName::INVOICE_SUPPLIER))
+            ->setInvoiceRecipient(getPOSTParam(ParamName::INVOICE_RECIPIENT))
+            ->setOnlyChark(getPOSTParam(ParamName::ONLY_CHARK))
+            ->setScalesFilter(getPOSTParam(ParamName::SCALES))
+            ->setFull(getPOSTParam(ParamName::ALL_FIELDS))
+            ->setShowCargoDate(getPOSTParam(ParamName::SHOW_CARGO_DATE))
+            ->setOrderByDateTime(getPOSTParam(ParamName::ORDER_BY_DATETIME))
+            ->setCompareForward(getPOSTParam(ParamName::COMPARE_FORWARD))
+            ->setCompareByBrutto(getPOSTParam(ParamName::COMPARE_BY_BRUTTO));
 
         $resultType = getPOSTParam(ParamName::RESULT_TYPE);
 
@@ -142,9 +152,9 @@ switch ($reportType) {
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
-        $filter->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false));
-
-        $filter->setCargoType(getParamGETAsString(ParamName::CARGO_TYPE));
+        $filter
+            ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
+            ->setCargoType((getParamGETAsString(ParamName::CARGO_TYPE)));
 
         $dateTimeStart = getParamGETAsInt(ParamName::DATETIME_START);
         $dateTimeEnd = getParamGETAsInt(ParamName::DATETIME_END);
@@ -155,11 +165,12 @@ switch ($reportType) {
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
-        $filter->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false));
-        $filter->setTrainNum(getParamGETAsInt(ParamName::TRAIN_NUM));
+        $filter
+            ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
+            ->setTrainNum(getParamGETAsInt(ParamName::TRAIN_NUM))
 
-        $dateTimeStart = getParamGETAsInt(ParamName::TRAIN_UNIX_TIME);
-        $trainDateTime = getParamGETAsInt(ParamName::TRAIN_DATETIME);
+        ->setTrainUnixTime(getParamGETAsInt(ParamName::TRAIN_UNIX_TIME))
+        ->setTrainDateTime(getParamGETAsInt(ParamName::TRAIN_DATETIME));
 
         break;
     default:
@@ -250,7 +261,8 @@ if ($mysqli) {
             $subHeader = getResultHeader($resultType);
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
-                $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader, formatDateTime($trainDateTime));
+                $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
+                    formatDateTime($filter->getTrainDateTime()));
             } else {
                 if ($dateTimeStart && $dateTimeEnd) {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM_TO, $subHeader,
@@ -560,7 +572,7 @@ if (!$resultMessage) {
                         ->build();
                 } elseif (isResultTypeCargoList($resultType)) {
                     $href = $hrefBuilder
-                        ->setParam(ParamName::CARGO_TYPE, $row[Database\Columns::CARGO_TYPE])
+                        ->setParam(ParamName::CARGO_TYPE, latin1ToUtf8($row[Database\Columns::CARGO_TYPE]))
                         ->build();
                 }
 

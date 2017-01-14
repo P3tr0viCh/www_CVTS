@@ -331,6 +331,13 @@ class QueryResult extends QueryBase
         }
 
         switch ($this->resultType) {
+            case ResultType::TRAIN_DYNAMIC_ONE:
+                $this->builder
+                    ->where(C::TRAIN_NUM, B::COMPARISON_EQUAL,
+                        $this->filter->getTrainNum())
+                    ->where(C::UNIX_TIME, B::COMPARISON_EQUAL,
+                        $this->filter->getTrainUnixTime());
+                break;
             case ResultType::CARGO_LIST_AUTO:
             case ResultType::CARGO_LIST_DYNAMIC:
             case ResultType::CARGO_LIST_STATIC:
