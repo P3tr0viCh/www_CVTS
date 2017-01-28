@@ -23,21 +23,18 @@ echoStartPage();
 
 CheckBrowser::check($newDesign, true);
 
-echoHead($newDesign, null, null, array("/javascript/footer.js", "/javascript/common.js", "/javascript/query.js"));
-
-echoStartBody($newDesign);
-
 $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
 if ($scales < 0) {
     $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 }
 
+$title = S::ERROR_TITLE;
+
 $scaleInfo = null;
 $resultMessage = null;
 
 $header = null;
-$title = null;
 $navLinks = null;
 
 $mysqli = MySQLConnection::getInstance();
@@ -65,7 +62,9 @@ if ($mysqli) {
     $resultMessage = mysqlConnectionFileError();
 }
 
-echoTitle($title);
+echoHead($newDesign, $title, null, array("/javascript/footer.js", "/javascript/common.js", "/javascript/query.js"));
+
+echoStartBody($newDesign);
 
 echoHeader($newDesign, false, $header, null, $navLinks);
 

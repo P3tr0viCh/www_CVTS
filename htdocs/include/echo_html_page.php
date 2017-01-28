@@ -58,7 +58,7 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
 
     if ($title) {
         echo S::TAB;
-        echoTitle($title);
+        echo '<title>' . $title . '</title>' . PHP_EOL . PHP_EOL;
     }
 
     echoMeta("http-equiv", "Content-Type", "text/html; charset=utf-8");
@@ -180,11 +180,6 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
     }
 
     echo '</head>' . PHP_EOL . PHP_EOL;
-}
-
-function echoTitle($title)
-{
-    echo '<title>' . $title . '</title>' . PHP_EOL . PHP_EOL;
 }
 
 function echoStartBody($newDesign, $onLoad = null, $class = null)

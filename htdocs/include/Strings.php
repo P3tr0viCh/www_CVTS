@@ -13,6 +13,7 @@ class Strings
     const MYSQL_DATETIME_TITLE = 'Дата и время сервера';
     const ERROR_INCOMPATIBLE_BROWSER_TITLE = 'Несовместимый браузер';
     const A_TITLE = 'Карта сайта';
+    const ERROR_TITLE = 'Ошибка';
 
     const MAIN_HEADER = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
     const MAIN_HEADER_LOGO_ALT = 'Металлоинвест | Уральская сталь';

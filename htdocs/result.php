@@ -168,9 +168,8 @@ switch ($reportType) {
         $filter
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
             ->setTrainNum(getParamGETAsInt(ParamName::TRAIN_NUM))
-
-        ->setTrainUnixTime(getParamGETAsInt(ParamName::TRAIN_UNIX_TIME))
-        ->setTrainDateTime(getParamGETAsInt(ParamName::TRAIN_DATETIME));
+            ->setTrainUnixTime(getParamGETAsInt(ParamName::TRAIN_UNIX_TIME))
+            ->setTrainDateTime(getParamGETAsInt(ParamName::TRAIN_DATETIME));
 
         break;
     default:
@@ -186,11 +185,7 @@ echoStartPage();
 
 CheckBrowser::check($newDesign, true);
 
-echoHead($newDesign, null, null, $newDesign ?
-    array("/javascript/common.js", "/javascript/result.js") :
-    "/javascript/hr.js");
-
-echoStartBody($newDesign, $newDesign ? "showContent()" : null);
+$title = S::ERROR_TITLE;
 
 $resultMessage = null;
 
@@ -199,7 +194,6 @@ $excelData = null;
 $header = null;
 $subHeader = null;
 $whereHeader = null;
-$title = null;
 $navLinks = null;
 $menuItems = null;
 
@@ -216,6 +210,7 @@ if ($mysqli) {
         if (!$resultMessage) {
             $header = $scaleInfo->getHeader();
 
+            // Byte Order Mark
             $excelData = "\xEF\xBB\xBF" . $header . S::EXCEL_EOL;
 
             $title = $scaleInfo->getPlace();
@@ -335,7 +330,11 @@ if ($mysqli) {
     $resultMessage = mysqlConnectionFileError();
 }
 
-echoTitle($title);
+echoHead($newDesign, $title, null, $newDesign ?
+    array("/javascript/common.js", "/javascript/result.js") :
+    "/javascript/hr.js");
+
+echoStartBody($newDesign, $newDesign ? "showContent()" : null);
 
 echoHeader($newDesign, false, $header, $subHeader, $navLinks, $menuItems);
 
