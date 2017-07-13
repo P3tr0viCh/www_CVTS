@@ -250,24 +250,8 @@ class QueryResult extends QueryBase
         }
     }
 
-    /**
-     * @param string $table
-     */
-    private function setWhere($table)
+    private function setWhere()
     {
-        // TODO: check and delete
-//        switch ($table) {
-//            case T::AUTO_BRUTTO:
-//            case T::AUTO_TARE:
-//            case T::KANAT:
-//            case T::DP:
-//                $dateTimeColumn = C::DATETIME;
-//                break;
-//
-//            default:
-//                $dateTimeColumn = C::UNIX_TIME;
-//        }
-
         $dateTimeColumn = C::DATETIME;
 
         if ($this->filter->getScaleNum() != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
@@ -295,11 +279,19 @@ class QueryResult extends QueryBase
                 ->where($dateTimeColumn, B::COMPARISON_LESS_OR_EQUAL, $dateTimeEnd);
         }
 
-        $this->builder
-            ->where($this->scaleType == ScaleType::AUTO ?
-                C::AUTO_NUMBER :
-                C::VAN_NUMBER, B::COMPARISON_LIKE,
-                utf8ToLatin1($this->filter->getVanNumber()));
+        switch ($this->resultType) {
+            case ResultType::AUTO_BRUTTO:
+            case ResultType::AUTO_TARE:
+            case ResultType::VAN_DYNAMIC_BRUTTO:
+            case ResultType::VAN_DYNAMIC_TARE:
+            case ResultType::VAN_STATIC_BRUTTO:
+            case ResultType::VAN_STATIC_TARE:
+                $this->builder
+                    ->where($this->scaleType == ScaleType::AUTO ?
+                        C::AUTO_NUMBER :
+                        C::VAN_NUMBER, B::COMPARISON_LIKE,
+                        utf8ToLatin1($this->filter->getVanNumber()));
+        }
 
         switch ($this->resultType) {
             case ResultType::TRAIN_DYNAMIC_ONE:
@@ -351,30 +343,12 @@ class QueryResult extends QueryBase
         }
     }
 
-    /**
-     * @param string $table
-     */
-    private function setOrder($table)
+    private function setOrder()
     {
         if (isResultTypeCargoList($this->resultType)) {
             $this->builder->order(C::CARGO_TYPE, false, 'latin1_bin');
         } else {
-            // TODO: check and delete
-            switch ($table) {
-                case T::AUTO_BRUTTO:
-                case T::AUTO_TARE:
-                case T::KANAT:
-                case T::DP:
-                    $orderColumn = C::DATETIME;
-                    break;
-                default:
-                    $orderColumn = C::DATETIME;
-//                    if ($this->filter->isOrderByDateTime()) {
-//                        $orderColumn = C::DATETIME;
-//                    } else {
-//                        $orderColumn = C::UNIX_TIME;
-//                    }
-            }
+            $orderColumn = C::DATETIME;
 
             $this->builder->order($orderColumn, true);
 
@@ -410,7 +384,7 @@ class QueryResult extends QueryBase
             ->params(B::SELECT_SQL_BUFFER_RESULT)
             ->table($table);
 
-        $this->setWhere($table);
+        $this->setWhere();
 
         $this->setColumns();
 
@@ -425,6 +399,6 @@ class QueryResult extends QueryBase
 
         $this->setGroup();
 
-        $this->setOrder($table);
+        $this->setOrder();
     }
 }

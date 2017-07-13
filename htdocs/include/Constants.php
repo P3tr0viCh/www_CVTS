@@ -130,6 +130,8 @@ class ParamName
 
     const DEBUG = 'debug';
 
+    const DISABLE_HIDE_CURSOR = 'disable_hide_cursor';
+
     const NIGHT_MODE = 'night_mode';
 
     const SHOW_SECONDS = 'show_seconds';

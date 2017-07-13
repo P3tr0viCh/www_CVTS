@@ -293,10 +293,18 @@ if ($mysqli) {
                 }
             }
 
-            $whereHeader = formatWhereHeader($scaleInfo->getType() == ScaleType::AUTO ?
-                S::HEADER_RESULT_SEARCH_AUTO_NUMBER :
-                S::HEADER_RESULT_SEARCH_VAN_NUMBER,
-                $filter->getVanNumber(), $newDesign);
+            switch ($resultType) {
+                case ResultType::AUTO_BRUTTO:
+                case ResultType::AUTO_TARE:
+                case ResultType::VAN_DYNAMIC_BRUTTO:
+                case ResultType::VAN_DYNAMIC_TARE:
+                case ResultType::VAN_STATIC_BRUTTO:
+                case ResultType::VAN_STATIC_TARE:
+                    $whereHeader = formatWhereHeader($scaleInfo->getType() == ScaleType::AUTO ?
+                        S::HEADER_RESULT_SEARCH_AUTO_NUMBER :
+                        S::HEADER_RESULT_SEARCH_VAN_NUMBER,
+                        $filter->getVanNumber(), $newDesign);
+            }
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE ||
                 $resultType == ResultType::VAN_DYNAMIC_BRUTTO ||

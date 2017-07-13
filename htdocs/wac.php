@@ -20,6 +20,7 @@ use Strings as S;
 
 $newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
+$disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 $department = 66;
 
@@ -46,10 +47,14 @@ if ($debug) {
 }
 
 $javaScripts = array();
+
 $javaScripts[] = '/javascript/datetime_format.js';
 $javaScripts[] = '/javascript/wac.js';
 $javaScripts[] = '/javascript/night_mode.js';
-$javaScripts[] = '/javascript/hide_cursor.js';
+
+if (!$disableHideCursor) {
+    $javaScripts[] = '/javascript/hide_cursor.js';
+}
 
 echoHead($newDesign, S::WAC_TITLE, $styles, $javaScripts, $oldIEStyle);
 
@@ -135,7 +140,11 @@ if ($resultMessage) {
 
 if (!$resultMessage) {
     $javaScripts = array();
-    $javaScripts[] = "startHideCursor();";
+
+    if (!$disableHideCursor) {
+        $javaScripts[] = "startHideCursor();";
+    }
+
     $javaScripts[] = "startWAC('$companyDate', '$departmentDate');";
     $javaScripts[] = "nightMode(" . boolToString($nightMode) . ");";
 } else {

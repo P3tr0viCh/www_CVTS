@@ -17,7 +17,7 @@ class Strings
 
     const MAIN_HEADER = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
     const MAIN_HEADER_LOGO_ALT = 'Металлоинвест | Уральская сталь';
-    const MYSQL_DATETIME_HEADER = 'Дата и время сервера MySQL';
+    const MYSQL_DATETIME_HEADER = 'Дата и время на сервере MySQL';
     const A_HEADER = 'Карта сайта';
 
     const DRAWER_TITLE = 'Весы';
@@ -46,10 +46,10 @@ class Strings
 
     const HEADER_LOADING = 'Загрузка. Подождите...';
 
-    const HEADER_RESULT_VN_DYN_B = 'Динамическое взвешивание, вагоны (брутто)';
-    const HEADER_RESULT_VN_DYN_T = 'Динамическое взвешивание, вагоны (тара)';
-    const HEADER_RESULT_VN_STA_B = 'Статическое взвешивание, вагоны (брутто)';
-    const HEADER_RESULT_VN_STA_T = 'Статическое взвешивание, вагоны (тара)';
+    const HEADER_RESULT_VN_DYN_B = 'Динамическое взвешивание брутто, вагоны';
+    const HEADER_RESULT_VN_DYN_T = 'Динамическое взвешивание тары, вагоны';
+    const HEADER_RESULT_VN_STA_B = 'Статическое взвешивание брутто, вагоны';
+    const HEADER_RESULT_VN_STA_T = 'Статическое взвешивание тары, вагоны';
     const HEADER_RESULT_TR_DYN = 'Динамическое взвешивание, составы';
     const HEADER_RESULT_TR_DYN_ONE = 'Провеска состава';
     const HEADER_RESULT_AUTO_B = 'Статическое взвешивание брутто';
@@ -225,5 +225,5 @@ class Strings
     const A_GOTO_MAIN_COMPATIBLE = "Список весовых в старом дизайне";
     const A_GOTO_WAC = "Количество дней, отработанных без травм";
     const A_GOTO_DATETIME = "Дата и время на компьютере";
-    const A_GOTO_MYSQL_DATETIME = "Дата и время на сервере";
+    const A_GOTO_MYSQL_DATETIME = "Дата и время на сервере MySQL";
 }

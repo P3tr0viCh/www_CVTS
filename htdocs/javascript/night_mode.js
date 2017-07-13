@@ -74,6 +74,12 @@ function nightMode(nightMode) {
     }
 
     function isNight(datetime) {
+        // for debug
+        // var
+        //     second = datetime.getSeconds();
+        //
+        // return (second > 10 && second < 20) || (second > 30 && second < 40) || (second > 50 && second < 60);
+
         var
             hour = datetime.getHours();
 

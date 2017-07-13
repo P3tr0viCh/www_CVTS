@@ -50,7 +50,7 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 
 function formatFieldValue($fieldName, $fieldValue, $full)
 {
-    if ($fieldValue !== "") {
+    if ($fieldValue != "") {
         switch ($fieldName) {
             case C::DATETIME:
             case C::DATETIME_END:
@@ -60,6 +60,11 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::DATETIME_SHIPMENT:
             case C::DATETIME_FAILURE:
             case C::DATETIME_CARGO:
+                // check for "0000-00-00 00:00:00"
+                if ($fieldValue == 0) {
+                    return "<span style='zoom: 1;'></span>";
+                }
+
                 $year = substr($fieldValue, 0, 4);
                 $month = substr($fieldValue, 5, 2);
                 $day = substr($fieldValue, 8, 2);
@@ -73,13 +78,14 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 if ($full) {
                     $d .= ":" . $second;
                 }
+
                 return $d;
             case C::TRAIN_NUMBER:
-                return substr($fieldValue, 0, 16);
+                return $fieldValue;
             case C::VAN_NUMBER:
-                return substr($fieldValue, 0, 8);
+                return $fieldValue;
             case C::AUTO_NUMBER:
-                return substr($fieldValue, 0, 9);
+                return $fieldValue;
             case C::CARRYING:
             case C::LOAD_NORM:
             case C::VOLUME:
@@ -759,7 +765,8 @@ function latin1ToUtf8($s)
     return $s;
 }
 
-function utf8ToLatin1($s) {
+function utf8ToLatin1($s)
+{
     if ($s == null) return null;
     $s = iconv('UTF-8', 'Windows-1251', $s);
     return $s;
