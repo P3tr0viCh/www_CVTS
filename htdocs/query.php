@@ -145,9 +145,9 @@ if (!$resultMessage) {
             echo '<h5>' . S::HEADER_DYNAMIC . '</h5>' . PHP_EOL . PHP_EOL;
 
             echoButton($newDesign, S::BUTTON_VANS_BRUTTO, ParamName::RESULT_TYPE, ResultType::VAN_DYNAMIC_BRUTTO);
-            echoButton($newDesign, S::BUTTON_VANS_TARE, ParamName::RESULT_TYPE, ResultType::VAN_STATIC_TARE);
-            echoButton($newDesign, S::BUTTON_CARGOS, ParamName::RESULT_TYPE, ResultType::CARGO_LIST_STATIC);
-            echoButton($newDesign, S::BUTTON_COMPARE, ParamName::RESULT_TYPE, ResultType::COMPARE_STATIC);
+            echoButton($newDesign, S::BUTTON_VANS_TARE, ParamName::RESULT_TYPE, ResultType::VAN_DYNAMIC_TARE);
+            echoButton($newDesign, S::BUTTON_CARGOS, ParamName::RESULT_TYPE, ResultType::CARGO_LIST_DYNAMIC);
+            echoButton($newDesign, S::BUTTON_COMPARE, ParamName::RESULT_TYPE, ResultType::COMPARE_DYNAMIC);
 
             break;
         case ScaleType::AUTO:

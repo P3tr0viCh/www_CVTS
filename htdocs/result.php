@@ -402,7 +402,7 @@ if (!$resultMessage) {
     $query = $queryResult->getQuery();
 
     if (DEBUG_SHOW_QUERY) {
-        echo latin1ToUtf8($query) . "<br>";
+        echo "Query: " . latin1ToUtf8($query) . "<br>" . PHP_EOL;
     }
 
     $result = $mysqli->query($query);
