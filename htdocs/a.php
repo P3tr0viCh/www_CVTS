@@ -1,6 +1,8 @@
 <?php
 require_once "include/Strings.php";
 
+require_once "include/Links.php";
+
 require_once "include/Functions.php";
 require_once "include/CheckBrowser.php";
 require_once "include/MetaInfo.php";
@@ -36,7 +38,7 @@ echoStartMain($newDesign);
 
 echoStartContent();
 
-echo "<ul>";
+echo "<ul>" . PHP_EOL;
 
 echo S::TAB;
 echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=true">' . S::A_GOTO_MAIN . '</a>' . '</li>' . PHP_EOL;
@@ -51,7 +53,24 @@ echo '<li>' . '<a href="/mysql_datetime.php">' . S::A_GOTO_MYSQL_DATETIME . '</a
 
 echo '</ul>' . PHP_EOL;
 
+echo "<br>" . PHP_EOL;
+
+echo '<h2>' . S::A_TEXT_EXTERNAL_RESOURCES . '</h2>' . PHP_EOL;
+
+echo "<ul>" . PHP_EOL;
+
+echo S::TAB;
+echo '<li>' . '<a href="' . Links::DATA_CENTER_ARM . '">' . S::A_GOTO_DATA_CENTER_ARM . '</a>' . '</li>' . PHP_EOL;
+
+echo '</ul>' . PHP_EOL;
+
+echo "<br>" . PHP_EOL;
+
 echo '<p class="versions">' . PHP_EOL;
+
+echo "<span>" . sprintf(S::TEXT_SITE_VERSION, MetaInfo::VERSION, MetaInfo::CREATION) . "</span>" . PHP_EOL;
+
+echo "<br><br>" . PHP_EOL;
 
 $ar = explode(" ", apache_get_version());
 $apache = explode("/", $ar[0]);
@@ -62,10 +81,6 @@ echo "<span>" . sprintf(S::TEXT_APACHE_VERSION, $apache_version) . "</span>" . P
 echo "<br>" . PHP_EOL;
 
 echo "<span>" . sprintf(S::TEXT_PHP_VERSION, phpversion()) . "</span>" . PHP_EOL;
-
-echo "<br><br>" . PHP_EOL;
-
-echo "<span>" . sprintf(S::TEXT_SITE_VERSION, MetaInfo::VERSION, MetaInfo::CREATION) . "</span>" . PHP_EOL;
 
 echoEndContent();
 

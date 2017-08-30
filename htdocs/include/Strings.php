@@ -226,4 +226,8 @@ class Strings
     const A_GOTO_WAC = "Количество дней, отработанных без травм";
     const A_GOTO_DATETIME = "Дата и время на компьютере";
     const A_GOTO_MYSQL_DATETIME = "Дата и время на сервере MySQL";
+
+    const A_TEXT_EXTERNAL_RESOURCES = "Посторонние ресурсы";
+
+    const A_GOTO_DATA_CENTER_ARM = 'Универсальный АРМ весоизмерения "Дата-Центр Автоматика"';
 }
