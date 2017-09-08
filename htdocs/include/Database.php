@@ -29,6 +29,7 @@ class Tables
     const DP = 'dpb';
 
     const SCALES = 'scalesinfo';
+    const SCALES_ADD = 'scalesinfo_add';
 
     const ACCIDENTS = 'accidents';
 }
@@ -46,6 +47,7 @@ class Columns
     const SCALE_CLASS_DYNAMIC = 'dclass';
     const SCALE_PLACE = 'place';
     const SCALE_TYPE = 'tag1';
+    const SCALE_DISABLED = 'disabled';
 
     const SEQUENCE_NUMBER = 'num';
 

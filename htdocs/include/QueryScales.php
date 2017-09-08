@@ -16,7 +16,9 @@ class QueryScales extends QueryBase
             ->column(C::SCALE_CLASS_STATIC)
             ->column(C::SCALE_CLASS_DYNAMIC)
             ->column(C::SCALE_PLACE)
+            ->column(C::SCALE_DISABLED)
             ->table(T::SCALES)
+            ->join(T::SCALES_ADD, C::SCALE_NUM)
             ->order(C::SCALE_PLACE, false, 'latin1_bin');
     }
 }

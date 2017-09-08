@@ -45,6 +45,8 @@ echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=true">' . S::A_
 echo S::TAB;
 echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=false">' . S::A_GOTO_MAIN_COMPATIBLE . '</a>' . '</li>' . PHP_EOL;
 echo S::TAB;
+echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=false&' . ParamName::SHOW_DISABLED . '=true">' . S::A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED . '</a>' . '</li>' . PHP_EOL;
+echo S::TAB;
 echo '<li>' . '<a href="/wac.php">' . S::A_GOTO_WAC . '</a>' . '</li>' . PHP_EOL;
 echo S::TAB;
 echo '<li>' . '<a href="/datetime.php">' . S::A_GOTO_DATETIME . '</a>' . '</li>' . PHP_EOL;

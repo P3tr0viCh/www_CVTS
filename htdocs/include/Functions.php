@@ -620,27 +620,24 @@ function formatExcelData($value)
     }
 }
 
-// TODO: обновить после смены версии PHP 5 >= 5.5.0, PHP 7
-if (!function_exists('boolval')) {
-    /**
-     * @param mixed $val
-     * @return bool
-     */
-    function boolval($val)
-    {
-        $boolval = is_string($val) ?
-            filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) :
-            (bool)$val;
-        return $boolval === null ? false : $boolval;
-    }
+/**
+ * @param mixed $var
+ * @return bool
+ */
+function var_to_bool($var)
+{
+    $bool = is_string($var) ?
+        filter_var($var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) :
+        (bool)$var;
+    return $bool === null ? false : $bool;
 }
 
 function isNewDesign($default = false)
 {
     return isset($_POST[ParamName::NEW_DESIGN]) ?
-        boolval($_POST[ParamName::NEW_DESIGN]) :
+        var_to_bool($_POST[ParamName::NEW_DESIGN]) :
         (isset($_GET[ParamName::NEW_DESIGN]) ?
-            boolval($_GET[ParamName::NEW_DESIGN]) :
+            var_to_bool($_GET[ParamName::NEW_DESIGN]) :
             $default);
 }
 
@@ -678,7 +675,7 @@ function getParamGETAsInt($param, $default = null)
  */
 function getParamGETAsBool($param, $default = null)
 {
-    return isset($_GET[(string)$param]) ? boolval($_GET[(string)$param]) : $default;
+    return isset($_GET[(string)$param]) ? var_to_bool($_GET[(string)$param]) : $default;
 }
 
 /**

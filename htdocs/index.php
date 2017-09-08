@@ -25,6 +25,8 @@ use Strings as S;
 
 $newDesign = isNewDesign();
 
+$showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
+
 echoStartPage();
 
 CheckBrowser::check($newDesign, true);
@@ -48,6 +50,9 @@ echoStartContent();
 if ($mysqli) {
     if (!$mysqli->connect_errno) {
         $query = new QueryScales();
+
+//        echo $query->getQuery() . PHP_EOL;
+
         $result = $mysqli->query($query->getQuery());
 
         if ($result) {
@@ -86,7 +91,9 @@ if ($mysqli) {
                 // 1981 -- номер весов для отладки
                 if ($row[Database\Columns::SCALE_NUM] == 1981) continue;
 
-//            if ($row[Database\Columns::SCALE_NUM] > 50) continue;
+                if ($row[Database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
+
+//                if ($row[Database\Columns::SCALE_NUM] > 50) continue;
 
                 $rowColorClass = getRowColorClass($numColor);
 
@@ -98,7 +105,7 @@ if ($mysqli) {
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                     $newDesign ? "location.href=\"$href\"" : null);
 
-                for ($i = 0; $i < $result->field_count; $i++) {
+                for ($i = 0; $i < $result->field_count - 1; $i++) {
                     $field = latin1ToUtf8($row[$i]);
 
                     $class = null;

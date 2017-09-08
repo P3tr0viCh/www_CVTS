@@ -84,6 +84,8 @@ class ResultType
 class ParamName
 {
     const SCALE_NUM = 'scale_num';
+    const SHOW_DISABLED = 'show_disabled';
+
     const NEW_DESIGN = 'new_design';
 
     /**

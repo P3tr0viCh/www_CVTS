@@ -206,23 +206,26 @@ class Strings
     const ERROR_401_HEADER = 'Требуется аутентификация';
     const ERROR_401_SUB_HEADER = 'Для доступа к данному ресурсу требуется указать имя пользователя и пароль';
 
+    const ERROR_XXX_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+
     const ERROR_403_HEADER = 'Доступ запрещён';
-    const ERROR_403_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_403_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_404_HEADER = 'Такой страницы нет';
-    const ERROR_404_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_404_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
-    const ERROR_500_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
-    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
+    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_GOTO_START = 'Перейти на начальную страницу';
     const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';
 
     const A_GOTO_MAIN = "Список весовых";
     const A_GOTO_MAIN_COMPATIBLE = "Список весовых в старом дизайне";
+    const A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED = "Список весовых в старом дизайне, включая закрытые весы";
     const A_GOTO_WAC = "Количество дней, отработанных без травм";
     const A_GOTO_DATETIME = "Дата и время на компьютере";
     const A_GOTO_MYSQL_DATETIME = "Дата и время на сервере MySQL";
