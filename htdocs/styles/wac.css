@@ -8,7 +8,8 @@ body.night {
 }
 
 .wac--cell.header {
-    font-size: 4.5vw;
+    font-size: 4.0vw;
+    white-space: nowrap;
 }
 
 .wac--cell.header.datetime {
@@ -20,7 +21,7 @@ body.night {
 }
 
 .wac--cell.name.company {
-    font-size: 5vmin;
+    font-size: 6vmin;
 }
 
 .wac--cell.counter {

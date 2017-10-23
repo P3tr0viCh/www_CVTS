@@ -70,6 +70,7 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
     echo PHP_EOL;
 
     echoMeta("name", "author", MetaInfo::AUTHOR);
+    echoMeta("name", "company", MetaInfo::COMPANY);
     echoMeta("name", "version", MetaInfo::VERSION);
     echoMeta("name", "creation", MetaInfo::CREATION);
     echo PHP_EOL;
