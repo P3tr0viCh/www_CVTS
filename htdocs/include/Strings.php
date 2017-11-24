@@ -233,4 +233,5 @@ class Strings
     const A_TEXT_EXTERNAL_RESOURCES = "Посторонние ресурсы";
 
     const A_GOTO_DATA_CENTER_ARM = 'Универсальный АРМ весоизмерения "Дата-Центр Автоматика"';
+    const A_GOTO_CTA_AND_KIP_ASU_GAZ = 'Температура наружного воздуха, ЦТАиКИП';
 }

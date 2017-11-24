@@ -63,6 +63,8 @@ echo "<ul>" . PHP_EOL;
 
 echo S::TAB;
 echo '<li>' . '<a href="' . Links::DATA_CENTER_ARM . '">' . S::A_GOTO_DATA_CENTER_ARM . '</a>' . '</li>' . PHP_EOL;
+echo S::TAB;
+echo '<li>' . '<a href="' . Links::CTA_AND_KIP_ASU_GAZ . '">' . S::A_GOTO_CTA_AND_KIP_ASU_GAZ . '</a>' . '</li>' . PHP_EOL;
 
 echo '</ul>' . PHP_EOL;
 

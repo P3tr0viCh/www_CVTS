@@ -8,20 +8,20 @@ body.night {
 }
 
 .wac--cell.header {
-    font-size: 4.0vw;
+    font-size: 4.2vw;
     white-space: nowrap;
 }
 
 .wac--cell.header.datetime {
-    font-size: 6vw;
+    font-size: 8vw;
 }
 
 .wac--cell.name {
-    font-size: 8vmin;
+    font-size: 9vmin;
 }
 
 .wac--cell.name.company {
-    font-size: 6vmin;
+    font-size: 8vmin;
 }
 
 .wac--cell.counter {
