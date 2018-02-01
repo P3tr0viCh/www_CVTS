@@ -25,7 +25,7 @@ class Strings
     const DRAWER_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
 
     const FOOTER_LEFT_SECTION = 'МЕТАЛЛОИНВЕСТ, Уральская Сталь';
-    const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович, ЦВТС, 2004-2017';
+    const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович, ЦВТС, 2004-2018';
 
     const ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
 
@@ -37,6 +37,7 @@ class Strings
     const HEADER_DYNAMIC = 'Динамическое взвешивание';
     const HEADER_STATIC = 'Статическое взвешивание';
     const HEADER_RESULTS = 'Результаты взвешиваний';
+    const HEADER_SERVICE = 'Сервис';
     const HEADER_PERIOD = 'Период';
     const HEADER_PERIOD_START = 'Начальная дата и время';
     const HEADER_PERIOD_END = 'Конечная дата и время';
@@ -59,6 +60,7 @@ class Strings
     const HEADER_RESULT_DP_SUM = 'Сумма провесок';
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
+    const HEADER_COEFF = 'Коэффициенты';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
     const HEADER_RESULT_PERIOD_FROM = '%s с %s';
@@ -102,6 +104,7 @@ class Strings
     const BUTTON_TARE = 'Тара';
     const BUTTON_VIEW = 'Просмотр';
     const BUTTON_SUM_FOR_PERIOD = 'Сумма за период';
+    const BUTTON_COEFFS = 'Коэффициенты';
     const BUTTON_CLEAR = 'Очистить';
 
     const CHECKBOX_ORDER_BY_DATETIME = 'Сортировка только по дате и времени';

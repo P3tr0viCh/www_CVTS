@@ -86,10 +86,12 @@ class ColumnsStrings
     const OPERATION_TYPE = 'Тип операции';
     const ACCURACY_CLASS = 'Класс точности';
     const DISCRETENESS = 'Дискретность';
-    const COEFFICIENT_P1 = 'P 1';
-    const COEFFICIENT_Q1 = 'Q 1';
-    const COEFFICIENT_P2 = 'P 2';
-    const COEFFICIENT_Q2 = 'Q 2';
+    const COEFFICIENT_P1 = 'P &gt;&gt;&gt;'; // >>>
+    const COEFFICIENT_Q1 = 'Q &gt;&gt;&gt;';
+    const COEFFICIENT_T1 = 'T &gt;&gt;&gt;';
+    const COEFFICIENT_P2 = 'P &lt;&lt;&lt;'; // <<<
+    const COEFFICIENT_Q2 = 'Q &lt;&lt;&lt;';
+    const COEFFICIENT_T2 = 'T &lt;&lt;&lt;';
     const TEMPERATURE_1 = 'Темп. 1';
     const TEMPERATURE_2 = 'Темп. 2';
     const TEMPERATURE_3 = 'Темп. 3';

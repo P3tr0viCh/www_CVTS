@@ -106,10 +106,13 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::CARRIAGE_DIFFERENCE:  // Разница между тележками
             case C::INVOICE_NETTO:
             case C::INVOICE_TARE:
+            case C::ACCELERATION:
                 return number_format((double)$fieldValue, 2, ",", "");
             case C::NETTO:
                 $s = number_format((double)$fieldValue, 2, ",", "");
                 return "<b>" . $s . "</b>";
+            case C::MASS:
+                return number_format((double)$fieldValue, 8, ",", "");
             case C::OVERLOAD:
             case C::INVOICE_OVERLOAD:
             case C::COMPARE:
@@ -123,7 +126,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 return $overload;
             case C::VELOCITY:
                 $velocity = number_format(abs($fieldValue), 1, ",", "");
-                return $fieldValue > 0 ? $velocity . " >>>" : $velocity = "<<< " . $velocity;
+                return $fieldValue > 0 ? $velocity . " &gt;&gt;&gt;" : $velocity = "&lt;&lt;&lt; " . $velocity;
             case C::SCALE_CLASS:
                 switch ($fieldValue) {
                     case 1:
@@ -170,6 +173,24 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_SIDE_UNKNOWN;
                 }
+            case C::COEFFICIENT_P1:
+            case C::COEFFICIENT_P2:
+                return number_format((double)$fieldValue, 5, ".", "");
+            case C::COEFFICIENT_Q1:
+            case C::COEFFICIENT_Q2:
+                return number_format((double)$fieldValue, 0, "", "");
+            case C::COEFFICIENT_T1:
+            case C::COEFFICIENT_T2:
+                return number_format((double)$fieldValue, 1, ".", "");
+            case C::TEMPERATURE_1:
+            case C::TEMPERATURE_2:
+            case C::TEMPERATURE_3:
+            case C::TEMPERATURE_4:
+            case C::TEMPERATURE_5:
+            case C::TEMPERATURE_6:
+            case C::TEMPERATURE_7:
+            case C::TEMPERATURE_8:
+                return number_format((double)$fieldValue, 0, "", "");
             default:
                 return $fieldValue;
         }
@@ -218,8 +239,10 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::DISCRETENESS:
         case C::COEFFICIENT_P1:
         case C::COEFFICIENT_Q1:
+        case C::COEFFICIENT_T1:
         case C::COEFFICIENT_P2:
         case C::COEFFICIENT_Q2:
+        case C::COEFFICIENT_T2:
         case C::VERIFIER:
         case C::COMMENT:
 
@@ -256,6 +279,10 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
             return
                 ($resultType != ResultType::TRAIN_DYNAMIC) &&
                 ($resultType != ResultType::KANAT);
+
+        case C::DATETIME_END:
+            return $resultType == ResultType::COEFFS;
+
         default:
             return false;
     }
@@ -264,9 +291,10 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
 /**
  * @param $fieldName
  * @param int $scaleType
+ * @param ResultType|null $resultType
  * @return string
  */
-function columnName($fieldName, $scaleType)
+function columnName($fieldName, $scaleType, $resultType = null)
 {
     switch ($fieldName) {
         case C::TRAIN_NUM:
@@ -278,7 +306,7 @@ function columnName($fieldName, $scaleType)
         case C::DATETIME:
             return ColumnsStrings::DATETIME;
         case C::DATETIME_END:
-            return ColumnsStrings::DATETIME_END;
+            return $resultType == ResultType::COEFFS ? ColumnsStrings::DATETIME : ColumnsStrings::DATETIME_END;
         case C::TRAIN_NUMBER:
             return ColumnsStrings::TRAIN_NUMBER;
         case C::CARRYING:
@@ -413,10 +441,14 @@ function columnName($fieldName, $scaleType)
             return ColumnsStrings::COEFFICIENT_P1;
         case C::COEFFICIENT_Q1:
             return ColumnsStrings::COEFFICIENT_Q1;
+        case C::COEFFICIENT_T1:
+            return ColumnsStrings::COEFFICIENT_T1;
         case C::COEFFICIENT_P2:
             return ColumnsStrings::COEFFICIENT_P2;
         case C::COEFFICIENT_Q2:
             return ColumnsStrings::COEFFICIENT_Q2;
+        case C::COEFFICIENT_T2:
+            return ColumnsStrings::COEFFICIENT_T2;
         case C::TEMPERATURE_1:
             return ColumnsStrings::TEMPERATURE_1;
         case C::TEMPERATURE_2:
@@ -612,9 +644,10 @@ function formatExcelData($value)
     } else {
         $value = str_replace("&shy;", "", $value);
         $value = str_replace("&nbsp;", " ", $value);
-
-        // TODO: проверить в старых экселях.
-//        $value = iconv("utf-8", "windows-1251", $value);
+        // Символы > и < удаляются функцией strip_tags (выше),
+        // поэтому на страницах вместо них используются &gt; и &lt;
+        $value = str_replace("&gt;", ">", $value);
+        $value = str_replace("&lt;", "<", $value);
 
         return '"' . $value . '"';
     }
@@ -738,6 +771,8 @@ function getResultHeader($resultType)
         case ResultType::COMPARE_DYNAMIC:
         case ResultType::COMPARE_STATIC:
             return S::HEADER_RESULT_COMPARE;
+        case ResultType::COEFFS:
+            return S::HEADER_COEFF;
         default:
             throw new InvalidArgumentException("Unknown resultType ($resultType)");
     }

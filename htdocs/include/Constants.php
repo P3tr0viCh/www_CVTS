@@ -79,6 +79,8 @@ class ResultType
 
     const COMPARE_DYNAMIC = 70;
     const COMPARE_STATIC = 71;
+
+    const COEFFS = 80;
 }
 
 class ParamName

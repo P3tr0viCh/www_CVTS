@@ -143,8 +143,8 @@ class Builder
         }
         if (is_string($value)) {
             $value = str_replace(
-                array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a"),
-                array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z"), $value);
+                array("\\", "\x00", "\n", "\r", "'", '"', "\x1a"),
+                array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z"), $value);
 
             return "'" . $value . "'";
         }
@@ -233,28 +233,32 @@ class Builder
                 if ($comparison == self::COMPARISON_LIKE) {
                     $expr = sprintf(Expr::LIKE, $this->format((string)$value));
                 } elseif ($comparison == self::COMPARISON_IN) {
-                    $valuesArray = explode(Expr::COMMA, (string)$value);
+                    if (($value instanceof Builder)) {
+                        $expr = sprintf(Expr::IN, $value->build());
+                    } else {
+                        $valuesArray = explode(Expr::COMMA, (string)$value);
 
-                    $values = null;
-                    foreach ($valuesArray as $value) {
-                        $value = trim($value);
+                        $values = null;
+                        foreach ($valuesArray as $value) {
+                            $value = trim($value);
 
-                        if (floatval($value)) {
-                            $value = $this->format((float)$value);
-                        } elseif (intval($value)) {
-                            $value = $this->format((int)$value);
-                        } else {
-                            $l = strlen($value);
-                            if (($l > 1) && ($value[0] == "'" || $value[0] == '"') && ($value[0] == $value[$l - 1])) {
-                                $value = substr($value, 1, $l - 2);
+                            if (floatval($value)) {
+                                $value = $this->format((float)$value);
+                            } elseif (intval($value)) {
+                                $value = $this->format((int)$value);
+                            } else {
+                                $l = strlen($value);
+                                if (($l > 1) && ($value[0] == "'" || $value[0] == '"') && ($value[0] == $value[$l - 1])) {
+                                    $value = substr($value, 1, $l - 2);
+                                }
+                                $value = $this->format($value);
                             }
-                            $value = $this->format($value);
+
+                            $values = self::concat($values, $value, Expr::COMMA . Expr::SPACE);
                         }
 
-                        $values = self::concat($values, $value, Expr::COMMA . Expr::SPACE);
+                        $expr = sprintf(Expr::IN, $values);
                     }
-
-                    $expr = sprintf(Expr::IN, $values);
                 } else {
                     switch ($comparison) {
                         default:
@@ -384,7 +388,6 @@ class Builder
 
     /**
      * Добавление колонки в запрос.
-
      * <p>
      * Если в построитель не добавлена ни одна колонка,
      * запрос строится с выводом всех колонок (SELECT *).

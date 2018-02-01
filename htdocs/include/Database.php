@@ -31,6 +31,8 @@ class Tables
     const SCALES = 'scalesinfo';
     const SCALES_ADD = 'scalesinfo_add';
 
+    const COEFFS = 'wcalver';
+
     const ACCIDENTS = 'accidents';
 }
 
@@ -127,8 +129,11 @@ class Columns
 
     const COEFFICIENT_P1 = 'coeff1';
     const COEFFICIENT_Q1 = 'coeff2';
+    const COEFFICIENT_T1 = 'coeff_temp1';
     const COEFFICIENT_P2 = 'coeff3';
     const COEFFICIENT_Q2 = 'coeff4';
+    const COEFFICIENT_T2 = 'coeff_temp2';
+
     const TEMPERATURE_1 = 'temp1';
     const TEMPERATURE_2 = 'temp2';
     const TEMPERATURE_3 = 'temp3';

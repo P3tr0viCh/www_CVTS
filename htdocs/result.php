@@ -109,13 +109,19 @@ switch ($reportType) {
                 ResultType::CARGO_LIST_AUTO,
 
                 ResultType::COMPARE_DYNAMIC,
-                ResultType::COMPARE_STATIC);
+                ResultType::COMPARE_STATIC,
+
+                ResultType::COEFFS);
 
             foreach ($resultTypes as $result) {
                 $resultType = getResultType($result);
                 if (!empty($resultType)) {
                     break;
                 }
+            }
+
+            if (empty($resultType)) {
+                throw new InvalidArgumentException("Empty resultType");
             }
         }
 
@@ -487,7 +493,7 @@ if (!$resultMessage) {
                         }
                     }
 
-                    $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType());
+                    $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType(), $resultType);
 
                     echoTableTH($cell, $class);
 

@@ -5,6 +5,7 @@ require_once "include/Constants.php";
 require_once "include/Strings.php";
 
 require_once "include/Functions.php";
+require_once "include/CheckUser.php";
 require_once "include/CheckBrowser.php";
 
 require_once "include/ScaleInfo.php";
@@ -138,6 +139,19 @@ if (!$resultMessage) {
                 echoButton($newDesign, S::BUTTON_VANS_TARE, ParamName::RESULT_TYPE, ResultType::VAN_STATIC_TARE);
                 echoButton($newDesign, S::BUTTON_CARGOS, ParamName::RESULT_TYPE, ResultType::CARGO_LIST_STATIC);
                 echoButton($newDesign, S::BUTTON_COMPARE, ParamName::RESULT_TYPE, ResultType::COMPARE_STATIC);
+            }
+
+            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) ||
+                ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC)
+            ) {
+                if (CheckUser::isPowerUser()) {
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL . PHP_EOL;
+                    echo S::TAB . S::TAB;
+                    echo '<h5>' . S::HEADER_SERVICE . '</h5>' . PHP_EOL . PHP_EOL;
+
+                    echoButton($newDesign, S::BUTTON_COEFFS, ParamName::RESULT_TYPE, ResultType::COEFFS);
+                }
             }
             break;
         case ScaleType::WMR:
