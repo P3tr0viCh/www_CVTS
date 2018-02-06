@@ -15,9 +15,14 @@ use Strings as S;
  */
 function echoDrawer($newDesign, $mysqli)
 {
-    if (!$newDesign || $mysqli == null || $mysqli->connect_error) return;
+    if (!$newDesign || is_null($mysqli) || $mysqli->connect_error) return;
+
+    $showDisabled = isset($_COOKIE[ParamName::SHOW_DISABLED]) ? var_to_bool($_COOKIE[ParamName::SHOW_DISABLED]) : false;
 
     $query = new QueryDrawer();
+
+//    echo $query->getQuery() . PHP_EOL;
+
     if ($result = @$mysqli->query($query->getQuery())) {
         echo '<div class="mdl-layout__drawer">' . PHP_EOL;
         echo S::TAB;
@@ -29,6 +34,7 @@ function echoDrawer($newDesign, $mysqli)
 
         $href = $hrefBuilder->setUrl("index.php")
             ->setParam(ParamName::NEW_DESIGN, true)
+            ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
             ->build();
 
         echo S::TAB . S::TAB;
@@ -37,10 +43,15 @@ function echoDrawer($newDesign, $mysqli)
         echo S::DRAWER_START_PAGE;
         echo '</a>' . PHP_EOL;
 
-        $hrefBuilder->setUrl("query.php");
+        $hrefBuilder
+            ->clear()
+            ->setUrl("query.php")
+            ->setParam(ParamName::NEW_DESIGN, true);
 
         while ($row = $result->fetch_array()) {
             if ($row[Database\Columns::SCALE_NUM] == 1981) continue;
+
+            if ($row[Database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
 
             $href = $hrefBuilder
                 ->setParam(ParamName::SCALE_NUM, $row[Database\Columns::SCALE_NUM])

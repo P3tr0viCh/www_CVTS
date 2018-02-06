@@ -13,7 +13,9 @@ class QueryDrawer extends QueryBase
         $this->builder
             ->column(C::SCALE_NUM)
             ->column(C::SCALE_PLACE)
+            ->column(C::SCALE_DISABLED)
             ->table(T::SCALES)
+            ->join(T::SCALES_ADD, C::SCALE_NUM)
             ->order(C::SCALE_PLACE, false, 'latin1_bin');
     }
 }

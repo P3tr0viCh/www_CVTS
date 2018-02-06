@@ -27,6 +27,9 @@ $newDesign = isNewDesign();
 
 $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
 
+setcookie(ParamName::SHOW_DISABLED, boolToString($showDisabled));
+$_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
+
 echoStartPage();
 
 CheckBrowser::check($newDesign, true);
