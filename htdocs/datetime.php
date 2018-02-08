@@ -7,14 +7,13 @@ require_once "include/echo_html_page.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
+$newDesign = isNewDesign(true);
+
 $showSeconds = getParamGETAsBool(ParamName::SHOW_SECONDS, false);
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 
 echoStartPage();
-
-CheckBrowser::check($newDesign, false);
 
 $oldIEStyle = null;
 

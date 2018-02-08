@@ -22,8 +22,6 @@ $newDesign = isNewDesign();
 
 echoStartPage();
 
-CheckBrowser::check($newDesign, true);
-
 $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
 if ($scales < 0) {

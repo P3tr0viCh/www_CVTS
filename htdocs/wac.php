@@ -18,7 +18,8 @@ require_once "include/echo_table.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
+$newDesign = isNewDesign(true);
+
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
@@ -28,8 +29,6 @@ $companyDate = null;
 $departmentDate = null;
 
 echoStartPage();
-
-CheckBrowser::check($newDesign, false);
 
 $oldIEStyle = null;
 

@@ -189,8 +189,6 @@ if (isResultTypeCompare($resultType)) {
 
 echoStartPage();
 
-CheckBrowser::check($newDesign, true);
-
 $title = S::ERROR_TITLE;
 
 $resultMessage = null;

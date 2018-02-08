@@ -13,11 +13,9 @@ require_once "include/echo_footer.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
+$newDesign = isNewDesign(true);
 
 echoStartPage();
-
-CheckBrowser::check($newDesign, false);
 
 $styles = array();
 $styles[] = '/styles/a_common.css';

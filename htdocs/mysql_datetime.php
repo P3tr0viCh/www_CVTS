@@ -16,11 +16,9 @@ require_once "include/echo_html_page.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
+$newDesign = isNewDesign(true);
 
 echoStartPage();
-
-CheckBrowser::check($newDesign, false);
 
 echoHead($newDesign, S::MYSQL_DATETIME_TITLE, '/styles/mysql_datetime.css');
 

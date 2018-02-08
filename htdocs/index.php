@@ -32,8 +32,6 @@ $_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
 
 echoStartPage();
 
-CheckBrowser::check($newDesign, true);
-
 echoHead($newDesign, S::MAIN_TITLE, null, "/javascript/footer.js");
 
 echoStartBody($newDesign);

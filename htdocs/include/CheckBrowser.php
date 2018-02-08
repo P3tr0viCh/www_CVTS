@@ -8,7 +8,7 @@ class CheckBrowser
     const COMPATIBLE_MIN_VERSION_CHROME = 46;
 
     /**
-     * Проверяет версию браузера
+     * Проверяет версию браузера на совместимость с новым интерфейсом
      *
      * @return bool
      */
@@ -16,21 +16,23 @@ class CheckBrowser
     {
         $agent = $_SERVER['HTTP_USER_AGENT'];
 
+        if ($agent == "") return false;
+
+//        echo $agent . "<br>";
+
         if (preg_match("/(Edge)\/([0-9.]+)/", $agent, $edge)) {
             return $edge[2] >= self::COMPATIBLE_MIN_VERSION_EDGE;
         }
 
-        preg_match("/(Edge|Trident|MSIE|Opera|Firefox|Chrome|Version|Opera Mini|Netscape|Konqueror|SeaMonkey|Camino|Minefield|Iceweasel|K-Meleon|Maxthon)(?:\/| )([0-9.]+)/",
-            $agent, $browserInfo);
+        if (!preg_match("/(Trident|Chrome)(?:\/| )([0-9.]+)/",
+            $agent, $browserInfo)) {
+            return false;
+        };
 
         list(, $browser, $version) = $browserInfo;
 
         if ($browser == 'Chrome') {
             return $version >= self::COMPATIBLE_MIN_VERSION_CHROME;
-        }
-
-        if ($browser == 'Edge') {
-            return $version >= self::COMPATIBLE_MIN_VERSION_EDGE;
         }
 
         if ($browser == 'Trident') {
@@ -42,39 +44,5 @@ class CheckBrowser
         }
 
         return false;
-    }
-
-    /**
-     * Проверяет браузер на совместимость.
-     *
-     * @param bool $newDesign
-     * @param bool $showIncompatibleBrowserPage
-     * Если true -- выполняется переход на страницу с сообщением о несовместимости браузера,
-     * иначе -- меняет переменную $newDesign на false.
-     */
-    public static function check(&$newDesign, $showIncompatibleBrowserPage)
-    {
-        if ($newDesign) {
-            if (!self::isCompatibleVersion()) {
-                if ($showIncompatibleBrowserPage) {
-                    header("Location: " . "/incompatible_browser.php");
-                    die();
-                } else {
-                    $newDesign = false;
-                }
-            }
-
-            echo '<noscript>' . PHP_EOL;
-            echo Strings::TAB;
-            if ($showIncompatibleBrowserPage) {
-                $url = "/incompatible_browser.php";
-            } else {
-                $url = \HrefBuilder\Builder::getInstance()->setUrl(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
-                    ->setParam(ParamName::NEW_DESIGN, false)
-                    ->build();
-            }
-            echo "<meta http-equiv='refresh' content='0;url=$url'>" . PHP_EOL;
-            echo '</noscript>' . PHP_EOL . PHP_EOL;
-        }
     }
 }

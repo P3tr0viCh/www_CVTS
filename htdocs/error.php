@@ -9,7 +9,7 @@ require_once "include/echo_html_page.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign(CheckBrowser::isCompatibleVersion());
+$newDesign = isNewDesign(true);
 
 $errorNum = (isset($_SERVER["QUERY_STRING"]) && ctype_digit($_SERVER["QUERY_STRING"])) ?
     (int)$_SERVER["QUERY_STRING"] : 500;
@@ -35,8 +35,6 @@ switch ($errorNum) {
 }
 
 echoStartPage();
-
-CheckBrowser::check($newDesign, false);
 
 $styles[] = "/styles/error_common.css";
 if ($newDesign) {

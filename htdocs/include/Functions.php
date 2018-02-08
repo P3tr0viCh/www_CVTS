@@ -665,13 +665,41 @@ function var_to_bool($var)
     return $bool === null ? false : $bool;
 }
 
+/**
+ * Проверяет POST и GET на запрос вывода нового интерфейса.
+ * Если запросов нет, используется параметр $default.
+ * Если запрошен новый интерфейс, проверяет браузер на совместимость.
+ * Если браузер несовместим с новым интерфейсом и по умолчанию новый интерфейс не нужен,
+ * но при этом был запрошен через POST или GET,
+ * выполняется переход на страницу с сообщением о несовместимом браузере.
+ * Если по умолчанию требуется новый интерфейс, но браузер несовместим с ним,
+ * выводится старый интерфейс.
+ *
+ * @param bool $default
+ * @return bool
+ */
 function isNewDesign($default = false)
 {
-    return isset($_POST[ParamName::NEW_DESIGN]) ?
-        var_to_bool($_POST[ParamName::NEW_DESIGN]) :
-        (isset($_GET[ParamName::NEW_DESIGN]) ?
-            var_to_bool($_GET[ParamName::NEW_DESIGN]) :
-            $default);
+    if (isset($_POST[ParamName::NEW_DESIGN])) {
+        $newDesign = var_to_bool($_POST[ParamName::NEW_DESIGN]);
+    } elseif (isset($_GET[ParamName::NEW_DESIGN])) {
+        $newDesign = var_to_bool($_GET[ParamName::NEW_DESIGN]);
+    } else {
+        $newDesign = $default;
+    }
+
+    if ($newDesign) {
+        if (CheckBrowser::isCompatibleVersion()) {
+            return true;
+        }
+
+        if (!$default) {
+            header("Location: " . "/incompatible_browser.php");
+            die();
+        }
+    }
+
+    return false;
 }
 
 /**
