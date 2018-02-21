@@ -7,6 +7,11 @@ class ColumnsStrings
     const SCALE_CLASS_STATIC = 'Статика';
     const SCALE_CLASS_DYNAMIC = 'Динамика';
     const SCALE_NAME = 'Место установки';
+    const SCALE_MIN_CAPACITY = 'НмПВ';
+    const SCALE_MIN_CAPACITY_35P = '35% от НПВ';
+    const SCALE_MAX_CAPACITY = 'НПВ';
+    const SCALE_MI_DELTA_MIN = 'Погрешность до 35% от НПВ';
+    const SCALE_DISCRETENESS = 'Дискретность';
 
     const TRAIN_NUM = 'Системный номер поезда';
     const SCALE_NUM = '№ весов';

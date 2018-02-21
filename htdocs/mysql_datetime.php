@@ -20,7 +20,7 @@ $newDesign = isNewDesign(true);
 
 echoStartPage();
 
-echoHead($newDesign, S::MYSQL_DATETIME_TITLE, '/styles/mysql_datetime.css');
+echoHead($newDesign, S::TITLE_MYSQL_DATETIME, '/styles/mysql_datetime.css');
 
 echoStartBody($newDesign);
 
@@ -31,7 +31,7 @@ echo S::TAB . S::TAB;
 echo '<div class="div-center-inner">' . PHP_EOL;
 
 echo S::TAB . S::TAB . S::TAB;
-echo '<h1 class="mysql_datetime color-text--primary">' . S::MYSQL_DATETIME_HEADER . '</h1>' . PHP_EOL;
+echo '<h1 class="mysql_datetime color-text--primary">' . S::HEADER_PAGE_MYSQL_DATETIME . '</h1>' . PHP_EOL;
 
 $resultMessage = null;
 

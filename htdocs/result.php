@@ -189,7 +189,7 @@ if (isResultTypeCompare($resultType)) {
 
 echoStartPage();
 
-$title = S::ERROR_TITLE;
+$title = S::TITLE_ERROR;
 
 $resultMessage = null;
 

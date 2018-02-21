@@ -22,17 +22,20 @@ require_once "include/echo_table.php";
 require_once "include/echo_footer.php";
 
 use Strings as S;
+use ColumnsStrings as C;
+use Database\Columns as DBC;
 
 $newDesign = isNewDesign();
 
 $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
+$showMetrology =  getParamGETAsBool(ParamName::SHOW_METROLOGY, false);;
 
 setcookie(ParamName::SHOW_DISABLED, boolToString($showDisabled));
 $_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
 
 echoStartPage();
 
-echoHead($newDesign, S::MAIN_TITLE, null, "/javascript/footer.js");
+echoHead($newDesign, S::TITLE_MAIN, null, "/javascript/footer.js");
 
 echoStartBody($newDesign);
 
@@ -40,7 +43,7 @@ $resultMessage = null;
 
 $mysqli = MySQLConnection::getInstance();
 
-echoHeader($newDesign, true, S::MAIN_HEADER);
+echoHeader($newDesign, true, S::HEADER_PAGE_MAIN);
 
 echoDrawer($newDesign, $mysqli);
 
@@ -68,11 +71,19 @@ if ($mysqli) {
             echoTableHeadStart();
             echoTableTRStart();
             {
-                echoTableTH(ColumnsStrings::SCALE_NUMBER);
-                echoTableTH(ColumnsStrings::SCALE_TYPE);
-                echoTableTH(ColumnsStrings::SCALE_CLASS_STATIC);
-                echoTableTH(ColumnsStrings::SCALE_CLASS_DYNAMIC);
-                echoTableTH(ColumnsStrings::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
+                echoTableTH(C::SCALE_NUMBER);
+                echoTableTH(C::SCALE_TYPE);
+                echoTableTH(C::SCALE_CLASS_STATIC);
+                echoTableTH(C::SCALE_CLASS_DYNAMIC);
+                echoTableTH(C::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
+
+                if ($showMetrology) {
+                    echoTableTH(C::SCALE_MIN_CAPACITY);
+                    echoTableTH(C::SCALE_MIN_CAPACITY_35P);
+                    echoTableTH(C::SCALE_MAX_CAPACITY);
+                    echoTableTH(C::SCALE_MI_DELTA_MIN);
+                    echoTableTH(C::SCALE_DISCRETENESS);
+                }
             }
             echoTableTREnd();
             echoTableHeadEnd();
@@ -90,41 +101,55 @@ if ($mysqli) {
 
             while ($row = $result->fetch_array()) {
                 // 1981 -- номер весов для отладки
-                if ($row[Database\Columns::SCALE_NUM] == 1981) continue;
+                if ($row[DBC::SCALE_NUM] == 1981) continue;
 
-                if ($row[Database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
+                if ($row[DBC::SCALE_DISABLED] && !$showDisabled) continue;
 
-//                if ($row[Database\Columns::SCALE_NUM] > 50) continue;
+//                if ($row[DBC::SCALE_NUM] > 50) continue;
 
                 $rowColorClass = getRowColorClass($numColor);
 
                 $href = $hrefBuilder->setUrl("query.php")
-                    ->setParam(ParamName::SCALE_NUM, $row[Database\Columns::SCALE_NUM])
+                    ->setParam(ParamName::SCALE_NUM, $row[DBC::SCALE_NUM])
                     ->setParam(ParamName::NEW_DESIGN, $newDesign)
                     ->build();
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                     $newDesign ? "location.href=\"$href\"" : null);
 
-                for ($i = 0; $i < $result->field_count - 1; $i++) {
+                $numColumns = 0;
+
+                for ($i = 0; $i < $result->field_count; $i++) {
+                    if ($columns[$i] == DBC::SCALE_DISABLED) {
+                        continue;
+                    }
+
+                    if (!$showMetrology &&
+                        ($columns[$i] == DBC::SCALE_MIN_CAPACITY ||
+                            $columns[$i] == DBC::SCALE_MIN_CAPACITY_35P ||
+                            $columns[$i] == DBC::SCALE_MAX_CAPACITY ||
+                            $columns[$i] == DBC::SCALE_MI_DELTA_MIN ||
+                            $columns[$i] == DBC::SCALE_DISCRETENESS)) {
+                        continue;
+                    }
+
                     $field = latin1ToUtf8($row[$i]);
 
                     $class = null;
                     switch ($columns[$i]) {
-                        case Database\Columns::SCALE_NUM:
-                        case Database\Columns::SCALE_CLASS_DYNAMIC:
-                            if (!$newDesign) {
-                                $class = "text-align--center";
+                        case DBC::SCALE_TYPE_TEXT:
+                            if ($newDesign) {
+                                $class = "mdl-data-table__cell--non-numeric";
                             }
                             break;
-                        case Database\Columns::SCALE_PLACE:
+                        case DBC::SCALE_PLACE:
                             if ($newDesign) {
                                 $class = "mdl-data-table__cell--non-numeric mdl-data-table__cell--add-padding";
                             }
                             break;
                         default:
-                            if ($newDesign) {
-                                $class = "mdl-data-table__cell--non-numeric";
+                            if (!$newDesign) {
+                                $class = "text-align--center";
                             }
                     }
 
@@ -132,8 +157,10 @@ if ($mysqli) {
 
                     echoTableTD($field, $class,
                         !$newDesign &&
-                        ($columns[$i] == Database\Columns::SCALE_NUM ||
-                            $columns[$i] == Database\Columns::SCALE_PLACE) ? $href : null);
+                        ($columns[$i] == DBC::SCALE_NUM ||
+                            $columns[$i] == DBC::SCALE_PLACE) ? $href : null);
+
+                    $numColumns++;
                 } // for
 
                 echoTableTREnd();
@@ -155,7 +182,7 @@ if ($mysqli) {
             $field = S::ALL_TRAIN_SCALES;
 
             echoTableTD($field, $newDesign ? "mdl-data-table__cell--non-numeric" : null,
-                $newDesign ? null : $href, "5");
+                $newDesign ? null : $href, $numColumns);
 
             echoTableTREnd();
 

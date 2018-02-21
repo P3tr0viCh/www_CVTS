@@ -7,18 +7,20 @@ class Strings
     const EXCEL_SEPARATOR = ";";
     const EXCEL_EOL = "\n";
 
-    const MAIN_TITLE = 'Сервер весовых систем';
-    const DATETIME_TITLE = 'Дата и время';
-    const WAC_TITLE = 'Травматизм';
-    const MYSQL_DATETIME_TITLE = 'Дата и время сервера';
-    const ERROR_INCOMPATIBLE_BROWSER_TITLE = 'Несовместимый браузер';
-    const A_TITLE = 'Карта сайта';
-    const ERROR_TITLE = 'Ошибка';
+    const TITLE_MAIN = 'Сервер весовых систем';
+    const TITLE_DATETIME = 'Дата и время';
+    const TITLE_WAC = 'Травматизм';
+    const TITLE_MYSQL_DATETIME = 'Дата и время сервера';
+    const TITLE_ERROR_INCOMPATIBLE_BROWSER = 'Несовместимый браузер';
+    const TITLE_HELP = 'Справка';
+    const TITLE_A = 'Карта сайта';
+    const TITLE_ERROR = 'Ошибка';
 
-    const MAIN_HEADER = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
-    const MAIN_HEADER_LOGO_ALT = 'Металлоинвест | Уральская сталь';
-    const MYSQL_DATETIME_HEADER = 'Дата и время на сервере MySQL';
-    const A_HEADER = 'Карта сайта';
+    const HEADER_PAGE_MAIN = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
+    const HEADER_PAGE_MAIN_LOGO_ALT = 'Металлоинвест | Уральская сталь';
+    const HEADER_PAGE_MYSQL_DATETIME = 'Дата и время на сервере MySQL';
+    const HEADER_PAGE_HELP = 'Справка';
+    const HEADER_PAGE_A = 'Карта сайта';
 
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
@@ -237,4 +239,15 @@ class Strings
 
     const A_GOTO_DATA_CENTER_ARM = 'Универсальный АРМ весоизмерения "Дата-Центр Автоматика"';
     const A_GOTO_CTA_AND_KIP_ASU_GAZ = 'Температура наружного воздуха, ЦТАиКИП';
+
+    const HELP_TEXT_PARAMS = "Параметры адресной строки";
+    const HELP_TEXT_PARAMS_TEXT = "Параметры вводятся в адресной строке браузера в конце адреса страницы. Началом запроса служит знак &laquo;?&raquo;, после которого добавляются параметры в виде <i>имя_параметра=значение_параметра</i>. Параметры разделяются символом &laquo;&amp;&raquo;.";
+    const HELP_TEXT_PARAMS_LIST_HEADER = "Список параметров";
+    const HELP_TEXT_PARAMS_LIST_HEADER_1 = "имя_параметра";
+    const HELP_TEXT_PARAMS_LIST_HEADER_2 = "значение_параметра";
+    const HELP_TEXT_PARAMS_LIST_HEADER_3 = "Описание";
+    const HELP_TEXT_PARAMS_VALUE_BOOL = "true|false";
+    const HELP_TEXT_PARAMS_NEW_DESIGN = "Вывод сайта в новом дизайне";
+    const HELP_TEXT_PARAMS_SHOW_METROLOGY = "Вывод на главной странице метрологических параметров";
+    const HELP_TEXT_PARAMS_SHOW_DISABLED = "Вывод на главной странице скрытых (выведенных из эксплуатации) весов";
 }

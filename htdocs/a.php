@@ -26,11 +26,11 @@ if ($newDesign) {
     $styles[] = '/styles/a_compat.css';
 }
 
-echoHead($newDesign, S::A_TITLE, $styles, "/javascript/footer.js");
+echoHead($newDesign, S::TITLE_A, $styles, "/javascript/footer.js");
 
 echoStartBody($newDesign);
 
-echoHeader($newDesign, true, S::MAIN_HEADER, S::A_HEADER);
+echoHeader($newDesign, true, S::HEADER_PAGE_MAIN, S::HEADER_PAGE_A);
 
 echoStartMain($newDesign);
 

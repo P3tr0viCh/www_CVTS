@@ -55,7 +55,7 @@ if (!$disableHideCursor) {
     $javaScripts[] = '/javascript/hide_cursor.js';
 }
 
-echoHead($newDesign, S::WAC_TITLE, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_WAC, $styles, $javaScripts, $oldIEStyle);
 
 echoStartBody($newDesign);
 

@@ -1,5 +1,14 @@
+p {
+    font-size: 12pt;
+}
+
+h2 {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
 .page-content {
-    margin: 32px 8px 12px 64px;
+    margin: 32px 64px 12px;
 }
 
 ul {
@@ -18,7 +27,6 @@ a {
 }
 
 .versions {
-    font-size: 12pt;
     line-height: 24px;
     margin: 24px 0 12px;
 }

@@ -39,7 +39,7 @@ $javaScripts[] = '/javascript/hide_cursor.js';
 
 $newDesign = false;
 
-echoHead($newDesign, S::DATETIME_TITLE, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_DATETIME, $styles, $javaScripts, $oldIEStyle);
 
 echoStartBody($newDesign, 'dateTime(' . ($showSeconds ? 'true' : 'false') . ')');
 

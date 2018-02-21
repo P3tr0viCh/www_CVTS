@@ -12,7 +12,7 @@ $newDesign = false;
 
 echoStartPage();
 
-echoHead($newDesign, S::ERROR_INCOMPATIBLE_BROWSER_TITLE);
+echoHead($newDesign, S::TITLE_ERROR_INCOMPATIBLE_BROWSER);
 
 echoStartBody($newDesign);
 

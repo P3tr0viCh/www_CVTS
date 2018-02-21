@@ -87,6 +87,7 @@ class ParamName
 {
     const SCALE_NUM = 'scale_num';
     const SHOW_DISABLED = 'show_disabled';
+    const SHOW_METROLOGY = 'show_metrology';
 
     const NEW_DESIGN = 'new_design';
 

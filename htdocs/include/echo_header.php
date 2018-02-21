@@ -124,7 +124,7 @@ class MenuItem
 function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLinks = null, $menuItems = null)
 {
     if (!$header) {
-        $header = S::MAIN_HEADER;
+        $header = S::HEADER_PAGE_MAIN;
     }
 
     if ($newDesign) {
@@ -217,7 +217,7 @@ function echoHeader($newDesign, $mainHeader, $header, $subHeader = null, $navLin
         echo S::TAB;
         echo '<div class="header">' . PHP_EOL;
         if ($mainHeader) {
-            $mainLogoAlt = S::MAIN_HEADER_LOGO_ALT;
+            $mainLogoAlt = S::HEADER_PAGE_MAIN_LOGO_ALT;
             echo S::TAB . S::TAB;
             echo "<img src='/images/logo.jpg' alt='$mainLogoAlt' class='main-logo'>" . PHP_EOL;
         }

@@ -299,8 +299,20 @@ function columnName($fieldName, $scaleType, $resultType = null)
     switch ($fieldName) {
         case C::TRAIN_NUM:
             return ColumnsStrings::TRAIN_NUM;
+
         case C::SCALE_NUM:
             return ColumnsStrings::SCALE_NUM;
+        case C::SCALE_MIN_CAPACITY:
+            return ColumnsStrings::SCALE_MIN_CAPACITY;
+        case C::SCALE_MIN_CAPACITY_35P:
+            return ColumnsStrings::SCALE_MIN_CAPACITY_35P;
+        case C::SCALE_MAX_CAPACITY:
+            return ColumnsStrings::SCALE_MAX_CAPACITY;
+        case C::SCALE_MI_DELTA_MIN:
+            return ColumnsStrings::SCALE_MI_DELTA_MIN;
+        case C::SCALE_DISCRETENESS:
+            return ColumnsStrings::SCALE_DISCRETENESS;
+
         case C::UNIX_TIME:
             return ColumnsStrings::UNIX_TIME;
         case C::DATETIME:
@@ -496,7 +508,14 @@ function isFieldString($fieldName)
 {
     switch ($fieldName) {
         case C::TRAIN_NUM:
+
         case C::SCALE_NUM:
+        case C::SCALE_MIN_CAPACITY:
+        case C::SCALE_MIN_CAPACITY_35P:
+        case C::SCALE_MAX_CAPACITY:
+        case C::SCALE_MI_DELTA_MIN:
+        case C::SCALE_DISCRETENESS:
+
         case C::UNIX_TIME:
         case C::TRAIN_NUMBER:
         case C::CARRYING:

@@ -44,12 +44,18 @@ class Columns
 
     const SCALE_NUM = 'scales';
 
-    const SCALE_TYPE_NAME = 'type';
+    const SCALE_TYPE_TEXT = 'type';
     const SCALE_CLASS_STATIC = 'sclass';
     const SCALE_CLASS_DYNAMIC = 'dclass';
     const SCALE_PLACE = 'place';
     const SCALE_TYPE = 'tag1';
     const SCALE_DISABLED = 'disabled';
+
+    const SCALE_MIN_CAPACITY = 'wmin';
+    const SCALE_MIN_CAPACITY_35P = 'w35max';
+    const SCALE_MAX_CAPACITY = 'wmax';
+    const SCALE_MI_DELTA_MIN = 'wdeltamin';
+    const SCALE_DISCRETENESS = 'wdiv';
 
     const SEQUENCE_NUMBER = 'num';
 

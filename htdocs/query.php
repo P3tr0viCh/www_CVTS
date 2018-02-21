@@ -28,7 +28,7 @@ if ($scales < 0) {
     $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 }
 
-$title = S::ERROR_TITLE;
+$title = S::TITLE_ERROR;
 
 $scaleInfo = null;
 $resultMessage = null;

@@ -1,0 +1,20 @@
+body {
+    font-size: 12pt;
+}
+
+p {
+    font-size: 12pt;
+}
+
+h2 {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.page-content {
+    margin: 32px 64px 24px;
+}
+
+a {
+    font-weight: inherit;
+}
