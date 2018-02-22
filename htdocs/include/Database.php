@@ -51,10 +51,11 @@ class Columns
     const SCALE_TYPE = 'tag1';
     const SCALE_DISABLED = 'disabled';
 
+    const SCALE_TYPE_DYN = 'typedyn';
+    const SCALE_WTYPE = 'wtype';
+    const SCALE_CLASS = 'wclass';
     const SCALE_MIN_CAPACITY = 'wmin';
-    const SCALE_MIN_CAPACITY_35P = 'w35max';
     const SCALE_MAX_CAPACITY = 'wmax';
-    const SCALE_MI_DELTA_MIN = 'wdeltamin';
     const SCALE_DISCRETENESS = 'wdiv';
 
     const SEQUENCE_NUMBER = 'num';
@@ -125,7 +126,7 @@ class Columns
     const VELOCITY = 'velocity';
     const ACCELERATION = 'acceleration';
 
-    const SCALE_CLASS = 'wmode';
+    const WMODE = 'wmode';
     const UNIT_NUMBER = 'wunit';
     const RAIL_PATH = 'railpath';
     const STATUS = 'status';

@@ -170,7 +170,16 @@ class Strings
     const HELP_SCALES_OLD = '(номера весов вводятся через запятую)';
 
     const TEXT_SCALE_CLASS_STATIC = 'Статика';
+    const TEXT_SCALE_CLASS_STATIC_0 = 'Средний';
+    const TEXT_SCALE_CLASS_STATIC_1 = 'Обычный';
+    const TEXT_SCALE_CLASS_STATIC_2 = 'Высокий';
     const TEXT_SCALE_CLASS_DYNAMIC = 'Динамика';
+    const TEXT_SCALE_CLASS_DYNAMIC_0 = '0.2';
+    const TEXT_SCALE_CLASS_DYNAMIC_1 = '0.5';
+    const TEXT_SCALE_CLASS_DYNAMIC_2 = '1';
+    const TEXT_SCALE_CLASS_DYNAMIC_3 = '2';
+    const TEXT_SCALE_CLASS_DYNAMIC_4 = '5';
+    const TEXT_SCALE_AUTO_CLASS_STATIC_0 = 'Высокий';
     const TEXT_SCALE_CLASS_UNKNOWN = 'Не определено';
 
     const TEXT_OPERATION_TYPE_CALIBRATION_DYNAMIC = 'Калибровка в динамике';

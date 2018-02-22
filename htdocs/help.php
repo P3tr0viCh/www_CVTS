@@ -16,7 +16,7 @@ require_once "include/echo_footer.php";
 
 use Strings as S;
 
-$newDesign = isNewDesign();
+$newDesign = isNewDesign(true);
 
 echoStartPage();
 

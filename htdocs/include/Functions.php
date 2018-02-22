@@ -127,7 +127,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::VELOCITY:
                 $velocity = number_format(abs($fieldValue), 1, ",", "");
                 return $fieldValue > 0 ? $velocity . " &gt;&gt;&gt;" : $velocity = "&lt;&lt;&lt; " . $velocity;
-            case C::SCALE_CLASS:
+            case C::WMODE:
                 switch ($fieldValue) {
                     case 1:
                         return S::TEXT_SCALE_CLASS_DYNAMIC;
@@ -191,6 +191,44 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::TEMPERATURE_7:
             case C::TEMPERATURE_8:
                 return number_format((double)$fieldValue, 0, "", "");
+            case C::SCALE_CLASS_STATIC:
+            case C::SCALE_CLASS_DYNAMIC:
+                /**
+                 * Значение задаётся в @uses  \QueryScales::getScaleClass.
+                 * Значения от 0 до 100 соответствуют железнодорожным весам в динамике,
+                 * от 100 до 199 - статическим железнодорожным весам,
+                 * от 200 до 299 - автомобильным весам,
+                 * от 300 до 399 - доменным печам,
+                 * от 400 до 499 - вагонеточным весам.
+                 */
+                switch ($fieldValue) {
+                    case 0:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_0;
+                    case 1:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_1;
+                    case 2:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_2;
+                    case 3:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_3;
+                    case 4:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_4;
+
+                    case 100:
+                        return S::TEXT_SCALE_CLASS_STATIC_0;
+                    case 101:
+                        return S::TEXT_SCALE_CLASS_STATIC_1;
+
+                    case 200:
+                        return S::TEXT_SCALE_CLASS_STATIC_2;
+
+                    case 300:
+                        return S::TEXT_SCALE_CLASS_STATIC_2;
+
+                    case 400:
+                        return S::TEXT_SCALE_CLASS_DYNAMIC_3;
+                    default:
+                        return S::TEXT_SIDE_UNKNOWN;
+                }
             default:
                 return $fieldValue;
         }
@@ -229,7 +267,7 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::INVOICE_NUMBER:
 
         case C::DATETIME_FAILURE:
-        case C::SCALE_CLASS:
+        case C::WMODE:
         case C::MESSAGE:
 
         case C::UNIT_NUMBER:
@@ -304,12 +342,8 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::SCALE_NUM;
         case C::SCALE_MIN_CAPACITY:
             return ColumnsStrings::SCALE_MIN_CAPACITY;
-        case C::SCALE_MIN_CAPACITY_35P:
-            return ColumnsStrings::SCALE_MIN_CAPACITY_35P;
         case C::SCALE_MAX_CAPACITY:
             return ColumnsStrings::SCALE_MAX_CAPACITY;
-        case C::SCALE_MI_DELTA_MIN:
-            return ColumnsStrings::SCALE_MI_DELTA_MIN;
         case C::SCALE_DISCRETENESS:
             return ColumnsStrings::SCALE_DISCRETENESS;
 
@@ -433,7 +467,7 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::TARE_SECOND_CARRIAGE;
         case C::DATETIME_FAILURE:
             return ColumnsStrings::DATETIME_FAILURE;
-        case C::SCALE_CLASS:
+        case C::WMODE:
             return ColumnsStrings::SCALE_CLASS;
         case C::MESSAGE:
             return ColumnsStrings::MESSAGE;
@@ -511,9 +545,7 @@ function isFieldString($fieldName)
 
         case C::SCALE_NUM:
         case C::SCALE_MIN_CAPACITY:
-        case C::SCALE_MIN_CAPACITY_35P:
         case C::SCALE_MAX_CAPACITY:
-        case C::SCALE_MI_DELTA_MIN:
         case C::SCALE_DISCRETENESS:
 
         case C::UNIX_TIME:
@@ -565,6 +597,8 @@ function isFieldString($fieldName)
         case C::TEMPERATURE_1:
         case C::TEMPERATURE_2:
         case C::COUNT_ID:
+
+        case C::SCALE_CLASS_DYNAMIC:
             return false;
 
         case C::DATETIME:
@@ -585,7 +619,7 @@ function isFieldString($fieldName)
         case C::INVOICE_NUMBER:
         case C::INVOICE_SUPPLIER:
         case C::INVOICE_RECIPIENT:
-        case C::SCALE_CLASS:
+        case C::WMODE:
         case C::LOADING_PLACE:
         case C::DATETIME_FAILURE:
         case C::MESSAGE:
@@ -602,6 +636,8 @@ function isFieldString($fieldName)
         case C::WEIGH_NAME:
         case C::PRODUCT:
         case C::LEFT_SIDE:
+
+        case C::SCALE_CLASS_STATIC:
             return true;
 
         default:

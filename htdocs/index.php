@@ -25,10 +25,13 @@ use Strings as S;
 use ColumnsStrings as C;
 use Database\Columns as DBC;
 
+// debug
+$showQuery = false;
+
 $newDesign = isNewDesign();
 
 $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
-$showMetrology =  getParamGETAsBool(ParamName::SHOW_METROLOGY, false);;
+$showMetrology = getParamGETAsBool(ParamName::SHOW_METROLOGY, false);
 
 setcookie(ParamName::SHOW_DISABLED, boolToString($showDisabled));
 $_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
@@ -55,7 +58,9 @@ if ($mysqli) {
     if (!$mysqli->connect_errno) {
         $query = new QueryScales();
 
-//        echo $query->getQuery() . PHP_EOL;
+        if ($showQuery) {
+            echo $query->getQuery() . PHP_EOL;
+        }
 
         $result = $mysqli->query($query->getQuery());
 
@@ -72,16 +77,14 @@ if ($mysqli) {
             echoTableTRStart();
             {
                 echoTableTH(C::SCALE_NUMBER);
-                echoTableTH(C::SCALE_TYPE);
+                echoTableTH(C::SCALE_TYPE_TEXT);
                 echoTableTH(C::SCALE_CLASS_STATIC);
                 echoTableTH(C::SCALE_CLASS_DYNAMIC);
                 echoTableTH(C::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
 
                 if ($showMetrology) {
                     echoTableTH(C::SCALE_MIN_CAPACITY);
-                    echoTableTH(C::SCALE_MIN_CAPACITY_35P);
                     echoTableTH(C::SCALE_MAX_CAPACITY);
-                    echoTableTH(C::SCALE_MI_DELTA_MIN);
                     echoTableTH(C::SCALE_DISCRETENESS);
                 }
             }
@@ -126,9 +129,7 @@ if ($mysqli) {
 
                     if (!$showMetrology &&
                         ($columns[$i] == DBC::SCALE_MIN_CAPACITY ||
-                            $columns[$i] == DBC::SCALE_MIN_CAPACITY_35P ||
                             $columns[$i] == DBC::SCALE_MAX_CAPACITY ||
-                            $columns[$i] == DBC::SCALE_MI_DELTA_MIN ||
                             $columns[$i] == DBC::SCALE_DISCRETENESS)) {
                         continue;
                     }
@@ -138,6 +139,7 @@ if ($mysqli) {
                     $class = null;
                     switch ($columns[$i]) {
                         case DBC::SCALE_TYPE_TEXT:
+                        case DBC::SCALE_CLASS_STATIC:
                             if ($newDesign) {
                                 $class = "mdl-data-table__cell--non-numeric";
                             }
