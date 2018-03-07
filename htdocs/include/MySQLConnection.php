@@ -3,37 +3,55 @@
  * Настройки подключения к серверу MySQL читаются из файла
  * с именем MYSQL_CONNECTION, находящегося в родительском для htdocs каталоге.
  *
- * Файл MYSQL_CONNECTION содержит три строки:
+ * Файл MYSQL_CONNECTION содержит шесть строк:
  * первая -- адрес сервера;
  * вторая -- имя пользователя;
- * третья -- пароль пользователя.
+ * третья -- пароль пользователя;
+ * 4-ая   -- адрес резервного сервера;
+ * 5-ая   -- имя пользователя на резервном сервере;
+ * 6-ая   -- пароль пользователя на резервном сервере.
  *
  * Пример:
  * 127.0.0.1:3306:/hd0/tmp/mysql.sock
  * username
  * password
+ * localhost
+ * local_username
+ * local_password
 */
 
 require_once "Database.php";
+require_once "FileNames.php";
 
 class MySQLConnection
 {
     /**
      * @param null|string $dbName
+     * @param bool $use_backup
      * @return mysqli|null
      */
-    public static function getInstance($dbName = null)
+    public static function getInstance($use_backup = false, $dbName = null)
     {
-        $handle = @fopen("../MYSQL_CONNECTION", "r");
+        $handle = @fopen("../" . FileNames::MYSQL_CONNECTION, "r");
+
+        $hosts = array();
+        $usernames = array();
+        $passwords = array();
 
         if ($handle) {
-            $host = trim(fgets($handle, 255));
-            $username = trim(fgets($handle, 255));
-            $password = trim(fgets($handle, 255));
+            $hosts[] = trim(fgets($handle, 255));
+            $usernames[] = trim(fgets($handle, 255));
+            $passwords[] = trim(fgets($handle, 255));
+
+            $hosts[] = trim(fgets($handle, 255));
+            $usernames[] = trim(fgets($handle, 255));
+            $passwords[] = trim(fgets($handle, 255));
 
             fclose($handle);
 
-            if (!$host || !$username || !$password) {
+            $i = $use_backup ? 1 : 0;
+
+            if (!$hosts[$i] || !$usernames[$i] || !$passwords[$i]) {
                 return null;
             }
         } else {
@@ -44,7 +62,7 @@ class MySQLConnection
             $dbName = Database\Info::WDB;
         }
 
-        $mysqli = @new mysqli($host, $username, $password, $dbName);
+        $mysqli = @new mysqli($hosts[$i], $usernames[$i], $passwords[$i], $dbName);
 
         if (!$mysqli->connect_errno) {
             $mysqli->set_charset(Database\Info::CHARSET);

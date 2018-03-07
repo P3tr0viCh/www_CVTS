@@ -7,13 +7,13 @@
  *     echoHead -- вывод заголовка
  *     echoUseScripts -- подключение скриптов.
  *     echoStartBody -- начало тела страницы.
- *         echoHeader -- вывод хизера (файл {@link [echo_header.php]}).
- *         echoDrawer -- вывод главного меню (файл {@link [echo_drawer.php]}).
+ *         HtmlHeader -- вывод хизера (файл {@link [HtmlHeader.php]}).
+ *         TODO: echoDrawer -- вывод главного меню (файл {@link [echo_drawer.php]}).
  *         echoStartMain -- начало главного блока.
  *             echoStartContent -- начало контента.
  *                 Контент.
  *             echoEndContent -- конец контента.
- *             echoFooter -- вывод футтера (файл {@link [echo_footer.php]}).
+ *             TODO: echoFooter -- вывод футтера (файл {@link [echo_footer.php]}).
  *         echoEndMain -- конец главного блока.
  *     echoEndBody.
  * echoEndPage.
@@ -102,7 +102,7 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
             echo S::TAB;
             echo '<link rel="stylesheet" href="/mdl/material.min.css">' . PHP_EOL;
             echo S::TAB;
-            echo '<link rel="stylesheet" href="/styles/new_design.css">' . PHP_EOL;
+            echo '<link rel="stylesheet" href="/styles/common_new_design.css">' . PHP_EOL;
             echo S::TAB;
             echo '<link rel="stylesheet" href="/styles/scripts_enabled.css">' . PHP_EOL;
             echo S::TAB;
@@ -111,11 +111,11 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
             echo '<link rel="stylesheet" href="/materialicons/materialicons.css">' . PHP_EOL;
         } else {
             echo S::TAB;
-            echo '<link rel="stylesheet" href="/styles/compat.css">' . PHP_EOL;
+            echo '<link rel="stylesheet" href="/styles/common_compat.css">' . PHP_EOL;
             echo S::TAB;
             echo "<!--[if lt IE 9]>" . PHP_EOL;
             echo S::TAB . S::TAB;
-            echo '<link rel="stylesheet" href="/styles/compat_ie.css">' . PHP_EOL;
+            echo '<link rel="stylesheet" href="/styles/common_compat_ie.css">' . PHP_EOL;
             echo S::TAB;
             echo "<![endif]-->" . PHP_EOL;
         }

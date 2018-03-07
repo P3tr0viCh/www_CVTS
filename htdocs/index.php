@@ -16,10 +16,11 @@ require_once "include/ResultMessage.php";
 require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_header.php";
 require_once "include/echo_drawer.php";
 require_once "include/echo_table.php";
 require_once "include/echo_footer.php";
+
+require_once "include/HtmlHeader.php";
 
 use Strings as S;
 use ColumnsStrings as C;
@@ -32,21 +33,27 @@ $newDesign = isNewDesign();
 
 $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
 $showMetrology = getParamGETAsBool(ParamName::SHOW_METROLOGY, false);
+$useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 setcookie(ParamName::SHOW_DISABLED, boolToString($showDisabled));
 $_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
 
 echoStartPage();
 
-echoHead($newDesign, S::TITLE_MAIN, null, "/javascript/footer.js");
+echoHead($newDesign, $useBackup ? S::TITLE_MAIN_BACKUP : S::TITLE_MAIN, null, "/javascript/footer.js");
 
 echoStartBody($newDesign);
 
 $resultMessage = null;
 
-$mysqli = MySQLConnection::getInstance();
+$mysqli = MySQLConnection::getInstance($useBackup);
 
-echoHeader($newDesign, true, S::HEADER_PAGE_MAIN);
+(new HtmlHeader($newDesign))
+    ->setMainPage(true)
+    ->setHeader(S::HEADER_PAGE_MAIN)
+    ->setSubHeader($useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null)
+    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->draw();
 
 echoDrawer($newDesign, $mysqli);
 
@@ -108,13 +115,12 @@ if ($mysqli) {
 
                 if ($row[DBC::SCALE_DISABLED] && !$showDisabled) continue;
 
-//                if ($row[DBC::SCALE_NUM] > 50) continue;
-
                 $rowColorClass = getRowColorClass($numColor);
 
                 $href = $hrefBuilder->setUrl("query.php")
                     ->setParam(ParamName::SCALE_NUM, $row[DBC::SCALE_NUM])
-                    ->setParam(ParamName::NEW_DESIGN, $newDesign)
+                    ->setParam($newDesign ? ParamName::NEW_DESIGN : null, $newDesign)
+                    ->setParam($useBackup ? ParamName::USE_BACKUP : null, $useBackup)
                     ->build();
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,

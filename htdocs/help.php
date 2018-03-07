@@ -10,9 +10,10 @@ require_once "include/MetaInfo.php";
 require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_header.php";
 require_once "include/echo_table.php";
 require_once "include/echo_footer.php";
+
+require_once "include/HtmlHeader.php";
 
 use Strings as S;
 
@@ -33,7 +34,11 @@ echoHead($newDesign, S::TITLE_HELP, $styles, "/javascript/footer.js");
 
 echoStartBody($newDesign);
 
-echoHeader($newDesign, true, S::HEADER_PAGE_MAIN, S::HEADER_PAGE_HELP);
+(new HtmlHeader($newDesign))
+    ->setMainPage(true)
+    ->setHeader(S::HEADER_PAGE_MAIN)
+    ->setSubHeader(S::HEADER_PAGE_HELP)
+    ->draw();
 
 echoStartMain($newDesign);
 

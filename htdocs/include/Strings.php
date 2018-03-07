@@ -8,6 +8,7 @@ class Strings
     const EXCEL_EOL = "\n";
 
     const TITLE_MAIN = 'Сервер весовых систем';
+    const TITLE_MAIN_BACKUP = 'Резервный сервер весовых систем';
     const TITLE_DATETIME = 'Дата и время';
     const TITLE_WAC = 'Травматизм';
     const TITLE_MYSQL_DATETIME = 'Дата и время сервера';
@@ -17,6 +18,7 @@ class Strings
     const TITLE_ERROR = 'Ошибка';
 
     const HEADER_PAGE_MAIN = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
+    const HEADER_PAGE_MAIN_BACKUP = 'РЕЗЕРВНЫЙ СЕРВЕР';
     const HEADER_PAGE_MAIN_LOGO_ALT = 'Металлоинвест | Уральская сталь';
     const HEADER_PAGE_MYSQL_DATETIME = 'Дата и время на сервере MySQL';
     const HEADER_PAGE_HELP = 'Справка';

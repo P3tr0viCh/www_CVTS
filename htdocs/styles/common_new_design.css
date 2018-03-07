@@ -169,6 +169,10 @@ tr.rowclick:hover {
     font-size: 18px;
 }
 
+.mdl-layout-title__subtitle.color-text--error {
+    color: rgb(255, 133, 123);
+}
+
 .mdl-tooltip {
     text-align: start;
 }

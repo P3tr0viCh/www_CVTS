@@ -9,13 +9,15 @@
  * Одна строка -- один логин.
 */
 
+require_once "FileNames.php";
+
 class CheckUser
 {
     private static $powerUsers = null;
 
     private static function readPowerUsersFile()
     {
-        self::$powerUsers = explode(PHP_EOL, file_get_contents("../POWER_USERS"));
+        self::$powerUsers = explode(PHP_EOL, file_get_contents("../" . FileNames::POWER_USERS));
     }
 
     /**

@@ -30,14 +30,16 @@ require_once "include/builders/DateTimeBuilder.php";
 require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_header.php";
 require_once "include/echo_drawer.php";
 require_once "include/echo_table.php";
 require_once "include/echo_form.php";
 
+require_once "include/HtmlHeader.php";
+
 use Strings as S;
 
 $newDesign = isNewDesign();
+$useBackup = getPOSTParam(ParamName::USE_BACKUP);
 
 $reportType = getParamGETAsInt(ParamName::REPORT_TYPE, ReportType::TYPE_DEFAULT);
 
@@ -221,15 +223,15 @@ if ($mysqli) {
 
             $navLinks = array();
 
-            $navLinks[] = new NavLink('save', 'save', S::NAV_LINK_SAVE, 'saveToExcel()', true);
-            $navLinks[] = new NavLink('refresh', 'refresh', S::NAV_LINK_UPDATE, 'reloadData()');
-            $navLinks[] = new NavLink('back', 'arrow_back', S::NAV_LINK_BACK, 'goBack()');
+            $navLinks[] = new HtmlHeaderNavLink('save', 'save', S::NAV_LINK_SAVE, 'saveToExcel()', true);
+            $navLinks[] = new HtmlHeaderNavLink('refresh', 'refresh', S::NAV_LINK_UPDATE, 'reloadData()');
+            $navLinks[] = new HtmlHeaderNavLink('back', 'arrow_back', S::NAV_LINK_BACK, 'goBack()');
 
             $menuItems = array();
 
-            $menuItems[] = new MenuItem('copyAll', S::MENU_COPY_ALL, 'copyToClipboard("all")');
-            $menuItems[] = new MenuItem('copyTable', S::MENU_COPY_TABLE, 'copyToClipboard("table")');
-            $menuItems[] = new MenuItem('copyTableBody', S::MENU_COPY_TABLE_BODY, 'copyToClipboard("tableBody")');
+            $menuItems[] = new HtmlHeaderMenuItem('copyAll', S::MENU_COPY_ALL, 'copyToClipboard("all")');
+            $menuItems[] = new HtmlHeaderMenuItem('copyTable', S::MENU_COPY_TABLE, 'copyToClipboard("table")');
+            $menuItems[] = new HtmlHeaderMenuItem('copyTableBody', S::MENU_COPY_TABLE_BODY, 'copyToClipboard("tableBody")');
 
             switch ($reportType) {
                 case ReportType::TRAINS:
@@ -348,7 +350,14 @@ echoHead($newDesign, $title, null, $newDesign ?
 
 echoStartBody($newDesign, $newDesign ? "showContent()" : null);
 
-echoHeader($newDesign, false, $header, $subHeader, $navLinks, $menuItems);
+(new HtmlHeader($newDesign))
+    ->setMainPage(false)
+    ->setHeader($header)
+    ->setSubHeader($subHeader . ($useBackup ? (" (" . S::HEADER_PAGE_MAIN_BACKUP . ")") : null))
+    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->setNavLinks($navLinks)
+    ->setMenuItems($menuItems)
+    ->draw();
 
 echoDrawer($newDesign, $mysqli);
 

@@ -11,18 +11,20 @@ require_once "include/CheckBrowser.php";
 require_once "include/ScaleInfo.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_header.php";
 require_once "include/echo_drawer.php";
 require_once "include/echo_form.php";
 require_once "include/echo_footer.php";
 
+require_once "include/HtmlHeader.php";
+
 use Strings as S;
 
 $newDesign = isNewDesign();
-
-echoStartPage();
+$useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+
+echoStartPage();
 
 if ($scales < 0) {
     $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
@@ -53,8 +55,8 @@ if ($mysqli) {
 
             $navLinks = array();
 
-            $navLinks[] = new NavLink('clear', 'clear', S::NAV_LINK_CLEAR, 'formReset()');
-            $navLinks[] = new NavLink('back', 'arrow_back', S::NAV_LINK_BACK, 'goBack()');
+            $navLinks[] = new HtmlHeaderNavLink('clear', 'clear', S::NAV_LINK_CLEAR, 'formReset()');
+            $navLinks[] = new HtmlHeaderNavLink('back', 'arrow_back', S::NAV_LINK_BACK, 'goBack()');
         }
     }
 } else {
@@ -65,7 +67,13 @@ echoHead($newDesign, $title, null, array("/javascript/footer.js", "/javascript/c
 
 echoStartBody($newDesign);
 
-echoHeader($newDesign, false, $header, null, $navLinks);
+(new HtmlHeader($newDesign))
+    ->setMainPage(false)
+    ->setHeader($header)
+    ->setSubHeader($useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null)
+    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->setNavLinks($navLinks)
+    ->draw();
 
 echoDrawer($newDesign, $mysqli);
 
@@ -78,6 +86,8 @@ if (!$resultMessage) {
 
     echoHidden(ParamName::SCALE_NUM, (int)$scales);
     echoHidden(ParamName::NEW_DESIGN, (bool)$newDesign);
+    echoHidden(ParamName::USE_BACKUP, (bool)$useBackup);
+    echo PHP_EOL;
 
     if ($newDesign) {
         echo S::TAB;
