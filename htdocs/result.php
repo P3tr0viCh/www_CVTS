@@ -203,7 +203,7 @@ $whereHeader = null;
 $navLinks = null;
 $menuItems = null;
 
-$mysqli = MySQLConnection::getInstance();
+$mysqli = MySQLConnection::getInstance($useBackup);
 
 if ($mysqli) {
     if ($mysqli->connect_errno) {

@@ -38,7 +38,7 @@ $resultMessage = null;
 $header = null;
 $navLinks = null;
 
-$mysqli = MySQLConnection::getInstance();
+$mysqli = MySQLConnection::getInstance($useBackup);
 
 if ($mysqli) {
     if ($mysqli->connect_errno) {
