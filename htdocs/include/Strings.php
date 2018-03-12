@@ -181,7 +181,6 @@ class Strings
     const TEXT_SCALE_CLASS_DYNAMIC_2 = '1';
     const TEXT_SCALE_CLASS_DYNAMIC_3 = '2';
     const TEXT_SCALE_CLASS_DYNAMIC_4 = '5';
-    const TEXT_SCALE_AUTO_CLASS_STATIC_0 = 'Высокий';
     const TEXT_SCALE_CLASS_UNKNOWN = 'Не определено';
 
     const TEXT_OPERATION_TYPE_CALIBRATION_DYNAMIC = 'Калибровка в динамике';
@@ -261,4 +260,5 @@ class Strings
     const HELP_TEXT_PARAMS_NEW_DESIGN = "Вывод сайта в новом дизайне";
     const HELP_TEXT_PARAMS_SHOW_METROLOGY = "Вывод на главной странице метрологических параметров";
     const HELP_TEXT_PARAMS_SHOW_DISABLED = "Вывод на главной странице скрытых (выведенных из эксплуатации) весов";
+    const HELP_TEXT_PARAMS_USE_BACKUP = "Использовать резервную базу данных";
 }

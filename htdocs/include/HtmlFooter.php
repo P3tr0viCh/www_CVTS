@@ -1,16 +1,16 @@
 <?php
 require_once "Strings.php";
 
+require_once "HtmlBase.php";
+
 use Strings as S;
 
-/**
- * @param boolean $newDesign
- */
-function echoFooter($newDesign)
+class HtmlFooter extends HtmlBase
 {
-    echo PHP_EOL;
+    protected function drawNewDesign()
+    {
+        echo PHP_EOL;
 
-    if ($newDesign) {
         echo '<footer id="divFooter" class="mdl-mini-footer">' . PHP_EOL;
         echo S::TAB;
         echo '<div class="mdl-mini-footer--left-section">' . PHP_EOL;
@@ -33,7 +33,12 @@ function echoFooter($newDesign)
         echo S::TAB;
         echo '</div>' . PHP_EOL;
         echo '</footer>' . PHP_EOL;
-    } else {
+    }
+
+    protected function drawCompat()
+    {
+        echo PHP_EOL;
+
         echo '<div id="divFooter">' . PHP_EOL;
 
         echo S::TAB;

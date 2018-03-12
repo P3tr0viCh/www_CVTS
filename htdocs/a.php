@@ -8,9 +8,9 @@ require_once "include/CheckBrowser.php";
 require_once "include/MetaInfo.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_footer.php";
 
 require_once "include/HtmlHeader.php";
+require_once "include/HtmlFooter.php";
 
 use Strings as S;
 
@@ -91,7 +91,7 @@ echo "<span>" . sprintf(S::TEXT_PHP_VERSION, phpversion()) . "</span>" . PHP_EOL
 
 echoEndContent();
 
-echoFooter($newDesign);
+(new HtmlFooter($newDesign))->draw();
 
 echoEndMain($newDesign);
 

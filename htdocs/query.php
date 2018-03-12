@@ -11,11 +11,11 @@ require_once "include/CheckBrowser.php";
 require_once "include/ScaleInfo.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_drawer.php";
 require_once "include/echo_form.php";
-require_once "include/echo_footer.php";
 
 require_once "include/HtmlHeader.php";
+require_once "include/HtmlDrawer.php";
+require_once "include/HtmlFooter.php";
 
 use Strings as S;
 
@@ -75,7 +75,9 @@ echoStartBody($newDesign);
     ->setNavLinks($navLinks)
     ->draw();
 
-echoDrawer($newDesign, $mysqli);
+(new HtmlDrawer($newDesign, $mysqli))
+    ->setUseBackup($useBackup)
+    ->draw();
 
 echoStartMain($newDesign);
 
@@ -516,11 +518,6 @@ if (!$resultMessage) {
         echo '<td class="query">' . PHP_EOL;
     }
 
-    // TODO: delete
-//    if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-//        echoCheckBox($newDesign, ParamName::ORDER_BY_DATETIME, S::CHECKBOX_ORDER_BY_DATETIME);
-//    }
-
     echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
 
     if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
@@ -597,7 +594,7 @@ if (!$resultMessage) {
 
 echoEndContent();
 
-echoFooter($newDesign);
+(new HtmlFooter($newDesign))->draw();
 
 echoEndMain($newDesign);
 

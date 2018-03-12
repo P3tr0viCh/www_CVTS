@@ -17,6 +17,7 @@ require_once "include/echo_html_page.php";
 use Strings as S;
 
 $newDesign = isNewDesign(true);
+$useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 echoStartPage();
 
@@ -35,7 +36,7 @@ echo '<h1 class="mysql_datetime color-text--primary">' . S::HEADER_PAGE_MYSQL_DA
 
 $resultMessage = null;
 
-$mysqli = MySQLConnection::getInstance();
+$mysqli = MySQLConnection::getInstance($useBackup);
 
 if ($mysqli) {
     if ($mysqli->connect_errno) {

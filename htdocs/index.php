@@ -16,11 +16,11 @@ require_once "include/ResultMessage.php";
 require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_drawer.php";
 require_once "include/echo_table.php";
-require_once "include/echo_footer.php";
 
 require_once "include/HtmlHeader.php";
+require_once "include/HtmlDrawer.php";
+require_once "include/HtmlFooter.php";
 
 use Strings as S;
 use ColumnsStrings as C;
@@ -35,8 +35,8 @@ $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
 $showMetrology = getParamGETAsBool(ParamName::SHOW_METROLOGY, false);
 $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
-setcookie(ParamName::SHOW_DISABLED, boolToString($showDisabled));
-$_COOKIE[ParamName::SHOW_DISABLED] = boolToString($showDisabled);
+setCookieAsBool(ParamName::SHOW_DISABLED, $showDisabled);
+setCookieAsBool(ParamName::SHOW_METROLOGY, $showMetrology);
 
 echoStartPage();
 
@@ -55,7 +55,9 @@ $mysqli = MySQLConnection::getInstance($useBackup);
     ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
     ->draw();
 
-echoDrawer($newDesign, $mysqli);
+(new HtmlDrawer($newDesign, $mysqli))
+    ->setUseBackup($useBackup)
+    ->draw();
 
 echoStartMain($newDesign);
 
@@ -119,8 +121,8 @@ if ($mysqli) {
 
                 $href = $hrefBuilder->setUrl("query.php")
                     ->setParam(ParamName::SCALE_NUM, $row[DBC::SCALE_NUM])
-                    ->setParam($newDesign ? ParamName::NEW_DESIGN : null, $newDesign)
-                    ->setParam($useBackup ? ParamName::USE_BACKUP : null, $useBackup)
+                    ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
+                    ->setParam($useBackup ? ParamName::USE_BACKUP : null, true)
                     ->build();
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
@@ -214,7 +216,7 @@ if ($resultMessage) {
 
 echoEndContent();
 
-echoFooter($newDesign);
+(new HtmlFooter($newDesign))->draw();
 
 echoEndMain($newDesign);
 

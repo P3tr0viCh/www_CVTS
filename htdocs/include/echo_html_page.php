@@ -8,17 +8,17 @@
  *     echoUseScripts -- подключение скриптов.
  *     echoStartBody -- начало тела страницы.
  *         HtmlHeader -- вывод хизера (файл {@link [HtmlHeader.php]}).
- *         TODO: echoDrawer -- вывод главного меню (файл {@link [echo_drawer.php]}).
+ *         HtmlDrawer -- вывод главного меню (файл {@link [HtmlDrawer.php]}).
  *         echoStartMain -- начало главного блока.
  *             echoStartContent -- начало контента.
  *                 Контент.
  *             echoEndContent -- конец контента.
- *             TODO: echoFooter -- вывод футтера (файл {@link [echo_footer.php]}).
+ *             HtmlFooter -- вывод футтера (файл {@link [HtmlFooter.php]}).
  *         echoEndMain -- конец главного блока.
  *     echoEndBody.
  * echoEndPage.
  *
- * Если echoFooter использовать после echoEndMain, футтер будет всегда внизу окна, иначе в конце контента.
+ * Если HtmlFooter использовать после echoEndMain, футтер будет всегда внизу окна, иначе в конце контента.
  */
 
 require_once "MetaInfo.php";

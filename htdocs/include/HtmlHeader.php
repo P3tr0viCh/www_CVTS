@@ -1,16 +1,15 @@
 <?php
-
 require_once "Strings.php";
+
+require_once "HtmlBase.php";
 
 require_once "HtmlHeaderNavLink.php";
 require_once "HtmlHeaderMenuItem.php";
 
 use Strings as S;
 
-class HtmlHeader
+class HtmlHeader extends HtmlBase
 {
-    private $newDesign;
-
     private $mainPage;
 
     private $header;
@@ -19,16 +18,6 @@ class HtmlHeader
 
     private $navLinks;
     private $menuItems;
-
-    /**
-     * HtmlHeader constructor.
-     * @param bool $newDesign
-     */
-    public function __construct($newDesign)
-    {
-        $this->newDesign = $newDesign;
-        $this->mainPage = false;
-    }
 
     /**
      * Заголовок выводится на главной странице.
@@ -102,7 +91,7 @@ class HtmlHeader
         return $this;
     }
 
-    private function drawCompat()
+    protected function drawCompat()
     {
         echo "<div id='divHeader'>" . PHP_EOL;
 
@@ -140,7 +129,7 @@ class HtmlHeader
         echo '</div> <!-- id="divHeader" -->' . PHP_EOL . PHP_EOL;
     }
 
-    private function drawNewDesign()
+    protected function drawNewDesign()
     {
         $class = $this->subHeader && !$this->mainPage ?
             'mdl-layout__header mdl-layout__header--waterfall' :
@@ -229,15 +218,6 @@ class HtmlHeader
             }
 
             echo '</ul>' . PHP_EOL . PHP_EOL;
-        }
-    }
-
-    public function draw()
-    {
-        if ($this->newDesign) {
-            $this->drawNewDesign();
-        } else {
-            $this->drawCompat();
         }
     }
 }

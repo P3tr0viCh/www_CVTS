@@ -26,8 +26,8 @@ require_once "FileNames.php";
 class MySQLConnection
 {
     /**
-     * @param null|string $dbName
      * @param bool $use_backup
+     * @param null|string $dbName
      * @return mysqli|null
      */
     public static function getInstance($use_backup = false, $dbName = null)

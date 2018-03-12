@@ -214,14 +214,16 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                         return S::TEXT_SCALE_CLASS_DYNAMIC_4;
 
                     case 100:
+                    case 200:
+                    case 300:
                         return S::TEXT_SCALE_CLASS_STATIC_0;
                     case 101:
+                    case 201:
+                    case 301:
                         return S::TEXT_SCALE_CLASS_STATIC_1;
-
-                    case 200:
-                        return S::TEXT_SCALE_CLASS_STATIC_2;
-
-                    case 300:
+                    case 102:
+                    case 202:
+                    case 302:
                         return S::TEXT_SCALE_CLASS_STATIC_2;
 
                     case 400:
@@ -885,4 +887,34 @@ function utf8ToLatin1($s)
     if ($s == null) return null;
     $s = iconv('UTF-8', 'Windows-1251', $s);
     return $s;
+}
+
+/**
+ * @param null|string $param
+ * @return bool
+ */
+function getCookieAsBool($param)
+{
+    return isset($param) && !is_null($param) && isset($_COOKIE[$param]) ? var_to_bool($_COOKIE[$param]) : false;
+}
+
+/**
+ * @param null|string $param
+ * @param null|bool $value
+ */
+function setCookieAsBool($param, $value)
+{
+    if (!isset($param) || is_null($param)) {
+        return;
+    }
+
+    if (!isset($value) || is_null($value)) {
+        setcookie($param, $value, time() - 1);
+        unset($_COOKIE[$param]);
+
+        return;
+    }
+
+    setcookie($param, boolToString($value));
+    $_COOKIE[$param] = boolToString($value);
 }

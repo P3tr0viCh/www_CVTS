@@ -11,9 +11,9 @@ require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
 require_once "include/echo_table.php";
-require_once "include/echo_footer.php";
 
 require_once "include/HtmlHeader.php";
+require_once "include/HtmlFooter.php";
 
 use Strings as S;
 
@@ -92,6 +92,13 @@ echoTableTRStart();
     echoTableTD(S::HELP_TEXT_PARAMS_SHOW_DISABLED, $tableCellClass);
 }
 echoTableTREnd();
+echoTableTRStart();
+{
+    echoTableTD(ParamName::USE_BACKUP, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_VALUE_BOOL, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_USE_BACKUP, $tableCellClass);
+}
+echoTableTREnd();
 
 echoTableBodyEnd();
 echoTableEnd();
@@ -113,7 +120,7 @@ echo '</p>' . PHP_EOL;
 
 echoEndContent();
 
-echoFooter($newDesign);
+(new HtmlFooter($newDesign))->draw();
 
 echoEndMain($newDesign);
 

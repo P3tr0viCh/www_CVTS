@@ -19,6 +19,7 @@ require_once "include/echo_table.php";
 use Strings as S;
 
 $newDesign = isNewDesign(true);
+$useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
@@ -61,7 +62,7 @@ echoStartBody($newDesign);
 
 $resultMessage = null;
 
-$mysqli = MySQLConnection::getInstance(\Database\Info::CVTS);
+$mysqli = MySQLConnection::getInstance($useBackup, \Database\Info::CVTS);
 
 if ($mysqli) {
     if (!$mysqli->connect_errno) {

@@ -30,11 +30,11 @@ require_once "include/builders/DateTimeBuilder.php";
 require_once "include/builders/href_builder/Builder.php";
 
 require_once "include/echo_html_page.php";
-require_once "include/echo_drawer.php";
 require_once "include/echo_table.php";
 require_once "include/echo_form.php";
 
 require_once "include/HtmlHeader.php";
+require_once "include/HtmlDrawer.php";
 
 use Strings as S;
 
@@ -359,7 +359,9 @@ echoStartBody($newDesign, $newDesign ? "showContent()" : null);
     ->setMenuItems($menuItems)
     ->draw();
 
-echoDrawer($newDesign, $mysqli);
+(new HtmlDrawer($newDesign, $mysqli))
+    ->setUseBackup($useBackup)
+    ->draw();
 
 echoStartMain($newDesign);
 
