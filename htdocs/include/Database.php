@@ -19,6 +19,8 @@ class Tables
     const VAN_DYNAMIC_AND_STATIC_BRUTTO = 'vndynb_temp';
     const VAN_BRUTTO_ADD = 'vnb_add';
 
+    const VAN_DYNAMIC_DELTAS = 'vndynb_delta';
+
     const TRAIN_DYNAMIC = 'trdynb';
 
     const AUTO_BRUTTO = 'autob';
@@ -177,4 +179,18 @@ class Columns
 
     const COMPANY_DATE = 'company_date';
     const DEPARTMENT_DATE = 'department_date';
+
+    const MI_DELTA_ABS_BRUTTO = 'delta_abs_brutto';
+    const MI_DELTA_ABS_TARE = 'delta_abs_tare';
+    const MI_DELTA = 'delta';
+    const MI_TARE_DYN = 'tare_dyn';
+    const MI_TARE_DYN_SCALES = 'tare_dyn_scales';
+    const MI_TARE_DYN_DATETIME = 'tare_dyn_bdatetime';
+    const MI_DELTA_ABS_TARE_DYN = 'delta_abs_tare_dyn';
+    const MI_DELTA_DYN = 'delta_dyn';
+    const MI_TARE_STA = 'tare_sta';
+    const MI_TARE_STA_SCALES = 'tare_sta_scales';
+    const MI_TARE_STA_DATETIME = 'tare_sta_bdatetime';
+    const MI_DELTA_ABS_TARE_STA = 'delta_abs_tare_sta';
+    const MI_DELTA_STA = 'delta_sta';
 }

@@ -39,7 +39,6 @@ require_once "include/HtmlDrawer.php";
 use Strings as S;
 
 $newDesign = isNewDesign();
-$useBackup = getPOSTParam(ParamName::USE_BACKUP);
 
 $reportType = getParamGETAsInt(ParamName::REPORT_TYPE, ReportType::TYPE_DEFAULT);
 
@@ -64,6 +63,7 @@ switch ($reportType) {
     case ReportType::TYPE_DEFAULT:
         $scaleNum = getPOSTParam(ParamName::SCALE_NUM);
         $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
+        $useBackup = getPOSTParam(ParamName::USE_BACKUP);
 
         $filter
             ->setVanNumber(getPOSTParam(ParamName::VAN_NUMBER))
@@ -75,6 +75,7 @@ switch ($reportType) {
             ->setScalesFilter(getPOSTParam(ParamName::SCALES))
             ->setFull(getPOSTParam(ParamName::ALL_FIELDS))
             ->setShowCargoDate(getPOSTParam(ParamName::SHOW_CARGO_DATE))
+            ->setShowDeltas(getPOSTParam(ParamName::SHOW_DELTAS))
             ->setOrderByDateTime(getPOSTParam(ParamName::ORDER_BY_DATETIME))
             ->setCompareForward(getPOSTParam(ParamName::COMPARE_FORWARD))
             ->setCompareByBrutto(getPOSTParam(ParamName::COMPARE_BY_BRUTTO));
@@ -159,6 +160,7 @@ switch ($reportType) {
         }
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
         $filter
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
@@ -172,12 +174,14 @@ switch ($reportType) {
         $resultType = ResultType::TRAIN_DYNAMIC_ONE;
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
         $filter
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
             ->setTrainNum(getParamGETAsInt(ParamName::TRAIN_NUM))
             ->setTrainUnixTime(getParamGETAsInt(ParamName::TRAIN_UNIX_TIME))
-            ->setTrainDateTime(getParamGETAsInt(ParamName::TRAIN_DATETIME));
+            ->setTrainDateTime(getParamGETAsInt(ParamName::TRAIN_DATETIME))
+            ->setShowDeltas(getParamGETAsBool(ParamName::SHOW_DELTAS));
 
         break;
     default:
@@ -216,8 +220,7 @@ if ($mysqli) {
         if (!$resultMessage) {
             $header = $scaleInfo->getHeader();
 
-            // Byte Order Mark
-            $excelData = "\xEF\xBB\xBF" . $header . S::EXCEL_EOL;
+            $excelData = S::EXCEL_BOM . $header . S::EXCEL_EOL;
 
             $title = $scaleInfo->getPlace();
 
@@ -544,7 +547,9 @@ if (!$resultMessage) {
             $hrefBuilder = \HrefBuilder\Builder::getInstance()
                 ->setUrl("result.php")
                 ->setParam(ParamName::NEW_DESIGN, $newDesign)
-                ->setParam(ParamName::ALL_FIELDS, $filter->isFull());
+                ->setParam(ParamName::ALL_FIELDS, $filter->isFull())
+                ->setParam($filter->isShowDeltas() ? ParamName::SHOW_DELTAS : null, true)
+                ->setParam($useBackup ? ParamName::USE_BACKUP : null, true);
 
             if ($resultType == ResultType::TRAIN_DYNAMIC) {
                 $hrefBuilder->setParam(ParamName::REPORT_TYPE, ReportType::TRAINS);

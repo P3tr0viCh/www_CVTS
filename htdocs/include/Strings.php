@@ -4,6 +4,10 @@ class Strings
 {
     const TAB = "  ";
 
+    const DEC_POINT = ",";
+
+    // Byte Order Mark
+    const EXCEL_BOM = "\xEF\xBB\xBF";
     const EXCEL_SEPARATOR = ";";
     const EXCEL_EOL = "\n";
 
@@ -93,6 +97,9 @@ class Strings
 
     const TEXT_ZERO_RESULT = 'По заданным параметрам запроса данных нет';
 
+    // IE6 fix.
+    const TEXT_TABLE_CELL_EMPTY = '<span style=\'zoom: 1;\'></span>';
+
     const TEXT_COMPATIBLE_BROWSERS_START = 'Новый дизайн поддерживается следующими браузерами:';
     const TEXT_COMPATIBLE_BROWSER_IE = 'Microsoft Internet Explorer %d';
     const TEXT_COMPATIBLE_BROWSER_EDGE = 'Microsoft Edge %d';
@@ -114,6 +121,7 @@ class Strings
     const CHECKBOX_ORDER_BY_DATETIME = 'Сортировка только по дате и времени';
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
     const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
+    const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';

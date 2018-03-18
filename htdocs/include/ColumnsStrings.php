@@ -121,4 +121,18 @@ class ColumnsStrings
     const COMPARE_SCALE_NUM = 'Весы №%d';
     const COMPARE_OTHER_SCALES = 'Остальные весы';
     const COMPARE_NUM = '№';
+
+    const MI_DELTA_ABS_BRUTTO = 'Δб';
+    const MI_DELTA_ABS_TARE = 'Δт';
+    const MI_DELTA = 'ПДП';
+    const MI_TARE_DYN = 'Тара дин.';
+    const MI_TARE_DYN_SCALES = '№ весов, взвесивших тару дин.';
+    const MI_TARE_DYN_BDATETIME = 'Дата провески тары дин.';
+    const MI_DELTA_ABS_TARE_DYN = 'Δтд';
+    const MI_DELTA_DYN = 'ПДП для тары дин.';
+    const MI_TARE_STA = 'Тара стат.';
+    const MI_TARE_STA_SCALES = '№ весов, взвесивших тару стат.';
+    const MI_TARE_STA_BDATETIME = 'Дата провески тары стат.';
+    const MI_DELTA_ABS_TARE_STA = 'Δтс';
+    const MI_DELTA_STA = 'ПДП для тары стат.';
 }

@@ -63,7 +63,7 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
 
     echoMeta("http-equiv", "Content-Type", "text/html; charset=utf-8");
     echoMeta("http-equiv", "Content-Language", "ru");
-    echoMeta("http-equiv", "Cache-Control", "no-cache");
+//    echoMeta("http-equiv", "Cache-Control", "no-cache");
     echo PHP_EOL;
 
     echoMeta("name", "google", "notranslate");

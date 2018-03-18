@@ -22,6 +22,7 @@ class ResultFilter
 
     private $full;
     private $showCargoDate;
+    private $showDeltas;
     private $orderByDateTime;
     private $compareForward;
     private $compareByBrutto;
@@ -103,6 +104,18 @@ class ResultFilter
     public function setShowCargoDate($showCargoDate)
     {
         $this->showCargoDate = $showCargoDate;
+        return $this;
+    }
+
+    /**
+     * Выводить предельно допускаемые погрешности.
+     *
+     * @param bool $showDeltas
+     * @return $this
+     */
+    public function setShowDeltas($showDeltas)
+    {
+        $this->showDeltas = $showDeltas;
         return $this;
     }
 
@@ -296,6 +309,14 @@ class ResultFilter
     public function isShowCargoDate()
     {
         return $this->showCargoDate;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isShowDeltas()
+    {
+        return $this->showDeltas;
     }
 
     /**

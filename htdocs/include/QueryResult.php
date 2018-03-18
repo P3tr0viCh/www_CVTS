@@ -14,6 +14,11 @@ class QueryResult extends QueryBase
     const MYSQL_DATETIME_FORMAT = "YmdHis";
 
     /**
+     * @var ResultFilter
+     */
+    private $filter;
+
+    /**
      * @param int $scaleType
      */
     public function setScaleType($scaleType)
@@ -42,17 +47,15 @@ class QueryResult extends QueryBase
     }
 
     /**
-     * @var ResultFilter
-     */
-    private $filter;
-
-    /**
      * @param ResultFilter $filter
      */
     public function setFilter($filter)
     {
         $this->filter = $filter;
     }
+
+    private $showCargoDate;
+    private $showDeltas;
 
     private function getTableName()
     {
@@ -146,8 +149,11 @@ class QueryResult extends QueryBase
                     ->column(C::VAN_TYPE)
                     ->column(C::CARRYING)
                     ->column(C::BRUTTO)
+                    ->column($this->showDeltas ? C::MI_DELTA_ABS_BRUTTO : null)
                     ->column(C::TARE)
-                    ->column(C::NETTO);
+                    ->column($this->showDeltas ? C::MI_DELTA_ABS_TARE : null)
+                    ->column(C::NETTO)
+                    ->column($this->showDeltas ? C::MI_DELTA : null);
 
                 if ($this->scaleType == ScaleType::WMR) {
                     $this->builder
@@ -156,13 +162,21 @@ class QueryResult extends QueryBase
                         ->column(C::INVOICE_OVERLOAD);
                 }
 
-                $this->builder->column(C::CARGO_TYPE);
-
-                if ($this->resultType == ResultType::VAN_DYNAMIC_BRUTTO && $this->filter->isShowCargoDate()) {
-                    $this->builder->column(C::DATETIME_CARGO);
-                }
-
                 $this->builder
+                    ->column(C::CARGO_TYPE)
+                    ->column($this->showCargoDate ? C::DATETIME_CARGO : null)
+                    ->column($this->showDeltas ? C::MI_TARE_DYN : null)
+                    ->column($this->filter->isFull() && $this->showDeltas ?
+                        C::MI_TARE_DYN_SCALES : null)
+                    ->column($this->filter->isFull() && $this->showDeltas ? C::MI_TARE_DYN_DATETIME : null)
+                    ->column($this->showDeltas ? C::MI_DELTA_ABS_TARE_DYN : null)
+                    ->column($this->showDeltas ? C::MI_DELTA_DYN : null)
+                    ->column($this->showDeltas ? C::MI_TARE_STA : null)
+                    ->column($this->filter->isFull() && $this->showDeltas ? C::MI_TARE_STA_SCALES : null)
+                    ->column($this->filter->isFull() && $this->showDeltas ?
+                        C::MI_TARE_STA_DATETIME : null)
+                    ->column($this->showDeltas ? C::MI_DELTA_ABS_TARE_STA : null)
+                    ->column($this->showDeltas ? C::MI_DELTA_STA : null)
                     ->column(C::INVOICE_NUMBER)
                     ->column(C::INVOICE_SUPPLIER)
                     ->column(C::INVOICE_RECIPIENT)
@@ -420,6 +434,11 @@ class QueryResult extends QueryBase
 
     protected function makeQuery()
     {
+        $this->showCargoDate = $this->filter->isShowCargoDate() &&
+            $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO;
+        $this->showDeltas = $this->filter->isShowDeltas() &&
+            ($this->resultType == ResultType::TRAIN_DYNAMIC_ONE || $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO);
+
         $table = $this->getTableName();
 
         $this->builder
@@ -430,8 +449,17 @@ class QueryResult extends QueryBase
 
         $this->setColumns();
 
-        if ($this->resultType == ResultType::VAN_DYNAMIC_BRUTTO && $this->filter->isShowCargoDate()) {
+        if ($this->showCargoDate) {
             $this->builder->join(T::VAN_BRUTTO_ADD,
+                array(
+                    C::TRAIN_NUM,
+                    C::SCALE_NUM,
+                    C::SEQUENCE_NUMBER,
+                    C::UNIX_TIME));
+        }
+
+        if ($this->showDeltas) {
+            $this->builder->join(T::VAN_DYNAMIC_DELTAS,
                 array(
                     C::TRAIN_NUM,
                     C::SCALE_NUM,

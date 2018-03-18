@@ -60,9 +60,11 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::DATETIME_SHIPMENT:
             case C::DATETIME_FAILURE:
             case C::DATETIME_CARGO:
-                // check for "0000-00-00 00:00:00"
-                if ($fieldValue == 0) {
-                    return "<span style='zoom: 1;'></span>";
+            case C::MI_TARE_DYN_DATETIME:
+            case C::MI_TARE_STA_DATETIME:
+                if ($fieldValue == "0000-00-00 00:00:00" ||
+                    $fieldValue == "1899-12-30 00:00:00") {
+                    return S::TEXT_TABLE_CELL_EMPTY;
                 }
 
                 $year = substr($fieldValue, 0, 4);
@@ -107,16 +109,16 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::INVOICE_NETTO:
             case C::INVOICE_TARE:
             case C::ACCELERATION:
-                return number_format((double)$fieldValue, 2, ",", "");
+                return num_fmt($fieldValue, 2);
             case C::NETTO:
-                $s = number_format((double)$fieldValue, 2, ",", "");
+                $s = num_fmt($fieldValue, 2);
                 return "<b>" . $s . "</b>";
             case C::MASS:
-                return number_format((double)$fieldValue, 8, ",", "");
+                return num_fmt($fieldValue, 8);
             case C::OVERLOAD:
             case C::INVOICE_OVERLOAD:
             case C::COMPARE:
-                $overload = number_format((double)$fieldValue, 2, ",", "");
+                $overload = num_fmt($fieldValue, 2);
                 if ($fieldValue > 0) {
                     $overload = "+" . $overload;
                 }
@@ -125,7 +127,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 }
                 return $overload;
             case C::VELOCITY:
-                $velocity = number_format(abs($fieldValue), 1, ",", "");
+                $velocity = number_format(abs($fieldValue), 1, S::DEC_POINT, "");
                 return $fieldValue > 0 ? $velocity . " &gt;&gt;&gt;" : $velocity = "&lt;&lt;&lt; " . $velocity;
             case C::WMODE:
                 switch ($fieldValue) {
@@ -175,13 +177,13 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 }
             case C::COEFFICIENT_P1:
             case C::COEFFICIENT_P2:
-                return number_format((double)$fieldValue, 5, ".", "");
+                return num_fmt($fieldValue, 5);
             case C::COEFFICIENT_Q1:
             case C::COEFFICIENT_Q2:
-                return number_format((double)$fieldValue, 0, "", "");
+                return num_fmt($fieldValue, 0);
             case C::COEFFICIENT_T1:
             case C::COEFFICIENT_T2:
-                return number_format((double)$fieldValue, 1, ".", "");
+                return num_fmt($fieldValue, 1);
             case C::TEMPERATURE_1:
             case C::TEMPERATURE_2:
             case C::TEMPERATURE_3:
@@ -190,7 +192,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::TEMPERATURE_6:
             case C::TEMPERATURE_7:
             case C::TEMPERATURE_8:
-                return number_format((double)$fieldValue, 0, "", "");
+                return num_fmt($fieldValue, 0);
             case C::SCALE_CLASS_STATIC:
             case C::SCALE_CLASS_DYNAMIC:
                 /**
@@ -231,13 +233,54 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_SIDE_UNKNOWN;
                 }
+
+            case C::TARE_SCALE_NUMBER:
+            case C::MI_TARE_DYN_SCALES:
+            case C::MI_TARE_STA_SCALES:
+                return $fieldValue != 0 ? $fieldValue : S::TEXT_TABLE_CELL_EMPTY;
+
+            case C::MI_DELTA_ABS_BRUTTO:
+            case C::MI_DELTA_ABS_TARE:
+            case C::MI_DELTA:
+            case C::MI_TARE_DYN:
+            case C::MI_DELTA_ABS_TARE_DYN:
+            case C::MI_DELTA_DYN:
+            case C::MI_TARE_STA:
+            case C::MI_DELTA_ABS_TARE_STA:
+            case C::MI_DELTA_STA:
+                if ($fieldValue[0] == '-') {
+                    if ($full) {
+                        return 'E_' . substr((int)$fieldValue, 1);
+                    } else {
+                        return S::TEXT_TABLE_CELL_EMPTY;
+                    }
+                } else {
+                    switch ($fieldName) {
+                        case C::MI_TARE_DYN:
+                        case C::MI_TARE_STA:
+                            return num_fmt($fieldValue, 2);
+
+                        case C::MI_DELTA:
+                        case C::MI_DELTA_DYN:
+                        case C::MI_DELTA_STA:
+                            return num_fmt($fieldValue, 1);
+
+                        default:
+                            return $fieldValue;
+                    }
+                }
+
             default:
                 return $fieldValue;
         }
     } else {
-        // IE6 fix.
-        return "<span style='zoom: 1;'></span>";
+        return S::TEXT_TABLE_CELL_EMPTY;
     }
+}
+
+function num_fmt($number, $decimals)
+{
+    return number_format((double)$number, $decimals, S::DEC_POINT, "");
 }
 
 /**
@@ -322,6 +365,21 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
 
         case C::DATETIME_END:
             return $resultType == ResultType::COEFFS;
+
+        case C::MI_DELTA_ABS_BRUTTO:
+        case C::MI_DELTA_ABS_TARE:
+        case C::MI_DELTA:
+        case C::MI_TARE_DYN:
+        case C::MI_TARE_DYN_SCALES:
+        case C::MI_TARE_DYN_DATETIME:
+        case C::MI_DELTA_ABS_TARE_DYN:
+        case C::MI_DELTA_DYN:
+        case C::MI_TARE_STA:
+        case C::MI_TARE_STA_SCALES:
+        case C::MI_TARE_STA_DATETIME:
+        case C::MI_DELTA_ABS_TARE_STA:
+        case C::MI_DELTA_STA:
+            return true;
 
         default:
             return false;
@@ -534,6 +592,33 @@ function columnName($fieldName, $scaleType, $resultType = null)
 
         case C::COMPARE:
             return ColumnsStrings::COMPARE;
+
+        case C::MI_DELTA_ABS_BRUTTO:
+            return ColumnsStrings::MI_DELTA_ABS_BRUTTO;
+        case C::MI_DELTA_ABS_TARE:
+            return ColumnsStrings::MI_DELTA_ABS_TARE;
+        case C::MI_DELTA:
+            return ColumnsStrings::MI_DELTA;
+        case C::MI_TARE_DYN:
+            return ColumnsStrings::MI_TARE_DYN;
+        case C::MI_TARE_DYN_SCALES:
+            return ColumnsStrings::MI_TARE_DYN_SCALES;
+        case C::MI_TARE_DYN_DATETIME:
+            return ColumnsStrings::MI_TARE_DYN_BDATETIME;
+        case C::MI_DELTA_ABS_TARE_DYN:
+            return ColumnsStrings::MI_DELTA_ABS_TARE_DYN;
+        case C::MI_DELTA_DYN:
+            return ColumnsStrings::MI_DELTA_DYN;
+        case C::MI_TARE_STA:
+            return ColumnsStrings::MI_TARE_STA;
+        case C::MI_TARE_STA_SCALES:
+            return ColumnsStrings::MI_TARE_STA_SCALES;
+        case C::MI_TARE_STA_DATETIME:
+            return ColumnsStrings::MI_TARE_STA_BDATETIME;
+        case C::MI_DELTA_ABS_TARE_STA:
+            return ColumnsStrings::MI_DELTA_ABS_TARE_STA;
+        case C::MI_DELTA_STA:
+            return ColumnsStrings::MI_DELTA_STA;
 
         default:
             return $fieldName;

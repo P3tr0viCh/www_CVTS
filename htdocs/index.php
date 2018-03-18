@@ -91,10 +91,14 @@ if ($mysqli) {
                 echoTableTH(C::SCALE_CLASS_DYNAMIC);
                 echoTableTH(C::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
 
+                $numColumns = 5;
+
                 if ($showMetrology) {
                     echoTableTH(C::SCALE_MIN_CAPACITY);
                     echoTableTH(C::SCALE_MAX_CAPACITY);
                     echoTableTH(C::SCALE_DISCRETENESS);
+
+                    $numColumns += 3;
                 }
             }
             echoTableTREnd();
@@ -105,6 +109,10 @@ if ($mysqli) {
             $numColor = false;
 
             $hrefBuilder = \HrefBuilder\Builder::getInstance();
+            $hrefBuilder
+                ->setUrl("query.php")
+                ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
+                ->setParam($useBackup ? ParamName::USE_BACKUP : null, true);
 
             $columns = array();
             for ($i = 0; $i < $result->field_count; $i++) {
@@ -119,16 +127,12 @@ if ($mysqli) {
 
                 $rowColorClass = getRowColorClass($numColor);
 
-                $href = $hrefBuilder->setUrl("query.php")
+                $href = $hrefBuilder
                     ->setParam(ParamName::SCALE_NUM, $row[DBC::SCALE_NUM])
-                    ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
-                    ->setParam($useBackup ? ParamName::USE_BACKUP : null, true)
                     ->build();
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                     $newDesign ? "location.href=\"$href\"" : null);
-
-                $numColumns = 0;
 
                 for ($i = 0; $i < $result->field_count; $i++) {
                     if ($columns[$i] == DBC::SCALE_DISABLED) {
@@ -169,8 +173,6 @@ if ($mysqli) {
                         !$newDesign &&
                         ($columns[$i] == DBC::SCALE_NUM ||
                             $columns[$i] == DBC::SCALE_PLACE) ? $href : null);
-
-                    $numColumns++;
                 } // for
 
                 echoTableTREnd();
