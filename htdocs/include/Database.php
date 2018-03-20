@@ -181,16 +181,23 @@ class Columns
     const DEPARTMENT_DATE = 'department_date';
 
     const MI_DELTA_ABS_BRUTTO = 'delta_abs_brutto';
+    const MI_DELTA_ABS_BRUTTO_E = 'delta_abs_brutto_exact';
     const MI_DELTA_ABS_TARE = 'delta_abs_tare';
+    const MI_DELTA_ABS_TARE_E = 'delta_abs_tare_exact';
     const MI_DELTA = 'delta';
+    const MI_DELTA_E = 'delta_exact';
     const MI_TARE_DYN = 'tare_dyn';
     const MI_TARE_DYN_SCALES = 'tare_dyn_scales';
     const MI_TARE_DYN_DATETIME = 'tare_dyn_bdatetime';
     const MI_DELTA_ABS_TARE_DYN = 'delta_abs_tare_dyn';
+    const MI_DELTA_ABS_TARE_DYN_E = 'delta_abs_tare_dyn_exact';
     const MI_DELTA_DYN = 'delta_dyn';
+    const MI_DELTA_DYN_E = 'delta_dyn_exact';
     const MI_TARE_STA = 'tare_sta';
     const MI_TARE_STA_SCALES = 'tare_sta_scales';
     const MI_TARE_STA_DATETIME = 'tare_sta_bdatetime';
     const MI_DELTA_ABS_TARE_STA = 'delta_abs_tare_sta';
+    const MI_DELTA_ABS_TARE_STA_E = 'delta_abs_tare_sta_exact';
     const MI_DELTA_STA = 'delta_sta';
+    const MI_DELTA_STA_E = 'delta_sta_exact';
 }

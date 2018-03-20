@@ -240,14 +240,21 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 return $fieldValue != 0 ? $fieldValue : S::TEXT_TABLE_CELL_EMPTY;
 
             case C::MI_DELTA_ABS_BRUTTO:
+            case C::MI_DELTA_ABS_BRUTTO_E:
             case C::MI_DELTA_ABS_TARE:
+            case C::MI_DELTA_ABS_TARE_E:
             case C::MI_DELTA:
+            case C::MI_DELTA_E:
             case C::MI_TARE_DYN:
             case C::MI_DELTA_ABS_TARE_DYN:
+            case C::MI_DELTA_ABS_TARE_DYN_E:
             case C::MI_DELTA_DYN:
+            case C::MI_DELTA_DYN_E:
             case C::MI_TARE_STA:
             case C::MI_DELTA_ABS_TARE_STA:
+            case C::MI_DELTA_ABS_TARE_STA_E:
             case C::MI_DELTA_STA:
+            case C::MI_DELTA_STA_E:
                 if ($fieldValue[0] == '-') {
                     if ($full) {
                         return 'E_' . substr((int)$fieldValue, 1);
@@ -264,6 +271,23 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                         case C::MI_DELTA_DYN:
                         case C::MI_DELTA_STA:
                             return num_fmt($fieldValue, 1);
+
+                        case C::MI_DELTA_E:
+                        case C::MI_DELTA_DYN_E:
+                        case C::MI_DELTA_STA_E:
+                            return num_fmt($fieldValue, 2);
+
+                        case C::MI_DELTA_ABS_BRUTTO:
+                        case C::MI_DELTA_ABS_TARE:
+                        case C::MI_DELTA_ABS_TARE_DYN:
+                        case C::MI_DELTA_ABS_TARE_STA:
+                            return num_fmt($fieldValue, 0);
+
+                        case C::MI_DELTA_ABS_BRUTTO_E:
+                        case C::MI_DELTA_ABS_TARE_E:
+                        case C::MI_DELTA_ABS_TARE_DYN_E:
+                        case C::MI_DELTA_ABS_TARE_STA_E:
+                            return num_fmt($fieldValue, 2);
 
                         default:
                             return $fieldValue;
@@ -595,10 +619,16 @@ function columnName($fieldName, $scaleType, $resultType = null)
 
         case C::MI_DELTA_ABS_BRUTTO:
             return ColumnsStrings::MI_DELTA_ABS_BRUTTO;
+        case C::MI_DELTA_ABS_BRUTTO_E:
+            return ColumnsStrings::MI_DELTA_ABS_BRUTTO_E;
         case C::MI_DELTA_ABS_TARE:
             return ColumnsStrings::MI_DELTA_ABS_TARE;
+        case C::MI_DELTA_ABS_TARE_E:
+            return ColumnsStrings::MI_DELTA_ABS_TARE_E;
         case C::MI_DELTA:
             return ColumnsStrings::MI_DELTA;
+        case C::MI_DELTA_E:
+            return ColumnsStrings::MI_DELTA_E;
         case C::MI_TARE_DYN:
             return ColumnsStrings::MI_TARE_DYN;
         case C::MI_TARE_DYN_SCALES:
@@ -607,8 +637,12 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::MI_TARE_DYN_BDATETIME;
         case C::MI_DELTA_ABS_TARE_DYN:
             return ColumnsStrings::MI_DELTA_ABS_TARE_DYN;
+        case C::MI_DELTA_ABS_TARE_DYN_E:
+            return ColumnsStrings::MI_DELTA_ABS_TARE_DYN_E;
         case C::MI_DELTA_DYN:
             return ColumnsStrings::MI_DELTA_DYN;
+        case C::MI_DELTA_DYN_E:
+            return ColumnsStrings::MI_DELTA_DYN_E;
         case C::MI_TARE_STA:
             return ColumnsStrings::MI_TARE_STA;
         case C::MI_TARE_STA_SCALES:
@@ -617,8 +651,12 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::MI_TARE_STA_BDATETIME;
         case C::MI_DELTA_ABS_TARE_STA:
             return ColumnsStrings::MI_DELTA_ABS_TARE_STA;
+        case C::MI_DELTA_ABS_TARE_STA_E:
+            return ColumnsStrings::MI_DELTA_ABS_TARE_STA_E;
         case C::MI_DELTA_STA:
             return ColumnsStrings::MI_DELTA_STA;
+        case C::MI_DELTA_STA_E:
+            return ColumnsStrings::MI_DELTA_STA_E;
 
         default:
             return $fieldName;

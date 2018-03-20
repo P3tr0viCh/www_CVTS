@@ -123,16 +123,23 @@ class ColumnsStrings
     const COMPARE_NUM = '№';
 
     const MI_DELTA_ABS_BRUTTO = 'Δб';
+    const MI_DELTA_ABS_BRUTTO_E = 'Δб!';
     const MI_DELTA_ABS_TARE = 'Δт';
+    const MI_DELTA_ABS_TARE_E = 'Δт!';
     const MI_DELTA = 'ПДП';
+    const MI_DELTA_E = 'ПДП!';
     const MI_TARE_DYN = 'Тара дин.';
     const MI_TARE_DYN_SCALES = '№ весов, взвесивших тару дин.';
     const MI_TARE_DYN_BDATETIME = 'Дата провески тары дин.';
     const MI_DELTA_ABS_TARE_DYN = 'Δтд';
+    const MI_DELTA_ABS_TARE_DYN_E = 'Δтд!';
     const MI_DELTA_DYN = 'ПДП для тары дин.';
+    const MI_DELTA_DYN_E = 'ПДП для тары дин.!';
     const MI_TARE_STA = 'Тара стат.';
     const MI_TARE_STA_SCALES = '№ весов, взвесивших тару стат.';
     const MI_TARE_STA_BDATETIME = 'Дата провески тары стат.';
     const MI_DELTA_ABS_TARE_STA = 'Δтс';
+    const MI_DELTA_ABS_TARE_STA_E = 'Δтс!';
     const MI_DELTA_STA = 'ПДП для тары стат.';
+    const MI_DELTA_STA_E = 'ПДП для тары стат.!';
 }
