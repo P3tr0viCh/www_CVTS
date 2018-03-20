@@ -15,10 +15,22 @@ function concatStrings($s1, $s2, $separator)
     else return $s1 . $separator . $s2;
 }
 
+/**
+ * Class FieldInfo
+ */
 class FieldInfo
 {
+    /**
+     * @var string
+     */
     public $name;
+    /**
+     * @var bool
+     */
     public $visible;
+    /**
+     * @var bool
+     */
     public $leftAlign;
 }
 
@@ -36,11 +48,10 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 
     for ($i = 0; $i < $queryResult->field_count; $i++) {
         $fieldInfo = new FieldInfo();
+
         $fieldInfo->name = $queryResult->fetch_field_direct($i)->name;
         $fieldInfo->visible = $full || isFieldVisible($fieldInfo->name, $scaleInfo, $type);
-        $fieldInfo->leftAlign = $newDesign ?
-            isFieldString($fieldInfo->name) :
-            isFieldLeftAlign($fieldInfo->name);
+        $fieldInfo->leftAlign = isFieldLeftAlign($newDesign, $fieldInfo->name);
 
         $result[] = $fieldInfo;
     }
@@ -82,12 +93,12 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 }
 
                 return $d;
+
             case C::TRAIN_NUMBER:
-                return $fieldValue;
             case C::VAN_NUMBER:
-                return $fieldValue;
             case C::AUTO_NUMBER:
                 return $fieldValue;
+
             case C::CARRYING:
             case C::LOAD_NORM:
             case C::VOLUME:
@@ -110,11 +121,14 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::INVOICE_TARE:
             case C::ACCELERATION:
                 return num_fmt($fieldValue, 2);
+
             case C::NETTO:
                 $s = num_fmt($fieldValue, 2);
                 return "<b>" . $s . "</b>";
+
             case C::MASS:
-                return num_fmt($fieldValue, 8);
+                return num_fmt($fieldValue, 4);
+
             case C::OVERLOAD:
             case C::INVOICE_OVERLOAD:
             case C::COMPARE:
@@ -126,9 +140,11 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     $overload = "<b>" . $overload . "</b>";
                 }
                 return $overload;
+
             case C::VELOCITY:
-                $velocity = number_format(abs($fieldValue), 1, S::DEC_POINT, "");
-                return $fieldValue > 0 ? $velocity . " &gt;&gt;&gt;" : $velocity = "&lt;&lt;&lt; " . $velocity;
+                $velocity = num_fmt(abs($fieldValue), 1);
+                return $fieldValue > 0 ? $velocity . " &gt;&gt;&gt;" : "&lt;&lt;&lt; " . $velocity;
+
             case C::WMODE:
                 switch ($fieldValue) {
                     case 1:
@@ -138,6 +154,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_SCALE_CLASS_UNKNOWN;
                 }
+
             case C::OPERATION_TYPE:
                 switch ($fieldValue) {
                     case 10:
@@ -155,6 +172,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_OPERATION_TYPE_UNKNOWN;
                 }
+
             case C::TARE_TYPE:
                 switch ($fieldValue) {
                     case 0:
@@ -166,6 +184,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_TARE_TYPE_UNKNOWN;
                 }
+
             case C::LEFT_SIDE:
                 switch ($fieldValue) {
                     case 0:
@@ -175,6 +194,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     default:
                         return S::TEXT_SIDE_UNKNOWN;
                 }
+
             case C::COEFFICIENT_P1:
             case C::COEFFICIENT_P2:
                 return num_fmt($fieldValue, 5);
@@ -184,6 +204,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::COEFFICIENT_T1:
             case C::COEFFICIENT_T2:
                 return num_fmt($fieldValue, 1);
+
             case C::TEMPERATURE_1:
             case C::TEMPERATURE_2:
             case C::TEMPERATURE_3:
@@ -193,6 +214,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::TEMPERATURE_7:
             case C::TEMPERATURE_8:
                 return num_fmt($fieldValue, 0);
+
             case C::SCALE_CLASS_STATIC:
             case C::SCALE_CLASS_DYNAMIC:
                 /**
@@ -663,124 +685,150 @@ function columnName($fieldName, $scaleType, $resultType = null)
     }
 }
 
-function isFieldString($fieldName)
+/**
+ * @param bool $newDesign
+ * @param string $fieldName
+ * @return bool
+ */
+function isFieldLeftAlign($newDesign, $fieldName)
 {
-    switch ($fieldName) {
-        case C::TRAIN_NUM:
+    if ($newDesign) {
+        switch ($fieldName) {
+            case C::TRAIN_NUM:
 
-        case C::SCALE_NUM:
-        case C::SCALE_MIN_CAPACITY:
-        case C::SCALE_MAX_CAPACITY:
-        case C::SCALE_DISCRETENESS:
+            case C::SCALE_NUM:
+            case C::SCALE_MIN_CAPACITY:
+            case C::SCALE_MAX_CAPACITY:
+            case C::SCALE_DISCRETENESS:
 
-        case C::UNIX_TIME:
-        case C::TRAIN_NUMBER:
-        case C::CARRYING:
-        case C::LOAD_NORM:
-        case C::VOLUME:
-        case C::TARE:
-        case C::BRUTTO:
-        case C::NETTO:
-        case C::OVERLOAD:
-        case C::VAN_COUNT:
-        case C::OPERATOR_TAB_NUMBER:
-        case C::OPERATOR_SHIFT_NUMBER:
-        case C::OPERATOR_SHIFT_SYMBOL:
-        case C::RAIL_PATH:
-        case C::STATUS:
-        case C::SEQUENCE_NUMBER:
-        case C::TARE_MANUAL:
-        case C::TARE_DYNAMIC:
-        case C::TARE_STATIC:
-        case C::TARE_TYPE:
-        case C::TARE_SCALE_NUMBER:
-        case C::DATETIME_TARE:
-        case C::BRUTTO_NEAR_SIDE:
-        case C::BRUTTO_FAR_SIDE:
-        case C::BRUTTO_FIRST_CARRIAGE:
-        case C::BRUTTO_SECOND_CARRIAGE:
-        case C::SIDE_DIFFERENCE:
-        case C::CARRIAGE_DIFFERENCE:
-        case C::MASS:
-        case C::ACCELERATION:
-        case C::CARGO_TYPE_CODE:
-        case C::AXIS_COUNT:
-        case C::INVOICE_NETTO:
-        case C::INVOICE_TARE:
-        case C::INVOICE_OVERLOAD:
-        case C::LOADING_GROUP:
-        case C::TARE_NEAR_SIDE:
-        case C::TARE_FAR_SIDE:
-        case C::TARE_FIRST_CARRIAGE:
-        case C::TARE_SECOND_CARRIAGE:
-        case C::UNIT_NUMBER:
-        case C::DISCRETENESS:
-        case C::COEFFICIENT_P1:
-        case C::COEFFICIENT_Q1:
-        case C::COEFFICIENT_P2:
-        case C::COEFFICIENT_Q2:
-        case C::TEMPERATURE_1:
-        case C::TEMPERATURE_2:
-        case C::COUNT_ID:
+            case C::UNIX_TIME:
+            case C::TRAIN_NUMBER:
+            case C::CARRYING:
+            case C::LOAD_NORM:
+            case C::VOLUME:
+            case C::TARE:
+            case C::BRUTTO:
+            case C::NETTO:
+            case C::OVERLOAD:
+            case C::VAN_COUNT:
+            case C::OPERATOR_TAB_NUMBER:
+            case C::OPERATOR_SHIFT_NUMBER:
+            case C::OPERATOR_SHIFT_SYMBOL:
+            case C::RAIL_PATH:
+            case C::STATUS:
+            case C::SEQUENCE_NUMBER:
+            case C::TARE_MANUAL:
+            case C::TARE_DYNAMIC:
+            case C::TARE_STATIC:
+            case C::TARE_TYPE:
+            case C::TARE_SCALE_NUMBER:
+            case C::DATETIME_TARE:
+            case C::BRUTTO_NEAR_SIDE:
+            case C::BRUTTO_FAR_SIDE:
+            case C::BRUTTO_FIRST_CARRIAGE:
+            case C::BRUTTO_SECOND_CARRIAGE:
+            case C::SIDE_DIFFERENCE:
+            case C::CARRIAGE_DIFFERENCE:
+            case C::MASS:
+            case C::ACCELERATION:
+            case C::CARGO_TYPE_CODE:
+            case C::AXIS_COUNT:
+            case C::INVOICE_NETTO:
+            case C::INVOICE_TARE:
+            case C::INVOICE_OVERLOAD:
+            case C::LOADING_GROUP:
+            case C::TARE_NEAR_SIDE:
+            case C::TARE_FAR_SIDE:
+            case C::TARE_FIRST_CARRIAGE:
+            case C::TARE_SECOND_CARRIAGE:
+            case C::UNIT_NUMBER:
+            case C::DISCRETENESS:
+            case C::COEFFICIENT_P1:
+            case C::COEFFICIENT_Q1:
+            case C::COEFFICIENT_P2:
+            case C::COEFFICIENT_Q2:
+            case C::TEMPERATURE_1:
+            case C::TEMPERATURE_2:
+            case C::COUNT_ID:
 
-        case C::SCALE_CLASS_DYNAMIC:
-            return false;
+            case C::MI_DELTA_ABS_BRUTTO:
+            case C::MI_DELTA_ABS_BRUTTO_E:
+            case C::MI_DELTA_ABS_TARE:
+            case C::MI_DELTA_ABS_TARE_E:
+            case C::MI_DELTA:
+            case C::MI_DELTA_E:
+            case C::MI_TARE_DYN:
+            case C::MI_TARE_DYN_SCALES:
+            case C::MI_DELTA_ABS_TARE_DYN:
+            case C::MI_DELTA_ABS_TARE_DYN_E:
+            case C::MI_DELTA_DYN:
+            case C::MI_DELTA_DYN_E:
+            case C::MI_TARE_STA:
+            case C::MI_TARE_STA_SCALES:
+            case C::MI_DELTA_ABS_TARE_STA:
+            case C::MI_DELTA_ABS_TARE_STA_E:
+            case C::MI_DELTA_STA:
+            case C::MI_DELTA_STA_E:
 
-        case C::DATETIME:
-        case C::DATETIME_END:
-        case C::VAN_NUMBER:
-        case C::VELOCITY:
-        case C::OPERATOR:
-        case C::DATETIME_OPERATOR:
-        case C::VAN_TYPE:
-        case C::CARGO_TYPE:
-        case C::DATETIME_CARGO:
-        case C::COUNTRY:
-        case C::DEPART_STATION:
-        case C::DEPART_STATION_CODE:
-        case C::PURPOSE_STATION:
-        case C::PURPOSE_STATION_CODE:
-        case C::DATETIME_SHIPMENT:
-        case C::INVOICE_NUMBER:
-        case C::INVOICE_SUPPLIER:
-        case C::INVOICE_RECIPIENT:
-        case C::WMODE:
-        case C::LOADING_PLACE:
-        case C::DATETIME_FAILURE:
-        case C::MESSAGE:
-        case C::UNIX_TIME_END:
-        case C::DATETIME_T:
-        case C::OPERATION_TYPE:
-        case C::ACCURACY_CLASS:
-        case C::VERIFIER:
-        case C::COMMENT:
+            case C::SCALE_CLASS_DYNAMIC:
+                return false;
 
-        case C::AUTO_NUMBER:
-        case C::DRIVER:
+            case C::DATETIME:
+            case C::DATETIME_END:
+            case C::VAN_NUMBER:
+            case C::VELOCITY:
+            case C::OPERATOR:
+            case C::DATETIME_OPERATOR:
+            case C::VAN_TYPE:
+            case C::CARGO_TYPE:
+            case C::DATETIME_CARGO:
+            case C::COUNTRY:
+            case C::DEPART_STATION:
+            case C::DEPART_STATION_CODE:
+            case C::PURPOSE_STATION:
+            case C::PURPOSE_STATION_CODE:
+            case C::DATETIME_SHIPMENT:
+            case C::INVOICE_NUMBER:
+            case C::INVOICE_SUPPLIER:
+            case C::INVOICE_RECIPIENT:
+            case C::WMODE:
+            case C::LOADING_PLACE:
+            case C::DATETIME_FAILURE:
+            case C::MESSAGE:
+            case C::UNIX_TIME_END:
+            case C::DATETIME_T:
+            case C::OPERATION_TYPE:
+            case C::ACCURACY_CLASS:
+            case C::VERIFIER:
+            case C::COMMENT:
 
-        case C::WEIGH_NAME:
-        case C::PRODUCT:
-        case C::LEFT_SIDE:
+            case C::AUTO_NUMBER:
+            case C::DRIVER:
 
-        case C::SCALE_CLASS_STATIC:
-            return true;
+            case C::WEIGH_NAME:
+            case C::PRODUCT:
+            case C::LEFT_SIDE:
 
-        default:
-            return true;
-    }
-}
+            case C::MI_TARE_DYN_DATETIME:
+            case C::MI_TARE_STA_DATETIME:
 
-function isFieldLeftAlign($fieldName)
-{
-    switch ($fieldName) {
-        case C::OPERATOR:
-        case C::DRIVER:
-        case C::MESSAGE:
-        case C::COMMENT:
-            return true;
+            case C::SCALE_CLASS_STATIC:
+                return true;
 
-        default:
-            return false;
+            default:
+                return true;
+        }
+    } else {
+        switch ($fieldName) {
+            case C::OPERATOR:
+            case C::DRIVER:
+            case C::MESSAGE:
+            case C::COMMENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 }
 
