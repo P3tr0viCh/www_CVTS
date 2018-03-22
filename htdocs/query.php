@@ -526,6 +526,7 @@ if (!$resultMessage) {
         echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
 
         if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
+            $scaleInfo->getClass() == ScaleClass::CLASS_STATIC ||
             $scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) {
             echoCheckBox($newDesign, ParamName::SHOW_DELTAS, S::CHECKBOX_SHOW_DELTAS);
         }

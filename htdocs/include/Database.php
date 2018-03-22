@@ -19,7 +19,7 @@ class Tables
     const VAN_DYNAMIC_AND_STATIC_BRUTTO = 'vndynb_temp';
     const VAN_BRUTTO_ADD = 'vnb_add';
 
-    const VAN_DYNAMIC_DELTAS = 'vndynb_delta';
+    const VAN_DELTAS = 'vnb_delta';
 
     const TRAIN_DYNAMIC = 'trdynb';
 

@@ -437,7 +437,9 @@ class QueryResult extends QueryBase
         $this->showCargoDate = $this->filter->isShowCargoDate() &&
             $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO;
         $this->showDeltas = $this->filter->isShowDeltas() &&
-            ($this->resultType == ResultType::TRAIN_DYNAMIC_ONE || $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO);
+            ($this->resultType == ResultType::TRAIN_DYNAMIC_ONE ||
+                $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
+                $this->resultType == ResultType::VAN_STATIC_BRUTTO);
 
         $table = $this->getTableName();
 
@@ -459,7 +461,7 @@ class QueryResult extends QueryBase
         }
 
         if ($this->showDeltas) {
-            $this->builder->join(T::VAN_DYNAMIC_DELTAS,
+            $this->builder->join(T::VAN_DELTAS,
                 array(
                     C::TRAIN_NUM,
                     C::SCALE_NUM,
