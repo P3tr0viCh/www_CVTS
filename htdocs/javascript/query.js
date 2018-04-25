@@ -91,7 +91,7 @@ function setDates(value) {
             break;
     }
 
-    for (var i = 0; i < inputs.length; i++) {
+    for (var i = 0; i < values.length; i++) {
         inputs[i].value = values[i];
     }
 
@@ -124,4 +124,53 @@ function formReset() {
 
     checkTextFields();
     checkSwitches();
+}
+
+// noinspection JSUnusedGlobalSymbols
+function updateInputs() {
+    var value, element;
+
+    for (var i = 0, l = inputs.length; i < l; i++) {
+        if ((element = inputs[i]) && (value = getCookie(element.id))) {
+            if (element.type === 'checkbox') {
+                element.checked = value === 'on';
+            } else {
+                element.value = value;
+            }
+        }
+    }
+}
+
+// noinspection JSUnusedGlobalSymbols
+function saveInputs() {
+    var element;
+
+    for (var i = 0, l = inputs.length; i < l; i++) {
+        if (element = inputs[i]) {
+            if (element.type === 'checkbox') {
+                if (element.checked) {
+                    setCookie(element.id, 'on');
+                } else {
+                    deleteCookie(element.id);
+                }
+            } else {
+                if (element.value) {
+                    setCookie(element.id, element.value);
+                } else {
+                    deleteCookie(element.id);
+                }
+            }
+        }
+    }
+}
+
+// noinspection JSUnusedGlobalSymbols
+function clearInputs() {
+    var element;
+
+    for (var i = 0, l = inputs.length; i < l; i++) {
+        if (element = inputs[i]) {
+            deleteCookie(element.id);
+        }
+    }
 }

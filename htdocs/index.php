@@ -38,6 +38,30 @@ $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 setCookieAsBool(ParamName::SHOW_DISABLED, $showDisabled);
 setCookieAsBool(ParamName::SHOW_METROLOGY, $showMetrology);
 
+setCookieAsString(ParamName::DATETIME_START_DAY, null);
+setCookieAsString(ParamName::DATETIME_START_MONTH, null);
+setCookieAsString(ParamName::DATETIME_START_YEAR, null);
+setCookieAsString(ParamName::DATETIME_START_HOUR, null);
+setCookieAsString(ParamName::DATETIME_START_MINUTES, null);
+setCookieAsString(ParamName::DATETIME_END_DAY, null);
+setCookieAsString(ParamName::DATETIME_END_MONTH, null);
+setCookieAsString(ParamName::DATETIME_END_YEAR, null);
+setCookieAsString(ParamName::DATETIME_END_HOUR, null);
+setCookieAsString(ParamName::DATETIME_END_MINUTES, null);
+
+setCookieAsString(ParamName::VAN_NUMBER, null);
+setCookieAsString(ParamName::CARGO_TYPE, null);
+setCookieAsString(ParamName::INVOICE_NUM, null);
+setCookieAsString(ParamName::INVOICE_SUPPLIER, null);
+setCookieAsString(ParamName::INVOICE_RECIPIENT, null);
+setCookieAsString(ParamName::ONLY_CHARK, null);
+
+setCookieAsString(ParamName::ALL_FIELDS, null);
+setCookieAsString(ParamName::SHOW_CARGO_DATE, null);
+setCookieAsString(ParamName::SHOW_DELTAS, null);
+setCookieAsString(ParamName::COMPARE_FORWARD, null);
+setCookieAsString(ParamName::COMPARE_BY_BRUTTO, null);
+
 echoStartPage();
 
 echoHead($newDesign, $useBackup ? S::TITLE_MAIN_BACKUP : S::TITLE_MAIN, null, "/javascript/footer.js");

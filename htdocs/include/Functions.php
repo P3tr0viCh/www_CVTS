@@ -1071,6 +1071,27 @@ function getCookieAsBool($param)
 
 /**
  * @param null|string $param
+ * @param $value
+ */
+function setCookieAsString($param, $value)
+{
+    if (!isset($param) || is_null($param)) {
+        return;
+    }
+
+    if (!isset($value) || is_null($value)) {
+        setcookie($param, null, time() - 1);
+        unset($_COOKIE[$param]);
+
+        return;
+    }
+
+    setcookie($param, $value);
+    $_COOKIE[$param] = $value;
+}
+
+/**
+ * @param null|string $param
  * @param null|bool $value
  */
 function setCookieAsBool($param, $value)
@@ -1080,7 +1101,7 @@ function setCookieAsBool($param, $value)
     }
 
     if (!isset($value) || is_null($value)) {
-        setcookie($param, $value, time() - 1);
+        setcookie($param, null, time() - 1);
         unset($_COOKIE[$param]);
 
         return;

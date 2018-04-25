@@ -63,7 +63,12 @@ if ($mysqli) {
     $resultMessage = mysqlConnectionFileError();
 }
 
-echoHead($newDesign, $title, null, array("/javascript/footer.js", "/javascript/common.js", "/javascript/query.js"));
+echoHead($newDesign, $title, null,
+    array(
+        "/javascript/footer.js",
+        "/javascript/common.js",
+        "/javascript/cookie_utils.js",
+        "/javascript/query.js"));
 
 echoStartBody($newDesign);
 
@@ -84,7 +89,7 @@ echoStartMain($newDesign);
 echoStartContent();
 
 if (!$resultMessage) {
-    echoFormStart("formResult", "result.php");
+    echoFormStart("formResult", "result.php", "saveInputs();", "clearInputs();");
 
     echoHidden(ParamName::SCALE_NUM, (int)$scales);
     echoHidden(ParamName::NEW_DESIGN, (bool)$newDesign);
@@ -421,13 +426,14 @@ if (!$resultMessage) {
         ) {
             echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_VAN_NUMBER, S::INPUT_VAN_NUMBER_HELP,
                 S::INPUT_VAN_NUMBER_PATTERN, 10, 8);
+            echo S::TAB . S::TAB;
+            echo '<br>' . PHP_EOL;
         } elseif ($scaleInfo->getType() == ScaleType::AUTO) {
             echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_AUTO_NUMBER, S::INPUT_AUTO_NUMBER_HELP,
                 S::INPUT_AUTO_NUMBER_PATTERN, 10, 9);
+            echo S::TAB . S::TAB;
+            echo '<br>' . PHP_EOL;
         }
-
-        echo S::TAB . S::TAB;
-        echo '<br>' . PHP_EOL;
 
         if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
             $scaleInfo->getType() == ScaleType::WMR ||
@@ -581,14 +587,30 @@ if (!$resultMessage) {
         "'" . ParamName::DATETIME_START_MONTH . "', " .
         "'" . ParamName::DATETIME_START_YEAR . "', " .
         "'" . ParamName::DATETIME_START_HOUR . "', " .
-        "'" . ParamName::DATETIME_START_MINUTES . "', "
-        . PHP_EOL .
+        "'" . ParamName::DATETIME_START_MINUTES . "', " .
+        PHP_EOL .
         S::TAB . S::TAB .
         "'" . ParamName::DATETIME_END_DAY . "', " .
         "'" . ParamName::DATETIME_END_MONTH . "', " .
         "'" . ParamName::DATETIME_END_YEAR . "', " .
         "'" . ParamName::DATETIME_END_HOUR . "', " .
-        "'" . ParamName::DATETIME_END_MINUTES . "'" .
+        "'" . ParamName::DATETIME_END_MINUTES . "'," .
+        PHP_EOL .
+        S::TAB . S::TAB .
+        "'" . ParamName::VAN_NUMBER . "', " .
+        "'" . ParamName::CARGO_TYPE . "', " .
+        "'" . ParamName::INVOICE_NUM . "', " .
+        "'" . ParamName::INVOICE_SUPPLIER . "', " .
+        "'" . ParamName::INVOICE_RECIPIENT . "', " .
+        "'" . ParamName::SCALES . "', " .
+        "'" . ParamName::ONLY_CHARK . "', " .
+        PHP_EOL .
+        S::TAB . S::TAB .
+        "'" . ParamName::ALL_FIELDS . "'," .
+        "'" . ParamName::SHOW_CARGO_DATE . "'," .
+        "'" . ParamName::SHOW_DELTAS . "'," .
+        "'" . ParamName::COMPARE_FORWARD . "'," .
+        "'" . ParamName::COMPARE_BY_BRUTTO . "'" .
         ");";
     echo PHP_EOL;
     echo '</script>';
@@ -603,6 +625,6 @@ echoEndContent();
 
 echoEndMain($newDesign);
 
-echoEndBody($newDesign, "updateContentMinHeightOnEndBody();");
+echoEndBody($newDesign, array("updateContentMinHeightOnEndBody();", "updateInputs();"));
 
 echoEndPage();

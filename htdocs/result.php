@@ -746,7 +746,7 @@ if (!$resultMessage) {
             echoTableBodyEnd();
             echoTableEnd();
 
-            echoFormStart('formExcel', 'excel.php', true);
+            echoFormStart('formExcel', 'excel.php', null, null, true);
 
             echoHidden(ParamName::EXCEL_FILENAME, date("Y.m.d H-i-s") . ".csv");
 

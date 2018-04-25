@@ -6,14 +6,25 @@ use Strings as S;
 /**
  * @param string $name
  * @param string $href
+ * @param null|string $onSubmit
+ * @param null|string $onReset
  * @param bool $blank
  */
-function echoFormStart($name, $href, $blank = false)
+function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $blank = false)
 {
     if ($blank) {
         $blank = " target='_blank'";
     }
-    $params = "action='$href'$blank ";
+
+    if ($onSubmit) {
+        $onSubmit = " onsubmit='$onSubmit'";
+    }
+
+    if ($onReset) {
+        $onReset = " onreset='$onReset'";
+    }
+
+    $params = "action='$href'$blank$onSubmit$onReset ";
 
     echo "<form id='$name' name='$name' method='post' $params>" . PHP_EOL;
 }
