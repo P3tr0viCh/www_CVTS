@@ -5,7 +5,7 @@ $timeStart = microtime(true);
 
 require_once "include/Constants.php";
 
-if (!isset($_POST[ParamName::SCALE_NUM])) {
+if (!isset($_GET[ParamName::SCALE_NUM])) {
     if (!isset($_GET[ParamName::REPORT_TYPE])) {
         header("Location: " . "/index.php");
         exit();
@@ -61,32 +61,32 @@ $filter = new ResultFilter();
 
 switch ($reportType) {
     case ReportType::TYPE_DEFAULT:
-        $scaleNum = getPOSTParam(ParamName::SCALE_NUM);
+        $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM);
         $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
-        $useBackup = getPOSTParam(ParamName::USE_BACKUP);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP);
 
         $filter
-            ->setVanNumber(getPOSTParam(ParamName::VAN_NUMBER))
-            ->setCargoType(getPOSTParam(ParamName::CARGO_TYPE))
-            ->setInvoiceNum(getPOSTParam(ParamName::INVOICE_NUM))
-            ->setInvoiceSupplier(getPOSTParam(ParamName::INVOICE_SUPPLIER))
-            ->setInvoiceRecipient(getPOSTParam(ParamName::INVOICE_RECIPIENT))
-            ->setOnlyChark(getPOSTParam(ParamName::ONLY_CHARK))
-            ->setScalesFilter(getPOSTParam(ParamName::SCALES))
-            ->setFull(getPOSTParam(ParamName::ALL_FIELDS))
-            ->setShowCargoDate(getPOSTParam(ParamName::SHOW_CARGO_DATE))
-            ->setShowDeltas(getPOSTParam(ParamName::SHOW_DELTAS))
-            ->setOrderByDateTime(getPOSTParam(ParamName::ORDER_BY_DATETIME))
-            ->setCompareForward(getPOSTParam(ParamName::COMPARE_FORWARD))
-            ->setCompareByBrutto(getPOSTParam(ParamName::COMPARE_BY_BRUTTO));
+            ->setVanNumber(getParamGETAsString(ParamName::VAN_NUMBER))
+            ->setCargoType(getParamGETAsString(ParamName::CARGO_TYPE))
+            ->setInvoiceNum(getParamGETAsString(ParamName::INVOICE_NUM))
+            ->setInvoiceSupplier(getParamGETAsString(ParamName::INVOICE_SUPPLIER))
+            ->setInvoiceRecipient(getParamGETAsString(ParamName::INVOICE_RECIPIENT))
+            ->setOnlyChark(getParamGETAsBool(ParamName::ONLY_CHARK))
+            ->setScalesFilter(getParamGETAsString(ParamName::SCALES))
+            ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS))
+            ->setShowCargoDate(getParamGETAsBool(ParamName::SHOW_CARGO_DATE))
+            ->setShowDeltas(getParamGETAsBool(ParamName::SHOW_DELTAS))
+            ->setOrderByDateTime(getParamGETAsBool(ParamName::ORDER_BY_DATETIME))
+            ->setCompareForward(getParamGETAsBool(ParamName::COMPARE_FORWARD))
+            ->setCompareByBrutto(getParamGETAsBool(ParamName::COMPARE_BY_BRUTTO));
 
-        $resultType = getPOSTParam(ParamName::RESULT_TYPE);
+        $resultType = getParamGETAsString(ParamName::RESULT_TYPE);
 
         if (empty($resultType)) {
 
             function getResultType($type)
             {
-                $param = getPOSTParam(ParamName::RESULT_TYPE . "_" . $type);
+                $param = getParamGETAsString(ParamName::RESULT_TYPE . "_" . $type);
                 return empty($param) ? null : $type;
             }
 
@@ -122,23 +122,23 @@ switch ($reportType) {
                     break;
                 }
             }
-
-            if (empty($resultType)) {
-                throw new InvalidArgumentException("Empty resultType");
-            }
         }
 
-        $dtStartDay = getPOSTParam(ParamName::DATETIME_START_DAY);
-        $dtStartMonth = getPOSTParam(ParamName::DATETIME_START_MONTH);
-        $dtStartYear = getPOSTParam(ParamName::DATETIME_START_YEAR);
-        $dtStartHour = getPOSTParam(ParamName::DATETIME_START_HOUR);
-        $dtStartMinute = getPOSTParam(ParamName::DATETIME_START_MINUTES);
+        if (empty($resultType)) {
+            throw new InvalidArgumentException("Empty resultType");
+        }
 
-        $dtEndDay = getPOSTParam(ParamName::DATETIME_END_DAY);
-        $dtEndMonth = getPOSTParam(ParamName::DATETIME_END_MONTH);
-        $dtEndYear = getPOSTParam(ParamName::DATETIME_END_YEAR);
-        $dtEndHour = getPOSTParam(ParamName::DATETIME_END_HOUR);
-        $dtEndMinute = getPOSTParam(ParamName::DATETIME_END_MINUTES);
+        $dtStartDay = getParamGETAsInt(ParamName::DATETIME_START_DAY);
+        $dtStartMonth = getParamGETAsInt(ParamName::DATETIME_START_MONTH);
+        $dtStartYear = getParamGETAsInt(ParamName::DATETIME_START_YEAR);
+        $dtStartHour = getParamGETAsInt(ParamName::DATETIME_START_HOUR);
+        $dtStartMinute = getParamGETAsInt(ParamName::DATETIME_START_MINUTES);
+
+        $dtEndDay = getParamGETAsInt(ParamName::DATETIME_END_DAY);
+        $dtEndMonth = getParamGETAsInt(ParamName::DATETIME_END_MONTH);
+        $dtEndYear = getParamGETAsInt(ParamName::DATETIME_END_YEAR);
+        $dtEndHour = getParamGETAsInt(ParamName::DATETIME_END_HOUR);
+        $dtEndMinute = getParamGETAsInt(ParamName::DATETIME_END_MINUTES);
 
         break;
     case ReportType::CARGO_TYPES:
@@ -289,6 +289,12 @@ if ($mysqli) {
                 ->setDateTimeStart($dateTimeStart)
                 ->setDateTimeEnd($dateTimeEnd);
 
+            /**
+             * @param string $name
+             * @param string $value
+             * @param string $html
+             * @return string
+             */
             function formatWhereHeader($name, $value, $html)
             {
                 if ($value) {
@@ -309,6 +315,8 @@ if ($mysqli) {
                 case ResultType::VAN_DYNAMIC_TARE:
                 case ResultType::VAN_STATIC_BRUTTO:
                 case ResultType::VAN_STATIC_TARE:
+                case ResultType::COMPARE_DYNAMIC:
+                case ResultType::COMPARE_STATIC:
                     $whereHeader = formatWhereHeader($scaleInfo->getType() == ScaleType::AUTO ?
                         S::HEADER_RESULT_SEARCH_AUTO_NUMBER :
                         S::HEADER_RESULT_SEARCH_VAN_NUMBER,
@@ -746,7 +754,7 @@ if (!$resultMessage) {
             echoTableBodyEnd();
             echoTableEnd();
 
-            echoFormStart('formExcel', 'excel.php', null, null, true);
+            echoFormStart('formExcel', 'excel.php', null, null, false, true);
 
             echoHidden(ParamName::EXCEL_FILENAME, date("Y.m.d H-i-s") . ".csv");
 

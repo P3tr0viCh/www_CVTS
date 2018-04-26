@@ -319,6 +319,8 @@ class QueryResult extends QueryBase
             case ResultType::VAN_DYNAMIC_TARE:
             case ResultType::VAN_STATIC_BRUTTO:
             case ResultType::VAN_STATIC_TARE:
+            case ResultType::COMPARE_DYNAMIC:
+            case ResultType::COMPARE_STATIC:
                 $this->builder
                     ->where($this->scaleType == ScaleType::AUTO ?
                         C::AUTO_NUMBER :

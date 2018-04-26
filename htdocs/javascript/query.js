@@ -145,7 +145,9 @@ function updateInputs() {
 function saveInputs() {
     var element;
 
-    for (var i = 0, l = inputs.length; i < l; i++) {
+    var i, l;
+
+    for (i = 0, l = inputs.length; i < l; i++) {
         if (element = inputs[i]) {
             if (element.type === 'checkbox') {
                 if (element.checked) {
@@ -159,6 +161,22 @@ function saveInputs() {
                 } else {
                     deleteCookie(element.id);
                 }
+            }
+        }
+    }
+
+    var inputsList = document.getElementsByTagName('input');
+    for (i = 0, l = inputsList.length; i < l; i++) {
+        if (inputsList[i].type === 'text' || inputsList[i].type === 'search') {
+            inputsList[i].classList.add('input-color--wait');
+        }
+
+        if (!inputsList[i].value) {
+            // Запрет передачи пустых значений из полей ввода
+            inputsList[i].disabled = true;
+        } else {
+            if (inputsList[i].type === 'text' || inputsList[i].type === 'search') {
+                inputsList[i].value = encodeURIComponent(inputsList[i].value);
             }
         }
     }

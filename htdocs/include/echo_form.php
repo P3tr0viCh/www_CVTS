@@ -8,25 +8,28 @@ use Strings as S;
  * @param string $href
  * @param null|string $onSubmit
  * @param null|string $onReset
+ * @param bool $methodGet
  * @param bool $blank
  */
-function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $blank = false)
+function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $methodGet = true, $blank = false)
 {
     if ($blank) {
-        $blank = " target='_blank'";
+        $blank = "target='_blank'";
     }
 
     if ($onSubmit) {
-        $onSubmit = " onsubmit='$onSubmit'";
+        $onSubmit = "onsubmit='$onSubmit'";
     }
 
     if ($onReset) {
-        $onReset = " onreset='$onReset'";
+        $onReset = "onreset='$onReset'";
     }
 
-    $params = "action='$href'$blank$onSubmit$onReset ";
+    $params = concatStrings($blank, concatStrings($onSubmit, $onReset, " "), " ");
 
-    echo "<form id='$name' name='$name' method='post' $params>" . PHP_EOL;
+    $method = $methodGet ? 'get' : 'post';
+
+    echo "<form id='$name' name='$name' method='$method' action='$href' $params>" . PHP_EOL;
 }
 
 /**
@@ -98,10 +101,11 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
         $pattern = $pattern ? " pattern='$pattern'" : '';
         $title = $title ? " title='$title'" : '';
 
+        $params = $pattern . $title;
+
         echo "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label$width80'>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        $params = "type='search' id='$id' name='$id'$pattern$title";
-        echo "<input class='mdl-textfield__input' $params/>" . PHP_EOL;
+        echo "<input class='mdl-textfield__input' type='search' id='$id' name='$id' $params/>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
         echo "<label class='mdl-textfield__label' for='$id'>$name</label>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;

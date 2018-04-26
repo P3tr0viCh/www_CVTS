@@ -6,5 +6,5 @@ class MetaInfo
     const COMPANY = 'Металлоинвест, Уральская Сталь, ЦВТС';
 
     const VERSION = '7.5.0';
-    const CREATION = '2018.04.25';
+    const CREATION = '2018.04.26';
 }
