@@ -7,6 +7,8 @@ require_once "include/CheckBrowser.php";
 
 require_once "include/echo_html_page.php";
 
+require_once "include/builders/href_builder/Builder.php";
+
 use Strings as S;
 
 $newDesign = isNewDesign(true);
@@ -26,6 +28,10 @@ switch ($errorNum) {
     case 404:
         $errorHeader = S::ERROR_404_HEADER;
         $errorSubHeader = S::ERROR_404_SUB_HEADER;
+        break;
+    case 412:
+        $errorHeader = S::ERROR_412_HEADER;
+        $errorSubHeader = S::ERROR_412_SUB_HEADER;
         break;
     case 500:
     default:
@@ -63,7 +69,13 @@ echo '<h2 class="result-message color-text--secondary">' . $errorSubHeader . '</
 
 if (strcasecmp($_SERVER['REQUEST_URI'], "/index.php")) {
     echo S::TAB . S::TAB . S::TAB;
-    echo '<h2 class="result-message link"><a href="/index.php">' . S::ERROR_GOTO_START . '</a></h2>' . PHP_EOL;
+
+    $href = \HrefBuilder\Builder::getInstance()
+        ->setUrl("index.php")
+        ->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
+        ->build();
+
+    echo "<h2 class='result-message link'><a href='$href'>" . S::ERROR_GOTO_START . "</a></h2>" . PHP_EOL;
 }
 
 echo S::TAB . S::TAB;

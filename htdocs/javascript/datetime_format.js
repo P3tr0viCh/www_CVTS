@@ -16,9 +16,9 @@ function mySqlDateToDate(mySqlDateTime) {
     // MySql date format: 0000-00-00 00:00:00
 
     return new Date(
-        mySqlDateTime.substring(0, 4),
-        mySqlDateTime.substring(5, 7) - 1,
-        mySqlDateTime.substring(8, 10));
+        parseInt(mySqlDateTime.substring(0, 4)),
+        parseInt(mySqlDateTime.substring(5, 7)) - 1,
+        parseInt(mySqlDateTime.substring(8, 10)));
 }
 
 function withZero(value) {

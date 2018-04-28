@@ -38,8 +38,10 @@ function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $methodG
  */
 function echoHidden($name, $value)
 {
+    $id = $name . '_hidden';
+
     echo S::TAB;
-    echo "<input type='hidden' id='$name' name='$name' value='$value'>" . PHP_EOL;
+    echo "<input type='hidden' id='$id' name='$name' value='$value'>" . PHP_EOL;
 }
 
 /**
@@ -59,8 +61,9 @@ function echoButton($newDesign, $text, $name, $value)
         echo $text;
         echo "</button>";
     } else {
-        $name = $name . "_" . $value;
-        echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";
+        /** @var string $onClick */
+        $onClick = "onButtonClick($value)";
+        echo "<input type='button' class='$buttonClass' value='$text' onclick='$onClick'>";
     }
     echo PHP_EOL . S::TAB . S::TAB;
     echo "<br>";
@@ -77,7 +80,7 @@ function echoButtonReset($newDesign)
         echo $text;
         echo "</button>";
     } else {
-        echo "<input class='input-button reset' type='reset' value='$text'>";
+        echo "<input type='reset' class='input-button reset' value='$text'>";
     }
     echo PHP_EOL;
 }
@@ -95,7 +98,12 @@ function echoButtonReset($newDesign)
  */
 function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, $width80 = false, $showName = true)
 {
+    echo S::TAB;
+
+    echoHidden($id, null);
+
     echo S::TAB . S::TAB;
+
     if ($newDesign) {
         $width80 = $width80 ? ' input-width80' : '';
         $pattern = $pattern ? " pattern='$pattern'" : '';
@@ -105,9 +113,9 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
 
         echo "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label$width80'>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        echo "<input class='mdl-textfield__input' type='search' id='$id' name='$id' $params/>" . PHP_EOL;
+        echo "<input type='search' class='mdl-textfield__input' id='$id' $params/>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        echo "<label class='mdl-textfield__label' for='$id'>$name</label>" . PHP_EOL;
+        echo "<label for='$id' class='mdl-textfield__label'>$name</label>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
         echo '<span class="mdl-textfield__error">' . S::ERROR_ERROR . '</span>' . PHP_EOL;
     } else {
@@ -117,13 +125,13 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
         if ($showName) {
             $labelClass .= ' text-input__label--width';
         }
-        echo "<label class='$labelClass' for='$id'>";
+        echo "<label for='$id' class='$labelClass'>";
         if ($showName) {
             echo "<span>$name</span>";
         }
         echo "</label>" . PHP_EOL;
         echo S::TAB . S::TAB . S::TAB;
-        echo "<input class='text-input__input' type='text' id='$id' name='$id' size='$size' maxlength='$maxLength'>" . PHP_EOL;
+        echo "<input type='text' class='text-input__input' id='$id' size='$size' maxlength='$maxLength'>" . PHP_EOL;
     }
     echo S::TAB . S::TAB;
     echo "</div>" . PHP_EOL;
@@ -147,17 +155,14 @@ function echoCheckBox($newDesign, $id, $name, $checked = false)
         $spanClass = 'checkbox__label';
     }
 
-    $params = "class='$inputClass'";
-    if ($checked) {
-        $params .= ' checked';
-    }
+    $params = $checked ? 'checked' : '';
 
     echo S::TAB . S::TAB;
     echo "<div class='field--checkbox'>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB;
-    echo "<label class='$labelClass' for='$id'>" . PHP_EOL;
+    echo "<label for='$id' class='$labelClass'>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB . S::TAB;
-    echo "<input type='checkbox' id='$id' name='$id' $params>" . PHP_EOL;
+    echo "<input type='checkbox' id='$id' name='$id' class='$inputClass' $params>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB . S::TAB;
     echo "<span class='$spanClass'>$name</span>" . PHP_EOL;
     echo S::TAB . S::TAB . S::TAB;

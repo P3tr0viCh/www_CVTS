@@ -2,10 +2,19 @@
 
 var inputs = [];
 
+var resultTypes = [];
+
 //noinspection JSUnusedGlobalSymbols
 function setInputs() {
     for (var i = 0, l = arguments.length; i < l; i++) {
         inputs[i] = document.getElementById(arguments[i]);
+    }
+}
+
+//noinspection JSUnusedGlobalSymbols
+function setResultTypes() {
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        resultTypes[i] = arguments[i];
     }
 }
 
@@ -102,6 +111,7 @@ function checkTextFields() {
     var texts = document.querySelectorAll('.mdl-js-textfield');
     if (texts) {
         for (var i = 0, l = texts.length; i < l; i++) {
+            // noinspection JSUnresolvedFunction
             texts[i].MaterialTextfield.checkDirty();
         }
     }
@@ -167,15 +177,17 @@ function saveInputs() {
 
     var inputsList = document.getElementsByTagName('input');
     for (i = 0, l = inputsList.length; i < l; i++) {
-        if (inputsList[i].type === 'text' || inputsList[i].type === 'search') {
-            inputsList[i].classList.add('input-color--wait');
-        }
+        if (inputsList[i].type === 'hidden') {
+            element = document.getElementById(inputsList[i].name);
 
-        if (!inputsList[i].value) {
-            // Запрет передачи пустых значений из полей ввода
-            inputsList[i].disabled = true;
-        } else {
-            if (inputsList[i].type === 'text' || inputsList[i].type === 'search') {
+            if (element) {
+                inputsList[i].value = element.value;
+            }
+
+            if (!inputsList[i].value) {
+                // Запрет передачи пустых значений из полей ввода
+                inputsList[i].disabled = true;
+            } else {
                 inputsList[i].value = encodeURIComponent(inputsList[i].value);
             }
         }
@@ -191,4 +203,13 @@ function clearInputs() {
             deleteCookie(element.id);
         }
     }
+}
+
+// noinspection JSUnusedGlobalSymbols
+function onButtonClick(value) {
+    document.getElementById('result_type_hidden').value = value;
+
+    saveInputs();
+
+    document.getElementById("formResult").submit();
 }

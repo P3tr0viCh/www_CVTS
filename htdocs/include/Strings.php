@@ -237,6 +237,9 @@ class Strings
     const ERROR_404_HEADER = 'Такой страницы нет';
     const ERROR_404_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
+    const ERROR_412_HEADER = 'Неверный формат запроса';
+    const ERROR_412_SUB_HEADER = 'При проверке на сервере одного или более полей заголовка запроса обнаружено несоответствие';
+
     const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
     const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 

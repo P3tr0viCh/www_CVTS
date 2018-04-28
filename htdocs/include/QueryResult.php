@@ -333,11 +333,24 @@ class QueryResult extends QueryBase
             case ResultType::VAN_DYNAMIC_BRUTTO:
             case ResultType::VAN_STATIC_BRUTTO:
             case ResultType::AUTO_BRUTTO:
+            case ResultType::CARGO_LIST_AUTO:
+            case ResultType::CARGO_LIST_DYNAMIC:
+            case ResultType::CARGO_LIST_STATIC:
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
                 $this->builder
                     ->where(C::CARGO_TYPE, B::COMPARISON_LIKE,
-                        utf8ToLatin1($this->filter->getCargoType()))
+                        utf8ToLatin1($this->filter->getCargoType()));
+        }
+
+        switch ($this->resultType) {
+            case ResultType::TRAIN_DYNAMIC_ONE:
+            case ResultType::VAN_DYNAMIC_BRUTTO:
+            case ResultType::VAN_STATIC_BRUTTO:
+            case ResultType::AUTO_BRUTTO:
+            case ResultType::COMPARE_DYNAMIC:
+            case ResultType::COMPARE_STATIC:
+                $this->builder
                     ->where(C::INVOICE_NUMBER, B::COMPARISON_LIKE,
                         utf8ToLatin1($this->filter->getInvoiceNum()))
                     ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE,

@@ -159,6 +159,7 @@ class HtmlHeader extends HtmlBase
                 $idIcon = $id . 'Icon';
                 $idText = $id . 'Text';
                 $hidden = $navLink->getHidden() ? ' hidden' : '';
+                /** @var string $onClick */
                 $onClick = $navLink->getOnClick();
 
                 if (isset($onClick)) {

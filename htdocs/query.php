@@ -96,6 +96,11 @@ if (!$resultMessage) {
     echoHidden(ParamName::USE_BACKUP, (bool)$useBackup);
     echo PHP_EOL;
 
+    if (!$newDesign) {
+        echoHidden(ParamName::RESULT_TYPE, null);
+        echo PHP_EOL;
+    }
+
     if ($newDesign) {
         echo S::TAB;
         echo '<div class="mdl-grid mdl-cell--stretch">' . PHP_EOL;
@@ -333,7 +338,7 @@ if (!$resultMessage) {
     echoInput($newDesign, ParamName::DATETIME_END_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
     echo S::TAB . S::TAB;
-    echo $newDesign ? '<br>' : '<span>&nbsp</span>';
+    echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
     echo PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
@@ -611,6 +616,35 @@ if (!$resultMessage) {
         "'" . ParamName::SHOW_DELTAS . "'," .
         "'" . ParamName::COMPARE_FORWARD . "'," .
         "'" . ParamName::COMPARE_BY_BRUTTO . "'" .
+        ");";
+    echo PHP_EOL . PHP_EOL;
+
+    echo S::TAB . S::TAB;
+    echo "setResultTypes(" .
+        ResultType::VAN_DYNAMIC_BRUTTO . ", " .
+        ResultType::VAN_DYNAMIC_TARE . ", " .
+        ResultType::VAN_STATIC_BRUTTO . ", " .
+        ResultType::VAN_STATIC_TARE . ", " .
+
+        ResultType::TRAIN_DYNAMIC . ", " .
+        ResultType::TRAIN_DYNAMIC_ONE . ", " .
+
+        ResultType::AUTO_BRUTTO . ", " .
+        ResultType::AUTO_TARE . ", " .
+
+        ResultType::KANAT . ", " .
+
+        ResultType::DP . ", " .
+        ResultType::DP_SUM . ", " .
+
+        ResultType::CARGO_LIST_DYNAMIC . ", " .
+        ResultType::CARGO_LIST_STATIC . ", " .
+        ResultType::CARGO_LIST_AUTO . ", " .
+
+        ResultType::COMPARE_DYNAMIC . ", " .
+        ResultType::COMPARE_STATIC . ", " .
+
+        ResultType::COEFFS .
         ");";
     echo PHP_EOL;
     echo '</script>';

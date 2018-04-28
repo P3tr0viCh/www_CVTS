@@ -21,6 +21,7 @@ if (document.addEventListener) {
 if (window.addEventListener) {
     window.addEventListener("resize", updateContentMinHeight);
 } else {
+    // noinspection JSUnresolvedFunction
     window.attachEvent("onresize", updateContentMinHeight);
 }
 
@@ -43,7 +44,9 @@ function updateContentMinHeight() {
         marginTop = getComputedStyle(elementContent).marginTop;
         marginBottom = getComputedStyle(elementContent).marginBottom;
     } else {
+        // noinspection JSUnresolvedVariable
         marginTop = elementContent.currentStyle.marginTop;
+        // noinspection JSUnresolvedVariable
         marginBottom = elementContent.currentStyle.marginBottom;
     }
 

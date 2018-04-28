@@ -13,11 +13,13 @@ if (document.addEventListener) {
 //noinspection JSUnusedGlobalSymbols
 function updateHRWidthOnEndBody() {
     if (!document.querySelectorAll) {
+        // noinspection JSValidateTypes
         document.querySelectorAll = function (selectors) {
             var style = document.createElement('style'), elements = [], element;
             document.documentElement.firstChild.appendChild(style);
             document._qsa = [];
 
+            // noinspection JSDeprecatedSymbols
             style.styleSheet.cssText = selectors +
                 '{x-qsa:expression(document._qsa && document._qsa.push(this))}';
             window.scrollBy(0, 0);
@@ -61,7 +63,9 @@ function updateHRWidth() {
         marginLeft = getComputedStyle(elementContent).marginLeft;
         marginRight = getComputedStyle(elementContent).marginRight;
     } else {
+        // noinspection JSUnresolvedVariable
         marginLeft = elementContent.currentStyle.marginLeft;
+        // noinspection JSUnresolvedVariable
         marginRight = elementContent.currentStyle.marginRight;
     }
 

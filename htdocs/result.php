@@ -5,13 +5,6 @@ $timeStart = microtime(true);
 
 require_once "include/Constants.php";
 
-if (!isset($_GET[ParamName::SCALE_NUM])) {
-    if (!isset($_GET[ParamName::REPORT_TYPE])) {
-        header("Location: " . "/index.php");
-        exit();
-    }
-}
-
 require_once "include/MySQLConnection.php";
 
 require_once "include/QueryResult.php";
@@ -26,6 +19,7 @@ require_once "include/CheckBrowser.php";
 
 require_once "include/ScaleInfo.php";
 require_once "include/ResultFilter.php";
+
 require_once "include/builders/DateTimeBuilder.php";
 require_once "include/builders/href_builder/Builder.php";
 
@@ -38,9 +32,33 @@ require_once "include/HtmlDrawer.php";
 
 use Strings as S;
 
+function throwBadRequest()
+{
+    header("Location: error.php?412");
+    exit();
+}
+
+if (!isset($_GET[ParamName::SCALE_NUM])) {
+    if (!isset($_GET[ParamName::REPORT_TYPE])) {
+        throwBadRequest();
+    }
+}
+
 $newDesign = isNewDesign();
 
 $reportType = getParamGETAsInt(ParamName::REPORT_TYPE, ReportType::TYPE_DEFAULT);
+
+$title = S::TITLE_ERROR;
+
+$excelData = null;
+
+$header = null;
+$subHeader = null;
+$whereHeader = null;
+$navLinks = null;
+$menuItems = null;
+
+$resultMessage = null;
 
 $dtStartDay = null;
 $dtStartMonth = null;
@@ -82,6 +100,7 @@ switch ($reportType) {
 
         $resultType = getParamGETAsString(ParamName::RESULT_TYPE);
 
+        // TODO: old style form with POST
         if (empty($resultType)) {
 
             function getResultType($type)
@@ -125,7 +144,7 @@ switch ($reportType) {
         }
 
         if (empty($resultType)) {
-            throw new InvalidArgumentException("Empty resultType");
+            throwBadRequest();
         }
 
         $dtStartDay = getParamGETAsInt(ParamName::DATETIME_START_DAY);
@@ -155,8 +174,7 @@ switch ($reportType) {
                 $resultType = ResultType::VAN_STATIC_BRUTTO;
                 break;
             default:
-                header("Location: " . "/index.php");
-                die();
+                throwBadRequest();
         }
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
@@ -185,8 +203,7 @@ switch ($reportType) {
 
         break;
     default:
-        header("Location: " . "/index.php");
-        die();
+        throwBadRequest();
 }
 
 if (isResultTypeCompare($resultType)) {
@@ -194,18 +211,6 @@ if (isResultTypeCompare($resultType)) {
 }
 
 echoStartPage();
-
-$title = S::TITLE_ERROR;
-
-$resultMessage = null;
-
-$excelData = null;
-
-$header = null;
-$subHeader = null;
-$whereHeader = null;
-$navLinks = null;
-$menuItems = null;
 
 $mysqli = MySQLConnection::getInstance($useBackup);
 
@@ -263,6 +268,10 @@ if ($mysqli) {
             }
 
             $subHeader = getResultHeader($resultType);
+
+            if (empty($subHeader)) {
+                throwBadRequest();
+            }
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
                 $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
@@ -327,6 +336,7 @@ if ($mysqli) {
                 $resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
                 $resultType == ResultType::VAN_STATIC_BRUTTO ||
                 $resultType == ResultType::AUTO_BRUTTO ||
+                isResultTypeCargoList($resultType) ||
                 isResultTypeCompare($resultType)
             ) {
                 $whereHeader = concatStrings($whereHeader,

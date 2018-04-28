@@ -18,9 +18,13 @@ function setCookie(name, value, options) {
 
     for (var propName in options) {
         updatedCookie += "; " + propName;
-        var propValue = options[propName];
-        if (propValue !== true) {
-            updatedCookie += "=" + propValue;
+
+        if (options.hasOwnProperty(propName)) {
+            var propValue = options[propName];
+
+            if (propValue !== true) {
+                updatedCookie += "=" + propValue;
+            }
         }
     }
 
@@ -29,7 +33,7 @@ function setCookie(name, value, options) {
 
 function getCookie(name) {
     var matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\\/+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }

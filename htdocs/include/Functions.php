@@ -974,7 +974,7 @@ function getParamGETAsBool($param, $default = null)
  */
 function getParamGETAsString($param, $default = null)
 {
-    return isset($_GET[(string)$param]) ? urldecode($_GET[(string)$param]) : $default;
+    return (isset($_GET[(string)$param]) && ($_GET[(string)$param] != null)) ? urldecode($_GET[(string)$param]) : $default;
 }
 
 function isResultTypeCompare($resultType)
@@ -992,7 +992,7 @@ function isResultTypeCargoList($resultType)
 
 /**
  * @param int $resultType
- * @return string
+ * @return null|string
  * @see ResultType
  */
 function getResultHeader($resultType)
@@ -1030,7 +1030,7 @@ function getResultHeader($resultType)
         case ResultType::COEFFS:
             return S::HEADER_COEFF;
         default:
-            throw new InvalidArgumentException("Unknown resultType ($resultType)");
+            return null;
     }
 }
 

@@ -12,6 +12,7 @@ function dateTime(showSeconds) {
     if (window.addEventListener) {
         window.addEventListener("resize", onResize);
     } else {
+        // noinspection JSUnresolvedFunction
         window.attachEvent("onresize", onResize);
     }
 
@@ -23,8 +24,8 @@ function dateTime(showSeconds) {
         setElementText(dateElement, "");
         setElementText(timeElement, "");
 
-        dateElement.style.fontSize = 0;
-        timeElement.style.fontSize = 0;
+        dateElement.style.fontSize = '0';
+        timeElement.style.fontSize = '0';
 
         updateDateTime();
     }
@@ -75,7 +76,9 @@ function dateTime(showSeconds) {
             paddingLeft = getComputedStyle(element).paddingLeft;
             paddingRight = getComputedStyle(element).paddingRight;
         } else {
+            // noinspection JSUnresolvedVariable
             paddingLeft = element.currentStyle.paddingLeft;
+            // noinspection JSUnresolvedVariable
             paddingRight = element.currentStyle.paddingRight;
         }
         paddingLeft = parseFloat(paddingLeft);

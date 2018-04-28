@@ -35,6 +35,7 @@ $showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
 $showMetrology = getParamGETAsBool(ParamName::SHOW_METROLOGY, false);
 $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
+setCookieAsBool(ParamName::NEW_DESIGN, $newDesign);
 setCookieAsBool(ParamName::SHOW_DISABLED, $showDisabled);
 setCookieAsBool(ParamName::SHOW_METROLOGY, $showMetrology);
 
@@ -61,6 +62,7 @@ setCookieAsString(ParamName::SHOW_CARGO_DATE, null);
 setCookieAsString(ParamName::SHOW_DELTAS, null);
 setCookieAsString(ParamName::COMPARE_FORWARD, null);
 setCookieAsString(ParamName::COMPARE_BY_BRUTTO, null);
+setCookieAsString(ParamName::SCALES, null);
 
 echoStartPage();
 

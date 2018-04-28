@@ -88,16 +88,16 @@ function copyTextToClipboard(text) {
 
     textArea.style.cursor = 'progress';
 
-    textArea.style.left = 0;
-    textArea.style.top = 0;
+    textArea.style.left = '0';
+    textArea.style.top = '0';
 
-    textArea.style.zIndex = 1;
+    textArea.style.zIndex = '1';
 
     textArea.style.width = '100%';
     textArea.style.height = '100%';
 
-    textArea.style.margin = 0;
-    textArea.style.padding = 0;
+    textArea.style.margin = '0';
+    textArea.style.padding = '0';
 
     textArea.style.border = 'none';
     textArea.style.resize = 'none';
@@ -106,7 +106,7 @@ function copyTextToClipboard(text) {
     textArea.style.boxShadow = 'none';
 
     textArea.style.background = 'black';
-    textArea.style.opacity = 0.3;
+    textArea.style.opacity = '0.3';
     textArea.style.color = 'transparent';
 
     textArea.readOnly = true;

@@ -151,8 +151,3 @@ table.center {
 .width--15-percents {
     width: 15%;
 }
-
-.input-color--wait {
-    color: #DDDDDD !important;
-    background-color: #FAFAFA !important;
-}
