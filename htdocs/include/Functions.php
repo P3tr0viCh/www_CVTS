@@ -745,8 +745,10 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::DISCRETENESS:
             case C::COEFFICIENT_P1:
             case C::COEFFICIENT_Q1:
+            case C::COEFFICIENT_T1:
             case C::COEFFICIENT_P2:
             case C::COEFFICIENT_Q2:
+            case C::COEFFICIENT_T2:
             case C::TEMPERATURE_1:
             case C::TEMPERATURE_2:
             case C::COUNT_ID:

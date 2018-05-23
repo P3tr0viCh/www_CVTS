@@ -11,7 +11,8 @@ class DateTimeBuilder
     /**
      * @return DateTimeBuilder
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return new self();
     }
 
@@ -74,11 +75,11 @@ class DateTimeBuilder
         if ($hasDate) {
             $currDate = getdate();
 
-            if ($this->hour == null) $this->hour = 0;
-            if ($this->minute == null) $this->minute = 0;
-            if ($this->day == null) $this->day = $currDate["mday"];
-            if ($this->month == null) $this->month = $currDate["mon"];
-            if ($this->year == null) $this->year = $currDate["year"];
+            if ($this->hour === null) $this->hour = 0;
+            if ($this->minute === null) $this->minute = 0;
+            if ($this->day === null) $this->day = $currDate["mday"];
+            if ($this->month === null) $this->month = $currDate["mon"];
+            if ($this->year === null) $this->year = $currDate["year"];
 
             $result = mktime($this->hour, $this->minute, 0, $this->month, $this->day, $this->year);
 
@@ -97,11 +98,11 @@ class DateTimeBuilder
         if ($hasDate) {
             $currDate = getdate();
 
-            if ($this->hour == null) $this->hour = 23;
-            if ($this->minute == null) $this->minute = 59;
-            if ($this->day == null) $this->day = getLastDay($this->month, $this->year);
-            if ($this->month == null) $this->month = $currDate["mon"];
-            if ($this->year == null) $this->year = $currDate["year"];
+            if ($this->hour === null) $this->hour = 23;
+            if ($this->minute === null) $this->minute = 59;
+            if ($this->day === null) $this->day = getLastDay($this->month, $this->year);
+            if ($this->month === null) $this->month = $currDate["mon"];
+            if ($this->year === null) $this->year = $currDate["year"];
 
             $result = mktime($this->hour, $this->minute, 59, $this->month, $this->day, $this->year);
 
