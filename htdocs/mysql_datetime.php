@@ -21,7 +21,14 @@ $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 echoStartPage();
 
-echoHead($newDesign, S::TITLE_MYSQL_DATETIME, '/styles/mysql_datetime.css');
+$styles = array();
+if ($newDesign) {
+    $styles[] = '/styles/mysql_datetime.css';
+} else {
+    $styles[] = '/styles/mysql_datetime_compat.css';
+}
+
+echoHead($newDesign, S::TITLE_MYSQL_DATETIME, $styles);
 
 echoStartBody($newDesign);
 

@@ -45,7 +45,6 @@ echoStartPage();
 $styles[] = "/styles/error_common.css";
 if ($newDesign) {
     $styles[] = "/styles/error.css";
-    $styles[] = "/fonts/roboto/roboto.css";
 } else {
     $styles[] = "/styles/error_compat.css";
 }

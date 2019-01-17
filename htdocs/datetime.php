@@ -21,7 +21,6 @@ $styles = array();
 $styles[] = '/styles/datetime_common.css';
 if ($newDesign) {
     $styles[] = '/styles/datetime.css';
-    $styles[] = '/fonts/roboto/roboto.css';
 } else {
     $styles[] = '/styles/datetime_compat.css';
     $oldIEStyle = '/styles/datetime_compat_ie.css';
@@ -36,8 +35,6 @@ $javaScripts[] = '/javascript/datetime_format.js';
 $javaScripts[] = '/javascript/datetime.js';
 $javaScripts[] = '/javascript/night_mode.js';
 $javaScripts[] = '/javascript/hide_cursor.js';
-
-$newDesign = false;
 
 echoHead($newDesign, S::TITLE_DATETIME, $styles, $javaScripts, $oldIEStyle);
 

@@ -18,16 +18,20 @@ require_once "include/echo_table.php";
 
 use Strings as S;
 
+// debug
+$showQuery = false;
+
 $newDesign = isNewDesign(true);
 $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
-$department = 66;
+$department = getParamGETAsInt(ParamName::DEPARTMENT, 0);
 
 $companyDate = null;
 $departmentDate = null;
+$departmentName = null;
 
 echoStartPage();
 
@@ -70,6 +74,10 @@ if ($mysqli) {
 
         $query->setDepartment($department);
 
+        if ($showQuery) {
+            echo $query->getQuery() . PHP_EOL;
+        }
+
         $result = $mysqli->query($query->getQuery());
 
         if ($result) {
@@ -77,6 +85,11 @@ if ($mysqli) {
 
             $companyDate = $row[Database\Columns::COMPANY_DATE];
             $departmentDate = $row[Database\Columns::DEPARTMENT_DATE];
+            $departmentName = latin1ToUtf8($row[Database\Columns::DEPARTMENT_NAME]);
+
+            if (is_null($departmentName)) {
+                $departmentName = sprintf(S::HEADER_WAC_DEPARTMENT, $department);
+            }
 
             echoTableStart("wac");
 
@@ -96,7 +109,7 @@ if ($mysqli) {
 
             echoTableBodyStart();
             echoTableTRStart("wac--row data");
-            echoTableTD(S::HEADER_WAC_DEPARTMENT, "wac--cell department name");
+            echoTableTD($departmentName, "wac--cell department name");
             echoTableTD("<span id='department'></span>", "wac--cell department counter");
             echoTableTREnd();
 

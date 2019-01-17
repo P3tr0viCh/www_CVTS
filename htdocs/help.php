@@ -24,8 +24,7 @@ echoStartPage();
 $styles = array();
 $styles[] = '/styles/help_common.css';
 if ($newDesign) {
-    $styles[] = '/styles/help_new.css';
-    $styles[] = '/fonts/roboto/roboto.css';
+    $styles[] = '/styles/help.css';
 } else {
     $styles[] = '/styles/help_compat.css';
 }
@@ -99,6 +98,13 @@ echoTableTRStart();
     echoTableTD(S::HELP_TEXT_PARAMS_USE_BACKUP, $tableCellClass);
 }
 echoTableTREnd();
+echoTableTRStart();
+{
+    echoTableTD(ParamName::DEPARTMENT, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_VALUE_INT, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_DEPARTMENT, $tableCellClass);
+}
+echoTableTREnd();
 
 echoTableBodyEnd();
 echoTableEnd();
@@ -106,7 +112,7 @@ echoTableEnd();
 if ($newDesign) {
     echo '<br>' . PHP_EOL;
 }
-echo '<p>' . "Пример:" . '</p>' . PHP_EOL;
+echo '<p>' . 'Пример:' . '</p>' . PHP_EOL;
 
 $hrefBuilder = \HrefBuilder\Builder::getInstance();
 $exampleUrl = $hrefBuilder->setUrl("index.php")

@@ -1,5 +1,4 @@
 body {
-    font-family: Roboto, Verdana, Helvetica, Arial, sans-serif;
     color: rgba(0, 0, 0, 0.87);
 }
 
@@ -17,11 +16,11 @@ body.night {
 }
 
 .wac--cell.name {
-    font-size: 9vmin;
+    font-size: 9.5vmin;
 }
 
 .wac--cell.name.company {
-    font-size: 8vmin;
+    font-size: 9vmin;
 }
 
 .wac--cell.counter {

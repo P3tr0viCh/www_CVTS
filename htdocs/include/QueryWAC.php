@@ -9,10 +9,9 @@ use Database\Columns as C;
 
 class QueryWAC extends QueryBase
 {
-    const COMPANY_DEPARTMENT = 0;
-
-    // TODO: delete NOW()
-    const SUB_QUERY = 'IFNULL((%s), NOW())';
+    const MAX_F = 'max(%s)';
+    const SUB_QUERY_DATE = 'IFNULL((%s), NOW())';
+    const SUB_QUERY_NAME = '(%s)';
 
     /**
      * @var int
@@ -29,20 +28,25 @@ class QueryWAC extends QueryBase
 
     protected function makeQuery()
     {
-        $commonBuilder = B::getInstance()
+        $companyDateBuilder = B::getInstance()
+            ->column(sprintf(self::MAX_F, C::DATETIME))
+            ->table(T::ACCIDENTS);
+
+        $departmentDateBuilder = B::getInstance()
             ->column(C::DATETIME)
             ->table(T::ACCIDENTS)
             ->order(C::DATETIME, true)
-            ->limit(1);
+            ->limit(1)
+            ->where(C::DEPARTMENT, B::COMPARISON_EQUAL, $this->department);
 
-        $companyBuilder = clone $commonBuilder;
-        $companyBuilder->where(C::DEPARTMENT, B::COMPARISON_EQUAL, self::COMPANY_DEPARTMENT);
-
-        $departmentBuilder = clone $commonBuilder;
-        $departmentBuilder->where(C::DEPARTMENT, B::COMPARISON_EQUAL, $this->department);
+        $departmentNameBuilder = B::getInstance()
+            ->column(C::NAME)
+            ->table(T::DEPARTMENTS)
+            ->where(C::ID, B::COMPARISON_EQUAL, $this->department);
 
         $this->builder
-            ->column(sprintf(self::SUB_QUERY, $companyBuilder->build()), null, C::COMPANY_DATE)
-            ->column(sprintf(self::SUB_QUERY, $departmentBuilder->build()), null, C::DEPARTMENT_DATE);
+            ->column(sprintf(self::SUB_QUERY_DATE, $companyDateBuilder->build()), null, C::COMPANY_DATE)
+            ->column(sprintf(self::SUB_QUERY_DATE, $departmentDateBuilder->build()), null, C::DEPARTMENT_DATE)
+            ->column(sprintf(self::SUB_QUERY_NAME, $departmentNameBuilder->build()), null, C::DEPARTMENT_NAME);
     }
 }

@@ -36,6 +36,7 @@ class Tables
     const COEFFS = 'wcalver';
 
     const ACCIDENTS = 'accidents';
+    const DEPARTMENTS = 'departments';
 }
 
 class Columns
@@ -179,6 +180,10 @@ class Columns
 
     const COMPANY_DATE = 'company_date';
     const DEPARTMENT_DATE = 'department_date';
+
+    const ID = 'id';
+    const NAME = 'name';
+    const DEPARTMENT_NAME = 'department_name';
 
     const MI_DELTA_ABS_BRUTTO = 'delta_abs_brutto';
     const MI_DELTA_ABS_BRUTTO_E = 'delta_abs_brutto_exact';

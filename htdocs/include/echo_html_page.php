@@ -108,6 +108,8 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
             echo S::TAB;
             echo '<link rel="stylesheet" href="/fonts/roboto/roboto.css">' . PHP_EOL;
             echo S::TAB;
+            echo '<link rel="stylesheet" href="/fonts/robotottf/roboto.css">' . PHP_EOL;
+            echo S::TAB;
             echo '<link rel="stylesheet" href="/materialicons/materialicons.css">' . PHP_EOL;
         } else {
             echo S::TAB;
