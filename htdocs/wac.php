@@ -51,7 +51,7 @@ if ($debug) {
 }
 
 $javaScripts = array();
-
+$javaScripts[] = '/javascript/class_utils.js';
 $javaScripts[] = '/javascript/datetime_format.js';
 $javaScripts[] = '/javascript/wac.js';
 $javaScripts[] = '/javascript/night_mode.js';
@@ -153,6 +153,7 @@ if ($resultMessage) {
 
 if (!$resultMessage) {
     $javaScripts = array();
+    $javaScripts[] = 'initClassUtils();';
 
     if (!$disableHideCursor) {
         $javaScripts[] = "startHideCursor();";

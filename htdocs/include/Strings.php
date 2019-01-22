@@ -14,6 +14,7 @@ class Strings
     const TITLE_MAIN = 'Сервер весовых систем';
     const TITLE_MAIN_BACKUP = 'Резервный сервер весовых систем';
     const TITLE_DATETIME = 'Дата и время';
+    const TITLE_TEMP = 'Температура';
     const TITLE_WAC = 'Травматизм';
     const TITLE_MYSQL_DATETIME = 'Дата и время сервера';
     const TITLE_ERROR_INCOMPATIBLE_BROWSER = 'Несовместимый браузер';
@@ -249,30 +250,31 @@ class Strings
     const ERROR_GOTO_START = 'Перейти на начальную страницу';
     const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';
 
-    const A_GOTO_MAIN = "Список весовых";
-    const A_GOTO_MAIN_COMPATIBLE = "Список весовых в старом дизайне";
-    const A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED = "Список весовых в старом дизайне, включая закрытые весы";
-    const A_GOTO_WAC = "Количество дней, отработанных без травм";
-    const A_GOTO_DATETIME = "Дата и время на компьютере";
-    const A_GOTO_MYSQL_DATETIME = "Дата и время на сервере MySQL";
-    const A_GOTO_HELP = "Справка";
+    const A_GOTO_MAIN = 'Список весовых';
+    const A_GOTO_MAIN_COMPATIBLE = 'Список весовых в старом дизайне';
+    const A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED = 'Список весовых в старом дизайне, включая закрытые весы';
+    const A_GOTO_WAC = 'Количество дней, отработанных без травм';
+    const A_GOTO_DATETIME = 'Дата и время на компьютере';
+    const A_GOTO_MYSQL_DATETIME = 'Дата и время на сервере MySQL';
+    const A_GOTO_TEMP = 'Температура наружного воздуха';
+    const A_GOTO_HELP = 'Справка';
 
-    const A_TEXT_EXTERNAL_RESOURCES = "Посторонние ресурсы";
+    const A_TEXT_EXTERNAL_RESOURCES = 'Посторонние ресурсы';
 
     const A_GOTO_DATA_CENTER_ARM = 'Универсальный АРМ весоизмерения "Дата-Центр Автоматика"';
     const A_GOTO_CTA_AND_KIP_ASU_GAZ = 'Температура наружного воздуха, УТА';
 
-    const HELP_TEXT_PARAMS = "Параметры адресной строки";
-    const HELP_TEXT_PARAMS_TEXT = "Параметры вводятся в адресной строке браузера в конце адреса страницы. Началом запроса служит знак &laquo;?&raquo;, после которого добавляются параметры в виде <i>имя_параметра=значение_параметра</i>. Параметры разделяются символом &laquo;&amp;&raquo;.";
-    const HELP_TEXT_PARAMS_LIST_HEADER = "Список параметров";
-    const HELP_TEXT_PARAMS_LIST_HEADER_1 = "имя_параметра";
-    const HELP_TEXT_PARAMS_LIST_HEADER_2 = "значение_параметра";
-    const HELP_TEXT_PARAMS_LIST_HEADER_3 = "Описание";
-    const HELP_TEXT_PARAMS_VALUE_BOOL = "true|false";
-    const HELP_TEXT_PARAMS_VALUE_INT = "Целое число";
-    const HELP_TEXT_PARAMS_NEW_DESIGN = "Вывод сайта в новом дизайне";
-    const HELP_TEXT_PARAMS_SHOW_METROLOGY = "Вывод на главной странице метрологических параметров";
-    const HELP_TEXT_PARAMS_SHOW_DISABLED = "Вывод на главной странице скрытых (выведенных из эксплуатации) весов";
-    const HELP_TEXT_PARAMS_USE_BACKUP = "Использовать резервную базу данных";
-    const HELP_TEXT_PARAMS_DEPARTMENT = "Номер цеха на странице количества дней, отработанных без травм";
+    const HELP_TEXT_PARAMS = 'Параметры адресной строки';
+    const HELP_TEXT_PARAMS_TEXT = 'Параметры вводятся в адресной строке браузера в конце адреса страницы. Началом запроса служит знак &laquo;?&raquo;, после которого добавляются параметры в виде <i>имя_параметра=значение_параметра</i>. Параметры разделяются символом &laquo;&amp;&raquo;.';
+    const HELP_TEXT_PARAMS_LIST_HEADER = 'Список параметров';
+    const HELP_TEXT_PARAMS_LIST_HEADER_1 = 'имя_параметра';
+    const HELP_TEXT_PARAMS_LIST_HEADER_2 = 'значение_параметра';
+    const HELP_TEXT_PARAMS_LIST_HEADER_3 = 'Описание';
+    const HELP_TEXT_PARAMS_VALUE_BOOL = 'true|false';
+    const HELP_TEXT_PARAMS_VALUE_INT = 'Целое число';
+    const HELP_TEXT_PARAMS_NEW_DESIGN = 'Вывод сайта в новом дизайне';
+    const HELP_TEXT_PARAMS_SHOW_METROLOGY = 'Вывод на главной странице метрологических параметров';
+    const HELP_TEXT_PARAMS_SHOW_DISABLED = 'Вывод на главной странице скрытых (выведенных из эксплуатации) весов';
+    const HELP_TEXT_PARAMS_USE_BACKUP = 'Использовать резервную базу данных';
+    const HELP_TEXT_PARAMS_DEPARTMENT = 'Номер цеха на странице количества дней, отработанных без травм';
 }

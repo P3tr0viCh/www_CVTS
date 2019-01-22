@@ -16,7 +16,7 @@ body.night {
 }
 
 .wac--cell.name {
-    font-size: 9.5vmin;
+    font-size: 12vmin;
 }
 
 .wac--cell.name.company {
@@ -28,7 +28,7 @@ body.night {
 }
 
 .color-text--darkgrey {
-    color: #a6a6a6;
+    color: #A6A6A6;
 }
 
 .show-on-hover:hover {

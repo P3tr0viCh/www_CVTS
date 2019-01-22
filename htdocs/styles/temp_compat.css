@@ -1,0 +1,19 @@
+body {
+    color: #0D0D0D;
+}
+
+body.night {
+    color: orange;
+}
+
+.show-on-hover:hover {
+    color: #0D0D0D;
+}
+
+.show-on-hover.night:hover {
+    color: white;
+}
+
+.color-text--darkgrey {
+    color: #7a7a7a;
+}

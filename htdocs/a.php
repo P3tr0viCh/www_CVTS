@@ -57,6 +57,8 @@ echo S::TAB;
 echo '<li>' . '<a href="/datetime.php">' . S::A_GOTO_DATETIME . '</a>' . '</li>' . PHP_EOL;
 echo S::TAB;
 echo '<li>' . '<a href="/mysql_datetime.php">' . S::A_GOTO_MYSQL_DATETIME . '</a>' . '</li>' . PHP_EOL;
+echo S::TAB;
+echo '<li>' . '<a href="/temp.php">' . S::A_GOTO_TEMP . '</a>' . '</li>' . PHP_EOL;
 
 echo S::TAB . '<br>' . PHP_EOL;
 

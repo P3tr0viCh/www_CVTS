@@ -1,0 +1,19 @@
+body {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+body.night {
+    color: rgba(255, 165, 0, 0.87);
+}
+
+.show-on-hover:hover {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.show-on-hover.night:hover {
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.color-text--darkgrey {
+    color: #a6a6a6;
+}

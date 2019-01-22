@@ -9,7 +9,6 @@ use Strings as S;
 
 $newDesign = isNewDesign(true);
 
-$showSeconds = getParamGETAsBool(ParamName::SHOW_SECONDS, false);
 $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 
@@ -18,53 +17,44 @@ echoStartPage();
 $oldIEStyle = null;
 
 $styles = array();
-$styles[] = '/styles/datetime_common.css';
+$styles[] = '/styles/temp_common.css';
 if ($newDesign) {
-    $styles[] = '/styles/datetime.css';
+    $styles[] = '/styles/temp.css';
 } else {
-    $styles[] = '/styles/datetime_compat.css';
-    $oldIEStyle = '/styles/datetime_compat_ie.css';
+    $styles[] = '/styles/temp_compat.css';
+    $oldIEStyle = '/styles/temp_compat_ie.css';
 }
 
 if ($debug) {
-    $styles[] = '/styles/datetime_debug.css';
+    $styles[] = '/styles/temp_debug.css';
 }
 
 $javaScripts = array();
 $javaScripts[] = '/javascript/class_utils.js';
-$javaScripts[] = '/javascript/datetime_format.js';
-$javaScripts[] = '/javascript/datetime.js';
+$javaScripts[] = '/javascript/temp.js';
 $javaScripts[] = '/javascript/night_mode.js';
 $javaScripts[] = '/javascript/hide_cursor.js';
 
-echoHead($newDesign, S::TITLE_DATETIME, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_TEMP, $styles, $javaScripts, $oldIEStyle);
 
-echoStartBody($newDesign, 'dateTime(' . ($showSeconds ? 'true' : 'false') . ')');
+echoStartBody($newDesign, 'temp()');
 
-echo "<div class='datetime'>" . PHP_EOL;
+echo "<div class='temp'>" . PHP_EOL;
 
 echo S::TAB;
-echo "<div class='datetime--row date'>" . PHP_EOL;
+echo "<div class='temp--row'>" . PHP_EOL;
 echo S::TAB . S::TAB;
-echo "<div id='date' class='datetime--cell date'></div>" . PHP_EOL;
+echo "<div id='temp' class='temp--cell'></div>" . PHP_EOL;
 echo S::TAB;
 echo "</div>" . PHP_EOL;
 
-$classShowSeconds = $showSeconds ? " showSeconds" : "";
-echo S::TAB;
-echo "<div class='datetime--row time'>" . PHP_EOL;
-echo S::TAB . S::TAB;
-echo "<div id='time' class='datetime--cell time$classShowSeconds'></div>" . PHP_EOL;
-echo S::TAB;
-echo "</div>" . PHP_EOL;
+echo "</div> <!-- class='temp' -->" . PHP_EOL;
 
-echo "</div> <!-- class='datetime' -->" . PHP_EOL;
-
-echo "<div class='datetime--copyright left-section show-on-hover'>" . PHP_EOL;
+echo "<div class='temp--copyright left-section show-on-hover'>" . PHP_EOL;
 echo S::TAB;
 echo S::FOOTER_LEFT_SECTION . PHP_EOL;
 echo "</div>" . PHP_EOL;
-echo "<div class='datetime--copyright right-section show-on-hover'>" . PHP_EOL;
+echo "<div class='temp--copyright right-section show-on-hover'>" . PHP_EOL;
 echo S::TAB;
 echo S::FOOTER_RIGHT_SECTION . PHP_EOL;
 echo "</div>" . PHP_EOL;

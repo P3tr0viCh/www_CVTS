@@ -1,5 +1,9 @@
 //noinspection JSUnusedGlobalSymbols
 function dateTime(showSeconds) {
+    var
+        HEIGHT_TIME_MAGIC_NUMBER = 0,
+        HEIGHT_DATE_MAGIC_NUMBER = 150;
+
     var currentTime,
         timeDelimiter,
 
@@ -7,6 +11,7 @@ function dateTime(showSeconds) {
         timeElement = document.getElementById('time'),
 
         calcFontSizeElement = createCalcFontSizeElement(),
+
         timerId;
 
     if (window.addEventListener) {
@@ -21,8 +26,8 @@ function dateTime(showSeconds) {
     function onResize() {
         clearTimeout(timerId);
 
-        setElementText(dateElement, "");
-        setElementText(timeElement, "");
+        setElementText(dateElement, "", HEIGHT_TIME_MAGIC_NUMBER);
+        setElementText(timeElement, "", HEIGHT_DATE_MAGIC_NUMBER);
 
         dateElement.style.fontSize = '0';
         timeElement.style.fontSize = '0';
@@ -38,7 +43,7 @@ function dateTime(showSeconds) {
         currentTime = new Date();
 
         setElementText(dateElement,
-            getDayName(currentTime.getDay(), false) + ", " + currentTime.getDate() + " " + getMonthName(currentTime.getMonth()));
+            getDayName(currentTime.getDay(), false) + ", " + currentTime.getDate() + " " + getMonthName(currentTime.getMonth()), HEIGHT_TIME_MAGIC_NUMBER);
 
         timeDelimiter = ":";
 
@@ -53,22 +58,23 @@ function dateTime(showSeconds) {
             time += timeDelimiter + withZero(currentTime.getSeconds());
         }
 
-        setElementText(timeElement, time);
+        setElementText(timeElement, time, HEIGHT_DATE_MAGIC_NUMBER);
 
         setTimer();
     }
 
-    function setElementText(element, text) {
+    function setElementText(element, text, magicNumber) {
         if (element.innerHTML !== text) {
+            updateFontSize(element, text, magicNumber);
+
             element.innerHTML = text;
-            updateFontSize(element, text);
         }
     }
 
-    function updateFontSize(element, text) {
+    function updateFontSize(element, text, magicNumber) {
         var
-            height = element.clientHeight,
-            width = element.clientWidth,
+            clientWidth = element.clientWidth,
+            clientHeight = element.clientHeight,
             paddingLeft,
             paddingRight;
 
@@ -84,16 +90,18 @@ function dateTime(showSeconds) {
         paddingLeft = parseFloat(paddingLeft);
         paddingRight = parseFloat(paddingRight);
 
-        width = width - paddingLeft - paddingRight;
+        clientWidth = clientWidth - paddingLeft - paddingRight;
+
+        clientHeight = clientHeight - magicNumber;
 
         calcFontSizeElement.innerHTML = text;
 
         var
             fontSize = 10;
-        for (var i = fontSize; i < height; i++) {
+        for (var i = fontSize; i < clientHeight; i++) {
             calcFontSizeElement.style.fontSize = i + "px";
 
-            if ((calcFontSizeElement.clientHeight > height) || (calcFontSizeElement.offsetWidth > width)) {
+            if ((calcFontSizeElement.clientWidth > clientWidth) || (calcFontSizeElement.clientHeight > clientHeight)) {
                 break;
             }
 
