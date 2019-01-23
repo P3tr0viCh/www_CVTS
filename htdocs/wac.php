@@ -29,6 +29,7 @@ $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 $department = getParamGETAsInt(ParamName::DEPARTMENT, 0);
 $dateFormat = getParamGETAsInt(ParamName::DATE_FORMAT, 0);;
+$showTemp = getParamGETAsBool(ParamName::SHOW_TEMP, false);
 
 $companyDate = null;
 $departmentDate = null;
@@ -59,6 +60,10 @@ $javaScripts[] = '/javascript/night_mode.js';
 
 if (!$disableHideCursor) {
     $javaScripts[] = '/javascript/hide_cursor.js';
+}
+
+if ($showTemp) {
+    $javaScripts[] = '/javascript/wac_temp.js';
 }
 
 echoHead($newDesign, S::TITLE_WAC, $styles, $javaScripts, $oldIEStyle);
@@ -96,27 +101,27 @@ if ($mysqli) {
 
             echoTableHeadStart();
             echoTableTRStart("wac--row header");
-            echoTableTH(
-                "<div id='date' class='wac--header-text left'></div>" .
-                "<div id='time' class='wac--header-text right'></div>", "wac--cell header datetime", 2);
+            echoTableTH("<div id='date'></div>", "wac--cell header text date");
+            echoTableTH("<div id='temp'></div>", "wac--cell header text temp");
+            echoTableTH("<div id='time'></div>", "wac--cell header text time");
             echoTableTREnd();
             echoTableTRStart("wac--row header");
-            echoTableTH("<div class='hr'></div>", "wac--cell header", 2);
+            echoTableTH("<div class='hr'></div>", "wac--cell header", 3);
             echoTableTREnd();
             echoTableTRStart("wac--row header");
-            echoTableTH(S::HEADER_WAC, "wac--cell header text", 2);
+            echoTableTH(S::HEADER_WAC, "wac--cell header text", 3);
             echoTableTREnd();
             echoTableHeadEnd();
 
             echoTableBodyStart();
             echoTableTRStart("wac--row data");
             echoTableTD($departmentName, "wac--cell department name");
-            echoTableTD("<span id='department'></span>", "wac--cell department counter");
+            echoTableTD("<span id='department'></span>", "wac--cell department counter", null, 2);
             echoTableTREnd();
 
             echoTableTRStart("wac--row data");
             echoTableTD(S::HEADER_WAC_COMPANY, "wac--cell company name");
-            echoTableTD("<span id='company'></span>", "wac--cell company counter");
+            echoTableTD("<span id='company'></span>", "wac--cell company counter", null, 2);
             echoTableBodyEnd();
 
             echoTableEnd();
@@ -162,6 +167,10 @@ if (!$resultMessage) {
 
     $javaScripts[] = "startWAC('$companyDate', '$departmentDate', $dateFormat);";
     $javaScripts[] = "nightMode(" . boolToString($nightMode) . ");";
+
+    if ($showTemp) {
+        $javaScripts[] = "startWACTemp();";
+    }
 } else {
     $javaScripts = null;
 }

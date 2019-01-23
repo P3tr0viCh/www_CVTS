@@ -6,25 +6,132 @@ body.night {
     color: rgba(255, 165, 0, 0.87);
 }
 
-.wac--cell.header {
-    font-size: 4.2vw;
-    white-space: nowrap;
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS */
+    .wac--cell.header.text {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
 }
 
-.wac--cell.header.datetime {
-    font-size: 8vw;
+@media screen and (orientation: landscape) {
+    .wac--cell.header.text {
+        font-size: 4vw;
+    }
+
+    .wac--cell.header.text.date {
+        font-size: 6vw;
+    }
+
+    .wac--cell.header.text.temp {
+        font-size: 6vw;
+    }
+
+    .wac--cell.header.text.time {
+        font-size: 6vw;
+    }
+
+    .wac--cell.name.department {
+        font-size: 12vmin;
+    }
+
+    .wac--cell.name.company {
+        font-size: 9vmin;
+    }
+
+    .wac--cell.counter {
+        font-size: 32vmin;
+    }
 }
 
-.wac--cell.name {
-    font-size: 12vmin;
+@media screen and (orientation: portrait) {
+    .wac--cell.header.text {
+        font-size: 4vw;
+    }
+
+    .wac--cell.header.text.date {
+        font-size: 6vw;
+    }
+
+    .wac--cell.header.text.temp {
+        font-size: 6vw;
+    }
+
+    .wac--cell.header.text.time {
+        font-size: 6vw;
+    }
+
+    .wac--cell.name.department {
+        font-size: 12vmin;
+    }
+
+    .wac--cell.name.company {
+        font-size: 9vmin;
+    }
+
+    .wac--cell.counter {
+        font-size: 20vmin;
+    }
 }
 
-.wac--cell.name.company {
-    font-size: 9vmin;
+@media screen and (max-width: 1024px) {
+    .wac--cell.header.text {
+        font-size: 40px;
+    }
+
+    .wac--cell.header.text.date {
+        font-size: 60px;
+    }
+
+    .wac--cell.header.text.temp {
+        font-size: 60px;
+    }
+
+    .wac--cell.header.text.time {
+        font-size: 60px;
+    }
+
+    .wac--cell.name.department {
+        font-size: 120px;
+    }
+
+    .wac--cell.name.company {
+        font-size: 100px;
+    }
+
+    .wac--cell.counter {
+        font-size: 210px;
+    }
 }
 
-.wac--cell.counter {
-    font-size: 32vmin;
+@media screen and (max-width: 800px) {
+    .wac--cell.header.text {
+        font-size: 30px;
+    }
+
+    .wac--cell.header.text.date {
+        font-size: 50px;
+    }
+
+    .wac--cell.header.text.temp {
+        font-size: 50px;
+    }
+
+    .wac--cell.header.text.time {
+        font-size: 50px;
+    }
+
+    .wac--cell.name.department {
+        font-size: 90px;
+    }
+
+    .wac--cell.name.company {
+        font-size: 80px;
+    }
+
+    .wac--cell.counter {
+        font-size: 150px;
+    }
 }
 
 .color-text--darkgrey {

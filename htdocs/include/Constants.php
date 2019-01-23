@@ -146,4 +146,6 @@ class ParamName
     const DATE_FORMAT = 'date_format';
 
     const DEPARTMENT = 'department';
+
+    const SHOW_TEMP = 'show_temp';
 }

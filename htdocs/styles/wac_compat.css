@@ -6,12 +6,20 @@ body.night {
     color: orange;
 }
 
-.wac--cell.header.datetime {
-    font-size: 80px;
+.wac--cell.header.text {
+    font-size: 40px;
 }
 
-.wac--cell.header.text {
-    font-size: 44px;
+.wac--cell.header.text.date {
+    font-size: 50px;
+}
+
+.wac--cell.header.text.temp {
+    font-size: 50px;
+}
+
+.wac--cell.header.text.time {
+    font-size: 50px;
 }
 
 .wac--cell.name.department {
@@ -23,7 +31,9 @@ body.night {
 }
 
 .wac--cell.counter {
-    font-size: 250px;
+    font-size: 200px;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
 .color-text--darkgrey {

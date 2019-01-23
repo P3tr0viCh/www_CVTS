@@ -37,45 +37,40 @@ th {
 }
 
 .wac--row {
-    line-height: 1;
     border-style: none;
     border-collapse: collapse;
+    height: 0;
 }
 
 .wac--cell {
     font-weight: normal;
+    line-height: 1;
     margin: 0;
     padding: 0;
     border-style: none;
     border-collapse: collapse;
-    white-space: pre-line;
+    white-space: nowrap;
 }
 
 .wac--cell.header {
-    text-align: center;
-}
-
-.wac--cell.header.datetime {
-    padding-top: 16px;
-    padding-bottom: 16px;
 }
 
 .wac--cell.header.text {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding: 16px;
 }
 
-.wac--header-text {
-    padding-left: 16px;
-    padding-right: 16px;
+.wac--cell.header.text.date {
+    text-align: left;
 }
 
-.wac--header-text.left {
-    float: left;
+.wac--cell.header.text.temp {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
 }
 
-.wac--header-text.right {
-    float: right;
+.wac--cell.header.text.time {
+    text-align: right;
 }
 
 .wac--cell.name {

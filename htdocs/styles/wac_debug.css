@@ -2,20 +2,20 @@ html {
     overflow: auto;
 }
 
-.wac--cell.header.datetime {
+.wac--cell.header.text.date  {
+    background-color: #D7A70E;
+}
+
+.wac--cell.header.text.temp {
     background-color: yellow;
 }
 
-.wac--header-text.left {
-    background-color: #d7a70e;
-}
-
-.wac--header-text.right {
-    background-color: #876a0c;
+.wac--cell.header.text.time  {
+    background-color: #876A0C;
 }
 
 .wac--cell.header.text {
-    background-color: #c9c900;
+    background-color: #C9C900;
 }
 
 .wac--cell.name.department {

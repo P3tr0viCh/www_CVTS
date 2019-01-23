@@ -9,7 +9,8 @@ function temp() {
 
         HEIGHT_MAGIC_NUMBER = 180; // TODO
 
-    var currentTemp,
+    var
+        currentTemp,
 
         degElement = null,
         tempElement = document.getElementById('temp'),

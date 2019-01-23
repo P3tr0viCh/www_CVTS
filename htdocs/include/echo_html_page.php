@@ -28,8 +28,7 @@ use Strings as S;
 
 function echoStartPage()
 {
-    echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ' .
-        '"http://www.w3.org/TR/html4/loose.dtd">' . PHP_EOL . PHP_EOL;
+    echo '<!DOCTYPE html>' . PHP_EOL . PHP_EOL;
     echo '<html>' . PHP_EOL;
 }
 
