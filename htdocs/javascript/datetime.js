@@ -42,8 +42,7 @@ function dateTime(showSeconds) {
     function updateDateTime() {
         currentTime = new Date();
 
-        setElementText(dateElement,
-            getDayName(currentTime.getDay(), false) + ", " + currentTime.getDate() + " " + getMonthName(currentTime.getMonth()), HEIGHT_TIME_MAGIC_NUMBER);
+        setElementText(dateElement, getDateAsText(currentTime, 0), HEIGHT_TIME_MAGIC_NUMBER);
 
         timeDelimiter = ":";
 

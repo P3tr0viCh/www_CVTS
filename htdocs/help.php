@@ -105,6 +105,13 @@ echoTableTRStart();
     echoTableTD(S::HELP_TEXT_PARAMS_DEPARTMENT, $tableCellClass);
 }
 echoTableTREnd();
+echoTableTRStart();
+{
+    echoTableTD(ParamName::DATE_FORMAT, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_VALUE_INT, $tableCellClass);
+    echoTableTD(S::HELP_TEXT_PARAMS_DATE_FORMAT, $tableCellClass);
+}
+echoTableTREnd();
 
 echoTableBodyEnd();
 echoTableEnd();

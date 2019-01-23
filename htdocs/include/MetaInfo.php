@@ -3,8 +3,8 @@
 class MetaInfo
 {
     const AUTHOR = 'Дураев Константин Петрович (П3тр0виЧъ)';
-    const COMPANY = 'Металлоинвест, Уральская Сталь, УОЖДП';
+    const COMPANY = 'Металлоинвест, Уральская Сталь';
 
-    const VERSION = '7.7.0';
-    const CREATION = '2019.01.22';
+    const VERSION = '7.7.1';
+    const CREATION = '2019.01.23';
 }

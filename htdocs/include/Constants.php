@@ -143,6 +143,7 @@ class ParamName
     const NIGHT_MODE = 'night_mode';
 
     const SHOW_SECONDS = 'show_seconds';
+    const DATE_FORMAT = 'date_format';
 
     const DEPARTMENT = 'department';
 }

@@ -22,7 +22,7 @@ class Strings
     const TITLE_A = 'Карта сайта';
     const TITLE_ERROR = 'Ошибка';
 
-    const HEADER_PAGE_MAIN = 'ЦЕХ ВЕСОИЗМЕРИТЕЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ СИСТЕМ';
+    const HEADER_PAGE_MAIN = 'ВЕСОИЗМЕРИТЕЛЬНЫЕ ТЕХНОЛОГИЧЕСКИЕ СИСТЕМЫ';
     const HEADER_PAGE_MAIN_BACKUP = 'РЕЗЕРВНЫЙ СЕРВЕР';
     const HEADER_PAGE_MAIN_LOGO_ALT = 'Металлоинвест | Уральская сталь';
     const HEADER_PAGE_MYSQL_DATETIME = 'Дата и время на сервере MySQL';
@@ -277,4 +277,10 @@ class Strings
     const HELP_TEXT_PARAMS_SHOW_DISABLED = 'Вывод на главной странице скрытых (выведенных из эксплуатации) весов';
     const HELP_TEXT_PARAMS_USE_BACKUP = 'Использовать резервную базу данных';
     const HELP_TEXT_PARAMS_DEPARTMENT = 'Номер цеха на странице количества дней, отработанных без травм';
+    const HELP_TEXT_PARAMS_DATE_FORMAT = 'Формат даты на странице количества дней, отработанных без травм<ul>
+            <li>0 – Воскресенье, 29 марта</li>
+            <li>1 – Вс, 29 марта</li>
+            <li>2 – Вс, 29 мар</li>
+            <li>3 – Вс, 29.03</li>
+            </ul>';
 }

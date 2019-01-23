@@ -28,6 +28,7 @@ $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 $department = getParamGETAsInt(ParamName::DEPARTMENT, 0);
+$dateFormat = getParamGETAsInt(ParamName::DATE_FORMAT, 0);;
 
 $companyDate = null;
 $departmentDate = null;
@@ -159,7 +160,7 @@ if (!$resultMessage) {
         $javaScripts[] = "startHideCursor();";
     }
 
-    $javaScripts[] = "startWAC('$companyDate', '$departmentDate');";
+    $javaScripts[] = "startWAC('$companyDate', '$departmentDate', $dateFormat);";
     $javaScripts[] = "nightMode(" . boolToString($nightMode) . ");";
 } else {
     $javaScripts = null;
