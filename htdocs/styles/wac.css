@@ -74,13 +74,43 @@ body.night {
     }
 }
 
+@media screen and (max-width: 1440px) {
+    .wac--cell.header.text {
+        font-size: 60px;
+    }
+
+    .wac--cell.header.text.date {
+        font-size: 80px;
+    }
+
+    .wac--cell.header.text.temp {
+        font-size: 80px;
+    }
+
+    .wac--cell.header.text.time {
+        font-size: 80px;
+    }
+
+    .wac--cell.name.department {
+        font-size: 130px;
+    }
+
+    .wac--cell.name.company {
+        font-size: 130px;
+    }
+
+    .wac--cell.counter {
+        font-size: 300px;
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .wac--cell.header.text {
         font-size: 40px;
     }
 
     .wac--cell.header.text.date {
-        font-size: 60px;
+        font-size: 55px;
     }
 
     .wac--cell.header.text.temp {
@@ -96,7 +126,7 @@ body.night {
     }
 
     .wac--cell.name.company {
-        font-size: 100px;
+        font-size: 90px;
     }
 
     .wac--cell.counter {
@@ -110,7 +140,7 @@ body.night {
     }
 
     .wac--cell.header.text.date {
-        font-size: 50px;
+        font-size: 40px;
     }
 
     .wac--cell.header.text.temp {
@@ -122,11 +152,11 @@ body.night {
     }
 
     .wac--cell.name.department {
-        font-size: 90px;
+        font-size: 75px;
     }
 
     .wac--cell.name.company {
-        font-size: 80px;
+        font-size: 75px;
     }
 
     .wac--cell.counter {

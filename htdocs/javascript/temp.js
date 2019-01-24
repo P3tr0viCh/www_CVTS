@@ -4,8 +4,8 @@ function temp() {
         TEMP_URL = "temp.txt",
 
         DEG_TIMEOUT = 1000,
-        // UPDATE_TIMEOUT = 1000,
-        UPDATE_TIMEOUT = 5 * 60 * 1000,
+        UPDATE_TIMEOUT = 1000,
+        // UPDATE_TIMEOUT = 5 * 60 * 1000,
 
         HEIGHT_MAGIC_NUMBER = 180; // TODO
 
@@ -14,6 +14,9 @@ function temp() {
 
         degElement = null,
         tempElement = document.getElementById('temp'),
+
+        hasError,
+        xmlhttp = new XMLHttpRequest(),
 
         calcFontSizeElement = createCalcFontSizeElement(),
 
@@ -28,6 +31,41 @@ function temp() {
         // noinspection JSUnresolvedFunction
         window.attachEvent("onresize", onResize);
     }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === XMLHttpRequest.DONE) {
+            clearTimeout(timerDegId);
+
+            hasError = xmlhttp.status !== 200;
+
+            if (hasError) {
+                currentTemp = xmlhttp.status;
+            } else {
+                // currentTemp = Math.floor(Math.random() * (50 - (-50) + 1)) + (-50);
+
+                currentTemp = parseInt(xmlhttp.responseText, 10);
+
+                hasError = isNaN(currentTemp);
+            }
+
+            if (hasError) {
+                currentTemp = 'E: ' + currentTemp;
+
+                addClass(tempElement, 'color-text--error');
+            } else {
+                currentTemp += degBlack ? "<span id='deg'>°</span>" : "<span id='deg' class='color-text--darkgrey'>°</span>";
+
+                removeClass(tempElement, 'color-text--error');
+            }
+
+            setElementText(tempElement, currentTemp, HEIGHT_MAGIC_NUMBER);
+
+            degElement = document.getElementById('deg');
+
+            setTimer();
+            setDegTimer();
+        }
+    };
 
     updateTemp();
     updateDeg();
@@ -53,44 +91,6 @@ function temp() {
     }
 
     function updateTemp() {
-        var hasError,
-            xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === XMLHttpRequest.DONE) {
-                clearTimeout(timerDegId);
-
-                hasError = xmlhttp.status !== 200;
-
-                if (hasError) {
-                    currentTemp = xmlhttp.status;
-                } else {
-                    // currentTemp = Math.floor(Math.random() * (50 - (-50) + 1)) + (-50);
-
-                    currentTemp = parseInt(xmlhttp.responseText, 10);
-
-                    hasError = isNaN(currentTemp);
-                }
-
-                if (hasError) {
-                    currentTemp = 'E: ' + currentTemp;
-
-                    addClass(tempElement, 'color-text--error');
-                } else {
-                    currentTemp += degBlack ? "<span id='deg'>°</span>" : "<span id='deg' class='color-text--darkgrey'>°</span>";
-
-                    removeClass(tempElement, 'color-text--error');
-                }
-
-                setElementText(tempElement, currentTemp, HEIGHT_MAGIC_NUMBER);
-
-                degElement = document.getElementById('deg');
-
-                setTimer();
-                setDegTimer();
-            }
-        };
-
         xmlhttp.open("GET", TEMP_URL, true);
         xmlhttp.send();
     }
