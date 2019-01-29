@@ -766,7 +766,7 @@ if (!$resultMessage) {
 
             echoFormStart('formExcel', 'excel.php', null, null, false, true);
 
-            echoHidden(ParamName::EXCEL_FILENAME, date("Y.m.d H-i-s") . ".csv");
+            echoHidden(ParamName::EXCEL_FILENAME, date("Y.m.d_H-i-s") . ".csv");
 
             $rawLength = strlen($excelData);
 

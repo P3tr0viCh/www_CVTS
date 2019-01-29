@@ -3,8 +3,8 @@ function startWACTemp() {
     var
         TEMP_URL = "temp.txt",
 
-        TEMP_TIMEOUT = 3000;
-    // TEMP_TIMEOUT = 5 * 60 * 1000;
+     //    TEMP_TIMEOUT = 3000;
+		TEMP_TIMEOUT = 5 * 60 * 1000;
 
     var
         temp = null,

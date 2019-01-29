@@ -4,8 +4,8 @@ function temp() {
         TEMP_URL = "temp.txt",
 
         DEG_TIMEOUT = 1000,
-        UPDATE_TIMEOUT = 1000,
-        // UPDATE_TIMEOUT = 5 * 60 * 1000,
+        // UPDATE_TIMEOUT = 1000,
+        UPDATE_TIMEOUT = 5 * 60 * 1000,
 
         HEIGHT_MAGIC_NUMBER = 180; // TODO
 

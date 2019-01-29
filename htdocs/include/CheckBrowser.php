@@ -6,6 +6,7 @@ class CheckBrowser
     const COMPATIBLE_MIN_VERSION_IE = 11;
     const COMPATIBLE_MIN_VERSION_EDGE = 13;
     const COMPATIBLE_MIN_VERSION_CHROME = 46;
+    const COMPATIBLE_MIN_VERSION_FIREFOX = 64;
 
     // debug
     const SHOW_AGENT = false;
@@ -33,7 +34,7 @@ class CheckBrowser
             return $edge[2] >= self::COMPATIBLE_MIN_VERSION_EDGE;
         }
 
-        if (!preg_match("/(Trident|Chrome)(?:\/| )([0-9.]+)/", $agent, $browserInfo)) {
+        if (!preg_match("/(Trident|Chrome|Firefox)(?:\/| )([0-9.]+)/", $agent, $browserInfo)) {
             if (self::SHOW_AGENT) {
                 echo "Unknown" . "<br>";
             }
@@ -46,6 +47,14 @@ class CheckBrowser
         if ($browser == 'Chrome') {
             if (self::SHOW_AGENT) {
                 echo "Chrome: " . $version . "<br>";
+            }
+
+            return $version >= self::COMPATIBLE_MIN_VERSION_CHROME;
+        }
+
+        if ($browser == 'Firefox') {
+            if (self::SHOW_AGENT) {
+                echo "Firefox: " . $version . "<br>";
             }
 
             return $version >= self::COMPATIBLE_MIN_VERSION_CHROME;
