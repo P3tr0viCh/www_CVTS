@@ -7,6 +7,7 @@ require_once "include/Constants.php";
 
 require_once "include/MySQLConnection.php";
 
+require_once "include/QueryIron.php";
 require_once "include/QueryResult.php";
 require_once "include/QueryCompare.php";
 
@@ -30,6 +31,7 @@ require_once "include/echo_form.php";
 require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 
+use HrefBuilder\Builder;
 use Strings as S;
 
 function throwBadRequest()
@@ -40,7 +42,9 @@ function throwBadRequest()
 
 if (!isset($_GET[ParamName::SCALE_NUM])) {
     if (!isset($_GET[ParamName::REPORT_TYPE])) {
-        throwBadRequest();
+        if (!isset($_GET[ParamName::RESULT_TYPE])) {
+            throwBadRequest();
+        }
     }
 }
 
@@ -81,6 +85,7 @@ switch ($reportType) {
     case ReportType::TYPE_DEFAULT:
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM);
         $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
+
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP);
 
         $filter
@@ -133,7 +138,9 @@ switch ($reportType) {
                 ResultType::COMPARE_DYNAMIC,
                 ResultType::COMPARE_STATIC,
 
-                ResultType::COEFFS);
+                ResultType::COEFFS,
+
+                ResultType::IRON);
 
             foreach ($resultTypes as $result) {
                 $resultType = getResultType($result);
@@ -159,6 +166,8 @@ switch ($reportType) {
         $dtEndHour = getParamGETAsInt(ParamName::DATETIME_END_HOUR);
         $dtEndMinute = getParamGETAsInt(ParamName::DATETIME_END_MINUTES);
 
+        $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC);
+
         break;
     case ReportType::CARGO_TYPES:
         $resultType = getParamGETAsInt(ParamName::RESULT_TYPE);
@@ -178,6 +187,7 @@ switch ($reportType) {
         }
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
         $filter
@@ -192,6 +202,7 @@ switch ($reportType) {
         $resultType = ResultType::TRAIN_DYNAMIC_ONE;
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
         $filter
@@ -246,6 +257,7 @@ if ($mysqli) {
                     break;
                 case ReportType::CARGO_TYPES:
                     break;
+                case ReportType::IRON:
                 default:
                     /** @var DateTimeBuilder $dateTimeBuilder */
                     $dateTimeBuilder = DateTimeBuilder::getInstance();
@@ -273,19 +285,25 @@ if ($mysqli) {
                 throwBadRequest();
             }
 
+            if ($resultType == ResultType::IRON) {
+                $formatDateTimeF = 'formatDate';
+            } else {
+                $formatDateTimeF = 'formatDateTime';
+            }
+
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
                 $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
-                    formatDateTime($filter->getTrainDateTime()));
+                    $formatDateTimeF($filter->getTrainDateTime()));
             } else {
                 if ($dateTimeStart && $dateTimeEnd) {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM_TO, $subHeader,
-                        formatDateTime($dateTimeStart), formatDateTime($dateTimeEnd));
+                        $formatDateTimeF($dateTimeStart), $formatDateTimeF($dateTimeEnd));
                 } else if ($dateTimeStart) {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM, $subHeader,
-                        formatDateTime($dateTimeStart));
+                        $formatDateTimeF($dateTimeStart));
                 } elseif ($dateTimeEnd) {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_TO, $subHeader,
-                        formatDateTime($dateTimeEnd));
+                        $formatDateTimeF($dateTimeEnd));
                 } else {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_ALL, $subHeader);
                 }
@@ -430,10 +448,20 @@ if (!$resultMessage) {
         echo PHP_EOL;
     }
 
-    $queryResult = new QueryResult();
-    $queryResult->setScaleType($scaleInfo->getType());
-    $queryResult->setResultType($resultType);
-    $queryResult->setFilter($filter);
+    switch ($resultType) {
+        case ResultType::IRON:
+            $queryResult = (new QueryIron())
+                ->setDateStart($dateTimeStart)
+                ->setDateEnd($dateTimeEnd)
+                ->setOrderByDesc($orderByDesc);
+
+            break;
+        default:
+            $queryResult = (new QueryResult())
+                ->setScaleType($scaleInfo->getType())
+                ->setResultType($resultType)
+                ->setFilter($filter);
+    }
 
     $query = $queryResult->getQuery();
 
@@ -562,7 +590,7 @@ if (!$resultMessage) {
             $rowIndex = 0;
             $numColor = false;
 
-            $hrefBuilder = \HrefBuilder\Builder::getInstance()
+            $hrefBuilder = Builder::getInstance()
                 ->setUrl("result.php")
                 ->setParam(ParamName::NEW_DESIGN, $newDesign)
                 ->setParam(ParamName::ALL_FIELDS, $filter->isFull())

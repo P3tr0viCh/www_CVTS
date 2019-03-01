@@ -20,10 +20,12 @@ class QueryResult extends QueryBase
 
     /**
      * @param int $scaleType
+     * @return QueryResult
      */
     public function setScaleType($scaleType)
     {
         $this->scaleType = $scaleType;
+        return $this;
     }
 
     /**
@@ -40,18 +42,22 @@ class QueryResult extends QueryBase
 
     /**
      * @param int $resultType
+     * @return QueryResult
      */
     public function setResultType($resultType)
     {
         $this->resultType = $resultType;
+        return $this;
     }
 
     /**
      * @param ResultFilter $filter
+     * @return QueryResult
      */
     public function setFilter($filter)
     {
         $this->filter = $filter;
+        return $this;
     }
 
     private $showCargoDate;
@@ -237,7 +243,7 @@ class QueryResult extends QueryBase
             case ResultType::DP_SUM:
                 $this->builder
                     ->column(C::PRODUCT)
-                    ->column(C::SUM_NETTO, null, C::NETTO);
+                    ->column(B::sum(C::NETTO), null, C::NETTO);
                 break;
             case ResultType::KANAT:
                 $this->builder
@@ -391,7 +397,7 @@ class QueryResult extends QueryBase
         }
 
         if (($this->resultType == ResultType::COEFFS) && (!$this->filter->isFull())) {
-            $innerBuilder = \QueryBuilder\Builder::getInstance();
+            $innerBuilder = B::getInstance();
             $innerBuilder
                 ->column('max(' . C::DATETIME_END . ')')
                 ->table(T::COEFFS);

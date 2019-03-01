@@ -6,6 +6,8 @@ class Constants
      * Все железнодорожные весы.
      */
     const SCALE_NUM_ALL_TRAIN_SCALES = 0;
+
+    const SCALE_NUM_REPORT_IRON = -1;
 }
 
 class ScaleType
@@ -30,6 +32,10 @@ class ScaleType
      * Весы типа "Доменная печь".
      */
     const DP = 20102;
+    /**
+     * Отчёт по чугуну.
+     */
+    const IRON = -100;
 }
 
 class ScaleClass
@@ -53,6 +59,7 @@ class ReportType
     const TYPE_DEFAULT = 0;
     const CARGO_TYPES = 1;
     const TRAINS = 2;
+    const IRON = 3;
 }
 
 class ResultType
@@ -81,6 +88,8 @@ class ResultType
     const COMPARE_STATIC = 71;
 
     const COEFFS = 80;
+
+    const IRON = 90;
 }
 
 class ParamName
@@ -132,6 +141,8 @@ class ParamName
     const DATETIME_END_YEAR = 'date_time_end_year';
     const DATETIME_END_HOUR = 'date_time_end_hour';
     const DATETIME_END_MINUTES = 'date_time_end_minutes';
+
+    const ORDER_BY_DESC = 'order_by_desc';
 
     const EXCEL_FILENAME = 'filename';
     const EXCEL_DATA = 'data';

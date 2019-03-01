@@ -22,6 +22,7 @@ require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 require_once "include/HtmlFooter.php";
 
+use HrefBuilder\Builder;
 use Strings as S;
 use ColumnsStrings as C;
 use Database\Columns as DBC;
@@ -64,6 +65,8 @@ setCookieAsString(ParamName::COMPARE_FORWARD, null);
 setCookieAsString(ParamName::COMPARE_BY_BRUTTO, null);
 setCookieAsString(ParamName::SCALES, null);
 
+setCookieAsString(ParamName::ORDER_BY_DATETIME, null);
+
 echoStartPage();
 
 echoHead($newDesign, $useBackup ? S::TITLE_MAIN_BACKUP : S::TITLE_MAIN, null, "/javascript/footer.js");
@@ -82,6 +85,7 @@ $mysqli = MySQLConnection::getInstance($useBackup);
     ->draw();
 
 (new HtmlDrawer($newDesign, $mysqli))
+    ->setStartPage(true)
     ->setUseBackup($useBackup)
     ->draw();
 
@@ -134,7 +138,7 @@ if ($mysqli) {
 
             $numColor = false;
 
-            $hrefBuilder = \HrefBuilder\Builder::getInstance();
+            $hrefBuilder = Builder::getInstance();
             $hrefBuilder
                 ->setUrl("query.php")
                 ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
@@ -217,7 +221,24 @@ if ($mysqli) {
             echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                 $newDesign ? "location.href=\"$href\"" : null);
 
-            $field = S::ALL_TRAIN_SCALES;
+            $field = S::SHOW_ALL_TRAIN_SCALES;
+
+            echoTableTD($field, $newDesign ? "mdl-data-table__cell--non-numeric" : null,
+                $newDesign ? null : $href, $numColumns);
+
+            echoTableTREnd();
+
+            $numColor = !$numColor;
+            $rowColorClass = getRowColorClass($numColor);
+
+            $href = $hrefBuilder
+                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON)
+                ->build();
+
+            echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
+                $newDesign ? "location.href=\"$href\"" : null);
+
+            $field = S::SHOW_IRON_INFO;
 
             echoTableTD($field, $newDesign ? "mdl-data-table__cell--non-numeric" : null,
                 $newDesign ? null : $href, $numColumns);

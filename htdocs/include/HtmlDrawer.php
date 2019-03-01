@@ -9,12 +9,14 @@ require_once "QueryDrawer.php";
 
 require_once "HtmlBase.php";
 
+use HrefBuilder\Builder;
 use Strings as S;
 
 class HtmlDrawer extends HtmlBase
 {
     private $mysqli;
 
+    private $isStartPage;
     private $useBackup;
 
     /**
@@ -28,7 +30,18 @@ class HtmlDrawer extends HtmlBase
 
         $this->mysqli = $mysqli;
 
+        $this->isStartPage = false;
         $this->useBackup = false;
+    }
+
+    /**
+     * @param bool $isStartPage
+     * @return HtmlDrawer
+     */
+    public function setStartPage($isStartPage)
+    {
+        $this->isStartPage = $isStartPage;
+        return $this;
     }
 
     /**
@@ -59,7 +72,7 @@ class HtmlDrawer extends HtmlBase
             echo S::TAB;
             echo '<nav class="mdl-navigation">' . PHP_EOL;
 
-            $hrefBuilder = \HrefBuilder\Builder::getInstance();
+            $hrefBuilder = Builder::getInstance();
 
             $href = $hrefBuilder->setUrl("index.php")
                 ->setParam(ParamName::NEW_DESIGN, true)
@@ -98,6 +111,7 @@ class HtmlDrawer extends HtmlBase
 
             $result->free();
 
+            // Все жд весы
             $href = $hrefBuilder
                 ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES)
                 ->build();
@@ -105,7 +119,57 @@ class HtmlDrawer extends HtmlBase
             echo S::TAB . S::TAB;
             /** @noinspection JSUnusedGlobalSymbols */
             echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
-            echo S::DRAWER_ALL_TRAIN_SCALES;
+            echo S::DRAWER_SHOW_ALL_TRAIN_SCALES;
+            echo '</a>' . PHP_EOL;
+
+            // Провеска чугуна
+            $href = $hrefBuilder
+                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON)
+                ->build();
+
+            echo S::TAB . S::TAB;
+            /** @noinspection JSUnusedGlobalSymbols */
+            echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+            echo S::DRAWER_SHOW_IRON_INFO;
+            echo '</a>' . PHP_EOL;
+
+            // Настройки главного экрана
+            if ($this->isStartPage) {
+                $hrefBuilder
+                    ->clear()
+                    ->setUrl("index.php")
+                    ->setParam(ParamName::NEW_DESIGN, true);
+
+                $href = $hrefBuilder
+                    ->setParam(!$showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
+                    ->build();
+
+                echo S::TAB . S::TAB;
+                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+                echo $showDisabled ? S::DRAWER_SHOW_DISABLED_OFF : S::DRAWER_SHOW_DISABLED_ON;
+                echo '</a>' . PHP_EOL;
+
+                $href = $hrefBuilder
+                    ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam(!$showMetrology ? ParamName::SHOW_METROLOGY : null, true)
+                    ->build();
+
+                echo S::TAB . S::TAB;
+                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+                echo $showMetrology ? S::DRAWER_SHOW_METROLOGY_OFF : S::DRAWER_SHOW_METROLOGY_ON;
+                echo '</a>' . PHP_EOL;
+            }
+
+            $href = $hrefBuilder
+                ->clear()
+                ->setUrl("a.php")
+                ->setParam(ParamName::NEW_DESIGN, true)
+                ->build();
+
+            echo S::TAB . S::TAB;
+            echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+            echo S::DRAWER_A;
             echo '</a>' . PHP_EOL;
 
             echo S::TAB;

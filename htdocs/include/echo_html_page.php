@@ -31,7 +31,7 @@ function echoStartPage()
     echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ' .
         '"http://www.w3.org/TR/html4/loose.dtd">' . PHP_EOL . PHP_EOL;
 //    TODO echo '<!DOCTYPE html>' . PHP_EOL . PHP_EOL;
-    echo '<html>' . PHP_EOL;
+    echo '<html lang="RU">' . PHP_EOL;
 }
 
 /**
@@ -55,6 +55,7 @@ function echoMeta($name, $value, $content)
  */
 function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null, $oldIEStyles = null, $default = true)
 {
+    /** @noinspection HtmlRequiredTitleElement */
     echo '<head>' . PHP_EOL;
 
     if ($title) {

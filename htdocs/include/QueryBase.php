@@ -1,10 +1,13 @@
 <?php
+
+use QueryBuilder\Builder;
+
 require_once "builders/query_builder/Builder.php";
 
 abstract class QueryBase
 {
     /**
-     * @var \QueryBuilder\Builder
+     * @var Builder
      */
     protected $builder;
 
@@ -13,7 +16,7 @@ abstract class QueryBase
      */
     public function __construct()
     {
-        $this->builder = \QueryBuilder\Builder::getInstance();
+        $this->builder = Builder::getInstance();
     }
 
     protected abstract function makeQuery();

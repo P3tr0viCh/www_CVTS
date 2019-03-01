@@ -33,14 +33,15 @@ function createTextForCopy(copy) {
         tableRow,
         textHeader = "",
         textTableHead = "",
-        textTableBody = "";
+        textTableBody = "",
+        i, l;
 
     //noinspection FallThroughInSwitchStatementJS
     switch (copy) {
         case 'all':
             var header = document.querySelectorAll("[data-header]");
 
-            for (var i = 0, l = header.length; i < l; i++) {
+            for (i = 0, l = header.length; i < l; i++) {
                 textHeader = textHeader + header[i].textContent + '\n';
             }
         case 'table':

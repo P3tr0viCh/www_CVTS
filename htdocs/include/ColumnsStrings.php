@@ -6,7 +6,7 @@ class ColumnsStrings
     const SCALE_TYPE_TEXT = 'Тип';
     const SCALE_CLASS_STATIC = 'Статика';
     const SCALE_CLASS_DYNAMIC = 'Динамика';
-    const SCALE_NAME = 'Место установки';
+    const SCALE_NAME = 'Название';
     const SCALE_MIN_CAPACITY = 'НмПВ';
     const SCALE_MAX_CAPACITY = 'НПВ';
     const SCALE_DISCRETENESS = 'Дискретность';
@@ -14,10 +14,8 @@ class ColumnsStrings
     const TRAIN_NUM = 'Системный номер поезда';
     const SCALE_NUM = '№ весов';
     const UNIX_TIME = 'Системное время взвешивания';
-    const UNIX_TIME_DIAGN = 'Системное время появления сбоя';
     const DATETIME = 'Дата и время';
     const DATETIME_END = 'Окончание взвешивания';
-    const DATETIME_END_CALVER = 'Дата калибровки / поверки';
     const TRAIN_NUMBER = 'Номер поезда';
     const CARRYING = 'Грузо&shy;подъёмность';
     const LOAD_NORM = 'Норма загрузки';
@@ -142,4 +140,10 @@ class ColumnsStrings
     const MI_DELTA_ABS_TARE_STA_E = 'Δтс!';
     const MI_DELTA_STA = 'ПДП для тары стат.';
     const MI_DELTA_STA_E = 'ПДП для тары стат.!';
+
+    const DATE = 'Дата';
+    const IRON_ESPC_RAZL = 'ЭСПЦ-2 + Разливка';
+    const IRON_ESPC = 'ЭСПЦ-2';
+    const IRON_RAZL = 'Разливка';
+    const IRON_SHCH = 'СХЧ';
 }

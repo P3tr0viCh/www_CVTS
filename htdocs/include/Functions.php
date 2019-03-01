@@ -94,6 +94,9 @@ function formatFieldValue($fieldName, $fieldValue, $full)
 
                 return $d;
 
+            case C::IRON_DATE:
+                return $fieldValue;
+
             case C::TRAIN_NUMBER:
             case C::VAN_NUMBER:
             case C::AUTO_NUMBER:
@@ -120,6 +123,11 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::INVOICE_NETTO:
             case C::INVOICE_TARE:
             case C::ACCELERATION:
+
+            case C::IRON_ESPC_RAZL:
+            case C::IRON_ESPC:
+            case C::IRON_RAZL:
+            case C::IRON_SHCH:
                 return num_fmt($fieldValue, 2);
 
             case C::NETTO:
@@ -427,6 +435,13 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::MI_DELTA_STA:
             return true;
 
+        case C::IRON_DATE:
+        case C::IRON_ESPC_RAZL:
+        case C::IRON_ESPC:
+        case C::IRON_RAZL:
+        case C::IRON_SHCH:
+            return true;
+
         default:
             return false;
     }
@@ -680,6 +695,17 @@ function columnName($fieldName, $scaleType, $resultType = null)
         case C::MI_DELTA_STA_E:
             return ColumnsStrings::MI_DELTA_STA_E;
 
+        case C::IRON_DATE:
+            return ColumnsStrings::DATE;
+        case C::IRON_ESPC_RAZL:
+            return ColumnsStrings::IRON_ESPC_RAZL;
+        case C::IRON_ESPC:
+            return ColumnsStrings::IRON_ESPC;
+        case C::IRON_RAZL:
+            return ColumnsStrings::IRON_RAZL;
+        case C::IRON_SHCH:
+            return ColumnsStrings::IRON_SHCH;
+
         default:
             return $fieldName;
     }
@@ -773,8 +799,14 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::MI_DELTA_STA_E:
 
             case C::SCALE_CLASS_DYNAMIC:
+
+            case C::IRON_ESPC_RAZL:
+            case C::IRON_ESPC:
+            case C::IRON_RAZL:
+            case C::IRON_SHCH:
                 return false;
 
+            case C::IRON_DATE:
             case C::DATETIME:
             case C::DATETIME_END:
             case C::VAN_NUMBER:
@@ -857,6 +889,11 @@ function getLastDay($month, $year)
 function formatDateTime($timestamp)
 {
     return date("d.m.Y H:i", $timestamp);
+}
+
+function formatDate($timestamp)
+{
+    return date("d.m.Y", $timestamp);
 }
 
 /**
@@ -1004,33 +1041,45 @@ function getResultHeader($resultType)
             return S::HEADER_RESULT_VN_DYN_B;
         case ResultType::VAN_DYNAMIC_TARE:
             return S::HEADER_RESULT_VN_DYN_T;
+
         case ResultType::VAN_STATIC_BRUTTO:
             return S::HEADER_RESULT_VN_STA_B;
         case ResultType::VAN_STATIC_TARE:
             return S::HEADER_RESULT_VN_STA_T;
+
         case ResultType::TRAIN_DYNAMIC:
             return S::HEADER_RESULT_TR_DYN;
         case ResultType::TRAIN_DYNAMIC_ONE:
             return S::HEADER_RESULT_TR_DYN_ONE;
+
         case ResultType::AUTO_BRUTTO:
             return S::HEADER_RESULT_AUTO_B;
         case ResultType::AUTO_TARE:
             return S::HEADER_RESULT_AUTO_T;
+
         case ResultType::KANAT:
             return S::HEADER_RESULT_KANAT;
+
         case ResultType::DP:
             return S::HEADER_RESULT_DP;
         case ResultType::DP_SUM:
             return S::HEADER_RESULT_DP_SUM;
+
         case ResultType::CARGO_LIST_DYNAMIC:
         case ResultType::CARGO_LIST_STATIC:
         case ResultType::CARGO_LIST_AUTO:
             return S::HEADER_RESULT_CARGO_LIST;
+
         case ResultType::COMPARE_DYNAMIC:
         case ResultType::COMPARE_STATIC:
             return S::HEADER_RESULT_COMPARE;
+
         case ResultType::COEFFS:
             return S::HEADER_COEFF;
+
+        case ResultType::IRON:
+            return S::HEADER_IRON;
+
         default:
             return null;
     }

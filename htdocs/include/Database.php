@@ -172,8 +172,6 @@ class Columns
 
     const COMPARE = 'compare';
 
-    const SUM_NETTO = 'SUM(netto)';
-
     const DATETIME_NOW = 'now()';
 
     const DEPARTMENT = 'department';
@@ -205,4 +203,10 @@ class Columns
     const MI_DELTA_ABS_TARE_STA_E = 'delta_abs_tare_sta_exact';
     const MI_DELTA_STA = 'delta_sta';
     const MI_DELTA_STA_E = 'delta_sta_exact';
+
+    const IRON_DATE = 'date';
+    const IRON_ESPC_RAZL = 'espc_razl';
+    const IRON_ESPC = 'espc';
+    const IRON_RAZL = 'razl';
+    const IRON_SHCH = 'shch';
 }

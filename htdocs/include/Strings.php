@@ -31,15 +31,24 @@ class Strings
 
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
-    const DRAWER_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
+    const DRAWER_SHOW_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
+    const DRAWER_SHOW_IRON_INFO = 'Провеска чугуна';
+    const DRAWER_SHOW_DISABLED_ON = 'Показать скрытые весы';
+    const DRAWER_SHOW_DISABLED_OFF = 'Не отображать скрытые весы';
+    const DRAWER_SHOW_METROLOGY_ON = 'Показать метрологические параметры';
+    const DRAWER_SHOW_METROLOGY_OFF = 'Не отображать метрологические параметры';
+    const DRAWER_A = 'Карта сайта';
 
     const FOOTER_LEFT_SECTION = 'МЕТАЛЛОИНВЕСТ, Уральская Сталь';
     const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович';
 
-    const ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
+    const SHOW_ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
+    const SHOW_IRON_INFO = 'Сводная информация по провескам чугуна';
 
     const SCALE_INFO_ALL_TRAIN_PLACE = 'ЖД весы';
     const SCALE_INFO_ALL_TRAIN_HEADER = 'Сводная информация по всем железнодорожным весам';
+    const SCALE_INFO_IRON_PLACE = 'Чугун';
+    const SCALE_INFO_IRON_HEADER = 'Провеска чугуна';
     const SCALE_INFO_HEADER = '%s, весы №%d';
 
     const HEADER_INFO = 'Информация';
@@ -70,6 +79,7 @@ class Strings
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
     const HEADER_COEFF = 'Коэффициенты';
+    const HEADER_IRON = 'Сумма нетто за сутки';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
     const HEADER_RESULT_PERIOD_FROM = '%s с %s';
@@ -119,13 +129,13 @@ class Strings
     const BUTTON_COEFFS = 'Коэффициенты';
     const BUTTON_CLEAR = 'Очистить';
 
-    const CHECKBOX_ORDER_BY_DATETIME = 'Сортировка только по дате и времени';
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
     const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
     const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';
+    const CHECKBOX_ORDER_BY_DESC = 'Сортировка в обратном порядке';
 
     const MENU_DATES_CURRENT_DAY = 'Начало текущего дня';
     const MENU_DATES_CURRENT_MONTH = 'Начало текущего месяца';
@@ -220,7 +230,6 @@ class Strings
     const ERROR_MYSQL_QUERY = 'Не удалось выполнить запрос к базе данных';
     const ERROR_MYSQL_DETAILS = 'Ошибка %d: %s';
     const ERROR_MYSQL_CONNECTION_FILE_ERROR = 'Файл MYSQL_CONNECTION не найден или имеет неправильный формат';
-    const ERROR_MYSQL_ZERO = 'Неверный запрос к базе данных';
     const ERROR_MYSQL_BAD_SCALE_NUM = 'Весы с номером %d в базе данных не найдены';
     const ERROR_MYSQL_MAX_LIMIT = 'Результат запроса превысил допустимые пределы<br>Попробуйте указать меньший период времени<br>и/или задайте параметры поиска.';
 
@@ -245,7 +254,6 @@ class Strings
     const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
-    const ERROR_INCOMPATIBLE_BROWSER_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_GOTO_START = 'Перейти на начальную страницу';
     const ERROR_GOTO_START_COMPATIBLE = 'Перейти на начальную страницу в старом дизайне';

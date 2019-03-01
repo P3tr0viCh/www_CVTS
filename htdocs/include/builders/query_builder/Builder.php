@@ -77,7 +77,7 @@ class Builder
     private $table;
 
     /**
-     * @var null|Join
+     * @var null|Join[]
      */
     private $join;
 
@@ -136,7 +136,7 @@ class Builder
      * @param null|mixed $value
      * @return string
      */
-    private function format($value)
+    private static function format($value)
     {
         if ($value === null) {
             return "''";
@@ -152,6 +152,11 @@ class Builder
             return $value ? "TRUE" : "FALSE";
         }
         return (string)$value;
+    }
+
+    public static function sum($column)
+    {
+        return "sum(" . $column . ")";
     }
 
     /**
@@ -200,14 +205,18 @@ class Builder
         $result = null;
 
         if ($this->join) {
-            $table = $this->join->getTable();
-            $columnsArray = $this->join->getColumns();
-            $columns = null;
+            /** @var Join $join */
+            foreach ($this->join as $join) {
+                $table = $join->getTable();
+                $columnsArray = $join->getColumns();
+                $columns = null;
 
-            foreach ($columnsArray as $column) {
-                $columns = self::concat($columns, $column, Expr::COMMA . Expr::SPACE);
+                foreach ($columnsArray as $column) {
+                    $columns = self::concat($columns, $column, Expr::COMMA . Expr::SPACE);
+                }
+
+                $result = self::concat($result, sprintf(Expr::JOIN, $table, $columns), Expr::SPACE);
             }
-            $result = sprintf(Expr::JOIN, $table, $columns);
         }
 
         return $result;
@@ -231,7 +240,7 @@ class Builder
                 }
 
                 if ($comparison == self::COMPARISON_LIKE) {
-                    $expr = sprintf(Expr::LIKE, $this->format((string)$value));
+                    $expr = sprintf(Expr::LIKE, Builder::format((string)$value));
                 } elseif ($comparison == self::COMPARISON_IN) {
                     if (($value instanceof Builder)) {
                         $expr = sprintf(Expr::IN, $value->build());
@@ -243,15 +252,15 @@ class Builder
                             $value = trim($value);
 
                             if (floatval($value)) {
-                                $value = $this->format((float)$value);
+                                $value = Builder::format((float)$value);
                             } elseif (intval($value)) {
-                                $value = $this->format((int)$value);
+                                $value = Builder::format((int)$value);
                             } else {
                                 $l = strlen($value);
                                 if (($l > 1) && ($value[0] == "'" || $value[0] == '"') && ($value[0] == $value[$l - 1])) {
                                     $value = substr($value, 1, $l - 2);
                                 }
-                                $value = $this->format($value);
+                                $value = Builder::format($value);
                             }
 
                             $values = self::concat($values, $value, Expr::COMMA . Expr::SPACE);
@@ -282,7 +291,7 @@ class Builder
                             break;
                     }
 
-                    $value = $this->format($value);
+                    $value = Builder::format($value);
 
                     $expr = $expr . Expr::SPACE . $value;
                 }
@@ -377,8 +386,8 @@ class Builder
      * SQL_BUFFER_RESULT.
      *
      * @param int $params
-     * @see Builder::SELECT_SQL_BUFFER_RESULT
      * @return $this
+     * @see Builder::SELECT_SQL_BUFFER_RESULT
      */
     public function params($params)
     {
@@ -452,7 +461,7 @@ class Builder
             if (!is_array($columns)) {
                 $columns = array($columns);
             }
-            $this->join = new Join($table, $columns);
+            $this->join[] = new Join($table, $columns);
         }
 
         return $this;

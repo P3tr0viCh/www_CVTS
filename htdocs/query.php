@@ -27,7 +27,9 @@ $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_
 echoStartPage();
 
 if ($scales < 0) {
-    $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
+    if ($scales !== Constants::SCALE_NUM_REPORT_IRON) {
+        $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
+    }
 }
 
 $title = S::TITLE_ERROR;
@@ -206,6 +208,15 @@ if (!$resultMessage) {
 
             echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::DP);
             echoButton($newDesign, S::BUTTON_SUM_FOR_PERIOD, ParamName::RESULT_TYPE, ResultType::DP_SUM);
+
+            break;
+        case ScaleType::IRON:
+            echo S::TAB . S::TAB;
+            echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
+
+            echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::IRON);
+
+            break;
     }
 
     if ($newDesign) {
@@ -529,11 +540,14 @@ if (!$resultMessage) {
         echo '<td class="query">' . PHP_EOL;
     }
 
-    echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+    if ($scaleInfo->getType() == ScaleType::IRON) {
+        echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_ORDER_BY_DESC, true);
+    } else {
+        echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+    }
 
     if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
-        $scaleInfo->getType() == ScaleType::WMR
-    ) {
+        $scaleInfo->getType() == ScaleType::WMR) {
         echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
 
         if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
@@ -611,11 +625,12 @@ if (!$resultMessage) {
         "'" . ParamName::ONLY_CHARK . "', " .
         PHP_EOL .
         S::TAB . S::TAB .
-        "'" . ParamName::ALL_FIELDS . "'," .
-        "'" . ParamName::SHOW_CARGO_DATE . "'," .
-        "'" . ParamName::SHOW_DELTAS . "'," .
-        "'" . ParamName::COMPARE_FORWARD . "'," .
-        "'" . ParamName::COMPARE_BY_BRUTTO . "'" .
+        "'" . ParamName::ALL_FIELDS . "', " .
+        "'" . ParamName::SHOW_CARGO_DATE . "', " .
+        "'" . ParamName::SHOW_DELTAS . "', " .
+        "'" . ParamName::COMPARE_FORWARD . "', " .
+        "'" . ParamName::COMPARE_BY_BRUTTO . "', " .
+        "'" . ParamName::ORDER_BY_DESC . "'" .
         ");";
     echo PHP_EOL . PHP_EOL;
 
@@ -644,7 +659,9 @@ if (!$resultMessage) {
         ResultType::COMPARE_DYNAMIC . ", " .
         ResultType::COMPARE_STATIC . ", " .
 
-        ResultType::COEFFS .
+        ResultType::COEFFS . ", " .
+
+        ResultType::IRON .
         ");";
     echo PHP_EOL;
     echo '</script>';
