@@ -133,34 +133,7 @@ class HtmlDrawer extends HtmlBase
             echo S::DRAWER_SHOW_IRON_INFO;
             echo '</a>' . PHP_EOL;
 
-            // Настройки главного экрана
-            if ($this->isStartPage) {
-                $hrefBuilder
-                    ->clear()
-                    ->setUrl("index.php")
-                    ->setParam(ParamName::NEW_DESIGN, true);
-
-                $href = $hrefBuilder
-                    ->setParam(!$showDisabled ? ParamName::SHOW_DISABLED : null, true)
-                    ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
-                    ->build();
-
-                echo S::TAB . S::TAB;
-                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
-                echo $showDisabled ? S::DRAWER_SHOW_DISABLED_OFF : S::DRAWER_SHOW_DISABLED_ON;
-                echo '</a>' . PHP_EOL;
-
-                $href = $hrefBuilder
-                    ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
-                    ->setParam(!$showMetrology ? ParamName::SHOW_METROLOGY : null, true)
-                    ->build();
-
-                echo S::TAB . S::TAB;
-                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
-                echo $showMetrology ? S::DRAWER_SHOW_METROLOGY_OFF : S::DRAWER_SHOW_METROLOGY_ON;
-                echo '</a>' . PHP_EOL;
-            }
-
+            // Карта сайта
             $href = $hrefBuilder
                 ->clear()
                 ->setUrl("a.php")
@@ -171,6 +144,40 @@ class HtmlDrawer extends HtmlBase
             echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
             echo S::DRAWER_A;
             echo '</a>' . PHP_EOL;
+
+            // Настройки главного экрана
+            if ($this->isStartPage) {
+                echo '</nav>' . PHP_EOL;
+                echo '<span class="mdl-layout-title mdl-layout-title__subtitle nav">' . S::DRAWER_TITLE_SETTINGS . '</span>' . PHP_EOL;
+                echo '<nav class="mdl-navigation">' . PHP_EOL;
+
+                $hrefBuilder
+                    ->clear()
+                    ->setUrl("index.php")
+                    ->setParam(ParamName::NEW_DESIGN, true);
+
+                $hrefBuilderShowDisabled = clone $hrefBuilder;
+                $href = $hrefBuilderShowDisabled
+                    ->setParam(!$showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
+                    ->build();
+
+                echo S::TAB . S::TAB;
+                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+                echo $showDisabled ? S::DRAWER_SHOW_DISABLED_OFF : S::DRAWER_SHOW_DISABLED_ON;
+                echo '</a>' . PHP_EOL;
+
+                $hrefBuilderShowMetrology = clone $hrefBuilder;
+                $href = $hrefBuilderShowMetrology
+                    ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam(!$showMetrology ? ParamName::SHOW_METROLOGY : null, true)
+                    ->build();
+
+                echo S::TAB . S::TAB;
+                echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+                echo $showMetrology ? S::DRAWER_SHOW_METROLOGY_OFF : S::DRAWER_SHOW_METROLOGY_ON;
+                echo '</a>' . PHP_EOL;
+            }
 
             echo S::TAB;
             echo '</nav>' . PHP_EOL;

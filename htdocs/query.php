@@ -98,6 +98,8 @@ if (!$resultMessage) {
     echoHidden(ParamName::USE_BACKUP, (bool)$useBackup);
     echo PHP_EOL;
 
+    $scaleType = $scaleInfo->getType();
+
     if (!$newDesign) {
         echoHidden(ParamName::RESULT_TYPE, null);
         echo PHP_EOL;
@@ -131,7 +133,7 @@ if (!$resultMessage) {
         echo '<td class="query" rowspan="6">' . PHP_EOL;
     }
 
-    switch ($scaleInfo->getType()) {
+    switch ($scaleType) {
         case ScaleType::DEFAULT_TYPE:
             if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) ||
                 ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC)
@@ -297,8 +299,15 @@ if (!$resultMessage) {
 
     echo PHP_EOL;
     echo S::TAB . S::TAB;
-    echo '<h6>' . S::HEADER_PERIOD_START . '</h6>';
-    echo PHP_EOL;
+    echo '<h6>';
+    switch ($scaleType) {
+        case ScaleType::IRON:
+            echo S::HEADER_DATE_START;
+            break;
+        default:
+            echo S::HEADER_DATETIME_START;
+    }
+    echo '</h6>' . PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_START_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
@@ -314,25 +323,35 @@ if (!$resultMessage) {
 
     echoInput($newDesign, ParamName::DATETIME_START_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
-    echo S::TAB . S::TAB;
-    echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
-    echo PHP_EOL;
-
-    echoInput($newDesign, ParamName::DATETIME_START_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
-    if (!$newDesign) {
+    if ($scaleType != ScaleType::IRON) {
         echo S::TAB . S::TAB;
-        echo '<span class="text-input__field"> : </span>' . PHP_EOL;
+        echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
+        echo PHP_EOL;
+
+        echoInput($newDesign, ParamName::DATETIME_START_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
+        if (!$newDesign) {
+            echo S::TAB . S::TAB;
+            echo '<span class="text-input__field"> : </span>' . PHP_EOL;
+        }
+
+        echoInput($newDesign, ParamName::DATETIME_START_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+        if (!$newDesign) {
+            echo S::TAB . S::TAB . '<br>';
+        }
+
+        echo PHP_EOL;
     }
 
-    echoInput($newDesign, ParamName::DATETIME_START_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
-    if (!$newDesign) {
-        echo S::TAB . S::TAB . '<br>';
-    }
-
-    echo PHP_EOL;
     echo S::TAB . S::TAB;
-    echo '<h6>' . S::HEADER_PERIOD_END . '</h6>';
-    echo PHP_EOL;
+    echo '<h6>';
+    switch ($scaleType) {
+        case ScaleType::IRON:
+            echo S::HEADER_DATE_END;
+            break;
+        default:
+            echo S::HEADER_DATETIME_END;
+    }
+    echo '</h6>' . PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_END_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
     if (!$newDesign) {
@@ -348,23 +367,33 @@ if (!$resultMessage) {
 
     echoInput($newDesign, ParamName::DATETIME_END_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
-    echo S::TAB . S::TAB;
-    echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
-    echo PHP_EOL;
-
-    echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
-    if (!$newDesign) {
+    if ($scaleType != ScaleType::IRON) {
         echo S::TAB . S::TAB;
-        echo '<span class="text-input__field">:</span>' . PHP_EOL;
-    }
+        echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
+        echo PHP_EOL;
 
-    echoInput($newDesign, ParamName::DATETIME_END_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+        echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
+        if (!$newDesign) {
+            echo S::TAB . S::TAB;
+            echo '<span class="text-input__field">:</span>' . PHP_EOL;
+        }
+
+        echoInput($newDesign, ParamName::DATETIME_END_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+    }
 
     if (!$newDesign) {
         echo S::TAB . S::TAB;
         echo '<br>' . PHP_EOL;
         echo S::TAB . S::TAB;
-        echo '<small>' . S::HELP_PERIOD_OLD . '</small>' . PHP_EOL;
+        echo '<small>';
+        switch ($scaleType) {
+            case ScaleType::IRON:
+                echo S::HELP_DATE_OLD;
+                break;
+            default:
+                echo S::HELP_DATETIME_OLD;
+        }
+        echo '</small>' . PHP_EOL;
     }
 
     if ($newDesign) {
@@ -385,123 +414,129 @@ if (!$resultMessage) {
         echo '<div class="mdl-cell mdl-cell--4-col mdl-cell--stretch">' . PHP_EOL;
     }
 
-    if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
-        $scaleInfo->getType() == ScaleType::WMR ||
-        $scaleInfo->getType() == ScaleType::AUTO ||
-        $scaleInfo->getType() == ScaleType::DP
-    ) {
-        if ($newDesign) {
-            echo S::TAB . S::TAB;
-            echo '<h5>' . PHP_EOL;
-            echo S::TAB . S::TAB . S::TAB;
-            echo '<span class="material-icons color--grey material-icons--for-header">search</span>';
-        } else {
-            echo S::TAB;
-            echo '<tr>' . PHP_EOL;
-            echo S::TAB . S::TAB;
-            echo '<th class="query">';
-        }
-
-        echo S::HEADER_SEARCH;
-
-        if ($newDesign) {
-            if ($scaleInfo->getType() != ScaleType::DP) {
-                echo '<span class="div-help for-header material-icons color--grey cursor-help" id="search_help">help</span>' . PHP_EOL;
-
-                echo S::TAB . S::TAB;
-                echo '</h5>' . PHP_EOL . PHP_EOL;
-
-                echo S::TAB . S::TAB;
-                /** @noinspection HtmlUnknownAttribute */
-                echo '<div class="mdl-tooltip mdl-tooltip--large" for="search_help">' . PHP_EOL;
-                echo S::TAB . S::TAB . S::TAB;
-
-                echo '<span>' . S::HELP_SEARCH . '</span>' . PHP_EOL;
-
-                echo S::TAB . S::TAB;
-                echo '</div>' . PHP_EOL . PHP_EOL;
-            } else {
-                echo S::TAB . S::TAB;
-                echo '</h5>' . PHP_EOL . PHP_EOL;
-            }
-        } else {
-            echo '</th>' . PHP_EOL;
-            echo S::TAB;
-            echo '</tr>' . PHP_EOL . PHP_EOL;
-        }
-
-        if (!$newDesign) {
-            echo S::TAB;
-            echo '<tr>' . PHP_EOL;
-            echo S::TAB . S::TAB;
-            echo '<td class="query">' . PHP_EOL;
-        }
-
-        if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
-            $scaleInfo->getType() == ScaleType::WMR
-        ) {
-            echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_VAN_NUMBER, S::INPUT_VAN_NUMBER_HELP,
-                S::INPUT_VAN_NUMBER_PATTERN, 10, 8);
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-        } elseif ($scaleInfo->getType() == ScaleType::AUTO) {
-            echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_AUTO_NUMBER, S::INPUT_AUTO_NUMBER_HELP,
-                S::INPUT_AUTO_NUMBER_PATTERN, 10, 9);
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-        }
-
-        if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
-            $scaleInfo->getType() == ScaleType::WMR ||
-            $scaleInfo->getType() == ScaleType::AUTO
-        ) {
-            echoInput($newDesign, ParamName::CARGO_TYPE, S::INPUT_CARGO_TYPE, "", "", "", "");
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-
-            echoInput($newDesign, ParamName::INVOICE_NUM, S::INPUT_INVOICE_NUM, "", "", 20, 16);
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-
-            echoInput($newDesign, ParamName::INVOICE_SUPPLIER, S::INPUT_INVOICE_SUPPLIER, "", "", 20, "");
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-
-            echoInput($newDesign, ParamName::INVOICE_RECIPIENT, S::INPUT_INVOICE_RECIPIENT, "", "", 20, "");
-            echo S::TAB . S::TAB;
-            echo '<br>' . PHP_EOL;
-
-            if (!$newDesign) {
-                echo S::TAB . S::TAB;
-                echo '<small>' . S::HELP_SEARCH_OLD . '</small>' . PHP_EOL;
-                echo S::TAB . S::TAB;
-                echo '<br>' . PHP_EOL;
-            }
-        } elseif ($scaleInfo->getType() == ScaleType::DP) {
-            echoCheckBox($newDesign, ParamName::ONLY_CHARK, S::CHECKBOX_ONLY_CHARK, true);
-        }
-
-        if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-            echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, "", "");
-
+    switch ($scaleType) {
+        case ScaleType::DEFAULT_TYPE:
+        case ScaleType::WMR:
+        case ScaleType::AUTO:
+        case ScaleType::DP:
             if ($newDesign) {
                 echo S::TAB . S::TAB;
-                echo '<span class="div-help material-icons color--grey cursor-help" id="scales_find_help">help</span>' . PHP_EOL;
-
-                echo S::TAB . S::TAB;
-                /** @noinspection HtmlUnknownAttribute */
-                echo '<div class="mdl-tooltip mdl-tooltip--large" for="scales_find_help">' . PHP_EOL;
+                echo '<h5>' . PHP_EOL;
                 echo S::TAB . S::TAB . S::TAB;
-                echo '<span>' . S::HELP_SCALES . '</span>' . PHP_EOL;
-                echo S::TAB . S::TAB;
-                echo '</div>' . PHP_EOL . PHP_EOL;
+                echo '<span class="material-icons color--grey material-icons--for-header">search</span>';
             } else {
+                echo S::TAB;
+                echo '<tr>' . PHP_EOL;
                 echo S::TAB . S::TAB;
-                echo '<br>' . PHP_EOL;
-                echo S::TAB . S::TAB;
-                echo '<small>' . S::HELP_SCALES_OLD . '</small>';
+                echo '<th class="query">';
             }
-        }
+
+            echo S::HEADER_SEARCH;
+
+            if ($newDesign) {
+                if ($scaleType != ScaleType::DP) {
+                    echo '<span class="div-help for-header material-icons color--grey cursor-help" id="search_help">help</span>' . PHP_EOL;
+
+                    echo S::TAB . S::TAB;
+                    echo '</h5>' . PHP_EOL . PHP_EOL;
+
+                    echo S::TAB . S::TAB;
+                    /** @noinspection HtmlUnknownAttribute */
+                    echo '<div class="mdl-tooltip mdl-tooltip--large" for="search_help">' . PHP_EOL;
+                    echo S::TAB . S::TAB . S::TAB;
+
+                    echo '<span>' . S::HELP_SEARCH . '</span>' . PHP_EOL;
+
+                    echo S::TAB . S::TAB;
+                    echo '</div>' . PHP_EOL . PHP_EOL;
+                } else {
+                    echo S::TAB . S::TAB;
+                    echo '</h5>' . PHP_EOL . PHP_EOL;
+                }
+            } else {
+                echo '</th>' . PHP_EOL;
+                echo S::TAB;
+                echo '</tr>' . PHP_EOL . PHP_EOL;
+            }
+
+            if (!$newDesign) {
+                echo S::TAB;
+                echo '<tr>' . PHP_EOL;
+                echo S::TAB . S::TAB;
+                echo '<td class="query">' . PHP_EOL;
+            }
+
+            switch ($scaleType) {
+                case ScaleType::DEFAULT_TYPE:
+                case ScaleType::WMR:
+                    echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_VAN_NUMBER, S::INPUT_VAN_NUMBER_HELP,
+                        S::INPUT_VAN_NUMBER_PATTERN, 10, 8);
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+                    break;
+                case ScaleType::AUTO:
+                    echoInput($newDesign, ParamName::VAN_NUMBER, S::INPUT_AUTO_NUMBER, S::INPUT_AUTO_NUMBER_HELP,
+                        S::INPUT_AUTO_NUMBER_PATTERN, 10, 9);
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+                    break;
+            }
+
+            switch ($scaleType) {
+                case ScaleType::DEFAULT_TYPE:
+                case ScaleType::WMR:
+                case ScaleType::AUTO:
+                    echoInput($newDesign, ParamName::CARGO_TYPE, S::INPUT_CARGO_TYPE, "", "", "", "");
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+
+                    echoInput($newDesign, ParamName::INVOICE_NUM, S::INPUT_INVOICE_NUM, "", "", 20, 16);
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+
+                    echoInput($newDesign, ParamName::INVOICE_SUPPLIER, S::INPUT_INVOICE_SUPPLIER, "", "", 20, "");
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+
+                    echoInput($newDesign, ParamName::INVOICE_RECIPIENT, S::INPUT_INVOICE_RECIPIENT, "", "", 20, "");
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+
+                    if (!$newDesign) {
+                        echo S::TAB . S::TAB;
+                        echo '<small>' . S::HELP_SEARCH_OLD . '</small>' . PHP_EOL;
+                        echo S::TAB . S::TAB;
+                        echo '<br>' . PHP_EOL;
+                    }
+
+                    break;
+                case ScaleType::DP:
+                    echoCheckBox($newDesign, ParamName::ONLY_CHARK, S::CHECKBOX_ONLY_CHARK, true);
+
+                    break;
+            }
+
+            if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, "", "");
+
+                if ($newDesign) {
+                    echo S::TAB . S::TAB;
+                    echo '<span class="div-help material-icons color--grey cursor-help" id="scales_find_help">help</span>' . PHP_EOL;
+
+                    echo S::TAB . S::TAB;
+                    /** @noinspection HtmlUnknownAttribute */
+                    echo '<div class="mdl-tooltip mdl-tooltip--large" for="scales_find_help">' . PHP_EOL;
+                    echo S::TAB . S::TAB . S::TAB;
+                    echo '<span>' . S::HELP_SCALES . '</span>' . PHP_EOL;
+                    echo S::TAB . S::TAB;
+                    echo '</div>' . PHP_EOL . PHP_EOL;
+                } else {
+                    echo S::TAB . S::TAB;
+                    echo '<br>' . PHP_EOL;
+                    echo S::TAB . S::TAB;
+                    echo '<small>' . S::HELP_SCALES_OLD . '</small>';
+                }
+            }
     }
 
     /**
@@ -540,30 +575,31 @@ if (!$resultMessage) {
         echo '<td class="query">' . PHP_EOL;
     }
 
-    if ($scaleInfo->getType() == ScaleType::IRON) {
+    if ($scaleType == ScaleType::IRON) {
         echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_ORDER_BY_DESC, true);
     } else {
         echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
     }
 
-    if ($scaleInfo->getType() == ScaleType::DEFAULT_TYPE ||
-        $scaleInfo->getType() == ScaleType::WMR) {
-        echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
+    switch ($scaleType) {
+        case ScaleType::DEFAULT_TYPE:
+        case ScaleType::WMR:
+            echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
 
-        if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
-            $scaleInfo->getClass() == ScaleClass::CLASS_STATIC ||
-            $scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) {
-            echoCheckBox($newDesign, ParamName::SHOW_DELTAS, S::CHECKBOX_SHOW_DELTAS);
-        }
+//        if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
+//            $scaleInfo->getClass() == ScaleClass::CLASS_STATIC ||
+//            $scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) {
+//            echoCheckBox($newDesign, ParamName::SHOW_DELTAS, S::CHECKBOX_SHOW_DELTAS);
+//        }
 
-        echo PHP_EOL;
-        echo S::TAB . S::TAB;
-        echo '<h6>' . S::HEADER_COMPARE . '</h6>';
-        echo PHP_EOL;
+            echo PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo '<h6>' . S::HEADER_COMPARE . '</h6>';
+            echo PHP_EOL;
 
-        echoCheckBox($newDesign, ParamName::COMPARE_FORWARD, S::CHECKBOX_COMPARE_FORWARD);
+            echoCheckBox($newDesign, ParamName::COMPARE_FORWARD, S::CHECKBOX_COMPARE_FORWARD);
 
-        echoCheckBox($newDesign, ParamName::COMPARE_BY_BRUTTO, S::CHECKBOX_COMPARE_BY_BRUTTO);
+            echoCheckBox($newDesign, ParamName::COMPARE_BY_BRUTTO, S::CHECKBOX_COMPARE_BY_BRUTTO);
     }
 
     echo PHP_EOL;

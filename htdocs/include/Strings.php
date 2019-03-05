@@ -33,6 +33,7 @@ class Strings
     const DRAWER_START_PAGE = 'Общий список';
     const DRAWER_SHOW_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
     const DRAWER_SHOW_IRON_INFO = 'Провеска чугуна';
+    const DRAWER_TITLE_SETTINGS = 'Настройки';
     const DRAWER_SHOW_DISABLED_ON = 'Показать скрытые весы';
     const DRAWER_SHOW_DISABLED_OFF = 'Не отображать скрытые весы';
     const DRAWER_SHOW_METROLOGY_ON = 'Показать метрологические параметры';
@@ -57,8 +58,10 @@ class Strings
     const HEADER_RESULTS = 'Результаты взвешиваний';
     const HEADER_SERVICE = 'Сервис';
     const HEADER_PERIOD = 'Период';
-    const HEADER_PERIOD_START = 'Начальная дата и время';
-    const HEADER_PERIOD_END = 'Конечная дата и время';
+    const HEADER_DATETIME_START = 'Начальная дата и время';
+    const HEADER_DATETIME_END = 'Конечная дата и время';
+    const HEADER_DATE_START = 'Начальная дата';
+    const HEADER_DATE_END = 'Конечная дата';
     const HEADER_SEARCH = 'Поиск';
     const HEADER_SETTINGS = 'Настройки';
     const HEADER_COMPARE = 'Сравнение массы';
@@ -184,7 +187,8 @@ class Strings
     const INPUT_SCALES_HELP = 'Только цифры и запятые';
     const INPUT_SCALES_PATTERN = '^[0-9,]+$';
 
-    const HELP_PERIOD_OLD = '(день.месяц.год час:минуты)<br>(дату или время полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';
+    const HELP_DATE_OLD = '(день.месяц.год)<br>(дату полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';
+    const HELP_DATETIME_OLD = '(день.месяц.год час:минуты)<br>(дату или время полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';
     const HELP_SEARCH = 'Символ «%» (процент) используется для замены группы символов, «_» (подчёркивание) – для замены одного символа';
     const HELP_SEARCH_OLD = '(используйте символ "%" для замены группы символов, "_" для замены одного символа)';
     const HELP_SCALES = 'Номера весов вводятся через запятую';

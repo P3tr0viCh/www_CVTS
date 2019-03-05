@@ -17,10 +17,9 @@ class QueryIron extends QueryBase
     const MYSQL_DATE_START_FORMAT = "Ymd000000";
     const MYSQL_DATE_END_FORMAT = "Ymd235959";
 
-    //    const CARGO_TYPE_IRON = 'Чугун';
-    const CARGO_TYPE_IRON = 'CargoType 1%';
+    const CARGO_TYPE_IRON = 'Чугун';
+//    const CARGO_TYPE_IRON = 'CargoType 1%';
 
-    const SCALE_NUM_ESPC_RAZL = "182, 1043, 98, 10";
     const SCALE_NUM_ESPC = "10";
     const SCALE_NUM_RAZL = "182, 1043, 98";
     const SCALE_NUM_SHCH = "156, 31, 41";
@@ -86,11 +85,6 @@ class QueryIron extends QueryBase
         $builderSta = clone $builder;
         $builderSta->table(T::VAN_STATIC_BRUTTO);
 
-        $builderEspcRazl = clone $builderDyn;
-        $builderEspcRazl
-            ->column(B::sum(C::NETTO), null, C::IRON_ESPC_RAZL)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, self::SCALE_NUM_ESPC_RAZL);
-
         $builderEspc = clone $builderDyn;
         $builderEspc
             ->column(B::sum(C::NETTO), null, C::IRON_ESPC)
@@ -108,12 +102,11 @@ class QueryIron extends QueryBase
 
         $this->builder
             ->column(C::IRON_DATE)
-            ->column(C::IRON_ESPC_RAZL)
+            ->column(C::IRON_ESPC . ' + ' . C::IRON_RAZL, null, C::IRON_ESPC_RAZL)
             ->column(C::IRON_ESPC)
             ->column(C::IRON_RAZL)
             ->column(C::IRON_SHCH)
-            ->table(sprintf(self::SUB_QUERY, $builderEspcRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC_RAZL))
-            ->join(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC), C::IRON_DATE)
+            ->table(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC))
             ->join(sprintf(self::SUB_QUERY, $builderRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_RAZL), C::IRON_DATE)
             ->join(sprintf(self::SUB_QUERY, $builderShch->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_SHCH), C::IRON_DATE)
             ->order(sprintf(self::FUNCTION_STR_TO_DATE, C::IRON_DATE, self::DATE_FORMAT), $this->orderByDesc);
