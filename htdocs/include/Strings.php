@@ -145,7 +145,7 @@ class Strings
     const MENU_DATES_CURRENT_WEEK = 'Начало текущей недели';
     const MENU_DATES_PREV_DAY = 'Прошлые сутки';
     const MENU_DATES_FROM_5_TO_5 = 'С 05:00 прошлого дня до 04:59 текущего';
-    const MENU_DATES_FROM_20_TO_20 = 'С 20:00 прошлого дня до 19:59 текущего';
+    const MENU_DATES_FROM_20_TO_20 = 'С 20:00 позапрошлого дня до 19:59 прошлого';
     const MENU_DATES_CLEAR = 'Очистить';
 
     const MENU_COPY_ALL = 'Копировать всё';

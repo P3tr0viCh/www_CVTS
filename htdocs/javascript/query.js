@@ -29,15 +29,15 @@ function setDates(value) {
         case "startCurrentMonth":
             values[0] = "1";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "00";
             values[4] = "00";
 
             break;
         case "startCurrentDay":
-            values[0] = currDate.getDate();
+            values[0] = currDate.getDate() + "";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "00";
             values[4] = "00";
 
@@ -46,54 +46,55 @@ function setDates(value) {
             var day = currDate.getDay();
             day === 0 ? day = 6 : day--;
             currDate.setDate(currDate.getDate() - day);
-            values[0] = currDate.getDate();
+            values[0] = currDate.getDate() + "";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "00";
             values[4] = "00";
 
             break;
         case "prevDay":
             currDate.setDate(currDate.getDate() - 1);
-            values[0] = currDate.getDate();
+            values[0] = currDate.getDate() + "";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "00";
             values[4] = "00";
 
-            values[5] = currDate.getDate();
+            values[5] = currDate.getDate() + "";
             values[6] = currDate.getMonth() + 1;
-            values[7] = currDate.getFullYear();
+            values[7] = currDate.getFullYear() + "";
             values[8] = "23";
             values[9] = "59";
 
             break;
         case "from5to5":
-            values[5] = currDate.getDate();
+            values[5] = currDate.getDate() + "";
             values[6] = currDate.getMonth() + 1;
-            values[7] = currDate.getFullYear();
+            values[7] = currDate.getFullYear() + "";
             values[8] = "04";
             values[9] = "59";
 
             currDate.setDate(currDate.getDate() - 1);
-            values[0] = currDate.getDate();
+            values[0] = currDate.getDate() + "";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "05";
             values[4] = "00";
 
             break;
         case "from20to20":
-            values[5] = currDate.getDate();
+            currDate.setDate(currDate.getDate() - 1);
+            values[5] = currDate.getDate() + "";
             values[6] = currDate.getMonth() + 1;
-            values[7] = currDate.getFullYear();
+            values[7] = currDate.getFullYear() + "";
             values[8] = "19";
             values[9] = "59";
 
             currDate.setDate(currDate.getDate() - 1);
-            values[0] = currDate.getDate();
+            values[0] = currDate.getDate() + "";
             values[1] = currDate.getMonth() + 1;
-            values[2] = currDate.getFullYear();
+            values[2] = currDate.getFullYear() + "";
             values[3] = "20";
             values[4] = "00";
 
@@ -101,7 +102,9 @@ function setDates(value) {
     }
 
     for (var i = 0; i < values.length; i++) {
-        inputs[i].value = values[i];
+        if (inputs[i]) {
+            inputs[i].value = values[i];
+        }
     }
 
     checkTextFields();
@@ -158,7 +161,9 @@ function saveInputs() {
     var i, l;
 
     for (i = 0, l = inputs.length; i < l; i++) {
-        if (element = inputs[i]) {
+        element = inputs[i];
+
+        if (element) {
             if (element.type === 'checkbox') {
                 if (element.checked) {
                     setCookie(element.id, 'on');
@@ -199,7 +204,9 @@ function clearInputs() {
     var element;
 
     for (var i = 0, l = inputs.length; i < l; i++) {
-        if (element = inputs[i]) {
+        element = inputs[i];
+
+        if (element) {
             deleteCookie(element.id);
         }
     }
