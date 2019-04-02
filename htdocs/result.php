@@ -168,6 +168,8 @@ switch ($reportType) {
 
         $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC);
 
+        $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20);;
+
         break;
     case ReportType::CARGO_TYPES:
         $resultType = getParamGETAsInt(ParamName::RESULT_TYPE);
@@ -307,6 +309,10 @@ if ($mysqli) {
                 } else {
                     $subHeader = sprintf(S::HEADER_RESULT_PERIOD_ALL, $subHeader);
                 }
+            }
+
+            if ($resultType == ResultType::IRON && $from20to20) {
+                $subHeader .= S::HEADER_RESULT_PERIOD_FROM_20_TO_20;
             }
 
             $excelData .= $subHeader . S::EXCEL_EOL;
@@ -453,7 +459,8 @@ if (!$resultMessage) {
             $queryResult = (new QueryIron())
                 ->setDateStart($dateTimeStart)
                 ->setDateEnd($dateTimeEnd)
-                ->setOrderByDesc($orderByDesc);
+                ->setOrderByDesc($orderByDesc)
+                ->setFrom20to20($from20to20);
 
             break;
         default:

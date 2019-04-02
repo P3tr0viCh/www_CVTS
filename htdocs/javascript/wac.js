@@ -60,8 +60,8 @@ function startWAC(companyDateMySQL, departmentDateMySQL, dateFormat) {
         now.setSeconds(0);
         now.setMilliseconds(0);
 
-        companyElement.innerHTML = dateDiff(now, companyDate);
-        departmentElement.innerHTML = dateDiff(now, departmentDate);
+        companyElement.innerHTML = dateDiff(now, companyDate) + "";
+        departmentElement.innerHTML = dateDiff(now, departmentDate) + "";
 
         setCountersTimer();
     }

@@ -275,15 +275,17 @@ if (!$resultMessage) {
         echo S::MENU_DATES_PREV_DAY;
         echo '</li>' . PHP_EOL;
 
-        echo S::TAB . S::TAB . S::TAB;
-        echo '<li class="mdl-menu__item" onclick="setDates(\'from5to5\')">';
-        echo S::MENU_DATES_FROM_5_TO_5;
-        echo '</li>' . PHP_EOL;
+        if ($scaleType != ScaleType::IRON) {
+            echo S::TAB . S::TAB . S::TAB;
+            echo '<li class="mdl-menu__item" onclick="setDates(\'from5to5\')">';
+            echo S::MENU_DATES_FROM_5_TO_5;
+            echo '</li>' . PHP_EOL;
 
-        echo S::TAB . S::TAB . S::TAB;
-        echo '<li class="mdl-menu__item" onclick="setDates(\'from20to20\')">';
-        echo S::MENU_DATES_FROM_20_TO_20;
-        echo '</li>' . PHP_EOL;
+            echo S::TAB . S::TAB . S::TAB;
+            echo '<li class="mdl-menu__item" onclick="setDates(\'from20to20\')">';
+            echo S::MENU_DATES_FROM_20_TO_20;
+            echo '</li>' . PHP_EOL;
+        }
 
         echo S::TAB . S::TAB . S::TAB;
         echo '<li class="mdl-menu__item" onclick="setDates(\'\')">';
@@ -577,6 +579,8 @@ if (!$resultMessage) {
 
     if ($scaleType == ScaleType::IRON) {
         echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_ORDER_BY_DESC, true);
+
+        echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
     } else {
         echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
     }
@@ -666,7 +670,8 @@ if (!$resultMessage) {
         "'" . ParamName::SHOW_DELTAS . "', " .
         "'" . ParamName::COMPARE_FORWARD . "', " .
         "'" . ParamName::COMPARE_BY_BRUTTO . "', " .
-        "'" . ParamName::ORDER_BY_DESC . "'" .
+        "'" . ParamName::ORDER_BY_DESC . "'," .
+        "'" . ParamName::DATETIME_FROM_20_TO_20 . "'" .
         ");";
     echo PHP_EOL . PHP_EOL;
 

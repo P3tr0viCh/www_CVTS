@@ -168,7 +168,7 @@ function saveInputs() {
                 if (element.checked) {
                     setCookie(element.id, 'on');
                 } else {
-                    deleteCookie(element.id);
+                    setCookie(element.id, 'off');
                 }
             } else {
                 if (element.value) {

@@ -144,6 +144,8 @@ class ParamName
 
     const ORDER_BY_DESC = 'order_by_desc';
 
+    const DATETIME_FROM_20_TO_20 = 'datetime_from_20_to_20';
+
     const EXCEL_FILENAME = 'filename';
     const EXCEL_DATA = 'data';
 

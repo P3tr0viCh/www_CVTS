@@ -82,13 +82,14 @@ class Strings
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
     const HEADER_COEFF = 'Коэффициенты';
-    const HEADER_IRON = 'Сумма нетто за сутки';
+    const HEADER_IRON = 'Сумма нетто посуточно';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
     const HEADER_RESULT_PERIOD_FROM = '%s с %s';
     const HEADER_RESULT_PERIOD_TO = '%s с начала работы по %s';
     const HEADER_RESULT_PERIOD_FROM_TO = '%s с %s по %s';
     const HEADER_RESULT_PERIOD_ALL = '%s за всё время работы';
+    const HEADER_RESULT_PERIOD_FROM_20_TO_20 = ' (начало суток с 20:00 предыдущего дня)';
 
     const HEADER_RESULT_SEARCH = 'Поиск:';
     const HEADER_RESULT_SEARCH_AUTO_NUMBER = 'Номер автомобиля';
@@ -139,6 +140,7 @@ class Strings
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';
     const CHECKBOX_ORDER_BY_DESC = 'Сортировка в обратном порядке';
+    const CHECKBOX_DATETIME_FROM_20_TO_20 = 'Начало суток с 20:00 предыдущего дня';
 
     const MENU_DATES_CURRENT_DAY = 'Начало текущего дня';
     const MENU_DATES_CURRENT_MONTH = 'Начало текущего месяца';

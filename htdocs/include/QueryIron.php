@@ -10,15 +10,22 @@ use Database\Columns as C;
 class QueryIron extends QueryBase
 {
     const DATE_FORMAT = '%d.%m.%Y';
+
     const FUNCTION_DATE_FORMAT = 'date_format(%s, \'%s\')';
     const FUNCTION_STR_TO_DATE = 'str_to_date(%s, \'%s\')';
+    const FUNCTION_IF = 'if(%s, %s, %s)';
+    const FUNCTION_IFNULL = 'ifnull(%s, 0.0)';
+    const FUNCTION_HOUR = 'hour(%s)';
+    const FUNCTION_DATE_ADD = 'date_add(%s, INTERVAL 4 HOUR)';
+
     const SUB_QUERY = '(%s) %s %s';
 
     const MYSQL_DATE_START_FORMAT = "Ymd000000";
     const MYSQL_DATE_END_FORMAT = "Ymd235959";
+    const MYSQL_DATE_START_FORMAT_20to20 = "Ymd200000";
+    const MYSQL_DATE_END_FORMAT_20to20 = "Ymd195959";
 
     const CARGO_TYPE_IRON = 'Чугун';
-//    const CARGO_TYPE_IRON = 'CargoType 1%';
 
     const SCALE_NUM_ESPC = "10";
     const SCALE_NUM_RAZL = "182, 1043, 98";
@@ -27,6 +34,7 @@ class QueryIron extends QueryBase
     private $dateStart;
     private $dateEnd;
     private $orderByDesc;
+    private $from20to20;
 
     /**
      * @param int $dateStart
@@ -58,18 +66,46 @@ class QueryIron extends QueryBase
         return $this;
     }
 
+    /**
+     * @param bool $from20to20
+     * @return $this
+     */
+    public function setFrom20to20($from20to20)
+    {
+        $this->from20to20 = $from20to20;
+        return $this;
+    }
+
     protected function makeQuery()
     {
+        $columnDate = $this->from20to20 ?
+            sprintf(self::FUNCTION_IF, sprintf(self::FUNCTION_HOUR, C::DATETIME) . " >= 20",
+                sprintf(self::FUNCTION_DATE_FORMAT,
+                    sprintf(self::FUNCTION_DATE_ADD, C::DATETIME), self::DATE_FORMAT),
+                sprintf(self::FUNCTION_DATE_FORMAT, C::DATETIME, self::DATE_FORMAT)) :
+            sprintf(self::FUNCTION_DATE_FORMAT, C::DATETIME, self::DATE_FORMAT);
+
         $builder = B::getInstance()
-            ->column(sprintf(self::FUNCTION_DATE_FORMAT, C::DATETIME, self::DATE_FORMAT), null, C::IRON_DATE)
+            ->column($columnDate, null, C::IRON_DATE)
             ->where(C::CARGO_TYPE, B::COMPARISON_LIKE, utf8ToLatin1(self::CARGO_TYPE_IRON))
             ->group(C::IRON_DATE);
 
         if ($this->dateStart) {
-            $this->dateStart = (float)date(self::MYSQL_DATE_START_FORMAT, $this->dateStart);
+            if ($this->from20to20) {
+                $this->dateStart = date_sub((new DateTime())->setTimestamp($this->dateStart), new DateInterval('P1D'))->getTimestamp();
+            }
+
+            $this->dateStart = (float)date(
+                $this->from20to20 ?
+                    self::MYSQL_DATE_START_FORMAT_20to20 :
+                    self::MYSQL_DATE_START_FORMAT,
+                $this->dateStart);
         }
         if ($this->dateEnd) {
-            $this->dateEnd = (float)date(self::MYSQL_DATE_END_FORMAT, $this->dateEnd);
+            $this->dateEnd = (float)date($this->from20to20 ?
+                self::MYSQL_DATE_END_FORMAT_20to20 :
+                self::MYSQL_DATE_END_FORMAT,
+                $this->dateEnd);
         }
 
         if ($this->dateStart) {
@@ -102,10 +138,10 @@ class QueryIron extends QueryBase
 
         $this->builder
             ->column(C::IRON_DATE)
-            ->column(C::IRON_ESPC . ' + ' . C::IRON_RAZL, null, C::IRON_ESPC_RAZL)
-            ->column(C::IRON_ESPC)
-            ->column(C::IRON_RAZL)
-            ->column(C::IRON_SHCH)
+            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_ESPC . ' + ' . C::IRON_RAZL), null, C::IRON_ESPC_RAZL)
+            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_ESPC), null, C::IRON_ESPC)
+            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_RAZL), null, C::IRON_RAZL)
+            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_SHCH), null, C::IRON_SHCH)
             ->table(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC))
             ->join(sprintf(self::SUB_QUERY, $builderRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_RAZL), C::IRON_DATE)
             ->join(sprintf(self::SUB_QUERY, $builderShch->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_SHCH), C::IRON_DATE)

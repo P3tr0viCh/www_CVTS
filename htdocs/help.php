@@ -15,6 +15,7 @@ require_once "include/echo_table.php";
 require_once "include/HtmlHeader.php";
 require_once "include/HtmlFooter.php";
 
+use HrefBuilder\Builder;
 use Strings as S;
 
 $newDesign = isNewDesign(true);
@@ -121,7 +122,7 @@ if ($newDesign) {
 }
 echo '<p>' . 'Пример:' . '</p>' . PHP_EOL;
 
-$hrefBuilder = \HrefBuilder\Builder::getInstance();
+$hrefBuilder = Builder::getInstance();
 $exampleUrl = $hrefBuilder->setUrl("index.php")
     ->setParam(ParamName::NEW_DESIGN, false)
     ->setParam(ParamName::SHOW_METROLOGY, true)
