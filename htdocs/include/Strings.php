@@ -32,7 +32,8 @@ class Strings
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
     const DRAWER_SHOW_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
-    const DRAWER_SHOW_IRON_INFO = 'Провеска чугуна';
+    const DRAWER_SHOW_IRON_QUERY = 'Провеска чугуна';
+    const DRAWER_SHOW_IRON_CONTROL_QUERY = 'Контрольная провеска чугуна';
     const DRAWER_TITLE_SETTINGS = 'Настройки';
     const DRAWER_SHOW_DISABLED_ON = 'Показать скрытые весы';
     const DRAWER_SHOW_DISABLED_OFF = 'Не отображать скрытые весы';
@@ -44,12 +45,14 @@ class Strings
     const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович';
 
     const SHOW_ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
-    const SHOW_IRON_INFO = 'Сводная информация по провескам чугуна';
+    const SHOW_IRON_QUERY = 'Сводная информация по провескам чугуна';
+    const SHOW_IRON_CONTROL_QUERY = 'Контрольная провеска чугуна';
 
     const SCALE_INFO_ALL_TRAIN_PLACE = 'ЖД весы';
     const SCALE_INFO_ALL_TRAIN_HEADER = 'Сводная информация по всем железнодорожным весам';
     const SCALE_INFO_IRON_PLACE = 'Чугун';
     const SCALE_INFO_IRON_HEADER = 'Провеска чугуна';
+    const SCALE_INFO_IRON_CONTROL_HEADER = 'Контрольная провеска чугуна';
     const SCALE_INFO_HEADER = '%s, весы №%d';
 
     const HEADER_INFO = 'Информация';
@@ -83,6 +86,7 @@ class Strings
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
     const HEADER_COEFF = 'Коэффициенты';
     const HEADER_IRON = 'Сумма нетто посуточно';
+    const HEADER_IRON_CONTROL = 'Сравнение массы';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
     const HEADER_RESULT_PERIOD_FROM = '%s с %s';
@@ -139,7 +143,7 @@ class Strings
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';
-    const CHECKBOX_ORDER_BY_DESC = 'Сортировка в обратном порядке';
+    const CHECKBOX_DATETIME_ORDER_BY_DESC = 'Сортировка по дате от новых к старым';
     const CHECKBOX_DATETIME_FROM_20_TO_20 = 'Начало суток с 20:00 предыдущего дня';
 
     const MENU_DATES_CURRENT_DAY = 'Начало текущего дня';
@@ -237,7 +241,8 @@ class Strings
     const ERROR_MYSQL_DETAILS = 'Ошибка %d: %s';
     const ERROR_MYSQL_CONNECTION_FILE_ERROR = 'Файл MYSQL_CONNECTION не найден или имеет неправильный формат';
     const ERROR_MYSQL_BAD_SCALE_NUM = 'Весы с номером %d в базе данных не найдены';
-    const ERROR_MYSQL_MAX_LIMIT = 'Результат запроса превысил допустимые пределы<br>Попробуйте указать меньший период времени<br>и/или задайте параметры поиска.';
+    const ERROR_RESULT_MAX_ROWS = 'Результат запроса превысил допустимые пределы<br>Попробуйте указать меньший период времени<br>и/или задайте параметры поиска';
+    const ERROR_RESULT_MAX_ROWS_DETAILS = 'Количество строк в результате: %d<br>Попытка открытия приведёт к зависанию браузера';
 
     const ERROR_JS_DISABLED = 'JavaScript отключен';
     const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';

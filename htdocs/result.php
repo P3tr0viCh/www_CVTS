@@ -7,8 +7,9 @@ require_once "include/Constants.php";
 
 require_once "include/MySQLConnection.php";
 
-require_once "include/QueryIron.php";
 require_once "include/QueryResult.php";
+require_once "include/QueryIron.php";
+require_once "include/QueryIronControl.php";
 require_once "include/QueryCompare.php";
 
 require_once "include/Strings.php";
@@ -33,6 +34,8 @@ require_once "include/HtmlDrawer.php";
 
 use HrefBuilder\Builder;
 use Strings as S;
+
+use Database\Columns as C;
 
 function throwBadRequest()
 {
@@ -140,7 +143,8 @@ switch ($reportType) {
 
                 ResultType::COEFFS,
 
-                ResultType::IRON);
+                ResultType::IRON,
+                ResultType::IRON_CONTROL);
 
             foreach ($resultTypes as $result) {
                 $resultType = getResultType($result);
@@ -219,6 +223,10 @@ switch ($reportType) {
         throwBadRequest();
 }
 
+if ($resultType == ResultType::IRON_CONTROL) {
+    $scaleNum = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
+}
+
 if (isResultTypeCompare($resultType)) {
     $filter->setFull(false);
 }
@@ -279,6 +287,38 @@ if ($mysqli) {
                         ->setHour($dtEndHour)
                         ->setMinute($dtEndMinute)
                         ->buildEndDate();
+            }
+
+            switch ($resultType) {
+                case ResultType::IRON:
+                    if ($dateTimeStart == null && $dateTimeEnd == null) {
+                        $dateTimeStart = $dateTimeBuilder
+                            ->setDay(1)
+                            ->buildStartDate();
+                    }
+                    break;
+                case ResultType::IRON_CONTROL:
+                    if ($dateTimeStart == null && $dateTimeEnd == null) {
+                        try {
+                            $prevDate = getdate(date_sub(new DateTime(), new DateInterval('P1D'))->getTimestamp());
+                        } catch (Exception $e) {
+                            throwBadRequest();
+                        }
+
+                        $dateTimeStart = $dateTimeBuilder
+                            ->setDay($prevDate["mday"])
+                            ->setHour(6)
+                            ->buildStartDate();
+
+                        $currDate = getdate();
+
+                        $dateTimeEnd = $dateTimeBuilder
+                            ->setDay($currDate["mday"])
+                            ->setHour(5)
+                            ->setMinute(59)
+                            ->buildEndDate();
+                    }
+                    break;
             }
 
             $subHeader = getResultHeader($resultType);
@@ -454,20 +494,30 @@ if (!$resultMessage) {
         echo PHP_EOL;
     }
 
-    switch ($resultType) {
-        case ResultType::IRON:
-            $queryResult = (new QueryIron())
-                ->setDateStart($dateTimeStart)
-                ->setDateEnd($dateTimeEnd)
-                ->setOrderByDesc($orderByDesc)
-                ->setFrom20to20($from20to20);
+    try {
+        switch ($resultType) {
+            case ResultType::IRON:
+                $queryResult = (new QueryIron())
+                    ->setDateStart($dateTimeStart)
+                    ->setDateEnd($dateTimeEnd)
+                    ->setOrderByDesc($orderByDesc)
+                    ->setFrom20to20($from20to20);
 
-            break;
-        default:
-            $queryResult = (new QueryResult())
-                ->setScaleType($scaleInfo->getType())
-                ->setResultType($resultType)
-                ->setFilter($filter);
+                break;
+            case ResultType::IRON_CONTROL:
+                $queryResult = (new QueryIronControl())
+                    ->setDateStart($dateTimeStart)
+                    ->setDateEnd($dateTimeEnd);
+
+                break;
+            default:
+                $queryResult = (new QueryResult())
+                    ->setScaleType($scaleInfo->getType())
+                    ->setResultType($resultType)
+                    ->setFilter($filter);
+        }
+    } catch (Exception $e) {
+        throwBadRequest();
     }
 
     $query = $queryResult->getQuery();
@@ -479,365 +529,389 @@ if (!$resultMessage) {
     $result = $mysqli->query($query);
 
     if ($result) {
-        $numRows = $result->num_rows;
+        if ($result->num_rows > 0) {
+            if ($result->num_rows <= Constants::RESULT_MAX_ROWS) {
+                /** @var FieldInfo[] $fieldsInfo */
+                $fieldsInfo = array();
 
-        /** @var FieldInfo[] $fieldsInfo */
-        $fieldsInfo = array();
+                $fieldsInfo = getFieldsInfo($result, $newDesign, $filter->isFull(), $scaleInfo, $resultType);
 
-        if ($numRows > 0) {
-            $fieldsInfo = getFieldsInfo($result, $newDesign, $filter->isFull(), $scaleInfo, $resultType);
+                if ($newDesign) {
+                    $tableClass = 'mdl-data-table mdl-shadow--4dp';
 
-            if ($newDesign) {
-                $tableClass = 'mdl-data-table mdl-shadow--4dp';
-
-                if ($resultType == ResultType::TRAIN_DYNAMIC || $resultType == ResultType::TRAIN_DYNAMIC_ONE ||
-                    $resultType == ResultType::VAN_DYNAMIC_BRUTTO || $resultType == ResultType::VAN_STATIC_BRUTTO ||
-                    $resultType == ResultType::AUTO_BRUTTO ||
-                    isResultTypeCompare($resultType)
-                ) {
-                    $tableClass .= ' width--100-percents';
-                } else {
-                    $tableClass .= ' center';
-                }
-            } else {
-                $tableClass = 'text-align--center';
-                if (isResultTypeCompare($resultType)) {
-                    $tableClass .= ' width--100-percents';
-                }
-            }
-
-            echoTableStart($tableClass);
-            echoTableHeadStart();
-
-            if (isResultTypeCompare($resultType)) {
-                echoTableTRStart();
-
-                if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                    $compareHeader1 = ColumnsStrings::COMPARE_ALL_SCALES;
-                    $compareHeader1ColSpan = 10;
-                    $compareHeader2 = ColumnsStrings::COMPARE_COMPARE_VALUES;
-                    $compareHeader2ColSpan = 4;
-                } else {
-                    $compareHeader1 = sprintf(ColumnsStrings::COMPARE_SCALE_NUM, $scaleNum);
-                    $compareHeader1ColSpan = 9;
-                    $compareHeader2 = ColumnsStrings::COMPARE_OTHER_SCALES;
-                    $compareHeader2ColSpan = 4;
-                }
-
-                echoTableTH($compareHeader1, 'compare width--70-percents', $compareHeader1ColSpan);
-                echoTableTH($compareHeader2, 'compare', $compareHeader2ColSpan);
-
-                echoTableTREnd();
-
-                $excelData .= formatExcelData($compareHeader1);
-                for ($i = 0; $i < $compareHeader1ColSpan; $i++) {
-                    $excelData .= S::EXCEL_SEPARATOR;
-                }
-
-                $excelData .= formatExcelData($compareHeader2);
-                for ($i = 0; $i < $compareHeader2ColSpan; $i++) {
-                    $excelData .= S::EXCEL_SEPARATOR;
-                }
-
-                $excelData .= S::EXCEL_EOL;
-            }
-
-            echoTableTRStart();
-            echoTableTH(ColumnsStrings::COMPARE_NUM);
-
-            $excelData .= formatExcelData(ColumnsStrings::COMPARE_NUM);
-
-            for ($i = 0; $i < $result->field_count; $i++) {
-                if ($fieldsInfo[$i]->visible) {
-                    $class = null;
-                    if (isResultTypeCompare($resultType)) {
-                        if ($fieldsInfo[$i]->name == Database\Columns::SIDE_DIFFERENCE ||
-                            $fieldsInfo[$i]->name == Database\Columns::CARRIAGE_DIFFERENCE
-                        ) {
-                            $class = "compare width--15-percents";
-                        }
-                    }
-
-                    $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType(), $resultType);
-
-                    echoTableTH($cell, $class);
-
-                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
-                }
-            }
-
-            if (isResultTypeCompare($resultType)) {
-                $cell = columnName(Database\Columns::SCALE_NUM, $scaleInfo->getType());
-                echoTableTH($cell);
-                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
-
-                $cell = columnName($filter->isCompareByBrutto() ?
-                    Database\Columns::BRUTTO :
-                    Database\Columns::NETTO,
-                    $scaleInfo->getType());
-                echoTableTH($cell);
-                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
-
-                $cell = columnName(Database\Columns::DATETIME, $scaleInfo->getType());
-                echoTableTH($cell);
-                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
-
-                $cell = columnName(Database\Columns::COMPARE, $scaleInfo->getType());
-                echoTableTH($cell);
-                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
-            }
-
-            echoTableTREnd();
-            echoTableHeadEnd();
-
-            $excelData .= S::EXCEL_EOL;
-
-            echoTableBodyStart();
-
-            $rowIndex = 0;
-            $numColor = false;
-
-            $hrefBuilder = Builder::getInstance()
-                ->setUrl("result.php")
-                ->setParam(ParamName::NEW_DESIGN, $newDesign)
-                ->setParam(ParamName::ALL_FIELDS, $filter->isFull())
-                ->setParam($filter->isShowDeltas() ? ParamName::SHOW_DELTAS : null, true)
-                ->setParam($useBackup ? ParamName::USE_BACKUP : null, true);
-
-            if ($resultType == ResultType::TRAIN_DYNAMIC) {
-                $hrefBuilder->setParam(ParamName::REPORT_TYPE, ReportType::TRAINS);
-            } elseif (isResultTypeCargoList($resultType)) {
-                $hrefBuilder
-                    ->setParam(ParamName::REPORT_TYPE, ReportType::CARGO_TYPES)
-                    ->setParam(ParamName::RESULT_TYPE, $resultType)
-                    ->setParam(ParamName::SCALE_NUM, $scaleNum);
-
-                if ($dateTimeStart) {
-                    $hrefBuilder->setParam(ParamName::DATETIME_START, $dateTimeStart);
-                }
-                if ($dateTimeEnd) {
-                    $hrefBuilder->setParam(ParamName::DATETIME_END, $dateTimeEnd);
-                }
-            }
-
-            $href = null;
-
-            if (isResultTypeCompare($resultType)) {
-                $queryCompare = new QueryCompare();
-
-                $queryCompare
-                    ->setCompareForward($filter->isCompareForward())
-                    ->setCompareByBrutto($filter->isCompareByBrutto());
-
-                if ($scaleNum != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                    $queryCompare->setScaleNum($scaleNum);
-                }
-
-            } else {
-                $queryCompare = null;
-            }
-
-            while ($row = $result->fetch_array()) {
-                $rowColorClass = getRowColorClass($numColor);
-
-                if ($resultType == ResultType::TRAIN_DYNAMIC) {
-                    $href = $hrefBuilder
-                        ->setParam(ParamName::SCALE_NUM,
-                            $scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES ?
-                                $row[Database\Columns::SCALE_NUM] :
-                                $scaleNum)
-                        ->setParam(ParamName::TRAIN_NUM, $row[Database\Columns::TRAIN_NUM])
-                        ->setParam(ParamName::TRAIN_UNIX_TIME, $row[Database\Columns::UNIX_TIME])
-                        ->setParam(ParamName::TRAIN_DATETIME, strtotime($row[Database\Columns::DATETIME]))
-                        ->build();
-                } elseif (isResultTypeCargoList($resultType)) {
-                    $href = $hrefBuilder
-                        ->setParam(ParamName::CARGO_TYPE, latin1ToUtf8($row[Database\Columns::CARGO_TYPE]))
-                        ->build();
-                }
-
-                if ($newDesign && $href) {
-                    $class = "rowclick $rowColorClass";
-                    $onClick = "location.href=\"$href\"";
-                } else {
-                    $class = $rowColorClass;
-                    $onClick = null;
-                }
-
-                echoTableTRStart($class, $onClick);
-
-                $rowIndex++;
-
-                $field = $rowIndex;
-
-                $excelData .= formatExcelData($field);
-
-                echoTableTD($field, null, $newDesign ? null : $href);
-
-                for ($fieldNum = 0; $fieldNum < $result->field_count; $fieldNum++) {
-                    if (!$fieldsInfo[$fieldNum]->visible) {
-                        continue;
-                    }
-
-                    $field = latin1ToUtf8($row[$fieldNum]);
-
-                    $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field,
-                        $filter->isFull());
-
-                    if (($fieldsInfo[$fieldNum]->name == Database\Columns::BRUTTO) &&
+                    if ($resultType == ResultType::TRAIN_DYNAMIC || $resultType == ResultType::TRAIN_DYNAMIC_ONE ||
+                        $resultType == ResultType::VAN_DYNAMIC_BRUTTO || $resultType == ResultType::VAN_STATIC_BRUTTO ||
+                        $resultType == ResultType::AUTO_BRUTTO ||
                         isResultTypeCompare($resultType)
                     ) {
-                        $field = "<b>" . $field . "</b>";
+                        $tableClass .= ' width--100-percents';
+                    } else {
+                        $tableClass .= ' center';
+                    }
+                } else {
+                    $tableClass = 'text-align--center';
+                    if (isResultTypeCompare($resultType)) {
+                        $tableClass .= ' width--100-percents';
+                    }
+                }
+
+                echoTableStart($tableClass);
+                echoTableHeadStart();
+
+                if (isResultTypeCompare($resultType)) {
+                    echoTableTRStart();
+
+                    if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                        $compareHeader1 = ColumnsStrings::COMPARE_ALL_SCALES;
+                        $compareHeader1ColSpan = 10;
+                        $compareHeader2 = ColumnsStrings::COMPARE_COMPARE_VALUES;
+                        $compareHeader2ColSpan = 4;
+                    } else {
+                        $compareHeader1 = sprintf(ColumnsStrings::COMPARE_SCALE_NUM, $scaleNum);
+                        $compareHeader1ColSpan = 9;
+                        $compareHeader2 = ColumnsStrings::COMPARE_OTHER_SCALES;
+                        $compareHeader2ColSpan = 4;
                     }
 
-                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+                    echoTableTH($compareHeader1, 'compare width--70-percents', $compareHeader1ColSpan);
+                    echoTableTH($compareHeader2, 'compare', $compareHeader2ColSpan);
 
-                    $class = $fieldsInfo[$fieldNum]->leftAlign ?
-                        ($newDesign ?
-                            'mdl-data-table__cell--non-numeric' :
-                            'text-align--left') :
-                        null;
+                    echoTableTREnd();
 
-                    $showHref = false;
-                    if (!$newDesign && $href) {
-                        if ($resultType == ResultType::TRAIN_DYNAMIC) {
-                            $showHref =
-                                $fieldsInfo[$fieldNum]->name == Database\Columns::SCALE_NUM ||
-                                $fieldsInfo[$fieldNum]->name == Database\Columns::DATETIME;
-                        } elseif (isResultTypeCargoList($resultType)) {
-                            $showHref = $fieldsInfo[$fieldNum]->name == Database\Columns::CARGO_TYPE;
+                    $excelData .= formatExcelData($compareHeader1);
+                    for ($i = 0; $i < $compareHeader1ColSpan; $i++) {
+                        $excelData .= S::EXCEL_SEPARATOR;
+                    }
+
+                    $excelData .= formatExcelData($compareHeader2);
+                    for ($i = 0; $i < $compareHeader2ColSpan; $i++) {
+                        $excelData .= S::EXCEL_SEPARATOR;
+                    }
+
+                    $excelData .= S::EXCEL_EOL;
+                }
+
+                echoTableTRStart();
+                echoTableTH(ColumnsStrings::COMPARE_NUM);
+
+                $excelData .= formatExcelData(ColumnsStrings::COMPARE_NUM);
+
+                for ($i = 0; $i < $result->field_count; $i++) {
+                    if ($fieldsInfo[$i]->visible) {
+                        $class = null;
+                        if (isResultTypeCompare($resultType)) {
+                            if ($fieldsInfo[$i]->name == C::SIDE_DIFFERENCE ||
+                                $fieldsInfo[$i]->name == C::CARRIAGE_DIFFERENCE
+                            ) {
+                                $class = "compare width--15-percents";
+                            }
                         }
-                    }
 
-                    echoTableTD($field, $class, $showHref ? $href : null);
+                        $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType(), $resultType);
+
+                        echoTableTH($cell, $class);
+
+                        $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
+                    }
                 }
 
                 if (isResultTypeCompare($resultType)) {
-                    if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                        $queryCompare->setScaleNum($row[Database\Columns::SCALE_NUM]);
-                    }
-                    $queryCompare
-                        ->setVanNumber($row[Database\Columns::VAN_NUMBER])
-                        ->setDateTime((int)$row[Database\Columns::UNIX_TIME]);
+                    $cell = columnName(C::SCALE_NUM, $scaleInfo->getType());
+                    echoTableTH($cell);
+                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
 
-                    $queryCompareStr = $queryCompare->getQuery();
+                    $cell = columnName($filter->isCompareByBrutto() ?
+                        C::BRUTTO :
+                        C::NETTO,
+                        $scaleInfo->getType());
+                    echoTableTH($cell);
+                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
+
+                    $cell = columnName(C::DATETIME, $scaleInfo->getType());
+                    echoTableTH($cell);
+                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
+
+                    $cell = columnName(C::COMPARE, $scaleInfo->getType());
+                    echoTableTH($cell);
+                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
+                }
+
+                echoTableTREnd();
+                echoTableHeadEnd();
+
+                $excelData .= S::EXCEL_EOL;
+
+                echoTableBodyStart();
+
+                $rowIndex = 0;
+                $numColor = false;
+
+                $hrefBuilder = Builder::getInstance()
+                    ->setUrl("result.php")
+                    ->setParam(ParamName::NEW_DESIGN, $newDesign)
+                    ->setParam(ParamName::ALL_FIELDS, $filter->isFull())
+                    ->setParam($filter->isShowDeltas() ? ParamName::SHOW_DELTAS : null, true)
+                    ->setParam($useBackup ? ParamName::USE_BACKUP : null, true);
+
+                if ($resultType == ResultType::TRAIN_DYNAMIC) {
+                    $hrefBuilder->setParam(ParamName::REPORT_TYPE, ReportType::TRAINS);
+                } elseif (isResultTypeCargoList($resultType)) {
+                    $hrefBuilder
+                        ->setParam(ParamName::REPORT_TYPE, ReportType::CARGO_TYPES)
+                        ->setParam(ParamName::RESULT_TYPE, $resultType)
+                        ->setParam(ParamName::SCALE_NUM, $scaleNum);
+
+                    if ($dateTimeStart) {
+                        $hrefBuilder->setParam(ParamName::DATETIME_START, $dateTimeStart);
+                    }
+                    if ($dateTimeEnd) {
+                        $hrefBuilder->setParam(ParamName::DATETIME_END, $dateTimeEnd);
+                    }
+                }
+
+                $href = null;
+
+                if (isResultTypeCompare($resultType)) {
+                    $queryCompare = new QueryCompare();
+
+                    $queryCompare
+                        ->setCompareForward($filter->isCompareForward())
+                        ->setCompareByBrutto($filter->isCompareByBrutto());
+
+                    if ($scaleNum != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                        $queryCompare->setScaleNum($scaleNum);
+                    }
+
+                } else {
+                    $queryCompare = null;
+                }
+
+                while ($row = $result->fetch_array()) {
+                    $rowColorClass = getRowColorClass($numColor);
+
+                    if ($resultType == ResultType::TRAIN_DYNAMIC) {
+                        $href = $hrefBuilder
+                            ->setParam(ParamName::SCALE_NUM,
+                                $scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES ?
+                                    $row[C::SCALE_NUM] :
+                                    $scaleNum)
+                            ->setParam(ParamName::TRAIN_NUM, $row[C::TRAIN_NUM])
+                            ->setParam(ParamName::TRAIN_UNIX_TIME, $row[C::UNIX_TIME])
+                            ->setParam(ParamName::TRAIN_DATETIME, strtotime($row[C::DATETIME]))
+                            ->build();
+                    } elseif (isResultTypeCargoList($resultType)) {
+                        $href = $hrefBuilder
+                            ->setParam(ParamName::CARGO_TYPE, latin1ToUtf8($row[C::CARGO_TYPE]))
+                            ->build();
+                    }
+
+                    if ($newDesign && $href) {
+                        $class = "rowclick $rowColorClass";
+                        $onClick = "location.href=\"$href\"";
+                    } else {
+                        $class = $rowColorClass;
+                        $onClick = null;
+                    }
+
+                    echoTableTRStart($class, $onClick);
+
+                    $rowIndex++;
+
+                    $field = $rowIndex;
+
+                    $excelData .= formatExcelData($field);
+
+                    echoTableTD($field, null, $newDesign ? null : $href);
+
+                    for ($fieldNum = 0; $fieldNum < $result->field_count; $fieldNum++) {
+                        if (!$fieldsInfo[$fieldNum]->visible) {
+                            continue;
+                        }
+
+                        $field = latin1ToUtf8($row[$fieldNum]);
+
+                        $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field,
+                            $filter->isFull());
+
+                        $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+
+                        if (($fieldsInfo[$fieldNum]->name == C::BRUTTO) &&
+                            isResultTypeCompare($resultType)
+                        ) {
+                            $field = "<b>" . $field . "</b>";
+                        }
+
+                        $class = $fieldsInfo[$fieldNum]->leftAlign ?
+                            ($newDesign ?
+                                'mdl-data-table__cell--non-numeric' :
+                                'text-align--left') :
+                            null;
+
+                        if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_DYN_STA) {
+                            $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
+
+                            if (abs($value) < Constants::COMPARE_WARNING_YELLOW) {
+                                $class = null;
+                            } elseif (abs($value) < Constants::COMPARE_WARNING_RED) {
+                                $class = 'color--yellow';
+                            } else {
+                                $class = 'color--red';
+                            }
+                        }
+
+                        $showHref = false;
+                        if (!$newDesign && $href) {
+                            if ($resultType == ResultType::TRAIN_DYNAMIC) {
+                                $showHref =
+                                    $fieldsInfo[$fieldNum]->name == C::SCALE_NUM ||
+                                    $fieldsInfo[$fieldNum]->name == C::DATETIME;
+                            } elseif (isResultTypeCargoList($resultType)) {
+                                $showHref = $fieldsInfo[$fieldNum]->name == C::CARGO_TYPE;
+                            }
+                        }
+
+                        echoTableTD($field, $class, $showHref ? $href : null);
+                    }
+
+                    if (isResultTypeCompare($resultType)) {
+                        if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                            $queryCompare->setScaleNum($row[C::SCALE_NUM]);
+                        }
+                        $queryCompare
+                            ->setVanNumber($row[C::VAN_NUMBER])
+                            ->setDateTime((int)$row[C::UNIX_TIME]);
+
+                        $queryCompareStr = $queryCompare->getQuery();
 
 //                    echo $queryCompareStr . "<br>";
 
-                    $resultCompare = $mysqli->query($queryCompareStr);
+                        $resultCompare = $mysqli->query($queryCompareStr);
 
-                    if ($resultCompare->num_rows > 0) {
-                        $fieldsCompareInfo = array();
+                        if ($resultCompare->num_rows > 0) {
+                            $fieldsCompareInfo = array();
 
-                        $fieldsCompareInfo = getFieldsInfo($resultCompare, $newDesign,
-                            false, $scaleInfo, $resultType);
+                            $fieldsCompareInfo = getFieldsInfo($resultCompare, $newDesign,
+                                false, $scaleInfo, $resultType);
 
-                        $rowCompare = $resultCompare->fetch_array();
+                            $rowCompare = $resultCompare->fetch_array();
 
-                        for ($i = 0; $i < $resultCompare->field_count; $i++) {
-                            $fieldCompare = formatFieldValue($fieldsCompareInfo[$i]->name,
-                                $rowCompare[$i], $filter->isFull());
+                            for ($i = 0; $i < $resultCompare->field_count; $i++) {
+                                $fieldCompare = formatFieldValue($fieldsCompareInfo[$i]->name,
+                                    $rowCompare[$i], $filter->isFull());
 
-                            if ($fieldsCompareInfo[$i]->name == Database\Columns::BRUTTO) {
-                                $fieldCompare = "<b>" . $fieldCompare . "</b>";
+                                if ($fieldsCompareInfo[$i]->name == C::BRUTTO) {
+                                    $fieldCompare = "<b>" . $fieldCompare . "</b>";
+                                }
+
+                                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
+
+                                $class = $fieldsInfo[$i]->leftAlign ?
+                                    ($newDesign ?
+                                        'mdl-data-table__cell--non-numeric' :
+                                        'text-align--left') :
+                                    null;
+
+                                echoTableTD($fieldCompare, $class);
                             }
 
-                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
+                            $compareColumn = $filter->isCompareByBrutto() ?
+                                C::BRUTTO :
+                                C::NETTO;
 
-                            $class = $fieldsInfo[$i]->leftAlign ?
-                                ($newDesign ?
-                                    'mdl-data-table__cell--non-numeric' :
-                                    'text-align--left') :
-                                null;
+                            $value = $row[$compareColumn];
+                            $valueCompare = $rowCompare[$compareColumn];
+
+                            $fieldCompare = $value - $valueCompare;
+
+                            if ($valueCompare == 0.0) {
+                                if (abs($value) < 1) {
+                                    $class = null;
+                                } else {
+                                    $class = 'color--gray';
+                                }
+                            } elseif (abs($fieldCompare) < Constants::COMPARE_WARNING_YELLOW) {
+                                $class = null;
+                            } elseif (abs($fieldCompare) < Constants::COMPARE_WARNING_RED) {
+                                $class = 'color--yellow';
+                            } else {
+                                $class = 'color--red';
+                            }
+
+                            $fieldCompare = formatFieldValue(C::COMPARE, $fieldCompare, $filter->isFull());
 
                             echoTableTD($fieldCompare, $class);
-                        }
 
-                        $compareColumn = $filter->isCompareByBrutto() ?
-                            Database\Columns::BRUTTO :
-                            Database\Columns::NETTO;
-
-                        $value = $row[$compareColumn];
-                        $valueCompare = $rowCompare[$compareColumn];
-
-                        $fieldCompare = $value - $valueCompare;
-
-                        if ($valueCompare == 0.0) {
-                            if (abs($value) < 1) {
-                                $class = null;
-                            } else {
-                                $class = 'color--gray';
-                            }
-                        } elseif (abs($fieldCompare) < 1) {
-                            $class = null;
-                        } elseif (abs($fieldCompare) < 2) {
-                            $class = 'color--yellow';
+                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
                         } else {
-                            $class = 'color--red';
-                        }
-
-                        $fieldCompare = formatFieldValue(Database\Columns::COMPARE, $fieldCompare, $filter->isFull());
-
-                        echoTableTD($fieldCompare, $class);
-
-                        $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
-                    } else {
-                        for ($i = 0; $i < 4; $i++) {
-                            echoTableTD("");
-                            $excelData .= S::EXCEL_SEPARATOR;
+                            for ($i = 0; $i < 4; $i++) {
+                                echoTableTD("");
+                                $excelData .= S::EXCEL_SEPARATOR;
+                            }
                         }
                     }
+
+                    echoTableTREnd();
+
+                    $excelData .= S::EXCEL_EOL;
+
+                    $numColor = !$numColor;
+                } // while
+
+                echoTableBodyEnd();
+                echoTableEnd();
+
+                echoFormStart('formExcel', 'excel.php', null, null, false, true);
+
+                switch ($scaleNum) {
+                    case Constants::SCALE_NUM_ALL_TRAIN_SCALES:
+                        $fileName = "AT";
+                        break;
+                    case Constants::SCALE_NUM_REPORT_IRON:
+                        $fileName = "IR";
+                        break;
+                    case Constants::SCALE_NUM_REPORT_IRON_CONTROL:
+                        $fileName = "IC";
+                        break;
+                    default:
+                        $fileName = "SN-" . $scaleNum;
+                }
+                $fileName .= "_" . date("Y.m.d_H-i-s") . ".csv";
+                echoHidden(ParamName::EXCEL_FILENAME, $fileName);
+
+                $rawLength = strlen($excelData);
+
+                $zipTime = microtime(true);
+
+                $excelData = base64_encode(gzdeflate($excelData));
+
+                $zipLength = strlen($excelData);
+
+                $zipTime = (microtime(true) - $zipTime);
+
+                echoHidden(ParamName::EXCEL_DATA, $excelData);
+
+                if (!$newDesign) {
+                    echo S::TAB;
+                    $buttonClass = "input-button submit position--top-right";
+                    $name = "submit_excel";
+                    $text = S::NAV_LINK_SAVE_OLD;
+                    echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";
                 }
 
-                echoTableTREnd();
+                echo PHP_EOL . S::TAB;
+                echo "<!-- data: raw == $rawLength bytes, gz+base64 == $zipLength bytes" .
+                    ", compression == " . number_format($zipLength / $rawLength * 100, 1) . "%" .
+                    ", execution time == " . number_format($zipTime, 5) . " sec -->" . PHP_EOL;
 
-                $excelData .= S::EXCEL_EOL;
+                echoFormEnd();
 
-                $numColor = !$numColor;
-            } // while
-
-            echoTableBodyEnd();
-            echoTableEnd();
-
-            echoFormStart('formExcel', 'excel.php', null, null, false, true);
-
-            echoHidden(ParamName::EXCEL_FILENAME, "SN-" . $scaleNum . "_" . date("Y.m.d_H-i-s") . ".csv");
-
-            $rawLength = strlen($excelData);
-
-            $zipTime = microtime(true);
-
-            $excelData = base64_encode(gzdeflate($excelData));
-
-            $zipLength = strlen($excelData);
-
-            $zipTime = (microtime(true) - $zipTime);
-
-            echoHidden(ParamName::EXCEL_DATA, $excelData);
-
-            if (!$newDesign) {
-                echo S::TAB;
-                $buttonClass = "input-button submit position--top-right";
-                $name = "submit_excel";
-                $text = S::NAV_LINK_SAVE_OLD;
-                echo "<input type='submit' class='$buttonClass' name='$name' value='$text'>";
-            }
-
-            echo PHP_EOL . S::TAB;
-            echo "<!-- data: raw == $rawLength bytes, gz+base64 == $zipLength bytes" .
-                ", compression == " . number_format($zipLength / $rawLength * 100, 1) . "%" .
-                ", execution time == " . number_format($zipTime, 5) . " sec -->" . PHP_EOL;
-
-            echoFormEnd();
-
-            if ($newDesign) {
-                echo '<script type="text/javascript">hasData = true;</script>' . PHP_EOL;
+                if ($newDesign) {
+                    echo '<script type="text/javascript">hasData = true;</script>' . PHP_EOL;
+                }
+            } else {
+                $resultMessage = new ResultMessage(S::ERROR_RESULT_MAX_ROWS, sprintf(S::ERROR_RESULT_MAX_ROWS_DETAILS, $result->num_rows));
             }
         } else {
-            if ($newDesign) {
-                echo '<script type="text/javascript">hasData = false;</script>' . PHP_EOL;
-            }
-
             $resultMessage = new ResultMessage(S::TEXT_ZERO_RESULT, null);
         }
     } else {
@@ -846,6 +920,10 @@ if (!$resultMessage) {
 }
 
 if ($resultMessage) {
+    if ($newDesign) {
+        echo '<script type="text/javascript">hasData = false;</script>' . PHP_EOL;
+    }
+
     echoErrorPage($resultMessage->getError(), $resultMessage->getErrorDetails());
 }
 

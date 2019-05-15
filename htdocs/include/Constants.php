@@ -8,6 +8,70 @@ class Constants
     const SCALE_NUM_ALL_TRAIN_SCALES = 0;
 
     const SCALE_NUM_REPORT_IRON = -1;
+    const SCALE_NUM_REPORT_IRON_CONTROL = -2;
+
+    const COMPARE_WARNING_YELLOW = 1;
+    const COMPARE_WARNING_RED = 2;
+
+    /**
+     * Максимальное число строк для страницы результата.
+     */
+    const RESULT_MAX_ROWS = 32000;
+}
+
+/**
+ * Номера весов.
+ */
+class ScaleNums
+{
+    /**
+     * Провеска чугуна: ЭСПЦ.
+     */
+    const IRON_ESPC = '10';
+    /**
+     * Провеска чугуна: Разливка.
+     */
+    const IRON_RAZL = '182, 1043, 98';
+    /**
+     * Провеска чугуна: СХЧ.
+     */
+    const IRON_SHCH = '156, 31, 41';
+
+    /**
+     * Контрольная провеска чугуна: весы в динамике (Сортировка, Прокат, Копровая).
+     */
+    const IRON_COMPARE_DYN = '150, 164, 12, 125, 96';
+    /**
+     * Контрольная провеска чугуна: весы в статике (СХЧ).
+     */
+    const IRON_COMPARE_STA = '156, 31, 41';
+}
+
+/**
+ * Периоды времени.
+ */
+class TimePeriods
+{
+    /**
+     * Контрольная провеска чугуна: глубина поиска в днях.
+     */
+    const IRON_COMPARE_FIND = 3;
+}
+
+/**
+ * Роды грузов.
+ */
+class CargoTypes
+{
+    /**
+     * Провеска чугуна.
+     */
+    const IRON = 'Чугун';
+
+    /**
+     * Контрольная провеска чугуна.
+     */
+    const IRON_COMPARE = 'Чугун%';
 }
 
 class ScaleType
@@ -36,6 +100,10 @@ class ScaleType
      * Отчёт по чугуну.
      */
     const IRON = -100;
+    /**
+     * Контрольная провеска чугуна.
+     */
+    const IRON_CONTROL = -101;
 }
 
 class ScaleClass
@@ -90,6 +158,7 @@ class ResultType
     const COEFFS = 80;
 
     const IRON = 90;
+    const IRON_CONTROL = 91;
 }
 
 class ParamName

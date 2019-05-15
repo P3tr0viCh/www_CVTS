@@ -25,12 +25,6 @@ class QueryIron extends QueryBase
     const MYSQL_DATE_START_FORMAT_20to20 = "Ymd200000";
     const MYSQL_DATE_END_FORMAT_20to20 = "Ymd195959";
 
-    const CARGO_TYPE_IRON = 'Чугун';
-
-    const SCALE_NUM_ESPC = "10";
-    const SCALE_NUM_RAZL = "182, 1043, 98";
-    const SCALE_NUM_SHCH = "156, 31, 41";
-
     private $dateStart;
     private $dateEnd;
     private $orderByDesc;
@@ -76,6 +70,9 @@ class QueryIron extends QueryBase
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     protected function makeQuery()
     {
         $columnDate = $this->from20to20 ?
@@ -87,7 +84,7 @@ class QueryIron extends QueryBase
 
         $builder = B::getInstance()
             ->column($columnDate, null, C::IRON_DATE)
-            ->where(C::CARGO_TYPE, B::COMPARISON_LIKE, utf8ToLatin1(self::CARGO_TYPE_IRON))
+            ->where(C::CARGO_TYPE, B::COMPARISON_LIKE, utf8ToLatin1(CargoTypes::IRON))
             ->group(C::IRON_DATE);
 
         if ($this->dateStart) {
@@ -124,17 +121,17 @@ class QueryIron extends QueryBase
         $builderEspc = clone $builderDyn;
         $builderEspc
             ->column(B::sum(C::NETTO), null, C::IRON_ESPC)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, self::SCALE_NUM_ESPC);
+            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_ESPC);
 
         $builderRazl = clone $builderDyn;
         $builderRazl
             ->column(B::sum(C::NETTO), null, C::IRON_RAZL)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, self::SCALE_NUM_RAZL);
+            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_RAZL);
 
         $builderShch = clone $builderSta;
         $builderShch
             ->column(B::sum(C::NETTO), null, C::IRON_SHCH)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, self::SCALE_NUM_SHCH);
+            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_SHCH);
 
         $this->builder
             ->column(C::IRON_DATE)

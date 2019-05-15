@@ -212,6 +212,9 @@ if ($mysqli) {
 
             $result->free();
 
+            $class = $newDesign ? "mdl-data-table__cell--non-numeric mdl-data-table__cell--add-padding" : null;
+
+// SHOW_ALL_TRAIN_SCALES
             $rowColorClass = getRowColorClass($numColor);
 
             $href = $hrefBuilder
@@ -223,11 +226,11 @@ if ($mysqli) {
 
             $field = S::SHOW_ALL_TRAIN_SCALES;
 
-            echoTableTD($field, $newDesign ? "mdl-data-table__cell--non-numeric" : null,
-                $newDesign ? null : $href, $numColumns);
+            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
 
             echoTableTREnd();
 
+// SHOW_IRON_QUERY
             $numColor = !$numColor;
             $rowColorClass = getRowColorClass($numColor);
 
@@ -238,13 +241,30 @@ if ($mysqli) {
             echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                 $newDesign ? "location.href=\"$href\"" : null);
 
-            $field = S::SHOW_IRON_INFO;
+            $field = S::SHOW_IRON_QUERY;
 
-            echoTableTD($field, $newDesign ? "mdl-data-table__cell--non-numeric" : null,
-                $newDesign ? null : $href, $numColumns);
+            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
 
             echoTableTREnd();
 
+// SHOW_IRON_CONTROL_QUERY
+            $numColor = !$numColor;
+            $rowColorClass = getRowColorClass($numColor);
+
+            $href = $hrefBuilder
+                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON_CONTROL)
+                ->build();
+
+            echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
+                $newDesign ? "location.href=\"$href\"" : null);
+
+            $field = S::SHOW_IRON_CONTROL_QUERY;
+
+            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
+
+            echoTableTREnd();
+
+// end
             echoTableBodyEnd();
             echoTableEnd();
         } else {

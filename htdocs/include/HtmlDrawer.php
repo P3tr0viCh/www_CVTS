@@ -130,7 +130,18 @@ class HtmlDrawer extends HtmlBase
             echo S::TAB . S::TAB;
             /** @noinspection JSUnusedGlobalSymbols */
             echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
-            echo S::DRAWER_SHOW_IRON_INFO;
+            echo S::DRAWER_SHOW_IRON_QUERY;
+            echo '</a>' . PHP_EOL;
+
+            // Контрольная провеска чугуна
+            $href = $hrefBuilder
+                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON_CONTROL)
+                ->build();
+
+            echo S::TAB . S::TAB;
+            /** @noinspection JSUnusedGlobalSymbols */
+            echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
+            echo S::DRAWER_SHOW_IRON_CONTROL_QUERY;
             echo '</a>' . PHP_EOL;
 
             // Карта сайта

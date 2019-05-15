@@ -8,7 +8,7 @@ function showContent() {
 
     document.getElementById("menuMoreList").classList.remove("hidden");
 
-    if (document.forms["formExcel"] !== null) {
+    if (document.forms["formExcel"] !== null && hasData) {
         document.getElementById("saveIcon").classList.remove("hidden");
         document.getElementById("saveText").classList.remove("hidden");
     }

@@ -68,6 +68,13 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
+            case Constants::SCALE_NUM_REPORT_IRON_CONTROL:
+                $this->place = Strings::SCALE_INFO_IRON_PLACE;
+                $this->header = Strings::SCALE_INFO_IRON_CONTROL_HEADER;
+                $this->type = ScaleType::IRON_CONTROL;
+                $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
+
+                return null;
             default:
                 if ($mysqli->connect_errno) {
                     return connectionError($mysqli);
@@ -108,8 +115,7 @@ class ScaleInfo
     /**
      * @return int
      */
-    public
-    function getScaleNum()
+    public function getScaleNum()
     {
         return $this->scaleNum;
     }
@@ -117,8 +123,7 @@ class ScaleInfo
     /**
      * @return string
      */
-    public
-    function getPlace()
+    public function getPlace()
     {
         return $this->place;
     }
@@ -126,8 +131,7 @@ class ScaleInfo
     /**
      * @return string
      */
-    public
-    function getHeader()
+    public function getHeader()
     {
         return $this->header;
     }
@@ -135,8 +139,7 @@ class ScaleInfo
     /**
      * @return int
      */
-    public
-    function getType()
+    public function getType()
     {
         return $this->type;
     }
@@ -144,8 +147,7 @@ class ScaleInfo
     /**
      * @return int
      */
-    public
-    function getClass()
+    public function getClass()
     {
         return $this->class;
     }

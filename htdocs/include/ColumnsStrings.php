@@ -146,4 +146,13 @@ class ColumnsStrings
     const IRON_ESPC = 'ЭСПЦ-2';
     const IRON_RAZL = 'Разливка';
     const IRON_SHCH = 'СХЧ';
+
+    const IRON_CONTROL_SCALES_STA = 'Статика: № весов';
+    const IRON_CONTROL_SCALES_DYN = 'Динамика: № весов';
+    const IRON_CONTROL_DATETIME_STA = 'Статика: Дата и время';
+    const IRON_CONTROL_DATETIME_DYN = 'Динамика: Дата и время';
+    const IRON_CONTROL_NETTO_STA = 'Статика: Нетто';
+    const IRON_CONTROL_NETTO_DYN = 'Динамика: Нетто';
+    const IRON_CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
+    const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
 }

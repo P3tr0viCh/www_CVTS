@@ -27,7 +27,7 @@ $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_
 echoStartPage();
 
 if ($scales < 0) {
-    if ($scales !== Constants::SCALE_NUM_REPORT_IRON) {
+    if ($scales !== Constants::SCALE_NUM_REPORT_IRON && $scales !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
         $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 }
@@ -217,6 +217,13 @@ if (!$resultMessage) {
             echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
 
             echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::IRON);
+
+            break;
+        case ScaleType::IRON_CONTROL:
+            echo S::TAB . S::TAB;
+            echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
+
+            echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::IRON_CONTROL);
 
             break;
     }
@@ -577,12 +584,17 @@ if (!$resultMessage) {
         echo '<td class="query">' . PHP_EOL;
     }
 
-    if ($scaleType == ScaleType::IRON) {
-        echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_ORDER_BY_DESC, true);
+    switch ($scaleType) {
+        case ScaleType::IRON:
+            echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, true);
 
-        echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
-    } else {
-        echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+            echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
+            break;
+        case ScaleType::IRON_CONTROL:
+            break;
+        default:
+            echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+            break;
     }
 
     switch ($scaleType) {

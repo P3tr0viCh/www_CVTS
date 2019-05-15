@@ -46,10 +46,10 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
 {
     $result = array();
 
-    for ($i = 0; $i < $queryResult->field_count; $i++) {
+    foreach ($queryResult->fetch_fields() as $field) {
         $fieldInfo = new FieldInfo();
 
-        $fieldInfo->name = $queryResult->fetch_field_direct($i)->name;
+        $fieldInfo->name = $field->name;
         $fieldInfo->visible = $full || isFieldVisible($fieldInfo->name, $scaleInfo, $type);
         $fieldInfo->leftAlign = isFieldLeftAlign($newDesign, $fieldInfo->name);
 
@@ -71,8 +71,12 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::DATETIME_SHIPMENT:
             case C::DATETIME_FAILURE:
             case C::DATETIME_CARGO:
+
             case C::MI_TARE_DYN_DATETIME:
             case C::MI_TARE_STA_DATETIME:
+
+            case C::IRON_CONTROL_DATETIME_STA:
+            case C::IRON_CONTROL_DATETIME_DYN:
                 if ($fieldValue == "0000-00-00 00:00:00" ||
                     $fieldValue == "1899-12-30 00:00:00") {
                     return S::TEXT_TABLE_CELL_EMPTY;
@@ -128,9 +132,15 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::IRON_ESPC:
             case C::IRON_RAZL:
             case C::IRON_SHCH:
+
+            case C::IRON_CONTROL_NETTO_STA:
+            case C::IRON_CONTROL_NETTO_DYN:
+            case C::IRON_CONTROL_DIFF_DYN_CARR:
                 return num_fmt($fieldValue, 2);
 
             case C::NETTO:
+
+            case C::IRON_CONTROL_DIFF_DYN_STA:
                 $s = num_fmt($fieldValue, 2);
                 return "<b>" . $s . "</b>";
 
@@ -395,7 +405,8 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
             return
                 $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
                 $resultType == ResultType::COMPARE_DYNAMIC ||
-                $resultType == ResultType::COMPARE_STATIC;
+                $resultType == ResultType::COMPARE_STATIC ||
+                $resultType == ResultType::IRON_CONTROL;
         case C::DEPART_STATION:     // Станция отправления
         case C::PURPOSE_STATION:    // Станция назначения
             return $scalesInfo->getType() == ScaleType::DEFAULT_TYPE;
@@ -440,6 +451,16 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::IRON_ESPC:
         case C::IRON_RAZL:
         case C::IRON_SHCH:
+            return true;
+
+        case C::IRON_CONTROL_SCALES_STA:
+        case C::IRON_CONTROL_DATETIME_STA:
+        case C::IRON_CONTROL_SCALES_DYN:
+        case C::IRON_CONTROL_DATETIME_DYN:
+        case C::IRON_CONTROL_NETTO_STA:
+        case C::IRON_CONTROL_NETTO_DYN:
+        case C::IRON_CONTROL_DIFF_DYN_CARR:
+        case C::IRON_CONTROL_DIFF_DYN_STA:
             return true;
 
         default:
@@ -706,6 +727,23 @@ function columnName($fieldName, $scaleType, $resultType = null)
         case C::IRON_SHCH:
             return ColumnsStrings::IRON_SHCH;
 
+        case C::IRON_CONTROL_SCALES_STA:
+            return ColumnsStrings::IRON_CONTROL_SCALES_STA;
+        case C::IRON_CONTROL_DATETIME_STA:
+            return ColumnsStrings::IRON_CONTROL_DATETIME_STA;
+        case C::IRON_CONTROL_SCALES_DYN:
+            return ColumnsStrings::IRON_CONTROL_SCALES_DYN;
+        case C::IRON_CONTROL_DATETIME_DYN:
+            return ColumnsStrings::IRON_CONTROL_DATETIME_DYN;
+        case C::IRON_CONTROL_NETTO_STA:
+            return ColumnsStrings::IRON_CONTROL_NETTO_STA;
+        case C::IRON_CONTROL_NETTO_DYN:
+            return ColumnsStrings::IRON_CONTROL_NETTO_DYN;
+        case C::IRON_CONTROL_DIFF_DYN_CARR:
+            return ColumnsStrings::IRON_CONTROL_DIFF_DYN_CARR;
+        case C::IRON_CONTROL_DIFF_DYN_STA:
+            return ColumnsStrings::IRON_CONTROL_DIFF_DYN_STA;
+
         default:
             return $fieldName;
     }
@@ -726,6 +764,8 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::SCALE_MIN_CAPACITY:
             case C::SCALE_MAX_CAPACITY:
             case C::SCALE_DISCRETENESS:
+            case C::IRON_CONTROL_SCALES_STA:
+            case C::IRON_CONTROL_SCALES_DYN:
 
             case C::UNIX_TIME:
             case C::TRAIN_NUMBER:
@@ -804,6 +844,11 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::IRON_ESPC:
             case C::IRON_RAZL:
             case C::IRON_SHCH:
+
+            case C::IRON_CONTROL_NETTO_STA:
+            case C::IRON_CONTROL_NETTO_DYN:
+            case C::IRON_CONTROL_DIFF_DYN_CARR:
+            case C::IRON_CONTROL_DIFF_DYN_STA:
                 return false;
 
             case C::IRON_DATE:
@@ -1079,6 +1124,8 @@ function getResultHeader($resultType)
 
         case ResultType::IRON:
             return S::HEADER_IRON;
+        case ResultType::IRON_CONTROL:
+            return S::HEADER_IRON_CONTROL;
 
         default:
             return null;

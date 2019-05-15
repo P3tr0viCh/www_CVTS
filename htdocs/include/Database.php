@@ -209,4 +209,19 @@ class Columns
     const IRON_ESPC = 'espc';
     const IRON_RAZL = 'razl';
     const IRON_SHCH = 'shch';
+
+    const IRON_CONTROL_SCALES_STA = 'scales_sta';
+    const IRON_CONTROL_DATETIME_STA = 'bdatetime_sta';
+    const IRON_CONTROL_SCALES_DYN = 'scales_dyn';
+    const IRON_CONTROL_DATETIME_DYN = 'bdatetime_dyn';
+    const IRON_CONTROL_NETTO_STA = 'netto_sta';
+    const IRON_CONTROL_NETTO_DYN = 'netto_dyn';
+    const IRON_CONTROL_DIFF_DYN_CARR = 'diff_dyn_carr';
+    const IRON_CONTROL_DIFF_DYN_STA = 'diff_dyn_sta';
+}
+
+class Aliases
+{
+    const IRON_CONTROL_STA = 'sta';
+    const IRON_CONTROL_DYN = 'dyn';
 }

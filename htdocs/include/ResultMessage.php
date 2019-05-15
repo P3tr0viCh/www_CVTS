@@ -34,7 +34,8 @@ class ResultMessage
     }
 }
 
-function mysqlConnectionFileError() {
+function mysqlConnectionFileError()
+{
     return new ResultMessage(
         Strings::ERROR_MYSQL_CONNECTION,
         sprintf(Strings::ERROR_MYSQL_DETAILS, 404, Strings::ERROR_MYSQL_CONNECTION_FILE_ERROR));
@@ -59,10 +60,6 @@ function connectionError($mysqli)
  */
 function queryError($mysqli)
 {
-    return new ResultMessage(
-        Strings::ERROR_MYSQL_QUERY,
-        // TODO:  == 1?
-        $mysqli->errno == 1 ?
-            Strings::ERROR_MYSQL_MAX_LIMIT :
-            sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->errno, latin1ToUtf8($mysqli->error)));
+    return new ResultMessage(Strings::ERROR_MYSQL_QUERY,
+        sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->errno, latin1ToUtf8($mysqli->error)));
 }

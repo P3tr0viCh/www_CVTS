@@ -108,6 +108,8 @@ function setDates(value) {
     }
 
     checkTextFields();
+
+    saveInputs();
 }
 
 function checkTextFields() {
