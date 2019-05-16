@@ -131,11 +131,7 @@ class HtmlHeader extends HtmlBase
 
     protected function drawNewDesign()
     {
-        $class = $this->subHeader && !$this->mainPage ?
-            'mdl-layout__header mdl-layout__header--waterfall' :
-            'mdl-layout__header';
-
-        echo "<header id='divHeader' class='$class'>" . PHP_EOL;
+        echo "<header id='divHeader' class='mdl-layout__header'>" . PHP_EOL;
 
         echo S::TAB;
         echo "<div class='mdl-layout__header-row'>" . PHP_EOL;

@@ -114,6 +114,8 @@ class QueryIronControl extends QueryBase
             ->column(C::SCALE_NUM, A::IRON_CONTROL_DYN, C::IRON_CONTROL_SCALES_DYN)
             ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))
             ->join(sprintf(self::SUB_QUERY, $builderSta->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_STA), C::VAN_NUMBER)
+// TODO: error 500
+            ->order(C::IRON_CONTROL_SCALES_STA))
             ->order(C::IRON_CONTROL_DATETIME_DYN, true);
     }
 }
