@@ -80,8 +80,7 @@ $mysqli = MySQLConnection::getInstance($useBackup);
 (new HtmlHeader($newDesign))
     ->setMainPage(true)
     ->setHeader(S::HEADER_PAGE_MAIN)
-    ->setSubHeader($useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null)
-    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->setUseBackup($useBackup)
     ->draw();
 
 (new HtmlDrawer($newDesign, $mysqli))

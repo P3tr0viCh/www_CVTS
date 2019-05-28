@@ -103,19 +103,18 @@ class QueryIronControl extends QueryBase
 
         $this->builder
             ->column(C::SCALE_NUM, A::IRON_CONTROL_STA, C::IRON_CONTROL_SCALES_STA)
-            ->column(C::DATETIME, A::IRON_CONTROL_DYN, C::IRON_CONTROL_DATETIME_DYN)
+            ->column(C::DATETIME, A::IRON_CONTROL_STA, C::IRON_CONTROL_DATETIME_STA)
             ->column(C::VAN_NUMBER)
             ->column(C::CARRYING)
             ->column(C::NETTO, A::IRON_CONTROL_DYN, C::IRON_CONTROL_NETTO_DYN)
             ->column(C::NETTO, A::IRON_CONTROL_STA, C::IRON_CONTROL_NETTO_STA)
             ->column(A::IRON_CONTROL_DYN . '.' . C::NETTO. ' - ' . C::CARRYING, null, C::IRON_CONTROL_DIFF_DYN_CARR)
             ->column(A::IRON_CONTROL_DYN . '.' . C::NETTO . ' - ' . A::IRON_CONTROL_STA . '.' . C::NETTO, null, C::IRON_CONTROL_DIFF_DYN_STA)
-            ->column(C::DATETIME, A::IRON_CONTROL_STA, C::IRON_CONTROL_DATETIME_STA)
+            ->column(C::DATETIME, A::IRON_CONTROL_DYN, C::IRON_CONTROL_DATETIME_DYN)
             ->column(C::SCALE_NUM, A::IRON_CONTROL_DYN, C::IRON_CONTROL_SCALES_DYN)
             ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))
             ->join(sprintf(self::SUB_QUERY, $builderSta->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_STA), C::VAN_NUMBER)
-// TODO: error 500
-            ->order(C::IRON_CONTROL_SCALES_STA))
+            ->order(C::IRON_CONTROL_SCALES_STA)
             ->order(C::IRON_CONTROL_DATETIME_DYN, true);
     }
 }

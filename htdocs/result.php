@@ -237,6 +237,7 @@ $mysqli = MySQLConnection::getInstance($useBackup);
 
 if ($mysqli) {
     if ($mysqli->connect_errno) {
+        $header = S::ERROR_ERROR;
         $resultMessage = connectionError($mysqli);
     } else {
         $scaleInfo = new ScaleInfo($scaleNum);
@@ -426,6 +427,7 @@ if ($mysqli) {
         }
     }
 } else {
+    $header = S::ERROR_ERROR;
     $resultMessage = mysqlConnectionFileError();
 }
 
@@ -438,8 +440,8 @@ echoStartBody($newDesign, $newDesign ? "showContent()" : null);
 (new HtmlHeader($newDesign))
     ->setMainPage(false)
     ->setHeader($header)
-    ->setSubHeader($subHeader . ($useBackup ? (" (" . S::HEADER_PAGE_MAIN_BACKUP . ")") : null))
-    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->setSubHeader($subHeader)
+    ->setUseBackup($useBackup)
     ->setNavLinks($navLinks)
     ->setMenuItems($menuItems)
     ->draw();

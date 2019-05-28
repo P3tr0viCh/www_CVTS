@@ -14,7 +14,8 @@ class HtmlHeader extends HtmlBase
 
     private $header;
     private $subHeader;
-    private $subHeaderAddClass;
+
+    private $useBackup;
 
     private $navLinks;
     private $menuItems;
@@ -23,7 +24,7 @@ class HtmlHeader extends HtmlBase
      * Заголовок выводится на главной странице.
      *
      * @param bool $mainPage
-     * @return $this
+     * @return HtmlHeader
      */
     public function setMainPage($mainPage)
     {
@@ -35,7 +36,7 @@ class HtmlHeader extends HtmlBase
      * Текст заголовка.
      *
      * @param string $header
-     * @return $this
+     * @return HtmlHeader
      */
     public function setHeader($header)
     {
@@ -47,7 +48,7 @@ class HtmlHeader extends HtmlBase
      * Текст подзаголовка.
      *
      * @param string $subHeader
-     * @return $this
+     * @return HtmlHeader
      */
     public function setSubHeader($subHeader)
     {
@@ -56,14 +57,12 @@ class HtmlHeader extends HtmlBase
     }
 
     /**
-     * Дополнительные css-классы подзаголовка.
-     *
-     * @param string $subHeaderAddClass
-     * @return $this
+     * @param bool $useBackup
+     * @return HtmlHeader
      */
-    public function setSubHeaderAddClass($subHeaderAddClass)
+    public function setUseBackup($useBackup)
     {
-        $this->subHeaderAddClass = $subHeaderAddClass;
+        $this->useBackup = $useBackup;
         return $this;
     }
 
@@ -71,7 +70,7 @@ class HtmlHeader extends HtmlBase
      * Кнопки навигации.
      *
      * @param array HtmlHeaderNavLink $navLinks
-     * @return $this
+     * @return HtmlHeader
      */
     public function setNavLinks($navLinks)
     {
@@ -83,12 +82,19 @@ class HtmlHeader extends HtmlBase
      * Пункты меню.
      *
      * @param array HtmlHeaderMenuItem $menuItems
-     * @return $this
+     * @return HtmlHeader
      */
     public function setMenuItems($menuItems)
     {
         $this->menuItems = $menuItems;
         return $this;
+    }
+
+    private function getSubHeader()
+    {
+        return $this->subHeader ?
+            ($this->useBackup ? $this->subHeader . " (" . S::HEADER_PAGE_MAIN_BACKUP . ")" : $this->subHeader) :
+            ($this->useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null);
     }
 
     protected function drawCompat()
@@ -108,15 +114,16 @@ class HtmlHeader extends HtmlBase
         echo $this->header;
         echo "</h1>" . PHP_EOL;
 
-        if ($this->subHeader) {
+        if ($this->subHeader || $this->useBackup) {
             $subHeaderClass = $this->mainPage ? "main-header" : "header";
-            if ($this->subHeaderAddClass) {
-                $subHeaderClass .= " " . $this->subHeaderAddClass;
+
+            if ($this->useBackup) {
+                $subHeaderClass .= " " . "color-text--error";
             }
 
             echo S::TAB . S::TAB;
             echo "<h2 class='$subHeaderClass'>";
-            echo $this->subHeader;
+            echo $this->getSubHeader();
             echo "</h2>" . PHP_EOL;
         }
 
@@ -181,17 +188,18 @@ class HtmlHeader extends HtmlBase
         echo S::TAB;
         echo '</div> <!-- class="mdl-layout__header-row" -->' . PHP_EOL;
 
-        if ($this->subHeader) {
+        if ($this->subHeader || $this->useBackup) {
             $subHeaderClass = "mdl-layout-title mdl-layout-title__subtitle";
-            if ($this->subHeaderAddClass) {
-                $subHeaderClass .= " " . $this->subHeaderAddClass;
+
+            if ($this->useBackup) {
+                $subHeaderClass .= " " . "color-text--error";
             }
 
             echo S::TAB;
             echo "<div class='mdl-layout__header-row'>" . PHP_EOL;
             echo S::TAB . S::TAB;
             echo "<span data-header class='$subHeaderClass'>";
-            echo $this->subHeader;
+            echo $this->getSubHeader();
             echo '</span>' . PHP_EOL;
             echo S::TAB;
             echo '</div> <!-- class="mdl-layout__header-row" -->' . PHP_EOL;
@@ -200,6 +208,7 @@ class HtmlHeader extends HtmlBase
         echo '</header>' . PHP_EOL . PHP_EOL;
 
         if ($this->menuItems) {
+            /** @noinspection HtmlUnknownAttribute */
             echo '<ul id="menuMoreList" class="mdl-menu mdl-menu--bottom-right mdl-js-menu hidden" for="menuMore">' . PHP_EOL;
 
             /** @var HtmlHeaderMenuItem $menuItem */

@@ -77,8 +77,7 @@ echoStartBody($newDesign);
 (new HtmlHeader($newDesign))
     ->setMainPage(false)
     ->setHeader($header)
-    ->setSubHeader($useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null)
-    ->setSubHeaderAddClass($useBackup ? "color-text--error" : null)
+    ->setUseBackup($useBackup)
     ->setNavLinks($navLinks)
     ->draw();
 
