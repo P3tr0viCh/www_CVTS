@@ -112,6 +112,10 @@ tr.rowclick:hover {
     padding-right: 40px;
 }
 
+.mdl-data-table th.mdl-data-table__cell--right, .mdl-data-table td.mdl-data-table__cell--right {
+    text-align: right;
+}
+
 .mdl-data-table tbody tr {
     height: 24px;
 }

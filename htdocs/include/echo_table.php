@@ -35,6 +35,27 @@ function getRowColorClass($odd)
 }
 
 /**
+ * @param float $value
+ * @param float $yellowValue
+ * @param float $redValue
+ * @return null|string
+ */
+function getCellWarningColorClass($value, $yellowValue, $redValue)
+{
+    $value = abs($value);
+
+    if ($value >= $redValue) {
+        return 'color--red';
+    }
+
+    if ($value >= $yellowValue) {
+        return 'color--yellow';
+    }
+
+    return null;
+}
+
+/**
  * @param null|string $class
  * @return null|string
  */

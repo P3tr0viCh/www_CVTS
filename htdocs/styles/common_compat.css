@@ -81,6 +81,10 @@ table.query {
     text-align: left;
 }
 
+.text-align--right {
+    text-align: right;
+}
+
 td, th {
     border: 1px solid #063139;
     padding: 1px 4px;

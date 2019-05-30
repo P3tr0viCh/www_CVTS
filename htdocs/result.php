@@ -638,10 +638,11 @@ if (!$resultMessage) {
                     $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
                 }
 
+                $excelData .= S::EXCEL_EOL;
+
                 echoTableTREnd();
                 echoTableHeadEnd();
-
-                $excelData .= S::EXCEL_EOL;
+// ------------- Конец заголовка таблицы -------------------------------------------------------------------------------
 
                 echoTableBodyStart();
 
@@ -688,6 +689,12 @@ if (!$resultMessage) {
                     $queryCompare = null;
                 }
 
+
+                $ironControlTotalAvg = 0.0;
+                $ironControlTotalSum = 0.0;
+                $ironControlTotalCount = 0;
+
+// ------------- Перебор строк -----------------------------------------------------------------------------------------
                 while ($row = $result->fetch_array()) {
                     $rowColorClass = getRowColorClass($numColor);
 
@@ -725,6 +732,7 @@ if (!$resultMessage) {
 
                     echoTableTD($field, null, $newDesign ? null : $href);
 
+// ------------- Перебор полей -----------------------------------------------------------------------------------------
                     for ($fieldNum = 0; $fieldNum < $result->field_count; $fieldNum++) {
                         if (!$fieldsInfo[$fieldNum]->visible) {
                             continue;
@@ -749,15 +757,18 @@ if (!$resultMessage) {
                                 'text-align--left') :
                             null;
 
-                        if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_DYN_STA) {
-                            $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
+                        if ($resultType == ResultType::IRON_CONTROL) {
+                            if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_DYN_STA) {
+                                $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
 
-                            if (abs($value) < Constants::COMPARE_WARNING_YELLOW) {
-                                $class = null;
-                            } elseif (abs($value) < Constants::COMPARE_WARNING_RED) {
-                                $class = 'color--yellow';
-                            } else {
-                                $class = 'color--red';
+                                if ($value != "") {
+                                    $ironControlTotalCount++;
+
+                                    $ironControlTotalSum += $value;
+                                }
+
+                                $class = getCellWarningColorClass($value,
+                                    Constants::IRON_CONTROL_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_VALUE_WARNING_RED);
                             }
                         }
 
@@ -831,12 +842,9 @@ if (!$resultMessage) {
                                 } else {
                                     $class = 'color--gray';
                                 }
-                            } elseif (abs($fieldCompare) < Constants::COMPARE_WARNING_YELLOW) {
-                                $class = null;
-                            } elseif (abs($fieldCompare) < Constants::COMPARE_WARNING_RED) {
-                                $class = 'color--yellow';
                             } else {
-                                $class = 'color--red';
+                                $class = getCellWarningColorClass($fieldCompare,
+                                    Constants::COMPARE_VALUE_WARNING_YELLOW, Constants::COMPARE_VALUE_WARNING_RED);
                             }
 
                             $fieldCompare = formatFieldValue(C::COMPARE, $fieldCompare, $filter->isFull());
@@ -859,8 +867,62 @@ if (!$resultMessage) {
                     $numColor = !$numColor;
                 } // while
 
+// ----------------- Итого ---------------------------------------------------------------------------------------------
+
+// ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
+                if ($resultType == ResultType::IRON_CONTROL) {
+// --------------------------------------------------------------------
+                    echoTableTRStart(getRowColorClass($numColor));
+
+                    echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
+                    echoTableTD("", null, null, 3);
+
+                    echoTableTREnd();
+
+// ---------------------------------------------------------------------------------------------------------------------
+                    $numColor = !$numColor;
+
+                    echoTableTRStart(getRowColorClass($numColor));
+
+                    echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
+
+                    if ($ironControlTotalCount > 0) {
+                        $ironControlTotalAvg = $ironControlTotalSum / $ironControlTotalCount;
+                    }
+
+                    $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalAvg . "", $filter->isFull());
+
+                    $class = getCellWarningColorClass($ironControlTotalAvg,
+                        Constants::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_AVG_VALUE_WARNING_RED);
+
+                    echoTableTD($field, $class);
+
+                    echoTableTD("", null, null, 2);
+
+                    echoTableTREnd();
+
+// ---------------------------------------------------------------------------------------------------------------------
+                    $numColor = !$numColor;
+
+                    echoTableTRStart(getRowColorClass($numColor));
+
+                    echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
+
+                    $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
+
+                    $class = getCellWarningColorClass($ironControlTotalSum,
+                        Constants::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_SUM_VALUE_WARNING_RED);
+
+                    echoTableTD($field, $class);
+
+                    echoTableTD("", null, null, 2);
+
+                    echoTableTREnd();
+                }
+
                 echoTableBodyEnd();
                 echoTableEnd();
+// ------------- Конец таблицы -----------------------------------------------------------------------------------------
 
                 echoFormStart('formExcel', 'excel.php', null, null, false, true);
 

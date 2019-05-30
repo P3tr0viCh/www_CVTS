@@ -229,6 +229,10 @@ class Strings
     const TEXT_SIDE_LEFT = 'Левая';
     const TEXT_SIDE_UNKNOWN = 'Не определено';
 
+    const TEXT_SUM = "Сумма";
+    const TEXT_AVG = "Среднее";
+    const TEXT_TOTAL = "Итого";
+
     const TEXT_NIGHT_MODE = 'ДЕНЬ/НОЧЬ';
 
     const TEXT_APACHE_VERSION = 'Версия Apache: %s';

@@ -10,8 +10,15 @@ class Constants
     const SCALE_NUM_REPORT_IRON = -1;
     const SCALE_NUM_REPORT_IRON_CONTROL = -2;
 
-    const COMPARE_WARNING_YELLOW = 1;
-    const COMPARE_WARNING_RED = 2;
+    const COMPARE_VALUE_WARNING_YELLOW = 1;
+    const COMPARE_VALUE_WARNING_RED = 2;
+
+    const IRON_CONTROL_VALUE_WARNING_YELLOW = 1;
+    const IRON_CONTROL_VALUE_WARNING_RED = 2;
+    const IRON_CONTROL_AVG_VALUE_WARNING_YELLOW = 0.05;
+    const IRON_CONTROL_AVG_VALUE_WARNING_RED = 0.10;
+    const IRON_CONTROL_SUM_VALUE_WARNING_YELLOW = 5;
+    const IRON_CONTROL_SUM_VALUE_WARNING_RED = 10;
 
     /**
      * Максимальное число строк для страницы результата.
