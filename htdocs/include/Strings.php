@@ -32,6 +32,7 @@ class Strings
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
     const DRAWER_SHOW_ALL_TRAIN_SCALES = 'Все железнодорожные весы';
+    const DRAWER_SHOW_VANLIST_QUERY = 'Информация по списку вагонов';
     const DRAWER_SHOW_IRON_QUERY = 'Провеска чугуна';
     const DRAWER_SHOW_IRON_CONTROL_QUERY = 'Контрольная провеска чугуна';
     const DRAWER_TITLE_SETTINGS = 'Настройки';
@@ -45,11 +46,14 @@ class Strings
     const FOOTER_RIGHT_SECTION = '© Дураев Константин Петрович';
 
     const SHOW_ALL_TRAIN_SCALES = 'Сводная информация по всем железнодорожным весам';
+    const SHOW_VANLIST_QUERY = 'Сводная информация по списку номеров вагонов';
     const SHOW_IRON_QUERY = 'Сводная информация по провескам чугуна';
     const SHOW_IRON_CONTROL_QUERY = 'Контрольная провеска чугуна';
 
     const SCALE_INFO_ALL_TRAIN_PLACE = 'ЖД весы';
     const SCALE_INFO_ALL_TRAIN_HEADER = 'Сводная информация по всем железнодорожным весам';
+    const SCALE_INFO_VANLIST_PLACE = 'Список вагонов';
+    const SCALE_INFO_VANLIST_PLACE_HEADER = 'Сводная информация по списку номеров вагонов';
     const SCALE_INFO_IRON_PLACE = 'Чугун';
     const SCALE_INFO_IRON_HEADER = 'Провеска чугуна';
     const SCALE_INFO_IRON_CONTROL_HEADER = 'Контрольная провеска чугуна';
@@ -71,10 +75,10 @@ class Strings
 
     const HEADER_LOADING = 'Загрузка. Подождите...';
 
-    const HEADER_RESULT_VN_DYN_B = 'Динамическое взвешивание брутто, вагоны';
-    const HEADER_RESULT_VN_DYN_T = 'Динамическое взвешивание тары, вагоны';
-    const HEADER_RESULT_VN_STA_B = 'Статическое взвешивание брутто, вагоны';
-    const HEADER_RESULT_VN_STA_T = 'Статическое взвешивание тары, вагоны';
+    const HEADER_RESULT_VN_DYN_B = 'Динамическое взвешивание брутто';
+    const HEADER_RESULT_VN_DYN_T = 'Динамическое взвешивание тары';
+    const HEADER_RESULT_VN_STA_B = 'Статическое взвешивание брутто';
+    const HEADER_RESULT_VN_STA_T = 'Статическое взвешивание тары';
     const HEADER_RESULT_TR_DYN = 'Динамическое взвешивание, составы';
     const HEADER_RESULT_TR_DYN_ONE = 'Провеска состава';
     const HEADER_RESULT_AUTO_B = 'Статическое взвешивание брутто';
@@ -87,6 +91,7 @@ class Strings
     const HEADER_COEFF = 'Коэффициенты';
     const HEADER_IRON = 'Сумма нетто посуточно';
     const HEADER_IRON_CONTROL = 'Сравнение массы';
+    const HEADER_VANLIST_TARE = 'Последний вес тары по всем весам';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
     const HEADER_RESULT_PERIOD_FROM = '%s с %s';
@@ -192,6 +197,7 @@ class Strings
     const INPUT_SCALES = 'Номера весов';
     const INPUT_SCALES_HELP = 'Только цифры и запятые';
     const INPUT_SCALES_PATTERN = '^[0-9,]+$';
+    const INPUT_VANLIST = 'Список номеров вагонов';
 
     const HELP_DATE_OLD = '(день.месяц.год)<br>(дату полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';
     const HELP_DATETIME_OLD = '(день.месяц.год час:минуты)<br>(дату или время полностью вводить не обязательно)<br>(если что-то не указано, подразумевается текущая дата)';

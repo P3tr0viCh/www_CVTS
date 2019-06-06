@@ -7,8 +7,10 @@ class Constants
      */
     const SCALE_NUM_ALL_TRAIN_SCALES = 0;
 
-    const SCALE_NUM_REPORT_IRON = -1;
-    const SCALE_NUM_REPORT_IRON_CONTROL = -2;
+    const SCALE_NUM_REPORT_VANLIST = -100;
+
+    const SCALE_NUM_REPORT_IRON = -200;
+    const SCALE_NUM_REPORT_IRON_CONTROL = -201;
 
     const COMPARE_VALUE_WARNING_YELLOW = 1;
     const COMPARE_VALUE_WARNING_RED = 2;
@@ -106,11 +108,15 @@ class ScaleType
     /**
      * Отчёт по чугуну.
      */
-    const IRON = -100;
+    const IRON = Constants::SCALE_NUM_REPORT_IRON;
     /**
      * Контрольная провеска чугуна.
      */
-    const IRON_CONTROL = -101;
+    const IRON_CONTROL = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
+    /**
+     * Сводная информация по списку номеров вагонов.
+     */
+    const VANLIST = Constants::SCALE_NUM_REPORT_VANLIST;
 }
 
 class ScaleClass
@@ -166,6 +172,8 @@ class ResultType
 
     const IRON = 90;
     const IRON_CONTROL = 91;
+
+    const VANLIST_TARE = 100;
 }
 
 class ParamName
@@ -221,6 +229,8 @@ class ParamName
     const ORDER_BY_DESC = 'order_by_desc';
 
     const DATETIME_FROM_20_TO_20 = 'datetime_from_20_to_20';
+
+    const VANLIST = 'vanlist';
 
     const EXCEL_FILENAME = 'filename';
     const EXCEL_DATA = 'data';

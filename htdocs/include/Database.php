@@ -224,4 +224,6 @@ class Aliases
 {
     const IRON_CONTROL_STA = 'sta';
     const IRON_CONTROL_DYN = 'dyn';
+    const VANLIST_TARE_UNION = 'u';
+    const VANLIST_TARE_QUERY = 'q';
 }

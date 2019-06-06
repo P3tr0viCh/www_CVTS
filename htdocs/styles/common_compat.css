@@ -155,6 +155,25 @@ input, select, textarea {
 .text-input__input {
 }
 
+.text-area__field {
+    display: inline-block;
+    padding: 8px 0;
+    *display: inline;
+    zoom: 1;
+}
+
+.text-area__label {
+    display: block;
+    float: left;
+    margin-bottom: 8px;
+}
+
+.text-area__label--width {
+}
+
+.text-area__input {
+}
+
 .field--checkbox {
     display: block;
     padding: 4px 0;

@@ -1,5 +1,6 @@
 <?php
-const DEBUG_SHOW_QUERY = false;
+const DEBUG_SHOW_ERROR = true;
+const DEBUG_SHOW_QUERY = true;
 
 $timeStart = microtime(true);
 
@@ -10,6 +11,7 @@ require_once "include/MySQLConnection.php";
 require_once "include/QueryResult.php";
 require_once "include/QueryIron.php";
 require_once "include/QueryIronControl.php";
+require_once "include/QueryVanListTare.php";
 require_once "include/QueryCompare.php";
 
 require_once "include/Strings.php";
@@ -39,6 +41,8 @@ use Database\Columns as C;
 
 function throwBadRequest()
 {
+    if (DEBUG_SHOW_ERROR) return;
+
     header("Location: error.php?412");
     exit();
 }
@@ -144,7 +148,9 @@ switch ($reportType) {
                 ResultType::COEFFS,
 
                 ResultType::IRON,
-                ResultType::IRON_CONTROL);
+                ResultType::IRON_CONTROL,
+
+                ResultType::VANLIST_TARE);
 
             foreach ($resultTypes as $result) {
                 $resultType = getResultType($result);
@@ -172,7 +178,9 @@ switch ($reportType) {
 
         $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC);
 
-        $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20);;
+        $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20);
+
+        $vanList = vanListStringToArray(getParamGETAsString(ParamName::VANLIST));
 
         break;
     case ReportType::CARGO_TYPES:
@@ -328,10 +336,13 @@ if ($mysqli) {
                 throwBadRequest();
             }
 
-            if ($resultType == ResultType::IRON) {
-                $formatDateTimeF = 'formatDate';
-            } else {
-                $formatDateTimeF = 'formatDateTime';
+            switch ($resultType) {
+                case ResultType::IRON:
+                case ResultType::VANLIST_TARE:
+                    $formatDateTimeF = 'formatDate';
+                    break;
+                default:
+                    $formatDateTimeF = 'formatDateTime';
             }
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
@@ -510,6 +521,13 @@ if (!$resultMessage) {
                 $queryResult = (new QueryIronControl())
                     ->setDateStart($dateTimeStart)
                     ->setDateEnd($dateTimeEnd);
+
+                break;
+            case ResultType::VANLIST_TARE:
+                $queryResult = (new QueryVanListTare())
+                    ->setDateStart($dateTimeStart)
+                    ->setDateEnd($dateTimeEnd)
+                    ->setVanList($vanList);
 
                 break;
             default:
@@ -935,6 +953,9 @@ if (!$resultMessage) {
                         break;
                     case Constants::SCALE_NUM_REPORT_IRON_CONTROL:
                         $fileName = "IC";
+                        break;
+                    case Constants::SCALE_NUM_REPORT_VANLIST:
+                        $fileName = "VL_T";
                         break;
                     default:
                         $fileName = "SN-" . $scaleNum;

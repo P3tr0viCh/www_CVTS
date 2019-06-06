@@ -23,49 +23,51 @@ require_once "include/HtmlDrawer.php";
 require_once "include/HtmlFooter.php";
 
 use HrefBuilder\Builder;
-use Strings as S;
-use ColumnsStrings as C;
 use Database\Columns as DBC;
+use Strings as S;
+use Constants as C;
+use ParamName as PN;
+use ColumnsStrings as CS;
 
 // debug
 $showQuery = false;
 
 $newDesign = isNewDesign();
 
-$showDisabled = getParamGETAsBool(ParamName::SHOW_DISABLED, false);
-$showMetrology = getParamGETAsBool(ParamName::SHOW_METROLOGY, false);
-$useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
+$showDisabled = getParamGETAsBool(PN::SHOW_DISABLED, false);
+$showMetrology = getParamGETAsBool(PN::SHOW_METROLOGY, false);
+$useBackup = getParamGETAsBool(PN::USE_BACKUP, false);
 
-setCookieAsBool(ParamName::NEW_DESIGN, $newDesign);
-setCookieAsBool(ParamName::SHOW_DISABLED, $showDisabled);
-setCookieAsBool(ParamName::SHOW_METROLOGY, $showMetrology);
+setCookieAsBool(PN::NEW_DESIGN, $newDesign);
+setCookieAsBool(PN::SHOW_DISABLED, $showDisabled);
+setCookieAsBool(PN::SHOW_METROLOGY, $showMetrology);
 
-setCookieAsString(ParamName::DATETIME_START_DAY, null);
-setCookieAsString(ParamName::DATETIME_START_MONTH, null);
-setCookieAsString(ParamName::DATETIME_START_YEAR, null);
-setCookieAsString(ParamName::DATETIME_START_HOUR, null);
-setCookieAsString(ParamName::DATETIME_START_MINUTES, null);
-setCookieAsString(ParamName::DATETIME_END_DAY, null);
-setCookieAsString(ParamName::DATETIME_END_MONTH, null);
-setCookieAsString(ParamName::DATETIME_END_YEAR, null);
-setCookieAsString(ParamName::DATETIME_END_HOUR, null);
-setCookieAsString(ParamName::DATETIME_END_MINUTES, null);
+setCookieAsString(PN::DATETIME_START_DAY, null);
+setCookieAsString(PN::DATETIME_START_MONTH, null);
+setCookieAsString(PN::DATETIME_START_YEAR, null);
+setCookieAsString(PN::DATETIME_START_HOUR, null);
+setCookieAsString(PN::DATETIME_START_MINUTES, null);
+setCookieAsString(PN::DATETIME_END_DAY, null);
+setCookieAsString(PN::DATETIME_END_MONTH, null);
+setCookieAsString(PN::DATETIME_END_YEAR, null);
+setCookieAsString(PN::DATETIME_END_HOUR, null);
+setCookieAsString(PN::DATETIME_END_MINUTES, null);
 
-setCookieAsString(ParamName::VAN_NUMBER, null);
-setCookieAsString(ParamName::CARGO_TYPE, null);
-setCookieAsString(ParamName::INVOICE_NUM, null);
-setCookieAsString(ParamName::INVOICE_SUPPLIER, null);
-setCookieAsString(ParamName::INVOICE_RECIPIENT, null);
-setCookieAsString(ParamName::ONLY_CHARK, null);
+setCookieAsString(PN::VAN_NUMBER, null);
+setCookieAsString(PN::CARGO_TYPE, null);
+setCookieAsString(PN::INVOICE_NUM, null);
+setCookieAsString(PN::INVOICE_SUPPLIER, null);
+setCookieAsString(PN::INVOICE_RECIPIENT, null);
+setCookieAsString(PN::ONLY_CHARK, null);
 
-setCookieAsString(ParamName::ALL_FIELDS, null);
-setCookieAsString(ParamName::SHOW_CARGO_DATE, null);
-setCookieAsString(ParamName::SHOW_DELTAS, null);
-setCookieAsString(ParamName::COMPARE_FORWARD, null);
-setCookieAsString(ParamName::COMPARE_BY_BRUTTO, null);
-setCookieAsString(ParamName::SCALES, null);
+setCookieAsString(PN::ALL_FIELDS, null);
+setCookieAsString(PN::SHOW_CARGO_DATE, null);
+setCookieAsString(PN::SHOW_DELTAS, null);
+setCookieAsString(PN::COMPARE_FORWARD, null);
+setCookieAsString(PN::COMPARE_BY_BRUTTO, null);
+setCookieAsString(PN::SCALES, null);
 
-setCookieAsString(ParamName::ORDER_BY_DATETIME, null);
+setCookieAsString(PN::ORDER_BY_DATETIME, null);
 
 echoStartPage();
 
@@ -114,18 +116,18 @@ if ($mysqli) {
             echoTableHeadStart();
             echoTableTRStart();
             {
-                echoTableTH(C::SCALE_NUMBER);
-                echoTableTH(C::SCALE_TYPE_TEXT);
-                echoTableTH(C::SCALE_CLASS_STATIC);
-                echoTableTH(C::SCALE_CLASS_DYNAMIC);
-                echoTableTH(C::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
+                echoTableTH(CS::SCALE_NUMBER);
+                echoTableTH(CS::SCALE_TYPE_TEXT);
+                echoTableTH(CS::SCALE_CLASS_STATIC);
+                echoTableTH(CS::SCALE_CLASS_DYNAMIC);
+                echoTableTH(CS::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
 
                 $numColumns = 5;
 
                 if ($showMetrology) {
-                    echoTableTH(C::SCALE_MIN_CAPACITY);
-                    echoTableTH(C::SCALE_MAX_CAPACITY);
-                    echoTableTH(C::SCALE_DISCRETENESS);
+                    echoTableTH(CS::SCALE_MIN_CAPACITY);
+                    echoTableTH(CS::SCALE_MAX_CAPACITY);
+                    echoTableTH(CS::SCALE_DISCRETENESS);
 
                     $numColumns += 3;
                 }
@@ -140,8 +142,8 @@ if ($mysqli) {
             $hrefBuilder = Builder::getInstance();
             $hrefBuilder
                 ->setUrl("query.php")
-                ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
-                ->setParam($useBackup ? ParamName::USE_BACKUP : null, true);
+                ->setParam($newDesign ? PN::NEW_DESIGN : null, true)
+                ->setParam($useBackup ? PN::USE_BACKUP : null, true);
 
             $columns = array();
             for ($i = 0; $i < $result->field_count; $i++) {
@@ -157,7 +159,7 @@ if ($mysqli) {
                 $rowColorClass = getRowColorClass($numColor);
 
                 $href = $hrefBuilder
-                    ->setParam(ParamName::SCALE_NUM, $row[DBC::SCALE_NUM])
+                    ->setParam(PN::SCALE_NUM, $row[DBC::SCALE_NUM])
                     ->build();
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
@@ -213,55 +215,37 @@ if ($mysqli) {
 
             $class = $newDesign ? "mdl-data-table__cell--non-numeric mdl-data-table__cell--add-padding" : null;
 
-// SHOW_ALL_TRAIN_SCALES
-            $rowColorClass = getRowColorClass($numColor);
+            /**
+             * @param string $name
+             * @param int $value
+             */
+            function addRowQuery($name, $value)
+            {
+                global $numColor, $hrefBuilder, $newDesign, $class, $numColumns;
 
-            $href = $hrefBuilder
-                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES)
-                ->build();
+                $rowColorClass = getRowColorClass($numColor);
 
-            echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
-                $newDesign ? "location.href=\"$href\"" : null);
+                $href = $hrefBuilder
+                    ->setParam(PN::SCALE_NUM, $value)
+                    ->build();
 
-            $field = S::SHOW_ALL_TRAIN_SCALES;
+                echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
+                    $newDesign ? "location.href=\"$href\"" : null);
 
-            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
+                echoTableTD($name, $class, $newDesign ? null : $href, $numColumns);
 
-            echoTableTREnd();
+                echoTableTREnd();
 
-// SHOW_IRON_QUERY
-            $numColor = !$numColor;
-            $rowColorClass = getRowColorClass($numColor);
+                $numColor = !$numColor;
+            }
 
-            $href = $hrefBuilder
-                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON)
-                ->build();
+            addRowQuery(S::SHOW_ALL_TRAIN_SCALES, C::SCALE_NUM_ALL_TRAIN_SCALES);
 
-            echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
-                $newDesign ? "location.href=\"$href\"" : null);
+            addRowQuery(S::SHOW_VANLIST_QUERY, C::SCALE_NUM_REPORT_VANLIST);
 
-            $field = S::SHOW_IRON_QUERY;
+            addRowQuery(S::SHOW_IRON_QUERY, C::SCALE_NUM_REPORT_IRON);
 
-            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
-
-            echoTableTREnd();
-
-// SHOW_IRON_CONTROL_QUERY
-            $numColor = !$numColor;
-            $rowColorClass = getRowColorClass($numColor);
-
-            $href = $hrefBuilder
-                ->setParam(ParamName::SCALE_NUM, Constants::SCALE_NUM_REPORT_IRON_CONTROL)
-                ->build();
-
-            echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
-                $newDesign ? "location.href=\"$href\"" : null);
-
-            $field = S::SHOW_IRON_CONTROL_QUERY;
-
-            echoTableTD($field, $class, $newDesign ? null : $href, $numColumns);
-
-            echoTableTREnd();
+            addRowQuery(S::SHOW_IRON_CONTROL_QUERY, C::SCALE_NUM_REPORT_IRON_CONTROL);
 
 // end
             echoTableBodyEnd();

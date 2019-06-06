@@ -27,7 +27,9 @@ $scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_
 echoStartPage();
 
 if ($scales < 0) {
-    if ($scales !== Constants::SCALE_NUM_REPORT_IRON && $scales !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
+    if ($scales !== Constants::SCALE_NUM_REPORT_VANLIST &&
+        $scales !== Constants::SCALE_NUM_REPORT_IRON &&
+        $scales !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
         $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 }
@@ -211,6 +213,7 @@ if (!$resultMessage) {
             echoButton($newDesign, S::BUTTON_SUM_FOR_PERIOD, ParamName::RESULT_TYPE, ResultType::DP_SUM);
 
             break;
+
         case ScaleType::IRON:
             echo S::TAB . S::TAB;
             echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
@@ -223,6 +226,14 @@ if (!$resultMessage) {
             echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
 
             echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::IRON_CONTROL);
+
+            break;
+
+        case ScaleType::VANLIST:
+            echo S::TAB . S::TAB;
+            echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
+
+            echoButton($newDesign, S::BUTTON_TARE, ParamName::RESULT_TYPE, ResultType::VANLIST_TARE);
 
             break;
     }
@@ -310,6 +321,7 @@ if (!$resultMessage) {
     echo '<h6>';
     switch ($scaleType) {
         case ScaleType::IRON:
+        case ScaleType::VANLIST:
             echo S::HEADER_DATE_START;
             break;
         default:
@@ -331,29 +343,41 @@ if (!$resultMessage) {
 
     echoInput($newDesign, ParamName::DATETIME_START_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
-    if ($scaleType != ScaleType::IRON) {
-        echo S::TAB . S::TAB;
-        echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
-        echo PHP_EOL;
-
-        echoInput($newDesign, ParamName::DATETIME_START_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
-        if (!$newDesign) {
+    switch ($scaleType) {
+        case ScaleType::DEFAULT_TYPE:
+        case ScaleType::WMR:
+        case ScaleType::AUTO:
+        case ScaleType::KANAT:
+        case ScaleType::DP:
+        case ScaleType::IRON_CONTROL:
             echo S::TAB . S::TAB;
-            echo '<span class="text-input__field"> : </span>' . PHP_EOL;
-        }
+            echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
+            echo PHP_EOL;
 
-        echoInput($newDesign, ParamName::DATETIME_START_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
-        if (!$newDesign) {
-            echo S::TAB . S::TAB . '<br>';
-        }
+            echoInput($newDesign, ParamName::DATETIME_START_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
+            if (!$newDesign) {
+                echo S::TAB . S::TAB;
+                echo '<span class="text-input__field"> : </span>' . PHP_EOL;
+            }
 
-        echo PHP_EOL;
+            echoInput($newDesign, ParamName::DATETIME_START_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+            if (!$newDesign) {
+                echo S::TAB . S::TAB . '<br>';
+            }
+
+            echo PHP_EOL;
+
+            break;
+
+        case ScaleType::IRON:
+        default:
     }
 
     echo S::TAB . S::TAB;
     echo '<h6>';
     switch ($scaleType) {
         case ScaleType::IRON:
+        case ScaleType::VANLIST:
             echo S::HEADER_DATE_END;
             break;
         default:
@@ -375,18 +399,29 @@ if (!$resultMessage) {
 
     echoInput($newDesign, ParamName::DATETIME_END_YEAR, S::INPUT_YEAR, S::INPUT_YEAR_HELP, S::INPUT_YEAR_PATTERN, 4, 4, true, false);
 
-    if ($scaleType != ScaleType::IRON) {
-        echo S::TAB . S::TAB;
-        echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
-        echo PHP_EOL;
-
-        echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
-        if (!$newDesign) {
+    switch ($scaleType) {
+        case ScaleType::DEFAULT_TYPE:
+        case ScaleType::WMR:
+        case ScaleType::AUTO:
+        case ScaleType::KANAT:
+        case ScaleType::DP:
+        case ScaleType::IRON_CONTROL:
             echo S::TAB . S::TAB;
-            echo '<span class="text-input__field">:</span>' . PHP_EOL;
-        }
+            echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
+            echo PHP_EOL;
 
-        echoInput($newDesign, ParamName::DATETIME_END_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+            echoInput($newDesign, ParamName::DATETIME_END_HOUR, S::INPUT_HOUR, S::INPUT_HOUR_HELP, S::INPUT_HOUR_PATTERN, 2, 2, true, false);
+            if (!$newDesign) {
+                echo S::TAB . S::TAB;
+                echo '<span class="text-input__field">:</span>' . PHP_EOL;
+            }
+
+            echoInput($newDesign, ParamName::DATETIME_END_MINUTES, S::INPUT_MINUTES, S::INPUT_MINUTES_HELP, S::INPUT_MINUTES_PATTERN, 2, 2, true, false);
+
+            break;
+
+        case ScaleType::IRON:
+        default:
     }
 
     if (!$newDesign) {
@@ -396,6 +431,7 @@ if (!$resultMessage) {
         echo '<small>';
         switch ($scaleType) {
             case ScaleType::IRON:
+            case ScaleType::VANLIST:
                 echo S::HELP_DATE_OLD;
                 break;
             default:
@@ -427,6 +463,7 @@ if (!$resultMessage) {
         case ScaleType::WMR:
         case ScaleType::AUTO:
         case ScaleType::DP:
+        case ScaleType::VANLIST:
             if ($newDesign) {
                 echo S::TAB . S::TAB;
                 echo '<h5>' . PHP_EOL;
@@ -522,6 +559,11 @@ if (!$resultMessage) {
                     echoCheckBox($newDesign, ParamName::ONLY_CHARK, S::CHECKBOX_ONLY_CHARK, true);
 
                     break;
+
+                case ScaleType::VANLIST:
+                    echoTextArea($newDesign, ParamName::VANLIST, S::INPUT_VANLIST, "");
+
+                    break;
             }
 
             if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
@@ -590,6 +632,7 @@ if (!$resultMessage) {
             echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
             break;
         case ScaleType::IRON_CONTROL:
+        case ScaleType::VANLIST:
             break;
         default:
             echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
@@ -601,6 +644,7 @@ if (!$resultMessage) {
         case ScaleType::WMR:
             echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
 
+            // TODO: Отключен вывод отклонений
 //        if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
 //            $scaleInfo->getClass() == ScaleClass::CLASS_STATIC ||
 //            $scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) {

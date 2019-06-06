@@ -357,7 +357,13 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
 {
     switch ($fieldName) {
         case C::SCALE_NUM:
-            return $scalesInfo->getScaleNum() == Constants::SCALE_NUM_ALL_TRAIN_SCALES;
+            switch ($scalesInfo->getScaleNum()) {
+                case Constants::SCALE_NUM_ALL_TRAIN_SCALES:
+                case Constants::SCALE_NUM_REPORT_VANLIST:
+                    return true;
+                default:
+                    return false;
+            }
         case C::DATETIME:
         case C::TRAIN_NUMBER:
         case C::BRUTTO:
@@ -931,11 +937,13 @@ function getLastDay($month, $year)
     }
 }
 
+/** @noinspection PhpUnused */
 function formatDateTime($timestamp)
 {
     return date("d.m.Y H:i", $timestamp);
 }
 
+/** @noinspection PhpUnused */
 function formatDate($timestamp)
 {
     return date("d.m.Y", $timestamp);
@@ -1127,6 +1135,9 @@ function getResultHeader($resultType)
         case ResultType::IRON_CONTROL:
             return S::HEADER_IRON_CONTROL;
 
+        case ResultType::VANLIST_TARE:
+            return S::HEADER_VANLIST_TARE;
+
         default:
             return null;
     }
@@ -1207,4 +1218,42 @@ function setCookieAsBool($param, $value)
 
     setcookie($param, boolToString($value));
     $_COOKIE[$param] = boolToString($value);
+}
+
+/**
+ * @param null|string $value
+ * @return array
+ */
+function vanListStringToArray($value)
+{
+    $result = array();
+
+    $value .= ';';
+
+    $str = null;
+    for ($i = 0, $l = strlen($value); $i < $l; $i++) {
+        if ($value[$i] >= '0' && $value[$i] <= '9') {
+            $str .= $value[$i];
+        } else {
+            if ($str != null) $result[] = $str;
+            $str = null;
+        }
+    }
+
+    return $result;
+}
+
+/**
+ * @param null|array $vanList
+ * @return string
+ */
+function vanListArrayToString($vanList)
+{
+    if ($vanList == null || count($vanList) == 0) return null;
+
+    for ($i = 0, $c = count($vanList); $i < $c; $i++) {
+        $vanList[$i] = "'" . $vanList[$i] . "'";
+    }
+
+    return implode(', ', $vanList);
 }

@@ -141,6 +141,54 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
  * @param bool $newDesign
  * @param string $id
  * @param string $name
+ * @param string|null $title
+ */
+function echoTextArea($newDesign, $id, $name, $title)
+{
+    $cols = 40;
+    $rows= 20;
+
+    echo S::TAB;
+
+    echoHidden($id, null);
+
+    echo S::TAB . S::TAB;
+
+    if ($newDesign) {
+        $title = $title ? " title='$title'" : '';
+
+        $params = $title;
+
+        echo "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>" . PHP_EOL;
+        echo S::TAB . S::TAB . S::TAB;
+        echo "<textarea type='text' class='mdl-textfield__input' id='$id' $params cols='$cols' rows='$rows'></textarea>" . PHP_EOL;
+        echo S::TAB . S::TAB . S::TAB;
+        echo "<label for='$id' class='mdl-textfield__label'>$name</label>" . PHP_EOL;
+        echo S::TAB . S::TAB . S::TAB;
+        echo '<span class="mdl-textfield__error">' . S::ERROR_ERROR . '</span>' . PHP_EOL;
+    } else {
+        echo "<div class='text-area__field'>" . PHP_EOL;
+        echo S::TAB . S::TAB . S::TAB;
+        $labelClass = 'text-area__label';
+
+        $labelClass .= ' text-area__label--width';
+
+        echo "<label for='$id' class='$labelClass'>";
+
+        echo "<span>$name</span>";
+
+        echo "</label><br>" . PHP_EOL;
+        echo S::TAB . S::TAB . S::TAB;
+        echo "<textarea class='text-area__input' id='$id' cols='$cols' rows='$rows'></textarea>" . PHP_EOL;
+    }
+    echo S::TAB . S::TAB;
+    echo "</div>" . PHP_EOL;
+}
+
+/**
+ * @param bool $newDesign
+ * @param string $id
+ * @param string $name
  * @param bool $checked
  */
 function echoCheckBox($newDesign, $id, $name, $checked = false)
