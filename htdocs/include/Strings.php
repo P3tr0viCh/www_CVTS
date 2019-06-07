@@ -91,6 +91,7 @@ class Strings
     const HEADER_COEFF = 'Коэффициенты';
     const HEADER_IRON = 'Сумма нетто посуточно';
     const HEADER_IRON_CONTROL = 'Сравнение массы';
+    const HEADER_VANLIST_WEIGHS = 'Взвешивание по всем весам';
     const HEADER_VANLIST_TARE = 'Последний вес тары по всем весам';
 
     const HEADER_RESULT_PERIOD_DATE = '%s %s';
@@ -137,6 +138,8 @@ class Strings
     const BUTTON_COMPARE = 'Сравнение массы';
     const BUTTON_BRUTTO = 'Брутто';
     const BUTTON_TARE = 'Тара';
+    const BUTTON_WEIGHS = 'Список провесок';
+    const BUTTON_LAST_TARE = 'Последняя тара';
     const BUTTON_VIEW = 'Просмотр';
     const BUTTON_SUM_FOR_PERIOD = 'Сумма за период';
     const BUTTON_COEFFS = 'Коэффициенты';
@@ -269,7 +272,7 @@ class Strings
     const ERROR_404_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
 
     const ERROR_412_HEADER = 'Неверный формат запроса';
-    const ERROR_412_SUB_HEADER = 'При проверке на сервере одного или более полей заголовка запроса обнаружено несоответствие';
+    const ERROR_412_SUB_HEADER = 'При проверке на сервере одного или более полей запроса обнаружено несоответствие';
 
     const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
     const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;

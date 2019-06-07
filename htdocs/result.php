@@ -1,6 +1,6 @@
 <?php
-const DEBUG_SHOW_ERROR = true;
-const DEBUG_SHOW_QUERY = true;
+const DEBUG_SHOW_ERROR = false;
+const DEBUG_SHOW_QUERY = false;
 
 $timeStart = microtime(true);
 
@@ -11,7 +11,8 @@ require_once "include/MySQLConnection.php";
 require_once "include/QueryResult.php";
 require_once "include/QueryIron.php";
 require_once "include/QueryIronControl.php";
-require_once "include/QueryVanListTare.php";
+require_once "include/QueryVanListWeighs.php";
+require_once "include/QueryVanListLastTare.php";
 require_once "include/QueryCompare.php";
 
 require_once "include/Strings.php";
@@ -39,9 +40,16 @@ use Strings as S;
 
 use Database\Columns as C;
 
-function throwBadRequest()
+/**
+ * @param null|string $error
+ */
+function throwBadRequest($error = null)
 {
-    if (DEBUG_SHOW_ERROR) return;
+    if (DEBUG_SHOW_ERROR) {
+        if (empty($error)) $error = "UNKNOWN";
+        echo '<b><span class="color-text--error">' . 'ERROR: ' . $error . '</span></b>';
+        return;
+    }
 
     header("Location: error.php?412");
     exit();
@@ -50,7 +58,7 @@ function throwBadRequest()
 if (!isset($_GET[ParamName::SCALE_NUM])) {
     if (!isset($_GET[ParamName::REPORT_TYPE])) {
         if (!isset($_GET[ParamName::RESULT_TYPE])) {
-            throwBadRequest();
+            throwBadRequest('empty SCALE_NUM&&REPORT_TYPE&&RESULT_TYPE');
         }
     }
 }
@@ -150,7 +158,8 @@ switch ($reportType) {
                 ResultType::IRON,
                 ResultType::IRON_CONTROL,
 
-                ResultType::VANLIST_TARE);
+                ResultType::VANLIST_WEIGHS,
+                ResultType::VANLIST_LAST_TARE);
 
             foreach ($resultTypes as $result) {
                 $resultType = getResultType($result);
@@ -161,7 +170,7 @@ switch ($reportType) {
         }
 
         if (empty($resultType)) {
-            throwBadRequest();
+            throwBadRequest('ReportType::TYPE_DEFAULT - empty resultType');
         }
 
         $dtStartDay = getParamGETAsInt(ParamName::DATETIME_START_DAY);
@@ -197,7 +206,7 @@ switch ($reportType) {
                 $resultType = ResultType::VAN_STATIC_BRUTTO;
                 break;
             default:
-                throwBadRequest();
+                throwBadRequest('ReportType::CARGO_TYPES - wrong resultType');
         }
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
@@ -228,7 +237,7 @@ switch ($reportType) {
 
         break;
     default:
-        throwBadRequest();
+        throwBadRequest('wrong reportType');
 }
 
 if ($resultType == ResultType::IRON_CONTROL) {
@@ -311,7 +320,7 @@ if ($mysqli) {
                         try {
                             $prevDate = getdate(date_sub(new DateTime(), new DateInterval('P1D'))->getTimestamp());
                         } catch (Exception $e) {
-                            throwBadRequest();
+                            throwBadRequest($e->getMessage());
                         }
 
                         $dateTimeStart = $dateTimeBuilder
@@ -328,17 +337,33 @@ if ($mysqli) {
                             ->buildEndDate();
                     }
                     break;
+
+                case ResultType::VANLIST_WEIGHS:
+                    if ($dateTimeStart == null && $dateTimeEnd == null && count($vanList) == 0) {
+                        $dateTimeStart = $dateTimeBuilder
+                            ->setDay(1)
+                            ->buildStartDate();
+                    }
+                    break;
+                case ResultType::VANLIST_LAST_TARE:
+                    if ($dateTimeStart == null && $dateTimeEnd == null && count($vanList) == 0) {
+                        $dateTimeStart = $dateTimeBuilder
+                            ->setDay(1)
+                            ->buildStartDate();
+                    }
+                    break;
             }
 
             $subHeader = getResultHeader($resultType);
 
             if (empty($subHeader)) {
-                throwBadRequest();
+                throwBadRequest('empty subHeader');
             }
 
             switch ($resultType) {
                 case ResultType::IRON:
-                case ResultType::VANLIST_TARE:
+                case ResultType::VANLIST_WEIGHS:
+                case ResultType::VANLIST_LAST_TARE:
                     $formatDateTimeF = 'formatDate';
                     break;
                 default:
@@ -515,20 +540,24 @@ if (!$resultMessage) {
                     ->setDateEnd($dateTimeEnd)
                     ->setOrderByDesc($orderByDesc)
                     ->setFrom20to20($from20to20);
-
                 break;
             case ResultType::IRON_CONTROL:
                 $queryResult = (new QueryIronControl())
                     ->setDateStart($dateTimeStart)
                     ->setDateEnd($dateTimeEnd);
-
                 break;
-            case ResultType::VANLIST_TARE:
-                $queryResult = (new QueryVanListTare())
+
+            case ResultType::VANLIST_WEIGHS:
+                $queryResult = (new QueryVanListWeighs())
                     ->setDateStart($dateTimeStart)
                     ->setDateEnd($dateTimeEnd)
                     ->setVanList($vanList);
-
+                break;
+            case ResultType::VANLIST_LAST_TARE:
+                $queryResult = (new QueryVanListLastTare())
+                    ->setDateStart($dateTimeStart)
+                    ->setDateEnd($dateTimeEnd)
+                    ->setVanList($vanList);
                 break;
             default:
                 $queryResult = (new QueryResult())
@@ -537,7 +566,7 @@ if (!$resultMessage) {
                     ->setFilter($filter);
         }
     } catch (Exception $e) {
-        throwBadRequest();
+        throwBadRequest($e->getMessage());
     }
 
     $query = $queryResult->getQuery();

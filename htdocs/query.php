@@ -233,7 +233,8 @@ if (!$resultMessage) {
             echo S::TAB . S::TAB;
             echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
 
-            echoButton($newDesign, S::BUTTON_TARE, ParamName::RESULT_TYPE, ResultType::VANLIST_TARE);
+            echoButton($newDesign, S::BUTTON_WEIGHS, ParamName::RESULT_TYPE, ResultType::VANLIST_WEIGHS);
+            echoButton($newDesign, S::BUTTON_LAST_TARE, ParamName::RESULT_TYPE, ResultType::VANLIST_LAST_TARE);
 
             break;
     }
@@ -246,9 +247,7 @@ if (!$resultMessage) {
         echo '</td>' . PHP_EOL . PHP_EOL;
     }
 
-    /**
-     * Колонка "Период".
-     */
+// ------------- Колонка "Период" --------------------------------------------------------------------------------------
     if ($newDesign) {
         echo PHP_EOL . S::TAB;
         echo '<div class="mdl-cell mdl-cell--4-col mdl-cell--stretch">' . PHP_EOL;
@@ -447,12 +446,10 @@ if (!$resultMessage) {
         echo S::TAB . S::TAB;
         echo '</td>' . PHP_EOL;
         echo S::TAB;
-        echo '</tr>' . PHP_EOL . PHP_EOL;
+        echo '</tr>' . PHP_EOL;
     }
 
-    /**
-     * Поле "Поиск".
-     */
+// ------------- Поле "Поиск" ------------------------------------------------------------------------------------------
     if ($newDesign) {
         echo S::TAB;
         echo '<div class="mdl-cell mdl-cell--4-col mdl-cell--stretch">' . PHP_EOL;
@@ -589,91 +586,97 @@ if (!$resultMessage) {
             }
     }
 
-    /**
-     * Поле "Настройки".
-     */
-    if ($newDesign) {
-        echo PHP_EOL . S::TAB . S::TAB;
-        echo '<h5>';
-        echo '<span class="material-icons color--grey material-icons--for-header">settings</span>';
-    } else {
-        echo PHP_EOL . S::TAB . S::TAB;
-        echo '</td>' . PHP_EOL;
-        echo S::TAB;
-        echo '</tr>' . PHP_EOL . PHP_EOL;
-
-        echo S::TAB;
-        echo '<tr>' . PHP_EOL;
-        echo S::TAB . S::TAB;
-        echo '<th class="query">';
-    }
-
-    echo S::HEADER_SETTINGS;
-
-    if ($newDesign) {
-        echo '</h5>' . PHP_EOL . PHP_EOL;
-    } else {
-        echo '</th>' . PHP_EOL;
-        echo S::TAB;
-        echo '</tr>' . PHP_EOL . PHP_EOL;
-    }
-
-    if (!$newDesign) {
-        echo S::TAB;
-        echo '<tr>' . PHP_EOL;
-        echo S::TAB . S::TAB;
-        echo '<td class="query">' . PHP_EOL;
-    }
-
     switch ($scaleType) {
-        case ScaleType::IRON:
-            echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, true);
-
-            echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
-            break;
-        case ScaleType::IRON_CONTROL:
         case ScaleType::VANLIST:
+        case ScaleType::IRON_CONTROL:
+            $showSettings = false;
             break;
         default:
-            echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
-            break;
+            $showSettings = true;
     }
 
-    switch ($scaleType) {
-        case ScaleType::DEFAULT_TYPE:
-        case ScaleType::WMR:
-            echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
+// ------------- Поле "Настройки" --------------------------------------------------------------------------------------
+    if ($showSettings) {
+        if ($newDesign) {
+            echo S::TAB . S::TAB;
+            echo '<h5>';
+            echo '<span class="material-icons color--grey material-icons--for-header">settings</span>';
+        } else {
+            echo PHP_EOL . S::TAB;
+            echo '<tr>' . PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo '<th class="query">';
+        }
 
-            // TODO: Отключен вывод отклонений
+        echo S::HEADER_SETTINGS;
+
+        if ($newDesign) {
+            echo '</h5>' . PHP_EOL . PHP_EOL;
+        } else {
+            echo '</th>' . PHP_EOL;
+            echo S::TAB;
+            echo '</tr>' . PHP_EOL . PHP_EOL;
+        }
+
+        if (!$newDesign) {
+            echo S::TAB;
+            echo '<tr>' . PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo '<td class="query">' . PHP_EOL;
+        }
+
+        switch ($scaleType) {
+            case ScaleType::IRON:
+                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, true);
+
+                echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
+                break;
+            case ScaleType::IRON_CONTROL:
+            case ScaleType::VANLIST:
+                break;
+            default:
+                echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+                break;
+        }
+
+        switch ($scaleType) {
+            case ScaleType::DEFAULT_TYPE:
+            case ScaleType::WMR:
+                echoCheckBox($newDesign, ParamName::SHOW_CARGO_DATE, S::CHECKBOX_SHOW_CARGO_DATE);
+
+                // TODO: Отключен вывод отклонений
 //        if ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC ||
 //            $scaleInfo->getClass() == ScaleClass::CLASS_STATIC ||
 //            $scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) {
 //            echoCheckBox($newDesign, ParamName::SHOW_DELTAS, S::CHECKBOX_SHOW_DELTAS);
 //        }
 
-            echo PHP_EOL;
+                echo PHP_EOL;
+                echo S::TAB . S::TAB;
+                echo '<h6>' . S::HEADER_COMPARE . '</h6>';
+                echo PHP_EOL;
+
+                echoCheckBox($newDesign, ParamName::COMPARE_FORWARD, S::CHECKBOX_COMPARE_FORWARD);
+
+                echoCheckBox($newDesign, ParamName::COMPARE_BY_BRUTTO, S::CHECKBOX_COMPARE_BY_BRUTTO);
+        }
+
+        if (!$newDesign) {
             echo S::TAB . S::TAB;
-            echo '<h6>' . S::HEADER_COMPARE . '</h6>';
-            echo PHP_EOL;
-
-            echoCheckBox($newDesign, ParamName::COMPARE_FORWARD, S::CHECKBOX_COMPARE_FORWARD);
-
-            echoCheckBox($newDesign, ParamName::COMPARE_BY_BRUTTO, S::CHECKBOX_COMPARE_BY_BRUTTO);
+            echo '</td>' . PHP_EOL;
+            echo S::TAB;
+            echo '</tr>' . PHP_EOL;
+        }
     }
-
-    echo PHP_EOL;
 
     if ($newDesign) {
         echo S::TAB;
         echo '</div> <!-- mdl-cell -->' . PHP_EOL;
-        echo S::TAB;
-        echo '</div> <!-- mdl-grid -->' . PHP_EOL;
-    } else {
-        echo S::TAB . S::TAB;
-        echo '</td>' . PHP_EOL;
-        echo S::TAB;
-        echo '</tr>' . PHP_EOL . PHP_EOL;
+    }
 
+// ------------- Кнопка очистки полей запроса --------------------------------------------------------------------------
+    if (!$newDesign) {
+        echo PHP_EOL;
         echo S::TAB;
         echo '<tr>' . PHP_EOL;
         echo S::TAB . S::TAB;
@@ -685,8 +688,14 @@ if (!$resultMessage) {
         echo '</td>' . PHP_EOL;
         echo S::TAB;
         echo '</tr>' . PHP_EOL;
+    }
 
-        echo S::TAB;
+// ------------- Конец таблицы -----------------------------------------------------------------------------------------
+    if ($newDesign) {
+        echo PHP_EOL . S::TAB;
+        echo '</div> <!-- mdl-grid -->' . PHP_EOL;
+    } else {
+        echo PHP_EOL . S::TAB;
         echo '</table>' . PHP_EOL;
     }
 

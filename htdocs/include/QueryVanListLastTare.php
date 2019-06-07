@@ -9,7 +9,7 @@ use Database\Tables as T;
 use Database\Columns as C;
 use Database\Aliases as A;
 
-class QueryVanListTare extends QueryBase
+class QueryVanListLastTare extends QueryBase
 {
     const ALIAS = '(%s) %s';
     const UNION = '%s UNION %s';
@@ -24,7 +24,7 @@ class QueryVanListTare extends QueryBase
 
     /**
      * @param int $dateStart
-     * @return QueryVanListTare
+     * @return QueryVanListLastTare
      */
     public function setDateStart($dateStart)
     {
@@ -34,7 +34,7 @@ class QueryVanListTare extends QueryBase
 
     /**
      * @param int $dateEnd
-     * @return QueryVanListTare
+     * @return QueryVanListLastTare
      */
     public function setDateEnd($dateEnd)
     {
@@ -44,7 +44,7 @@ class QueryVanListTare extends QueryBase
 
     /**
      * @param null|array $vanList
-     * @return QueryVanListTare
+     * @return QueryVanListLastTare
      */
     public function setVanList($vanList)
     {
@@ -64,6 +64,22 @@ class QueryVanListTare extends QueryBase
             ->column(C::SCALE_NUM)
             ->column(C::TARE);
 
+        if ($this->dateStart) {
+            $this->dateStart = (float)date(self::MYSQL_DATE_START_FORMAT, $this->dateStart);
+        }
+        if ($this->dateEnd) {
+            $this->dateEnd = (float)date(self::MYSQL_DATE_END_FORMAT, $this->dateEnd);
+        }
+
+        if ($this->dateStart) {
+            $builder->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
+        }
+        if ($this->dateEnd) {
+            $builder->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
+        }
+
+        $builder->where(C::VAN_NUMBER, B::COMPARISON_IN, vanListArrayToString($this->vanList));
+
         $builderDyn = clone $builder;
         $builderDyn->table(T::VAN_DYNAMIC_TARE);
         $builderSta = clone $builder;
@@ -72,29 +88,13 @@ class QueryVanListTare extends QueryBase
         $union = sprintf(self::UNION, $builderDyn->build(), $builderSta->build());
 
         $builderQuery = B::getInstance();
-        $builderQuery->table(sprintf(self::ALIAS, $union, A::VANLIST_TARE_UNION));
-
-        if ($this->dateStart) {
-            $this->dateStart = (float)date(self::MYSQL_DATE_START_FORMAT,$this->dateStart);
-        }
-        if ($this->dateEnd) {
-            $this->dateEnd = (float)date(self::MYSQL_DATE_END_FORMAT, $this->dateEnd);
-        }
-
-        if ($this->dateStart) {
-            $builderQuery->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
-        }
-        if ($this->dateEnd) {
-            $builderQuery->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
-        }
-
+        $builderQuery->table(sprintf(self::ALIAS, $union, A::VANLIST_LAST_TARE_UNION));
         $builderQuery
-            ->where(C::VAN_NUMBER, B::COMPARISON_IN, vanListArrayToString($this->vanList))
             ->order(C::VAN_NUMBER)
             ->order(C::DATETIME, true);
 
         $this->builder
-            ->table(sprintf(self::ALIAS, $builderQuery->build(), A::VANLIST_TARE_QUERY))
+            ->table(sprintf(self::ALIAS, $builderQuery->build(), A::VANLIST_LAST_TARE_QUERY))
             ->group(C::VAN_NUMBER);
     }
 }

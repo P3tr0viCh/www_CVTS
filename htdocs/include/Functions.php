@@ -1135,7 +1135,9 @@ function getResultHeader($resultType)
         case ResultType::IRON_CONTROL:
             return S::HEADER_IRON_CONTROL;
 
-        case ResultType::VANLIST_TARE:
+        case ResultType::VANLIST_WEIGHS:
+            return S::HEADER_VANLIST_WEIGHS;
+        case ResultType::VANLIST_LAST_TARE:
             return S::HEADER_VANLIST_TARE;
 
         default:

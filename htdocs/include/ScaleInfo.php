@@ -69,6 +69,7 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
+
             case Constants::SCALE_NUM_REPORT_IRON:
                 $this->place = Strings::SCALE_INFO_IRON_PLACE;
                 $this->header = Strings::SCALE_INFO_IRON_HEADER;

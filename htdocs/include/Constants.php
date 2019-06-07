@@ -173,7 +173,8 @@ class ResultType
     const IRON = 90;
     const IRON_CONTROL = 91;
 
-    const VANLIST_TARE = 100;
+    const VANLIST_WEIGHS = 100;
+    const VANLIST_LAST_TARE = 101;
 }
 
 class ParamName

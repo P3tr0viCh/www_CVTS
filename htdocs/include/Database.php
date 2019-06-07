@@ -41,7 +41,7 @@ class Tables
 
 class Columns
 {
-    const ALL = '*';
+    const NULL = 'NULL';
 
     const TRAIN_NUM = 'trnum';
 
@@ -224,6 +224,9 @@ class Aliases
 {
     const IRON_CONTROL_STA = 'sta';
     const IRON_CONTROL_DYN = 'dyn';
-    const VANLIST_TARE_UNION = 'u';
-    const VANLIST_TARE_QUERY = 'q';
+
+    const VANLIST_WEIGHS = 'w';
+
+    const VANLIST_LAST_TARE_UNION = 'u';
+    const VANLIST_LAST_TARE_QUERY = 'q';
 }
