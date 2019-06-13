@@ -1247,7 +1247,7 @@ function vanListStringToArray($value)
 
 /**
  * @param null|array $vanList
- * @return string
+ * @return null|string
  */
 function vanListArrayToString($vanList)
 {

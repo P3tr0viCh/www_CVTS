@@ -78,7 +78,12 @@ class QueryVanListLastTare extends QueryBase
             $builder->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
         }
 
-        $builder->where(C::VAN_NUMBER, B::COMPARISON_IN, vanListArrayToString($this->vanList));
+        $vanList = vanListArrayToString($this->vanList);
+        if (empty($vanList)) {
+            $builder->where(C::VAN_NUMBER, B::COMPARISON_NOT_EQUAL, "");
+        } else {
+            $builder->where(C::VAN_NUMBER, B::COMPARISON_IN, $vanList);
+        }
 
         $builderDyn = clone $builder;
         $builderDyn->table(T::VAN_DYNAMIC_TARE);
