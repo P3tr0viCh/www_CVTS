@@ -94,12 +94,14 @@ class QueryIronControl extends QueryBase
             $builderCargo->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
         }
 
-        $cargoTypeIron = utf8ToLatin1(CargoTypes::IRON_COMPARE);
+        $cargoTypeIronDyn = utf8ToLatin1(CargoTypes::IRON_COMPARE_DYN);
+        $cargoTypeIronSta = utf8ToLatin1(CargoTypes::IRON_COMPARE_STA);
 
-        $builderDyn->where(C::CARGO_TYPE, B::COMPARISON_LIKE, $cargoTypeIron);
-        $builderCargo->where(C::CARGO_TYPE, B::COMPARISON_LIKE, $cargoTypeIron);
+        $builderDyn->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronDyn);
+        $builderCargo->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronDyn);
 
         $builderSta->where(C::VAN_NUMBER, B::COMPARISON_IN, $builderCargo);
+        $builderSta->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronSta);
 
         $this->builder
             ->column(C::SCALE_NUM, A::IRON_CONTROL_STA, C::IRON_CONTROL_SCALES_STA)

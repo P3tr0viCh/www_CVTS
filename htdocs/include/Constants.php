@@ -80,7 +80,8 @@ class CargoTypes
     /**
      * Контрольная провеска чугуна.
      */
-    const IRON_COMPARE = 'Чугун (контрольная провеска)';
+    const IRON_COMPARE_DYN = 'Чугун (контрольная провеска)';
+    const IRON_COMPARE_STA = 'Чугун';
 }
 
 class ScaleType
