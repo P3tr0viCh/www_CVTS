@@ -26,10 +26,10 @@ class QueryScaleInfo extends QueryBase
     {
         $this->builder
             ->column(C::SCALE_PLACE)
-            ->column(C::SCALE_CLASS_STATIC)
-            ->column(C::SCALE_CLASS_DYNAMIC)
             ->column(C::SCALE_TYPE)
+            ->column(C::SCALE_TYPE_DYN)
             ->table(T::SCALES)
+            ->join(T::SCALES_ADD, C::SCALE_NUM)
             ->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
     }
 }

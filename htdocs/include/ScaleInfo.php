@@ -84,6 +84,7 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
+
             default:
                 if ($mysqli->connect_errno) {
                     return connectionError($mysqli);
@@ -96,19 +97,14 @@ class ScaleInfo
                         if ($row = $result->fetch_array()) {
                             $this->place = latin1ToUtf8($row[Columns::SCALE_PLACE]);
 
-                            $staticClass = $row[Database\Columns::SCALE_CLASS_STATIC];
-                            $dynamicClass = $row[Database\Columns::SCALE_CLASS_DYNAMIC];
-
-                            if ($staticClass && $dynamicClass) {
-                                $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
-                            } elseif (!$staticClass && $dynamicClass) {
-                                $this->class = ScaleClass::CLASS_DYNAMIC;
-                            } elseif ($staticClass && !$dynamicClass) {
-                                $this->class = ScaleClass::CLASS_STATIC;
-                            }
-
                             $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
                             $this->type = $row[Database\Columns::SCALE_TYPE];
+
+                            if ($row[Database\Columns::SCALE_TYPE_DYN] == 0) {
+                                $this->class = ScaleClass::CLASS_STATIC;
+                            } else {
+                                $this->class = ScaleClass::CLASS_DYNAMIC;
+                            }
 
                             return null;
                         } else {
