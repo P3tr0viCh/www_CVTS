@@ -213,6 +213,7 @@ class ParamName
     const SCALES = 'scales_filter';
     const SHOW_CARGO_DATE = 'show_cargo_date';
     const SHOW_DELTAS = 'show_deltas';
+    const SHOW_DELTAS_MI_3115 = 'show_deltas_mi_3115';
     const ORDER_BY_DATETIME = 'order_by_datetime';
     const COMPARE_FORWARD = 'compare_forward';
     const COMPARE_BY_BRUTTO = 'compare_by_brutto';

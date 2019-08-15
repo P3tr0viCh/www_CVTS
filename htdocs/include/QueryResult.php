@@ -62,6 +62,7 @@ class QueryResult extends QueryBase
 
     private $showCargoDate;
     private $showDeltas;
+    private $showDeltasMi3115;
 
     private function getTableName()
     {
@@ -77,6 +78,7 @@ class QueryResult extends QueryBase
 
             case ResultType::TRAIN_DYNAMIC:
                 return T::TRAIN_DYNAMIC;
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::TRAIN_DYNAMIC_ONE:
                 return T::VAN_DYNAMIC_BRUTTO;
 
@@ -92,14 +94,19 @@ class QueryResult extends QueryBase
             case ResultType::DP_SUM:
                 return T::DP;
 
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::CARGO_LIST_DYNAMIC:
                 return T::VAN_DYNAMIC_BRUTTO;
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::CARGO_LIST_STATIC:
                 return T::VAN_STATIC_BRUTTO;
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::CARGO_LIST_AUTO:
                 return T::AUTO_BRUTTO;
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::COMPARE_DYNAMIC:
                 return T::VAN_DYNAMIC_BRUTTO;
+            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
             case ResultType::COMPARE_STATIC:
                 return T::VAN_STATIC_BRUTTO;
 
@@ -160,6 +167,14 @@ class QueryResult extends QueryBase
                     ->column($this->showDeltas ? C::MI_DELTA_ABS_TARE : null)
                     ->column(C::NETTO)
                     ->column($this->showDeltas ? C::MI_DELTA : null);
+
+                if ($this->showDeltasMi3115) {
+                    $this->builder
+                        ->column(C::OVERLOAD)
+                        ->column(C::MI_3115_DELTA)
+                        ->column(C::MI_3115_TOLERANCE)
+                        ->column(C::MI_3115_RESULT);
+                }
 
                 if ($this->scaleType == ScaleType::WMR) {
                     $this->builder
@@ -461,6 +476,10 @@ class QueryResult extends QueryBase
             ($this->resultType == ResultType::TRAIN_DYNAMIC_ONE ||
                 $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
                 $this->resultType == ResultType::VAN_STATIC_BRUTTO);
+        $this->showDeltasMi3115 = $this->filter->isShowDeltasMi3115() &&
+            ($this->resultType == ResultType::TRAIN_DYNAMIC_ONE ||
+                $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
+                $this->resultType == ResultType::VAN_STATIC_BRUTTO);
 
         $table = $this->getTableName();
 
@@ -483,6 +502,15 @@ class QueryResult extends QueryBase
 
         if ($this->showDeltas) {
             $this->builder->join(T::VAN_DELTAS,
+                array(
+                    C::TRAIN_NUM,
+                    C::SCALE_NUM,
+                    C::SEQUENCE_NUMBER,
+                    C::UNIX_TIME));
+        }
+
+        if ($this->showDeltasMi3115) {
+            $this->builder->join(T::VAN_DELTAS_MI_3115,
                 array(
                     C::TRAIN_NUM,
                     C::SCALE_NUM,

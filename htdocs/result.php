@@ -114,6 +114,7 @@ switch ($reportType) {
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS))
             ->setShowCargoDate(getParamGETAsBool(ParamName::SHOW_CARGO_DATE))
             ->setShowDeltas(getParamGETAsBool(ParamName::SHOW_DELTAS))
+            ->setShowDeltasMi3115(getParamGETAsBool(ParamName::SHOW_DELTAS_MI_3115))
             ->setOrderByDateTime(getParamGETAsBool(ParamName::ORDER_BY_DATETIME))
             ->setCompareForward(getParamGETAsBool(ParamName::COMPARE_FORWARD))
             ->setCompareByBrutto(getParamGETAsBool(ParamName::COMPARE_BY_BRUTTO));
@@ -282,7 +283,6 @@ if ($mysqli) {
 
             switch ($reportType) {
                 case ReportType::TRAINS:
-                    break;
                 case ReportType::CARGO_TYPES:
                     break;
                 case ReportType::IRON:
@@ -339,12 +339,6 @@ if ($mysqli) {
                     break;
 
                 case ResultType::VANLIST_WEIGHS:
-                    if ($dateTimeStart == null && $dateTimeEnd == null && count($vanList) == 0) {
-                        $dateTimeStart = $dateTimeBuilder
-                            ->setDay(1)
-                            ->buildStartDate();
-                    }
-                    break;
                 case ResultType::VANLIST_LAST_TARE:
                     if ($dateTimeStart == null && $dateTimeEnd == null && count($vanList) == 0) {
                         $dateTimeStart = $dateTimeBuilder

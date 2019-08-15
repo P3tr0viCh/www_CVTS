@@ -23,6 +23,7 @@ class ResultFilter
     private $full;
     private $showCargoDate;
     private $showDeltas;
+    private $showDeltasMi3115;
     private $orderByDateTime;
     private $compareForward;
     private $compareByBrutto;
@@ -116,6 +117,18 @@ class ResultFilter
     public function setShowDeltas($showDeltas)
     {
         $this->showDeltas = $showDeltas;
+        return $this;
+    }
+
+    /**
+     * Выводить редельные расхождения по МИ 3115.
+     *
+     * @param bool $showDeltasMi3115
+     * @return $this
+     */
+    public function setShowDeltasMi3115($showDeltasMi3115)
+    {
+        $this->showDeltasMi3115 = $showDeltasMi3115;
         return $this;
     }
 
@@ -317,6 +330,14 @@ class ResultFilter
     public function isShowDeltas()
     {
         return $this->showDeltas;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isShowDeltasMi3115()
+    {
+        return $this->showDeltasMi3115;
     }
 
     /**

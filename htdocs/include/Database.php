@@ -20,6 +20,7 @@ class Tables
     const VAN_BRUTTO_ADD = 'vnb_add';
 
     const VAN_DELTAS = 'vnb_delta';
+    const VAN_DELTAS_MI_3115 = 'vnb_delta_mi_3115';
 
     const TRAIN_DYNAMIC = 'trdynb';
 
@@ -203,6 +204,14 @@ class Columns
     const MI_DELTA_ABS_TARE_STA_E = 'delta_abs_tare_sta_exact';
     const MI_DELTA_STA = 'delta_sta';
     const MI_DELTA_STA_E = 'delta_sta_exact';
+
+    const MI_3115_LOSS_SUPPLIER = 'loss_supplier';
+    const MI_3115_DELTA_SUPPLIER = 'delta_supplier';
+    const MI_3115_DELTA_FROM_TABLES = 'delta_from_tables';
+    const MI_3115_DELTA_FOR_STATIONS = 'delta_for_stations';
+    const MI_3115_DELTA = 'delta_mi_3115';
+    const MI_3115_TOLERANCE = 'tolerance_mi_3115';
+    const MI_3115_RESULT = 'result_mi_3115';
 
     const IRON_DATE = 'date';
     const IRON_ESPC_RAZL = 'espc_razl';

@@ -651,6 +651,8 @@ if (!$resultMessage) {
 //            echoCheckBox($newDesign, ParamName::SHOW_DELTAS, S::CHECKBOX_SHOW_DELTAS);
 //        }
 
+                echoCheckBox($newDesign, ParamName::SHOW_DELTAS_MI_3115, S::CHECKBOX_SHOW_DELTAS_MI_3115);
+
                 echo PHP_EOL;
                 echo S::TAB . S::TAB;
                 echo '<h6>' . S::HEADER_COMPARE . '</h6>';

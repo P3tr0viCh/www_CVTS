@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
 require_once "MySQLConnection.php";
 require_once "Strings.php";
 require_once "Constants.php";
@@ -334,6 +334,27 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     }
                 }
 
+            case C::MI_3115_LOSS_SUPPLIER:
+            case C::MI_3115_DELTA_SUPPLIER:
+            case C::MI_3115_DELTA_FROM_TABLES:
+            case C::MI_3115_DELTA_FOR_STATIONS:
+            case C::MI_3115_DELTA:
+                return num_fmt($fieldValue, 2) . '%';
+            case C::MI_3115_TOLERANCE:
+                return num_fmt($fieldValue, 2);
+            case C::MI_3115_RESULT:
+                if ($fieldValue == 0.0) {
+                    return S::TEXT_DELTA_MI_3115_OK;
+                } else {
+                    $value = num_fmt($fieldValue, 2);
+
+                    if ($fieldValue > 0) {
+                        $value = "+" . $value;
+                    }
+
+                    return $value;
+                }
+
             default:
                 return $fieldValue;
         }
@@ -450,6 +471,15 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::MI_TARE_STA_DATETIME:
         case C::MI_DELTA_ABS_TARE_STA:
         case C::MI_DELTA_STA:
+            return true;
+
+        case C::MI_3115_LOSS_SUPPLIER:
+        case C::MI_3115_DELTA_SUPPLIER:
+        case C::MI_3115_DELTA_FROM_TABLES:
+        case C::MI_3115_DELTA_FOR_STATIONS:
+        case C::MI_3115_DELTA:
+        case C::MI_3115_TOLERANCE:
+        case C::MI_3115_RESULT:
             return true;
 
         case C::IRON_DATE:
@@ -722,6 +752,21 @@ function columnName($fieldName, $scaleType, $resultType = null)
         case C::MI_DELTA_STA_E:
             return ColumnsStrings::MI_DELTA_STA_E;
 
+        case C::MI_3115_LOSS_SUPPLIER:
+            return ColumnsStrings::MI_3115_LOSS_SUPPLIER;
+        case C::MI_3115_DELTA_SUPPLIER:
+            return ColumnsStrings::MI_3115_DELTA_SUPPLIER;
+        case C::MI_3115_DELTA_FROM_TABLES:
+            return ColumnsStrings::MI_3115_DELTA_FROM_TABLES;
+        case C::MI_3115_DELTA_FOR_STATIONS:
+            return ColumnsStrings::MI_3115_DELTA_FOR_STATIONS;
+        case C::MI_3115_DELTA:
+            return ColumnsStrings::MI_3115_DELTA;
+        case C::MI_3115_TOLERANCE:
+            return ColumnsStrings::MI_3115_TOLERANCE;
+        case C::MI_3115_RESULT:
+            return ColumnsStrings::MI_3115_RESULT;
+
         case C::IRON_DATE:
             return ColumnsStrings::DATE;
         case C::IRON_ESPC_RAZL:
@@ -844,6 +889,14 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::MI_DELTA_STA:
             case C::MI_DELTA_STA_E:
 
+            case C::MI_3115_LOSS_SUPPLIER:
+            case C::MI_3115_DELTA_SUPPLIER:
+            case C::MI_3115_DELTA_FROM_TABLES:
+            case C::MI_3115_DELTA_FOR_STATIONS:
+            case C::MI_3115_DELTA:
+            case C::MI_3115_TOLERANCE:
+            case C::MI_3115_RESULT:
+
             case C::SCALE_CLASS_DYNAMIC:
 
             case C::IRON_ESPC_RAZL:
@@ -898,7 +951,6 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::MI_TARE_STA_DATETIME:
 
             case C::SCALE_CLASS_STATIC:
-                return true;
 
             default:
                 return true;

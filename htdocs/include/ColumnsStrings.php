@@ -141,6 +141,14 @@ class ColumnsStrings
     const MI_DELTA_STA = 'ПДП для тары стат.';
     const MI_DELTA_STA_E = 'ПДП для тары стат.!';
 
+    const MI_3115_LOSS_SUPPLIER = 'Норма убыли';
+    const MI_3115_DELTA_SUPPLIER = 'Погрешность на ст. отправления';
+    const MI_3115_DELTA_FROM_TABLES = 'Погрешность на ст. назначения';
+    const MI_3115_DELTA_FOR_STATIONS = 'Предельное расхождение';
+    const MI_3115_DELTA = 'Погрешность в %';
+    const MI_3115_TOLERANCE = 'Погрешность в т';
+    const MI_3115_RESULT = 'Результат по МИ 3115';
+
     const DATE = 'Дата';
     const IRON_ESPC_RAZL = 'ЭСПЦ-2 + Разливка';
     const IRON_ESPC = 'ЭСПЦ-2';

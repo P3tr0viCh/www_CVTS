@@ -148,6 +148,7 @@ class Strings
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
     const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
     const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
+    const CHECKBOX_SHOW_DELTAS_MI_3115 = 'Показать предельные расхождения по МИ 3115';
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';
@@ -241,6 +242,8 @@ class Strings
     const TEXT_SUM = "Сумма";
     const TEXT_AVG = "Среднее";
     const TEXT_TOTAL = "Итого";
+
+    const TEXT_DELTA_MI_3115_OK = "Норма";
 
     const TEXT_NIGHT_MODE = 'ДЕНЬ/НОЧЬ';
 
