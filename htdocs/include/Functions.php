@@ -346,7 +346,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                 if ($fieldValue == 0.0) {
                     return S::TEXT_DELTA_MI_3115_OK;
                 } else {
-                    $value = num_fmt($fieldValue, 2);
+                    $value = num_fmt($fieldValue, 3);
 
                     if ($fieldValue > 0) {
                         $value = "+" . $value;
