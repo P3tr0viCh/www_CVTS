@@ -133,14 +133,16 @@ class QueryIron extends QueryBase
             ->column(B::sum(C::NETTO), null, C::IRON_SHCH)
             ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_SHCH);
 
+        // Если первый селект ($builderRazl->build()) возвращает нулл, строка не выводится, даже если есть записи по другим селектам
         $this->builder
             ->column(C::IRON_DATE)
-            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_ESPC . ' + ' . C::IRON_RAZL), null, C::IRON_ESPC_RAZL)
+            ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_ESPC) . ' + ' .
+                sprintf(self::FUNCTION_IFNULL, C::IRON_RAZL), null, C::IRON_ESPC_RAZL)
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_ESPC), null, C::IRON_ESPC)
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_RAZL), null, C::IRON_RAZL)
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_SHCH), null, C::IRON_SHCH)
-            ->table(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC))
-            ->join(sprintf(self::SUB_QUERY, $builderRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_RAZL), C::IRON_DATE)
+            ->table(sprintf(self::SUB_QUERY, $builderRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_RAZL))
+            ->join(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC), C::IRON_DATE)
             ->join(sprintf(self::SUB_QUERY, $builderShch->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_SHCH), C::IRON_DATE)
             ->order(sprintf(self::FUNCTION_STR_TO_DATE, C::IRON_DATE, self::DATE_FORMAT), $this->orderByDesc);
     }
