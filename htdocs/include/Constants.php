@@ -36,7 +36,7 @@ class ScaleNums
     /**
      * Провеска чугуна: ЭСПЦ.
      */
-    const IRON_ESPC = '10';
+    const IRON_ESPC = '10, 97';
     /**
      * Провеска чугуна: Разливка.
      */

@@ -150,8 +150,8 @@ class ColumnsStrings
     const MI_3115_RESULT = 'Результат по МИ 3115';
 
     const DATE = 'Дата';
-    const IRON_ESPC_RAZL = 'ЭСПЦ-2 + Разливка';
-    const IRON_ESPC = 'ЭСПЦ-2';
+    const IRON_ESPC_RAZL = 'ЭСПЦ + Разливка';
+    const IRON_ESPC = 'ЭСПЦ';
     const IRON_RAZL = 'Разливка';
     const IRON_SHCH = 'СХЧ';
 
