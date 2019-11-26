@@ -154,6 +154,7 @@ class ColumnsStrings
     const IRON_ESPC = 'ЭСПЦ';
     const IRON_RAZL = 'Разливка';
     const IRON_SHCH = 'СХЧ';
+    const IRON_INGOT = 'Чугун передельный';
 
     const IRON_CONTROL_SCALES_STA = 'Статика: № весов';
     const IRON_CONTROL_SCALES_DYN = 'Динамика: № весов';

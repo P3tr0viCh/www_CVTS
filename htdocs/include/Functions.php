@@ -132,6 +132,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::IRON_ESPC:
             case C::IRON_RAZL:
             case C::IRON_SHCH:
+            case C::IRON_INGOT:
 
             case C::IRON_CONTROL_NETTO_STA:
             case C::IRON_CONTROL_NETTO_DYN:
@@ -487,6 +488,7 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::IRON_ESPC:
         case C::IRON_RAZL:
         case C::IRON_SHCH:
+        case C::IRON_INGOT:
             return true;
 
         case C::IRON_CONTROL_SCALES_STA:
@@ -777,6 +779,8 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::IRON_RAZL;
         case C::IRON_SHCH:
             return ColumnsStrings::IRON_SHCH;
+        case C::IRON_INGOT:
+            return ColumnsStrings::IRON_INGOT;
 
         case C::IRON_CONTROL_SCALES_STA:
             return ColumnsStrings::IRON_CONTROL_SCALES_STA;
@@ -903,6 +907,7 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::IRON_ESPC:
             case C::IRON_RAZL:
             case C::IRON_SHCH:
+            case C::IRON_INGOT:
 
             case C::IRON_CONTROL_NETTO_STA:
             case C::IRON_CONTROL_NETTO_DYN:

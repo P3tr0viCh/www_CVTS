@@ -218,6 +218,7 @@ class Columns
     const IRON_ESPC = 'espc';
     const IRON_RAZL = 'razl';
     const IRON_SHCH = 'shch';
+    const IRON_INGOT = 'ingot';
 
     const IRON_CONTROL_SCALES_STA = 'scales_sta';
     const IRON_CONTROL_DATETIME_STA = 'bdatetime_sta';

@@ -76,12 +76,25 @@ class CargoTypes
      * Провеска чугуна.
      */
     const IRON = 'Чугун';
+    const IRON_INGOT = 'Чугун передельный чушковый';
 
     /**
      * Контрольная провеска чугуна.
      */
     const IRON_COMPARE_DYN = 'Чугун (контрольная провеска)';
     const IRON_COMPARE_STA = 'Чугун';
+}
+
+/**
+ * Отправители и получатели.
+ */
+class SuppliersAndRecipients
+{
+    /**
+     * Провеска чугуна.
+     */
+    const IRON_SUPPLIER = 'Доменный%';
+    const IRON_RECIPIENT = 'ЭСПЦ';
 }
 
 class ScaleType
