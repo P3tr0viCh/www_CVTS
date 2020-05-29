@@ -68,16 +68,15 @@ echo '<h1 class="result-message color-text--error">' . $errorHeader . '</h1>' . 
 echo S::TAB . S::TAB . S::TAB;
 echo '<h2 class="result-message color-text--secondary">' . $errorSubHeader . '</h2>' . PHP_EOL;
 
-if (strcasecmp($_SERVER['REQUEST_URI'], "/index.php")) {
-    echo S::TAB . S::TAB . S::TAB;
+echo S::TAB . S::TAB . S::TAB;
 
-    $href = \HrefBuilder\Builder::getInstance()
-        ->setUrl("index.php")
-        ->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
-        ->build();
+$href = \HrefBuilder\Builder::getInstance()
+	->setUrl("index.php")
+	->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
+	->build();
+$href = "http://" . $_SERVER['HTTP_HOST'] . "/" . $href;
 
-    echo "<h2 class='result-message link'><a href='$href'>" . S::ERROR_GOTO_START . "</a></h2>" . PHP_EOL;
-}
+echo "<h2 class='result-message link'><a href='$href'>" . S::ERROR_GOTO_START . "</a></h2>" . PHP_EOL;
 
 echo S::TAB . S::TAB;
 echo '</div>' . PHP_EOL;
