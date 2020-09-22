@@ -1,10 +1,10 @@
 //noinspection JSUnusedGlobalSymbols
 function dateTime(showSeconds) {
-    var
+    const
         HEIGHT_TIME_MAGIC_NUMBER = 0,
         HEIGHT_DATE_MAGIC_NUMBER = 150;
 
-    var currentTime,
+    let currentTime,
         timeDelimiter,
 
         dateElement = document.getElementById('date'),
@@ -50,8 +50,7 @@ function dateTime(showSeconds) {
             timeDelimiter = "<span class='color-text--darkgrey'>" + timeDelimiter + "</span>";
         }
 
-        var
-            time = withZero(currentTime.getHours()) + timeDelimiter + withZero(currentTime.getMinutes());
+        let time = withZero(currentTime.getHours()) + timeDelimiter + withZero(currentTime.getMinutes());
 
         if (showSeconds) {
             time += timeDelimiter + withZero(currentTime.getSeconds());
@@ -71,8 +70,7 @@ function dateTime(showSeconds) {
     }
 
     function updateFontSize(element, text, magicNumber) {
-        var
-            clientWidth = element.clientWidth,
+        let clientWidth = element.clientWidth,
             clientHeight = element.clientHeight,
             paddingLeft,
             paddingRight;
@@ -95,9 +93,8 @@ function dateTime(showSeconds) {
 
         calcFontSizeElement.innerHTML = text;
 
-        var
-            fontSize = 10;
-        for (var i = fontSize; i < clientHeight; i++) {
+        let fontSize = 10;
+        for (let i = fontSize; i < clientHeight; i++) {
             calcFontSizeElement.style.fontSize = i + "px";
 
             if ((calcFontSizeElement.clientWidth > clientWidth) || (calcFontSizeElement.clientHeight > clientHeight)) {
@@ -107,11 +104,14 @@ function dateTime(showSeconds) {
             fontSize = i;
         }
 
+        calcFontSizeElement.innerHTML = null;
+
         element.style.fontSize = fontSize + "px";
     }
 
     function createCalcFontSizeElement() {
-        var element = document.createElement('div'),
+        const
+            element = document.createElement('div'),
             textNode = document.createTextNode("");
 
         element.appendChild(textNode);

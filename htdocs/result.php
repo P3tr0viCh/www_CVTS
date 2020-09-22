@@ -66,7 +66,13 @@ if (!isset($_GET[ParamName::SCALE_NUM])) {
 
 $newDesign = isNewDesign();
 
+$useBackup = false;
+
 $reportType = getParamGETAsInt(ParamName::REPORT_TYPE, ReportType::TYPE_DEFAULT);
+
+$resultType = null;
+
+$scaleNum = null;
 
 $title = S::TITLE_ERROR;
 
@@ -94,6 +100,11 @@ $dtEndMinute = null;
 
 $dateTimeStart = null;
 $dateTimeEnd = null;
+
+$orderByDesc = null;
+$from20to20 = null;
+
+$vanList = null;
 
 $filter = new ResultFilter();
 
@@ -254,6 +265,8 @@ echoStartPage();
 
 $mysqli = MySQLConnection::getInstance($useBackup);
 
+$scaleInfo = null;
+
 if ($mysqli) {
     if ($mysqli->connect_errno) {
         $header = S::ERROR_ERROR;
@@ -282,14 +295,19 @@ if ($mysqli) {
             $menuItems[] = new HtmlHeaderMenuItem('copyTable', S::MENU_COPY_TABLE, 'copyToClipboard("table")');
             $menuItems[] = new HtmlHeaderMenuItem('copyTableBody', S::MENU_COPY_TABLE_BODY, 'copyToClipboard("tableBody")');
 
+            if ($resultType == ResultType::IRON) {
+                $menuItems[] = new HtmlHeaderMenuItem('copyTableBodyIronPrevDay', S::MENU_COPY_TABLE_BODY_IRON_PREV_DAY, 'copyToClipboard("tableBodyIronPrevDay")');
+                $menuItems[] = new HtmlHeaderMenuItem('copyTableBodyIronPrev3Day', S::MENU_COPY_TABLE_BODY_IRON_PREV_3_DAY, 'copyToClipboard("tableBodyIronPrev3Day")');
+            }
+
+            $dateTimeBuilder = DateTimeBuilder::getInstance();
+
             switch ($reportType) {
                 case ReportType::TRAINS:
                 case ReportType::CARGO_TYPES:
                     break;
                 case ReportType::IRON:
                 default:
-                    /** @var DateTimeBuilder $dateTimeBuilder */
-                    $dateTimeBuilder = DateTimeBuilder::getInstance();
 
                     $dateTimeStart = $dateTimeBuilder
                         ->setDay($dtStartDay)
@@ -318,11 +336,7 @@ if ($mysqli) {
                     break;
                 case ResultType::IRON_CONTROL:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
-                        try {
-                            $prevDate = getdate(date_sub(new DateTime(), new DateInterval('P1D'))->getTimestamp());
-                        } catch (Exception $e) {
-                            throwBadRequest($e->getMessage());
-                        }
+                        $prevDate = getdate(date_sub(new DateTime(), new DateInterval('P1D'))->getTimestamp());
 
                         $dateTimeStart = $dateTimeBuilder
                             ->setDay($prevDate["mday"])
@@ -527,6 +541,8 @@ if (!$resultMessage) {
         echo PHP_EOL;
     }
 
+    $queryResult = null;
+
     try {
         switch ($resultType) {
             case ResultType::IRON:
@@ -572,9 +588,13 @@ if (!$resultMessage) {
 
     $result = $mysqli->query($query);
 
+    $numRows = -1;
+
     if ($result) {
-        if ($result->num_rows > 0) {
-            if ($result->num_rows <= Constants::RESULT_MAX_ROWS) {
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            if ($numRows <= Constants::RESULT_MAX_ROWS) {
                 /** @var FieldInfo[] $fieldsInfo */
                 $fieldsInfo = array();
 
@@ -1031,10 +1051,10 @@ if (!$resultMessage) {
                 echoFormEnd();
 
                 if ($newDesign) {
-                    echo '<script type="text/javascript">hasData = true;</script>' . PHP_EOL;
+                    echo '<script type="text/javascript">numRows = ' . $numRows . ';</script>' . PHP_EOL;
                 }
             } else {
-                $resultMessage = new ResultMessage(S::ERROR_RESULT_MAX_ROWS, sprintf(S::ERROR_RESULT_MAX_ROWS_DETAILS, $result->num_rows));
+                $resultMessage = new ResultMessage(S::ERROR_RESULT_MAX_ROWS, sprintf(S::ERROR_RESULT_MAX_ROWS_DETAILS, $numRows));
             }
         } else {
             $resultMessage = new ResultMessage(S::TEXT_ZERO_RESULT, null);
@@ -1046,7 +1066,7 @@ if (!$resultMessage) {
 
 if ($resultMessage) {
     if ($newDesign) {
-        echo '<script type="text/javascript">hasData = false;</script>' . PHP_EOL;
+        echo '<script type="text/javascript">numRows = -1;</script>' . PHP_EOL;
     }
 
     echoErrorPage($resultMessage->getError(), $resultMessage->getErrorDetails());

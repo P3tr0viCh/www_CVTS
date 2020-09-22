@@ -1,10 +1,7 @@
 //noinspection JSUnusedGlobalSymbols
 function startWAC(companyDateMySQL, departmentDateMySQL, dateFormat) {
-    var
+    const
         MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000,
-
-        currentTime,
-        timeDelimiter,
 
         companyDate = mySqlDateToDate(companyDateMySQL),
         departmentDate = mySqlDateToDate(departmentDateMySQL),
@@ -13,8 +10,11 @@ function startWAC(companyDateMySQL, departmentDateMySQL, dateFormat) {
         timeElement = document.getElementById('time'),
 
         companyElement = document.getElementById('company'),
-        departmentElement = document.getElementById('department'),
+        departmentElement = document.getElementById('department');
 
+    let
+        currentTime,
+        timeDelimiter,
         now;
 
     updateDateTime();

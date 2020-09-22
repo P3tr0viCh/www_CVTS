@@ -16,6 +16,7 @@ require_once "include/ResultMessage.php";
 require_once "include/echo_html_page.php";
 require_once "include/echo_table.php";
 
+use Database\Info;
 use Strings as S;
 
 // debug
@@ -28,7 +29,7 @@ $debug = getParamGETAsBool(ParamName::DEBUG, false);
 $disableHideCursor = getParamGETAsBool(ParamName::DISABLE_HIDE_CURSOR);
 $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 $department = getParamGETAsInt(ParamName::DEPARTMENT, 0);
-$dateFormat = getParamGETAsInt(ParamName::DATE_FORMAT, 0);;
+$dateFormat = getParamGETAsInt(ParamName::DATE_FORMAT, 0);
 $showTemp = getParamGETAsBool(ParamName::SHOW_TEMP, false);
 
 $companyDate = null;
@@ -72,7 +73,7 @@ echoStartBody($newDesign);
 
 $resultMessage = null;
 
-$mysqli = MySQLConnection::getInstance($useBackup, \Database\Info::CVTS);
+$mysqli = MySQLConnection::getInstance($useBackup, Info::CVTS);
 
 if ($mysqli) {
     if (!$mysqli->connect_errno) {

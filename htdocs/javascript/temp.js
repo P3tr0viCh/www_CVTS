@@ -1,6 +1,6 @@
 //noinspection JSUnusedGlobalSymbols
 function temp() {
-    var
+    const
         TEMP_URL = "temp.txt",
 
         DEG_TIMEOUT = 1000,
@@ -9,8 +9,7 @@ function temp() {
 
         HEIGHT_MAGIC_NUMBER = 180; // TODO
 
-    var
-        currentTemp,
+    let currentTemp,
 
         degElement = null,
         tempElement = document.getElementById('temp'),
@@ -118,8 +117,7 @@ function temp() {
     }
 
     function updateFontSize(element, text, magicNumber) {
-        var
-            clientWidth = element.clientWidth,
+        let clientWidth = element.clientWidth,
             clientHeight = element.clientHeight,
             paddingLeft,
             paddingRight;
@@ -142,9 +140,8 @@ function temp() {
 
         calcFontSizeElement.innerHTML = text;
 
-        var
-            fontSize = 10;
-        for (var i = fontSize; i < clientHeight; i++) {
+        let fontSize = 10;
+        for (let i = fontSize; i < clientHeight; i++) {
             calcFontSizeElement.style.fontSize = i + "px";
 
             if ((calcFontSizeElement.clientWidth > clientWidth) || (calcFontSizeElement.clientHeight > clientHeight)) {
@@ -160,7 +157,8 @@ function temp() {
     }
 
     function createCalcFontSizeElement() {
-        var element = document.createElement('div'),
+        const
+            element = document.createElement('div'),
             textNode = document.createTextNode("");
 
         element.appendChild(textNode);

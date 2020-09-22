@@ -15,7 +15,9 @@ function updateHRWidthOnEndBody() {
     if (!document.querySelectorAll) {
         // noinspection JSValidateTypes
         document.querySelectorAll = function (selectors) {
-            var style = document.createElement('style'), elements = [], element;
+            const style = document.createElement('style')
+            let elements = [], element;
+
             document.documentElement.firstChild.appendChild(style);
             document._qsa = [];
 
@@ -45,17 +47,18 @@ function updateHRWidthOnEndBody() {
 // Используется в result.php
 //noinspection JSUnusedGlobalSymbols
 function updateHRWidth() {
-    var
-        table = document.getElementById('tableBody');
+    const table = document.getElementById('tableBody');
 
     if (!table) {
         return;
     }
 
-    var hr = document.querySelectorAll("div.hr"),
+    const
+        hr = document.querySelectorAll("div.hr"),
         windowWidth = window.innerWidth || document.documentElement.clientWidth,
         bodyWidth = table.offsetWidth,
-        elementContent = document.getElementById("divContent"),
+        elementContent = document.getElementById("divContent");
+    let
         marginLeft,
         marginRight;
 
@@ -72,10 +75,10 @@ function updateHRWidth() {
     marginLeft = parseFloat(marginLeft);
     marginRight = parseFloat(marginRight);
 
-    var hrWidth = marginLeft + bodyWidth + marginRight;
+    const hrWidth = marginLeft + bodyWidth + marginRight;
 
     if (hrWidth > windowWidth) {
-        for (var i = 0, l = hr.length; i < l; i++) {
+        for (let i = 0, l = hr.length; i < l; i++) {
             hr[i].style.width = hrWidth + 'px';
         }
     }

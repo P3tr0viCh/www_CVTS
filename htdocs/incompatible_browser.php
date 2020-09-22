@@ -44,7 +44,7 @@ echo S::TAB . S::TAB . S::TAB . S::TAB . S::TAB;
 echo '<li class="margin-top-bottom--default-2x">' .
     sprintf(S::TEXT_COMPATIBLE_BROWSER_CHROME, CheckBrowser::COMPATIBLE_MIN_VERSION_CHROME) . '</li>' . PHP_EOL;
 echo S::TAB . S::TAB . S::TAB . S::TAB;
-echo '</ul>' . PHP_EOL;;
+echo '</ul>' . PHP_EOL;
 echo S::TAB . S::TAB . S::TAB;
 echo '</p>' . PHP_EOL;
 echo S::TAB . S::TAB . S::TAB;

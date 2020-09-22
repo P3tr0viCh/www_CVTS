@@ -1,18 +1,17 @@
 //noinspection JSUnusedGlobalSymbols
 function startWACTemp() {
-    var
+    const
         TEMP_URL = "temp.txt",
+        TEMP_TIMEOUT = 5 * 60 * 1000;
 
-     //    TEMP_TIMEOUT = 3000;
-		TEMP_TIMEOUT = 5 * 60 * 1000;
-
-    var
+    let
         temp = null,
         currentTemp = null,
         prevTemp = null,
 
-        timerTempId,
+        timerTempId;
 
+    const
         tempElement = document.getElementById('temp'),
 
         xmlhttp = new XMLHttpRequest(),

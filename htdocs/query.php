@@ -627,9 +627,9 @@ if (!$resultMessage) {
 
         switch ($scaleType) {
             case ScaleType::IRON:
-                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, true);
+                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, false);
 
-                echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20);
+                echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20, true);
                 break;
             case ScaleType::IRON_CONTROL:
             case ScaleType::VANLIST:

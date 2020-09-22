@@ -1,6 +1,12 @@
-var hasData; // if ($numRows > 0)
-
 // Используется в result.php
+
+let numRows;
+
+function elementSetEnabled(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) element.removeAttribute("disabled");
+}
+
 //noinspection JSUnusedGlobalSymbols
 function showContent() {
     document.getElementById("divLoading").style.display = "none";
@@ -8,82 +14,113 @@ function showContent() {
 
     document.getElementById("menuMoreList").classList.remove("hidden");
 
-    if (document.forms["formExcel"] !== null && hasData) {
+    if (document.forms["formExcel"] !== null && numRows > 0) {
         document.getElementById("saveIcon").classList.remove("hidden");
         document.getElementById("saveText").classList.remove("hidden");
     }
 
-    if (hasData) {
-        document.getElementById("copyAll").removeAttribute("disabled");
-        document.getElementById("copyTable").removeAttribute("disabled");
-        document.getElementById("copyTableBody").removeAttribute("disabled");
+    if (numRows > 0) {
+        elementSetEnabled("copyAll");
+        elementSetEnabled("copyTable");
+        elementSetEnabled("copyTableBody");
+
+        if (numRows > 1) {
+            elementSetEnabled("copyTableBodyIronPrevDay");
+        }
+        if (numRows > 3) {
+            elementSetEnabled("copyTableBodyIronPrev3Day");
+        }
     }
 }
 
 //noinspection JSUnusedGlobalSymbols
 function copyToClipboard(copy) {
     setTimeout(function () {
-        var text = createTextForCopy(copy);
+        const text = createTextForCopy(copy);
         copyTextToClipboard(text);
     }, 100);
 }
 
 function createTextForCopy(copy) {
-    var row, cell, rowLength, cellLength,
+    let row, cell, rowLength, cellLength,
+        rowStart, rowEnd, cellStart,
         tableRow,
-        textHeader = "",
-        textTableHead = "",
-        textTableBody = "",
+        element,
+        result = "",
         i, l;
 
     //noinspection FallThroughInSwitchStatementJS
     switch (copy) {
         case 'all':
-            var header = document.querySelectorAll("[data-header]");
+            element = document.querySelectorAll("[data-header]");
 
-            for (i = 0, l = header.length; i < l; i++) {
-                textHeader = textHeader + header[i].textContent + '\n';
+            for (i = 0, l = element.length; i < l; i++) {
+                result = result + element[i].textContent + '\n';
             }
         case 'table':
-            var tableHead = document.getElementById("tableHead");
+            element = document.getElementById("tableHead");
 
-            for (row = 0, rowLength = tableHead.rows.length; row < rowLength; row++) {
-                tableRow = tableHead.rows[row];
+            for (row = 0, rowLength = element.rows.length; row < rowLength; row++) {
+                tableRow = element.rows[row];
 
                 for (cell = 0, cellLength = tableRow.cells.length; cell < cellLength; cell++) {
-                    textTableHead = textTableHead + tableRow.cells[cell].textContent;
+                    result = result + tableRow.cells[cell].textContent;
 
                     for (i = 0, l = tableRow.cells[cell].colSpan; i < l; i++) {
-                        textTableHead = textTableHead + '\t';
+                        result = result + '\t';
                     }
                 }
 
                 // Удаление последнего символа табуляции
-                textTableHead = textTableHead.slice(0, -1) + '\n';
+                result = result.slice(0, -1) + '\n';
             }
         case 'tableBody':
-            var tableBody = document.getElementById("tableBody");
+        case 'tableBodyIronPrevDay':
+        case 'tableBodyIronPrev3Day':
+            element = document.getElementById("tableBody");
+            rowLength = element.rows.length;
 
-            for (row = 0, rowLength = tableBody.rows.length; row < rowLength; row++) {
-                tableRow = tableBody.rows[row];
+            switch (copy) {
+                case 'tableBodyIronPrevDay':
+                    rowStart = rowLength - 2;
+                    rowEnd = rowLength - 1;
+                    cellStart = 1;
+                    break;
+                case 'tableBodyIronPrev3Day':
+                    rowStart = rowLength - 4;
+                    rowEnd = rowLength - 1;
+                    cellStart = 1;
+                    break;
+                default:
+                    rowStart = 0;
+                    rowEnd = rowLength;
+                    cellStart = 0;
+            }
 
-                for (cell = 0, cellLength = tableRow.cells.length; cell < cellLength; cell++) {
-                    textTableBody = textTableBody + tableRow.cells[cell].textContent + '\t';
+            for (row = rowStart; row < rowEnd; row++) {
+                tableRow = element.rows[row];
+
+                for (cell = cellStart, cellLength = tableRow.cells.length; cell < cellLength; cell++) {
+                    result = result + tableRow.cells[cell].textContent;
+
+                    for (i = 0, l = tableRow.cells[cell].colSpan; i < l; i++) {
+                        result = result + '\t';
+                    }
                 }
 
-                textTableBody = textTableBody.slice(0, -1) + '\n';
+                result = result.slice(0, -1) + '\n';
             }
     }
 
-    // console.log(textHeader + textTableHead + textTableBody);
+    // console.log(result);
 
-    return textHeader + textTableHead + textTableBody;
+    return result;
 }
 
 function copyTextToClipboard(text) {
     // console.log(text);
 
-    var textArea = document.createElement("textarea");
+    const textArea = document.createElement("textarea");
 
     textArea.style.position = 'fixed';
 
@@ -122,7 +159,7 @@ function copyTextToClipboard(text) {
 
     try {
         if (!document.execCommand('copy')) {
-            console.log('Unable to copy');
+            console.log('execCommand: unable to copy');
         }
     } catch (err) {
         console.log('catch: unable to copy');

@@ -1,5 +1,4 @@
-var
-    isNightMode = null;
+let isNightMode = null;
 
 //noinspection JSUnusedGlobalSymbols
 function nightMode(nightMode) {
@@ -20,8 +19,7 @@ function nightMode(nightMode) {
         //
         // return (second > 10 && second < 20) || (second > 30 && second < 40) || (second > 50 && second < 60);
 
-        var
-            hour = datetime.getHours();
+        const hour = datetime.getHours();
 
         return (hour >= 19) || (hour < 7);
     }
@@ -52,12 +50,11 @@ function setNightMode(nightMode) {
 
     isNightMode = nightMode;
 
-    var
-        elements = document.body.getElementsByTagName("*");
+    const elements = document.body.getElementsByTagName("*");
 
     setElementNightMode(document.body, nightMode);
 
-    for (var i = 0, l = elements.length; i < l; i++) {
+    for (let i = 0, l = elements.length; i < l; i++) {
         if (validTag(elements[i].tagName)) {
             setElementNightMode(elements[i], nightMode);
         }

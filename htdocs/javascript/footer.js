@@ -33,10 +33,12 @@ function updateContentMinHeightOnEndBody() {
 }
 
 function updateContentMinHeight() {
-    var windowHeight = window.innerHeight || document.documentElement.clientHeight,
+    const
+        windowHeight = window.innerHeight || document.documentElement.clientHeight,
         headerHeight = document.getElementById("divHeader").clientHeight,
         footerHeight = document.getElementById("divFooter").clientHeight,
-        elementContent = document.getElementById("divContent"),
+        elementContent = document.getElementById("divContent");
+    let
         marginTop,
         marginBottom;
 

@@ -1,28 +1,28 @@
 // Используется в query.php
 
-var inputs = [];
+const inputs = [];
 
-var resultTypes = [];
+const resultTypes = [];
 
 //noinspection JSUnusedGlobalSymbols
 function setInputs() {
-    for (var i = 0, l = arguments.length; i < l; i++) {
+    for (let i = 0, l = arguments.length; i < l; i++) {
         inputs[i] = document.getElementById(arguments[i]);
     }
 }
 
 //noinspection JSUnusedGlobalSymbols
 function setResultTypes() {
-    for (var i = 0, l = arguments.length; i < l; i++) {
+    for (let i = 0, l = arguments.length; i < l; i++) {
         resultTypes[i] = arguments[i];
     }
 }
 
 //noinspection JSUnusedGlobalSymbols
 function setDates(value) {
-    var values = ["", "", "", "", "", "", "", "", "", ""];
+    const values = ["", "", "", "", "", "", "", "", "", ""];
 
-    var currDate = new Date();
+    const currDate = new Date();
     currDate.setHours(0, 0, 0, 0);
 
     switch (value) {
@@ -43,7 +43,7 @@ function setDates(value) {
 
             break;
         case "startCurrentWeek":
-            var day = currDate.getDay();
+            let day = currDate.getDay();
             day === 0 ? day = 6 : day--;
             currDate.setDate(currDate.getDate() - day);
             values[0] = currDate.getDate() + "";
@@ -101,7 +101,7 @@ function setDates(value) {
             break;
     }
 
-    for (var i = 0; i < values.length; i++) {
+    for (let i = 0; i < values.length; i++) {
         if (inputs[i]) {
             inputs[i].value = values[i];
         }
@@ -113,9 +113,9 @@ function setDates(value) {
 }
 
 function checkTextFields() {
-    var texts = document.querySelectorAll('.mdl-js-textfield');
+    const texts = document.querySelectorAll('.mdl-js-textfield');
     if (texts) {
-        for (var i = 0, l = texts.length; i < l; i++) {
+        for (let i = 0, l = texts.length; i < l; i++) {
             // noinspection JSUnresolvedFunction
             texts[i].MaterialTextfield.checkDirty();
         }
@@ -123,9 +123,9 @@ function checkTextFields() {
 }
 
 function checkSwitches() {
-    var switches = document.querySelectorAll('.mdl-js-switch');
+    const switches = document.querySelectorAll('.mdl-js-switch');
     if (switches) {
-        for (var i = 0, l = switches.length; i < l; i++) {
+        for (let i = 0, l = switches.length; i < l; i++) {
             switches[i].MaterialSwitch.checkToggleState();
         }
     }
@@ -133,7 +133,7 @@ function checkSwitches() {
 
 // noinspection JSUnusedGlobalSymbols
 function formReset() {
-    var form = document.getElementById("formResult");
+    const form = document.getElementById("formResult");
 
     form.reset();
 
@@ -143,9 +143,9 @@ function formReset() {
 
 // noinspection JSUnusedGlobalSymbols
 function updateInputs() {
-    var value, element;
+    let value, element;
 
-    for (var i = 0, l = inputs.length; i < l; i++) {
+    for (let i = 0, l = inputs.length; i < l; i++) {
         if ((element = inputs[i]) && (value = getCookie(element.id))) {
             if (element.type === 'checkbox') {
                 element.checked = value === 'on';
@@ -158,9 +158,9 @@ function updateInputs() {
 
 // noinspection JSUnusedGlobalSymbols
 function saveInputs() {
-    var element;
+    let element;
 
-    var i, l;
+    let i, l;
 
     for (i = 0, l = inputs.length; i < l; i++) {
         element = inputs[i];
@@ -182,7 +182,7 @@ function saveInputs() {
         }
     }
 
-    var inputsList = document.getElementsByTagName('input');
+    const inputsList = document.getElementsByTagName('input');
     for (i = 0, l = inputsList.length; i < l; i++) {
         if (inputsList[i].type === 'hidden') {
             element = document.getElementById(inputsList[i].name);
@@ -203,9 +203,9 @@ function saveInputs() {
 
 // noinspection JSUnusedGlobalSymbols
 function clearInputs() {
-    var element;
+    let element;
 
-    for (var i = 0, l = inputs.length; i < l; i++) {
+    for (let i = 0, l = inputs.length; i < l; i++) {
         element = inputs[i];
 
         if (element) {

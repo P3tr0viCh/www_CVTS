@@ -1,7 +1,6 @@
-var
-    HIDE_CURSOR_TIMEOUT = 3000,
+const HIDE_CURSOR_TIMEOUT = 3000;
 
-    mouseTimer = null, cursorVisible = true;
+let mouseTimer = null, cursorVisible = true;
 
 //noinspection JSUnusedGlobalSymbols
 function startHideCursor() {

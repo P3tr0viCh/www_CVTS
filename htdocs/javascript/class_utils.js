@@ -1,4 +1,4 @@
-var
+let
     addClass,
     removeClass;
 
@@ -11,10 +11,9 @@ function removeClassNew(e, c) {
 }
 
 function containsClass(classNames, c) {
-    var
-        index = -1;
+    let index = -1;
 
-    for (var i = 0, l = classNames.length; i < l; i++) {
+    for (let i = 0, l = classNames.length; i < l; i++) {
         if (classNames[i].toLowerCase() === c) {
             index = i;
             break;
@@ -25,7 +24,7 @@ function containsClass(classNames, c) {
 }
 
 function addClassOld(e, c) {
-    var
+    const
         className = e.className,
         classNames = e.className.split(" ");
 
@@ -41,7 +40,7 @@ function addClassOld(e, c) {
 }
 
 function removeClassOld(e, c) {
-    var
+    const
         classNames = e.className.split(" "),
         r = containsClass(classNames, c);
 

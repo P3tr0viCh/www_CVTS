@@ -164,8 +164,10 @@ class Strings
     const MENU_DATES_CLEAR = 'Очистить';
 
     const MENU_COPY_ALL = 'Копировать всё';
-    const MENU_COPY_TABLE = 'Копировать таблицу с заголовками';
+    const MENU_COPY_TABLE = 'Копировать таблицу с заголовком';
     const MENU_COPY_TABLE_BODY = 'Копировать данные из таблицы';
+    const MENU_COPY_TABLE_BODY_IRON_PREV_DAY = 'Копировать данные за прошлые сутки';
+    const MENU_COPY_TABLE_BODY_IRON_PREV_3_DAY = 'Копировать данные за трое прошлых суток';
 
     const NAV_LINK_CLEAR = 'ОЧИСТИТЬ';
     const NAV_LINK_BACK = 'НАЗАД';

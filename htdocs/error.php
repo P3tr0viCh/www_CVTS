@@ -9,6 +9,7 @@ require_once "include/echo_html_page.php";
 
 require_once "include/builders/href_builder/Builder.php";
 
+use HrefBuilder\Builder;
 use Strings as S;
 
 $newDesign = isNewDesign(true);
@@ -70,7 +71,7 @@ echo '<h2 class="result-message color-text--secondary">' . $errorSubHeader . '</
 
 echo S::TAB . S::TAB . S::TAB;
 
-$href = \HrefBuilder\Builder::getInstance()
+$href = Builder::getInstance()
 	->setUrl("index.php")
 	->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
 	->build();
