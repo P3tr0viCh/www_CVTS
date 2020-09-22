@@ -18,6 +18,7 @@ require_once "include/QueryCompare.php";
 require_once "include/Strings.php";
 require_once "include/Database.php";
 require_once "include/ColumnsStrings.php";
+require_once "include/ColumnsTitleStrings.php";
 
 require_once "include/Functions.php";
 require_once "include/CheckBrowser.php";
@@ -652,7 +653,16 @@ if (!$resultMessage) {
 
                         $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType(), $resultType);
 
-                        echoTableTH($cell, $class);
+                        $title = columnTitle($fieldsInfo[$i]->name);
+
+                        if (DEBUG_SHOW_QUERY) {
+                            if ($title) {
+                                $title .= PHP_EOL;
+                            }
+                            $title .= $fieldsInfo[$i]->name;
+                        }
+
+                        echoTableTH($cell, $class, null, $title);
 
                         $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
                     }
@@ -809,7 +819,14 @@ if (!$resultMessage) {
                                 }
 
                                 $class = getCellWarningColorClass($value,
-                                    Constants::IRON_CONTROL_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_VALUE_WARNING_RED);
+                                    Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED);
+                            }
+
+                            if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_CARRIAGE) {
+                                $value = $row[C::IRON_CONTROL_DIFF_CARRIAGE];
+
+                                $class = getCellWarningColorClass($value,
+                                    Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
                             }
                         }
 

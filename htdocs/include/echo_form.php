@@ -61,7 +61,6 @@ function echoButton($newDesign, $text, $name, $value)
         echo $text;
         echo "</button>";
     } else {
-        /** @var string $onClick */
         $onClick = "onButtonClick($value)";
         echo "<input type='button' class='$buttonClass' value='$text' onclick='$onClick'>";
     }

@@ -34,13 +34,13 @@ class CheckBrowser
             return $edge[2] >= self::COMPATIBLE_MIN_VERSION_EDGE;
         }
 
-        if (!preg_match("/(Trident|Chrome|Firefox)(?:\/| )([0-9.]+)/", $agent, $browserInfo)) {
+        if (!preg_match("/(Trident|Chrome|Firefox)(?:\/|)([0-9.]+)/", $agent, $browserInfo)) {
             if (self::SHOW_AGENT) {
                 echo "Unknown" . "<br>";
             }
 
             return false;
-        };
+        }
 
         list(, $browser, $version) = $browserInfo;
 
@@ -57,7 +57,7 @@ class CheckBrowser
                 echo "Firefox: " . $version . "<br>";
             }
 
-            return $version >= self::COMPATIBLE_MIN_VERSION_CHROME;
+            return $version >= self::COMPATIBLE_MIN_VERSION_FIREFOX;
         }
 
         if ($browser == 'Trident') {

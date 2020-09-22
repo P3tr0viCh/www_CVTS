@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
+<?php
+/** @noinspection PhpIllegalPsrClassPathInspection */
+/** @noinspection PhpDuplicateSwitchCaseBodyInspection */
 require_once "MySQLConnection.php";
 require_once "Strings.php";
 require_once "Constants.php";
@@ -137,6 +139,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::IRON_CONTROL_NETTO_STA:
             case C::IRON_CONTROL_NETTO_DYN:
             case C::IRON_CONTROL_DIFF_DYN_CARR:
+            case C::IRON_CONTROL_DIFF_CARRIAGE:
                 return num_fmt($fieldValue, 2);
 
             case C::NETTO:
@@ -499,6 +502,7 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::IRON_CONTROL_NETTO_DYN:
         case C::IRON_CONTROL_DIFF_DYN_CARR:
         case C::IRON_CONTROL_DIFF_DYN_STA:
+        case C::IRON_CONTROL_DIFF_CARRIAGE:
             return true;
 
         default:
@@ -798,9 +802,26 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::IRON_CONTROL_DIFF_DYN_CARR;
         case C::IRON_CONTROL_DIFF_DYN_STA:
             return ColumnsStrings::IRON_CONTROL_DIFF_DYN_STA;
+        case C::IRON_CONTROL_DIFF_CARRIAGE:
+            return ColumnsStrings::IRON_CONTROL_DIFF_CARRIAGE;
 
         default:
             return $fieldName;
+    }
+}
+
+/**
+ * @param $fieldName
+ * @return string
+ */
+function columnTitle($fieldName)
+{
+    switch ($fieldName) {
+        case C::IRON_CONTROL_DIFF_CARRIAGE:
+            return ColumnsTitleStrings::IRON_CONTROL_DIFF_CARRIAGE;
+
+        default:
+            return null;
     }
 }
 

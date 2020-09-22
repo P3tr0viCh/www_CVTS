@@ -147,7 +147,7 @@ class Strings
 
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
     const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
-    const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
+//    const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
     const CHECKBOX_SHOW_DELTAS_MI_3115 = 'Показать предельные расхождения по МИ 3115';
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
@@ -247,9 +247,9 @@ class Strings
 
     const TEXT_NIGHT_MODE = 'ДЕНЬ/НОЧЬ';
 
+    const TEXT_SITE_VERSION = 'Версия сайта: %s от %s';
     const TEXT_APACHE_VERSION = 'Версия Apache: %s';
     const TEXT_PHP_VERSION = 'Версия PHP: %s';
-    const TEXT_SITE_VERSION = 'Версия сайта: %s от %s';
 
     const ERROR_ERROR = 'Ошибка';
     const ERROR_MYSQL_CONNECTION = 'Нет подключения к серверу MySQL';

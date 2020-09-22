@@ -53,6 +53,7 @@ class QueryIronControl extends QueryBase
             ->column(C::DATETIME)
             ->column(C::CARRYING)
             ->column(C::NETTO)
+            ->column(C::BRUTTO_FIRST_CARRIAGE . ' - ' . C::BRUTTO_SECOND_CARRIAGE, null, C::IRON_CONTROL_DIFF_CARRIAGE)
             ->table(T::VAN_DYNAMIC_BRUTTO)
             ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_COMPARE_DYN);
 
@@ -108,10 +109,11 @@ class QueryIronControl extends QueryBase
             ->column(C::DATETIME, A::IRON_CONTROL_STA, C::IRON_CONTROL_DATETIME_STA)
             ->column(C::VAN_NUMBER)
             ->column(C::CARRYING)
-            ->column(C::NETTO, A::IRON_CONTROL_DYN, C::IRON_CONTROL_NETTO_DYN)
             ->column(C::NETTO, A::IRON_CONTROL_STA, C::IRON_CONTROL_NETTO_STA)
-            ->column(A::IRON_CONTROL_DYN . '.' . C::NETTO. ' - ' . C::CARRYING, null, C::IRON_CONTROL_DIFF_DYN_CARR)
+            ->column(C::NETTO, A::IRON_CONTROL_DYN, C::IRON_CONTROL_NETTO_DYN)
+            ->column(A::IRON_CONTROL_DYN . '.' . C::NETTO . ' - ' . C::CARRYING, null, C::IRON_CONTROL_DIFF_DYN_CARR)
             ->column(A::IRON_CONTROL_DYN . '.' . C::NETTO . ' - ' . A::IRON_CONTROL_STA . '.' . C::NETTO, null, C::IRON_CONTROL_DIFF_DYN_STA)
+            ->column(C::IRON_CONTROL_DIFF_CARRIAGE)
             ->column(C::DATETIME, A::IRON_CONTROL_DYN, C::IRON_CONTROL_DATETIME_DYN)
             ->column(C::SCALE_NUM, A::IRON_CONTROL_DYN, C::IRON_CONTROL_SCALES_DYN)
             ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))

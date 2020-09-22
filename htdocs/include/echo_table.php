@@ -56,21 +56,22 @@ function getCellWarningColorClass($value, $yellowValue, $redValue)
 }
 
 /**
+ * @param string $attr
+ * @param null|string $value
+ * @return null|string
+ */
+function formatAttr($attr, $value)
+{
+    return $value ? " $attr='$value'" : null;
+}
+
+/**
  * @param null|string $class
  * @return null|string
  */
 function formatClass($class)
 {
-    return $class ? " class='$class'" : null;
-}
-
-/**
- * @param null|string $onClick
- * @return null|string
- */
-function formatOnClick($onClick)
-{
-    return $onClick ? " onclick='$onClick'" : null;
+    return formatAttr("class", $class);
 }
 
 /**
@@ -79,7 +80,7 @@ function formatOnClick($onClick)
  */
 function formatColSpan($colSpan)
 {
-    return $colSpan ? " colspan='$colSpan'" : null;
+    return formatAttr("colspan", $colSpan);
 }
 
 /**
@@ -110,7 +111,7 @@ function echoTableHeadStart($class = null)
 function echoTableTRStart($class = null, $onClick = null)
 {
     $class = formatClass($class);
-    $onClick = formatOnClick($onClick);
+    $onClick = formatAttr("onclick", $onClick);
 
     echo S::TAB;
     echo "<tr$class$onClick>" . PHP_EOL;
@@ -120,14 +121,16 @@ function echoTableTRStart($class = null, $onClick = null)
  * @param string $text
  * @param null|string $class
  * @param null|string $colSpan
+ * @param null|string $title
  */
-function echoTableTH($text, $class = null, $colSpan = null)
+function echoTableTH($text, $class = null, $colSpan = null, $title = null)
 {
     $class = formatClass($class);
     $colSpan = formatColSpan($colSpan);
 
     echo S::TAB . S::TAB;
-    echo "<th$class$colSpan>";
+    $title = formatAttr("title", $title);
+    echo "<th$class$colSpan$title>";
     echo $text;
     echo "</th>";
     echo PHP_EOL;
