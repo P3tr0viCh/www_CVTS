@@ -55,7 +55,7 @@ function updateContentMinHeight() {
     marginTop = parseFloat(marginTop);
     marginBottom = parseFloat(marginBottom);
 
-    var minHeight = windowHeight - headerHeight - footerHeight - marginTop - marginBottom;
+    const minHeight = windowHeight - headerHeight - footerHeight - marginTop - marginBottom;
 
     // console.log("windowHeight == " + windowHeight + ", headerHeight == " + headerHeight +
     //     ", footerHeight == " + footerHeight + ", margins == " + (marginTop + marginBottom) +

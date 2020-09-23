@@ -16,7 +16,7 @@ function setCookie(name, value, options) {
 
     let updatedCookie = name + "=" + value;
 
-    for (const propName in options) {
+    for (let propName in options) {
         updatedCookie += "; " + propName;
 
         if (options.hasOwnProperty(propName)) {
