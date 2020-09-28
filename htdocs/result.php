@@ -950,10 +950,15 @@ if (!$resultMessage) {
 // ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
                 if ($resultType == ResultType::IRON_CONTROL) {
 // --------------------------------------------------------------------
+
+                    $colSpanTotal = 8;
+                    $colSpanTotalValue = 3;
+
                     echoTableTRStart(getRowColorClass($numColor));
 
-                    echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
-                    echoTableTD("", null, null, 3);
+                    echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
+                    echoTableTD("", null);
+                    echoTableTD("", null, null, $colSpanTotalValue);
 
                     echoTableTREnd();
 
@@ -962,7 +967,7 @@ if (!$resultMessage) {
 
                     echoTableTRStart(getRowColorClass($numColor));
 
-                    echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
+                    echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
 
                     if ($ironControlTotalCount > 0) {
                         $ironControlTotalAvg = $ironControlTotalSum / $ironControlTotalCount;
@@ -975,7 +980,7 @@ if (!$resultMessage) {
 
                     echoTableTD($field, $class);
 
-                    echoTableTD("", null, null, 2);
+                    echoTableTD("", null, null, $colSpanTotalValue);
 
                     echoTableTREnd();
 
@@ -984,7 +989,7 @@ if (!$resultMessage) {
 
                     echoTableTRStart(getRowColorClass($numColor));
 
-                    echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, 8);
+                    echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
 
                     $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
 
@@ -993,10 +998,11 @@ if (!$resultMessage) {
 
                     echoTableTD($field, $class);
 
-                    echoTableTD("", null, null, 2);
+                    echoTableTD("", null, null, $colSpanTotalValue);
 
                     echoTableTREnd();
                 }
+// ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
 
                 echoTableBodyEnd();
                 echoTableEnd();
