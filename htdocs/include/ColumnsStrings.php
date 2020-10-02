@@ -164,5 +164,6 @@ class ColumnsStrings
     const IRON_CONTROL_NETTO_DYN = 'Динамика: Нетто';
     const IRON_CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
     const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
+    const IRON_CONTROL_DIFF_SIDE = 'Динамика: Борта';
     const IRON_CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
 }

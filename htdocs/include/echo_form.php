@@ -25,7 +25,7 @@ function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $methodG
         $onReset = "onreset='$onReset'";
     }
 
-    $params = concatStrings($blank, concatStrings($onSubmit, $onReset, " "), " ");
+    $params = concatStrings($blank, concatStrings($onSubmit, $onReset, Strings::SPACE), Strings::SPACE);
 
     $method = $methodGet ? 'get' : 'post';
 

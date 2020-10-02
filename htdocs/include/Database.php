@@ -228,7 +228,8 @@ class Columns
     const IRON_CONTROL_NETTO_DYN = 'netto_dyn';
     const IRON_CONTROL_DIFF_DYN_CARR = 'diff_dyn_carr';
     const IRON_CONTROL_DIFF_DYN_STA = 'diff_dyn_sta';
-    const IRON_CONTROL_DIFF_CARRIAGE = 'diff_dyn_carriage';
+    const IRON_CONTROL_DIFF_SIDE = 'diff_side';
+    const IRON_CONTROL_DIFF_CARRIAGE = 'diff_carriage';
 }
 
 class Aliases

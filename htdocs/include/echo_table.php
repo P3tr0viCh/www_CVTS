@@ -40,7 +40,7 @@ function getRowColorClass($odd)
  * @param float $redValue
  * @return null|string
  */
-function getCellWarningColorClass($value, $yellowValue, $redValue)
+function getCellWarningColor($value, $yellowValue, $redValue)
 {
     $value = abs($value);
 

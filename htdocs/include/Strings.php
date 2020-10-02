@@ -3,6 +3,7 @@
 class Strings
 {
     const TAB = "  ";
+    const SPACE = " ";
 
     const DEC_POINT = ",";
 

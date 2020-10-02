@@ -139,6 +139,7 @@ function formatFieldValue($fieldName, $fieldValue, $full)
             case C::IRON_CONTROL_NETTO_STA:
             case C::IRON_CONTROL_NETTO_DYN:
             case C::IRON_CONTROL_DIFF_DYN_CARR:
+            case C::IRON_CONTROL_DIFF_SIDE:
             case C::IRON_CONTROL_DIFF_CARRIAGE:
                 return num_fmt($fieldValue, 2);
 
@@ -502,6 +503,7 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
         case C::IRON_CONTROL_NETTO_DYN:
         case C::IRON_CONTROL_DIFF_DYN_CARR:
         case C::IRON_CONTROL_DIFF_DYN_STA:
+        case C::IRON_CONTROL_DIFF_SIDE:
         case C::IRON_CONTROL_DIFF_CARRIAGE:
             return true;
 
@@ -802,7 +804,9 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::IRON_CONTROL_DIFF_DYN_CARR;
         case C::IRON_CONTROL_DIFF_DYN_STA:
             return ColumnsStrings::IRON_CONTROL_DIFF_DYN_STA;
-        case C::IRON_CONTROL_DIFF_CARRIAGE:
+        case C::IRON_CONTROL_DIFF_SIDE:
+            return ColumnsStrings::IRON_CONTROL_DIFF_SIDE;
+       case C::IRON_CONTROL_DIFF_CARRIAGE:
             return ColumnsStrings::IRON_CONTROL_DIFF_CARRIAGE;
 
         default:
@@ -817,6 +821,8 @@ function columnName($fieldName, $scaleType, $resultType = null)
 function columnTitle($fieldName)
 {
     switch ($fieldName) {
+        case C::IRON_CONTROL_DIFF_SIDE:
+            return ColumnsTitleStrings::IRON_CONTROL_DIFF_SIDE;
         case C::IRON_CONTROL_DIFF_CARRIAGE:
             return ColumnsTitleStrings::IRON_CONTROL_DIFF_CARRIAGE;
 
@@ -934,6 +940,8 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::IRON_CONTROL_NETTO_DYN:
             case C::IRON_CONTROL_DIFF_DYN_CARR:
             case C::IRON_CONTROL_DIFF_DYN_STA:
+            case C::IRON_CONTROL_DIFF_SIDE:
+            case C::IRON_CONTROL_DIFF_CARRIAGE:
                 return false;
 
             case C::IRON_DATE:
@@ -1041,7 +1049,7 @@ function formatExcelData($value)
         return "";
     } else {
         $value = str_replace("&shy;", "", $value);
-        $value = str_replace("&nbsp;", " ", $value);
+        $value = str_replace("&nbsp;", Strings::SPACE, $value);
         // Символы > и < удаляются функцией strip_tags (выше),
         // поэтому на страницах вместо них используются &gt; и &lt;
         $value = str_replace("&gt;", ">", $value);
