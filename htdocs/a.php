@@ -88,9 +88,9 @@ echo '<span>' . sprintf(S::TEXT_SITE_VERSION, MetaInfo::VERSION, MetaInfo::CREAT
 
 echo '<br><br>' . PHP_EOL;
 
-$ar = explode(" ", apache_get_version());
-$apache = explode("/", $ar[0]);
-$apache_version = $apache[1];
+$apache_version = explode(" ", $_SERVER["SERVER_SOFTWARE"]);
+$apache_version = explode("/", $apache_version[0]);
+$apache_version = $apache_version[1];
 
 echo '<span>' . sprintf(S::TEXT_APACHE_VERSION, $apache_version) . '</span>' . PHP_EOL;
 
