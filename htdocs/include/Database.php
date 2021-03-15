@@ -6,7 +6,7 @@ class Info
 {
     const WDB = 'wdb3';
     const CVTS = 'cvts';
-    const CHARSET = 'latin1';
+    const CHARSET = 'latin1';// utf8
 }
 
 class Tables
@@ -167,8 +167,12 @@ class Columns
     const DRIVER = 'driver';
 
     const WEIGH_NAME = 'weighname';
+    const WEIGH_NAME_CODE = 'weighname_code';
     const PRODUCT = 'product';
+    const PRODUCT_CODE = 'product_code';
     const LEFT_SIDE = 'leftside';
+    const PART_CODE = 'part_code';
+    const HUMIDITY = 'humidity';
     const COUNT_ID = 'count_id';
 
     const COMPARE = 'compare';

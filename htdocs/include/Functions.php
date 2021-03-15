@@ -360,6 +360,9 @@ function formatFieldValue($fieldName, $fieldValue, $full)
                     return $value;
                 }
 
+            case C::HUMIDITY:
+                return num_fmt($fieldValue, 2) . '%';
+
             default:
                 return $fieldValue;
         }
@@ -709,10 +712,18 @@ function columnName($fieldName, $scaleType, $resultType = null)
 
         case C::WEIGH_NAME:
             return ColumnsStrings::WEIGH_NAME;
+        case C::WEIGH_NAME_CODE:
+            return ColumnsStrings::WEIGH_NAME_CODE;
         case C::PRODUCT:
             return ColumnsStrings::PRODUCT;
+        case C::PRODUCT_CODE:
+            return ColumnsStrings::PRODUCT_CODE;
         case C::LEFT_SIDE:
             return ColumnsStrings::LEFT_SIDE;
+        case C::PART_CODE:
+            return ColumnsStrings::PART_CODE;
+        case C::HUMIDITY:
+            return ColumnsStrings::HUMIDITY;
         case C::COUNT_ID:
             return ColumnsStrings::COUNT_ID;
 
@@ -900,6 +911,10 @@ function isFieldLeftAlign($newDesign, $fieldName)
             case C::TEMPERATURE_1:
             case C::TEMPERATURE_2:
             case C::COUNT_ID:
+            case C::WEIGH_NAME_CODE:
+            case C::PRODUCT_CODE:
+            case C::PART_CODE:
+            case C::HUMIDITY:
 
             case C::MI_DELTA_ABS_BRUTTO:
             case C::MI_DELTA_ABS_BRUTTO_E:
@@ -1245,7 +1260,7 @@ function boolToString($value)
  */
 function latin1ToUtf8($s)
 {
-    if ($s == null) return null;
+    if ($s == null) return null; // TODO: utf8
     $s = iconv('Windows-1251', 'UTF-8', $s);
     return $s;
 }

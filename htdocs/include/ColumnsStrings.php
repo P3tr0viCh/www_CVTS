@@ -108,8 +108,12 @@ class ColumnsStrings
     const DRIVER = 'Водитель';
 
     const WEIGH_NAME = 'Весы';
+    const WEIGH_NAME_CODE = 'Код весов';
     const PRODUCT = 'Продукт';
+    const PRODUCT_CODE = 'Код продукта';
     const LEFT_SIDE = 'Сторона';
+    const PART_CODE = 'Подача';
+    const HUMIDITY = 'Влажность';
     const COUNT_ID = 'Количество подач';
 
     const COMPARE = 'Разница';
