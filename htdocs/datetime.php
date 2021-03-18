@@ -15,15 +15,12 @@ $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 
 echoStartPage();
 
-$oldIEStyle = null;
-
 $styles = array();
 $styles[] = '/styles/datetime_common.css';
 if ($newDesign) {
     $styles[] = '/styles/datetime.css';
 } else {
     $styles[] = '/styles/datetime_compat.css';
-    $oldIEStyle = '/styles/datetime_compat_ie.css';
 }
 
 if ($debug) {
@@ -37,7 +34,7 @@ $javaScripts[] = '/javascript/datetime.js';
 $javaScripts[] = '/javascript/night_mode.js';
 $javaScripts[] = '/javascript/hide_cursor.js';
 
-echoHead($newDesign, S::TITLE_DATETIME, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_DATETIME, $styles, $javaScripts);
 
 echoStartBody($newDesign, 'dateTime(' . ($showSeconds ? 'true' : 'false') . ')');
 

@@ -1,14 +1,13 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryScales extends QueryBase
 {
-    protected static function getScaleClass($typeDyn)
+    protected static function getScaleClass($typeDyn): string
     {
         return 'IF(' . ($typeDyn ? '' : '!') . C::SCALE_TYPE_DYN . ', ' .
             C::SCALE_WTYPE . ' * 100 + ' . C::SCALE_CLASS . ', NULL)';

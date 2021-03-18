@@ -20,17 +20,18 @@
  * local_password
 */
 
-require_once "Database.php";
+require_once "database/Aliases.php";
+require_once "database/Columns.php";
+require_once "database/Info.php";
+require_once "database/Tables.php";
+
 require_once "FileNames.php";
+
+use database\Info;
 
 class MySQLConnection
 {
-    /**
-     * @param bool $use_backup
-     * @param null|string $dbName
-     * @return mysqli|null
-     */
-    public static function getInstance($use_backup = false, $dbName = null)
+    public static function getInstance(bool $use_backup = false, string $dbName = null, string $charset = null): ?mysqli
     {
         $handle = @fopen("../" . FileNames::MYSQL_CONNECTION, "r");
 
@@ -59,13 +60,16 @@ class MySQLConnection
         }
 
         if (empty($dbName)) {
-            $dbName = Database\Info::WDB;
+            $dbName = Info::WDB;
+        }
+        if (empty($charset)) {
+            $charset = Info::CHARSET_LATIN;
         }
 
         $mysqli = @new mysqli($hosts[$i], $usernames[$i], $passwords[$i], $dbName);
 
         if (!$mysqli->connect_errno) {
-            $mysqli->set_charset(Database\Info::CHARSET);
+            $mysqli->set_charset($charset);
         }
 
         return $mysqli;

@@ -4,12 +4,12 @@
 require_once "MySQLConnection.php";
 require_once "Strings.php";
 require_once "Constants.php";
-require_once "Database.php";
 
-use Database\Columns as C;
+use database\Columns as C;
+use JetBrains\PhpStorm\Pure;
 use Strings as S;
 
-function concatStrings($s1, $s2, $separator)
+function concatStrings($s1, $s2, $separator): string
 {
     if (($s1 == "") && ($s2 == "")) return "";
     elseif ($s1 == "") return $s2;
@@ -22,18 +22,9 @@ function concatStrings($s1, $s2, $separator)
  */
 class FieldInfo
 {
-    /**
-     * @var string
-     */
-    public $name;
-    /**
-     * @var bool
-     */
-    public $visible;
-    /**
-     * @var bool
-     */
-    public $leftAlign;
+    public string $name;
+    public bool $visible;
+    public bool $leftAlign;
 }
 
 /**
@@ -44,7 +35,7 @@ class FieldInfo
  * @param int $type
  * @return FieldInfo[]
  */
-function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
+function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, ScaleInfo $scaleInfo, int $type): array
 {
     $result = array();
 
@@ -61,7 +52,7 @@ function getFieldsInfo($queryResult, $newDesign, $full, $scaleInfo, $type)
     return $result;
 }
 
-function formatFieldValue($fieldName, $fieldValue, $full)
+#[Pure] function formatFieldValue(string $fieldName, $fieldValue, bool $full)
 {
     if ($fieldValue != "") {
         switch ($fieldName) {
@@ -371,18 +362,12 @@ function formatFieldValue($fieldName, $fieldValue, $full)
     }
 }
 
-function num_fmt($number, $decimals)
+#[Pure] function num_fmt(float $number, int $decimals): string
 {
-    return number_format((double)$number, $decimals, S::DEC_POINT, "");
+    return number_format($number, $decimals, S::DEC_POINT, "");
 }
 
-/**
- * @param $fieldName
- * @param ScaleInfo $scalesInfo
- * @param int $resultType
- * @return bool
- */
-function isFieldVisible($fieldName, $scalesInfo, $resultType)
+#[Pure] function isFieldVisible(string $fieldName, ScaleInfo $scalesInfo, int $resultType): bool
 {
     switch ($fieldName) {
         case C::SCALE_NUM:
@@ -515,13 +500,7 @@ function isFieldVisible($fieldName, $scalesInfo, $resultType)
     }
 }
 
-/**
- * @param $fieldName
- * @param int $scaleType
- * @param ResultType|null $resultType
- * @return string
- */
-function columnName($fieldName, $scaleType, $resultType = null)
+#[Pure] function columnName(string $fieldName, int $scaleType, int $resultType = null): string
 {
     switch ($fieldName) {
         case C::TRAIN_NUM:
@@ -817,7 +796,7 @@ function columnName($fieldName, $scaleType, $resultType = null)
             return ColumnsStrings::IRON_CONTROL_DIFF_DYN_STA;
         case C::IRON_CONTROL_DIFF_SIDE:
             return ColumnsStrings::IRON_CONTROL_DIFF_SIDE;
-       case C::IRON_CONTROL_DIFF_CARRIAGE:
+        case C::IRON_CONTROL_DIFF_CARRIAGE:
             return ColumnsStrings::IRON_CONTROL_DIFF_CARRIAGE;
 
         default:
@@ -825,11 +804,7 @@ function columnName($fieldName, $scaleType, $resultType = null)
     }
 }
 
-/**
- * @param $fieldName
- * @return string
- */
-function columnTitle($fieldName)
+#[Pure] function columnTitle(string $fieldName): ?string
 {
     switch ($fieldName) {
         case C::IRON_CONTROL_DIFF_SIDE:
@@ -842,12 +817,7 @@ function columnTitle($fieldName)
     }
 }
 
-/**
- * @param bool $newDesign
- * @param string $fieldName
- * @return bool
- */
-function isFieldLeftAlign($newDesign, $fieldName)
+#[Pure] function isFieldLeftAlign(bool $newDesign, string $fieldName): bool
 {
     if ($newDesign) {
         switch ($fieldName) {
@@ -1018,12 +988,7 @@ function isFieldLeftAlign($newDesign, $fieldName)
     }
 }
 
-/**
- * @param int $month
- * @param int $year
- * @return int
- */
-function getLastDay($month, $year)
+#[Pure] function getLastDay(int $month, int $year): int
 {
     switch ($month) {
         case 4:
@@ -1038,23 +1003,21 @@ function getLastDay($month, $year)
     }
 }
 
+// used in result.php
 /** @noinspection PhpUnused */
-function formatDateTime($timestamp)
+#[Pure] function formatDateTime($timestamp): string
 {
     return date("d.m.Y H:i", $timestamp);
 }
 
+// used in result.php
 /** @noinspection PhpUnused */
-function formatDate($timestamp)
+#[Pure] function formatDate($timestamp): string
 {
     return date("d.m.Y", $timestamp);
 }
 
-/**
- * @param string $value
- * @return string
- */
-function formatExcelData($value)
+function formatExcelData(string $value): string
 {
     $value = strip_tags($value);
 
@@ -1074,11 +1037,7 @@ function formatExcelData($value)
     }
 }
 
-/**
- * @param mixed $var
- * @return bool
- */
-function var_to_bool($var)
+#[Pure] function var_to_bool(mixed $var): bool
 {
     $bool = is_string($var) ?
         filter_var($var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) :
@@ -1099,7 +1058,7 @@ function var_to_bool($var)
  * @param bool $default
  * @return bool
  */
-function isNewDesign($default = false)
+function isNewDesign(bool $default = false): bool
 {
     if (isset($_POST[ParamName::NEW_DESIGN])) {
         $newDesign = var_to_bool($_POST[ParamName::NEW_DESIGN]);
@@ -1123,11 +1082,7 @@ function isNewDesign($default = false)
     return false;
 }
 
-/**
- * @param string $param
- * @return mixed|null
- */
-function getPOSTParam($param)
+function getPOSTParam(string $param): mixed
 {
     if (isset($_POST[(string)$param])) {
         if ($_POST[(string)$param] == "") {
@@ -1140,42 +1095,27 @@ function getPOSTParam($param)
     }
 }
 
-/**
- * @param $param
- * @param int|null $default
- * @return int|null
- */
-function getParamGETAsInt($param, $default = null)
+#[Pure] function getParamGETAsInt(string $param, ?int $default = null): ?int
 {
-    return isset($_GET[(string)$param]) ? (int)$_GET[(string)$param] : $default;
+    return isset($_GET[$param]) ? (int)$_GET[$param] : $default;
 }
 
-/**
- * @param string $param
- * @param bool|null $default
- * @return bool|null
- */
-function getParamGETAsBool($param, $default = null)
+#[Pure] function getParamGETAsBool(string $param, ?bool $default = null): ?bool
 {
-    return isset($_GET[(string)$param]) ? var_to_bool($_GET[(string)$param]) : $default;
+    return isset($_GET[$param]) ? var_to_bool($_GET[$param]) : $default;
 }
 
-/**
- * @param string $param
- * @param null|string $default
- * @return null|string
- */
-function getParamGETAsString($param, $default = null)
+#[Pure] function getParamGETAsString(string $param, ?string $default = null): ?string
 {
-    return (isset($_GET[(string)$param]) && ($_GET[(string)$param] != null)) ? urldecode($_GET[(string)$param]) : $default;
+    return (isset($_GET[$param]) && ($_GET[$param] != null)) ? urldecode($_GET[$param]) : $default;
 }
 
-function isResultTypeCompare($resultType)
+function isResultTypeCompare(int $resultType): bool
 {
     return $resultType == ResultType::COMPARE_DYNAMIC || $resultType == ResultType::COMPARE_STATIC;
 }
 
-function isResultTypeCargoList($resultType)
+function isResultTypeCargoList(int $resultType): bool
 {
     return
         $resultType == ResultType::CARGO_LIST_DYNAMIC ||
@@ -1183,12 +1123,7 @@ function isResultTypeCargoList($resultType)
         $resultType == ResultType::CARGO_LIST_AUTO;
 }
 
-/**
- * @param int $resultType
- * @return null|string
- * @see ResultType
- */
-function getResultHeader($resultType)
+function getResultHeader(int $resultType): string
 {
     switch ($resultType) {
         case ResultType::VAN_DYNAMIC_BRUTTO:
@@ -1242,11 +1177,11 @@ function getResultHeader($resultType)
             return S::HEADER_VANLIST_TARE;
 
         default:
-            return null;
+            throw new InvalidArgumentException("Unknown resultType ($resultType)");
     }
 }
 
-function boolToString($value)
+function boolToString($value): string
 {
     return isset($value) ? ($value ? "true" : "false") : "null";
 }
@@ -1254,44 +1189,32 @@ function boolToString($value)
 /**
  * Выполняет перекодировку строки из latin1 в UTF-8.
  *
- * @param string $s
- * @return string
- * @see \Database\Info::CHARSET
+ * @param string|null $s
+ * @return string|null
+ * @see \database\Info::CHARSET
  */
-function latin1ToUtf8($s)
+#[Pure] function latin1ToUtf8(?string $s): ?string
 {
-    if ($s == null) return null; // TODO: utf8
+    if ($s == null) return null;
     $s = iconv('Windows-1251', 'UTF-8', $s);
     return $s;
 }
 
-function utf8ToLatin1($s)
+#[Pure] function utf8ToLatin1(?string $s): ?string
 {
     if ($s == null) return null;
     $s = iconv('UTF-8', 'Windows-1251', $s);
     return $s;
 }
 
-/**
- * @param null|string $param
- * @return bool
- */
-function getCookieAsBool($param)
+#[Pure] function getCookieAsBool(?string $param): bool
 {
-    return isset($param) && !is_null($param) && isset($_COOKIE[$param]) ? var_to_bool($_COOKIE[$param]) : false;
+    return isset($param) && isset($_COOKIE[$param]) ? var_to_bool($_COOKIE[$param]) : false;
 }
 
-/**
- * @param null|string $param
- * @param $value
- */
-function setCookieAsString($param, $value)
+function setCookieAsString(string $param, ?string $value)
 {
-    if (!isset($param) || is_null($param)) {
-        return;
-    }
-
-    if (!isset($value) || is_null($value)) {
+    if (!isset($value)) {
         setcookie($param, null, time() - 1);
         unset($_COOKIE[$param]);
 
@@ -1302,17 +1225,9 @@ function setCookieAsString($param, $value)
     $_COOKIE[$param] = $value;
 }
 
-/**
- * @param null|string $param
- * @param null|bool $value
- */
-function setCookieAsBool($param, $value)
+function setCookieAsBool(string $param, ?bool $value)
 {
-    if (!isset($param) || is_null($param)) {
-        return;
-    }
-
-    if (!isset($value) || is_null($value)) {
+    if (!isset($value)) {
         setcookie($param, null, time() - 1);
         unset($_COOKIE[$param]);
 
@@ -1323,11 +1238,7 @@ function setCookieAsBool($param, $value)
     $_COOKIE[$param] = boolToString($value);
 }
 
-/**
- * @param null|string $value
- * @return array
- */
-function vanListStringToArray($value)
+function vanListStringToArray(?string $value): array
 {
     $result = array();
 
@@ -1346,11 +1257,7 @@ function vanListStringToArray($value)
     return $result;
 }
 
-/**
- * @param null|array $vanList
- * @return null|string
- */
-function vanListArrayToString($vanList)
+function vanListArrayToString(?array $vanList): ?string
 {
     if ($vanList == null || count($vanList) == 0) return null;
 

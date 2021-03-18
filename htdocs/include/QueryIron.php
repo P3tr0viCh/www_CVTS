@@ -1,11 +1,10 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryIron extends QueryBase
 {
@@ -25,46 +24,30 @@ class QueryIron extends QueryBase
     const MYSQL_DATE_START_FORMAT_20to20 = "Ymd200000";
     const MYSQL_DATE_END_FORMAT_20to20 = "Ymd195959";
 
-    private $dateStart;
-    private $dateEnd;
-    private $orderByDesc;
-    private $from20to20;
+    private mixed $dateStart;
+    private mixed $dateEnd;
+    private bool $orderByDesc;
+    private bool $from20to20;
 
-    /**
-     * @param int $dateStart
-     * @return $this
-     */
-    public function setDateStart($dateStart)
+    public function setDateStart(?int $dateStart): static
     {
         $this->dateStart = $dateStart;
         return $this;
     }
 
-    /**
-     * @param int $dateEnd
-     * @return $this
-     */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd(?int $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
         return $this;
     }
 
-    /**
-     * @param bool $orderByDesc
-     * @return $this
-     */
-    public function setOrderByDesc($orderByDesc)
+    public function setOrderByDesc(bool $orderByDesc): static
     {
         $this->orderByDesc = $orderByDesc;
         return $this;
     }
 
-    /**
-     * @param bool $from20to20
-     * @return $this
-     */
-    public function setFrom20to20($from20to20)
+    public function setFrom20to20(bool $from20to20): static
     {
         $this->from20to20 = $from20to20;
         return $this;

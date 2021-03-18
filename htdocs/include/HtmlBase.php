@@ -2,13 +2,9 @@
 
 abstract class HtmlBase
 {
-    protected $newDesign;
+    protected bool $newDesign;
 
-    /**
-     * HtmlBase constructor.
-     * @param bool $newDesign
-     */
-    public function __construct($newDesign)
+    public function __construct(bool $newDesign)
     {
         $this->newDesign = $newDesign;
     }

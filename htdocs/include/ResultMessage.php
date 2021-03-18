@@ -1,64 +1,45 @@
 <?php
 require_once "Strings.php";
 
+use JetBrains\PhpStorm\Pure;
+
 class ResultMessage
 {
-    private $error;
-    private $errorDetails;
+    private string $error;
+    private ?string $errorDetails;
 
-    /**
-     * ResultMessage constructor.
-     * @param string $error
-     * @param string|null $errorDetails
-     */
-    public function __construct($error, $errorDetails)
+    public function __construct(string $error, ?string $errorDetails = null)
     {
         $this->error = $error;
         $this->errorDetails = $errorDetails;
     }
 
-    /**
-     * @return string
-     */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getErrorDetails()
+    public function getErrorDetails(): ?string
     {
         return $this->errorDetails;
     }
 }
 
-function mysqlConnectionFileError()
+#[Pure] function mysqlConnectionFileError(): ResultMessage
 {
     return new ResultMessage(
         Strings::ERROR_MYSQL_CONNECTION,
         sprintf(Strings::ERROR_MYSQL_DETAILS, 404, Strings::ERROR_MYSQL_CONNECTION_FILE_ERROR));
 }
 
-/**
- * @param mysqli $mysqli
- * @internal param mysqli $mysqli
- * @return ResultMessage
- */
-function connectionError($mysqli)
+#[Pure] function connectionError(mysqli $mysqli): ResultMessage
 {
     return new ResultMessage(
         Strings::ERROR_MYSQL_CONNECTION,
         sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->connect_errno, latin1ToUtf8($mysqli->connect_error)));
 }
 
-/**
- * @param mysqli $mysqli
- * @internal param mysqli $mysqli
- * @return ResultMessage
- */
-function queryError($mysqli)
+#[Pure] function queryError(mysqli $mysqli): ResultMessage
 {
     return new ResultMessage(Strings::ERROR_MYSQL_QUERY,
         sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->errno, latin1ToUtf8($mysqli->error)));

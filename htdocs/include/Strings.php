@@ -123,8 +123,7 @@ class Strings
 
     const TEXT_ZERO_RESULT = 'По заданным параметрам запроса данных нет';
 
-    // IE6 fix.
-    const TEXT_TABLE_CELL_EMPTY = '<span style=\'zoom: 1;\'></span>';
+    const TEXT_TABLE_CELL_EMPTY = '';
 
     const TEXT_COMPATIBLE_BROWSERS_START = 'Новый дизайн поддерживается следующими браузерами:';
     const TEXT_COMPATIBLE_BROWSER_IE = 'Microsoft Internet Explorer %d';
@@ -173,7 +172,7 @@ class Strings
     const NAV_LINK_CLEAR = 'ОЧИСТИТЬ';
     const NAV_LINK_BACK = 'НАЗАД';
     const NAV_LINK_UPDATE = 'ОБНОВИТЬ';
-    const NAV_LINK_SAVE = 'СОХРАНИТЬ В EXCEL';
+    const NAV_LINK_SAVE = 'СОХРАНИТЬ';
     const NAV_LINK_SAVE_OLD = 'Сохранить в Excel';
 
     const INPUT_DAY = 'День';

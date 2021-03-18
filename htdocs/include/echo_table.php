@@ -23,79 +23,47 @@
 
 require_once "Strings.php";
 
+use JetBrains\PhpStorm\Pure;
 use Strings as S;
 
-/**
- * @param bool $odd
- * @return string
- */
-function getRowColorClass($odd)
+#[Pure] function getRowColorClass(bool $odd): string
 {
     return $odd ? "row-color--odd" : "row-color--even";
 }
 
-/**
- * @param float $value
- * @param float $yellowValue
- * @param float $redValue
- * @return null|string
- */
-function getCellWarningColor($value, $yellowValue, $redValue)
+#[Pure] function getCellWarningColor(?float $value, float $yellowValue, float $redValue): ?string
 {
+    if (is_null($value) || !is_numeric($value)) return null;
+
     $value = abs($value);
 
-    if ($value >= $redValue) {
-        return 'color--red';
-    }
-
-    if ($value >= $yellowValue) {
-        return 'color--yellow';
-    }
-
-    return null;
+    if ($value >= $redValue)        return 'color--red';
+    elseif ($value >= $yellowValue) return 'color--yellow';
+    else                            return null;
 }
 
-/**
- * @param string $attr
- * @param null|string $value
- * @return null|string
- */
-function formatAttr($attr, $value)
+#[Pure] function formatAttr(string $attr, ?string $value): ?string
 {
     return $value ? " $attr='$value'" : null;
 }
 
-/**
- * @param null|string $class
- * @return null|string
- */
-function formatClass($class)
+#[Pure] function formatClass(?string $class): ?string
 {
     return formatAttr("class", $class);
 }
 
-/**
- * @param null|string $colSpan
- * @return null|string
- */
-function formatColSpan($colSpan)
+#[Pure] function formatColSpan(?string $colSpan): ?string
 {
     return formatAttr("colspan", $colSpan);
 }
 
-/**
- * @param null|string $class
- */
-function echoTableStart($class = null)
+function echoTableStart(?string $class = null)
 {
     $class = formatClass($class);
     echo "<table$class>" . PHP_EOL;
 }
 
-/**
- * @param null|string $class
- */
-function echoTableHeadStart($class = null)
+function echoTableHeadStart(?string $class = null)
 {
     $class = formatClass($class);
 
@@ -104,11 +72,7 @@ function echoTableHeadStart($class = null)
     echo "<thead$id$class>" . PHP_EOL;
 }
 
-/**
- * @param null|string $class
- * @param null|string $onClick
- */
-function echoTableTRStart($class = null, $onClick = null)
+function echoTableTRStart(?string $class = null, ?string $onClick = null)
 {
     $class = formatClass($class);
     $onClick = formatAttr("onclick", $onClick);
@@ -117,13 +81,7 @@ function echoTableTRStart($class = null, $onClick = null)
     echo "<tr$class$onClick>" . PHP_EOL;
 }
 
-/**
- * @param string $text
- * @param null|string $class
- * @param null|string $colSpan
- * @param null|string $title
- */
-function echoTableTH($text, $class = null, $colSpan = null, $title = null)
+function echoTableTH(string $text, ?string $class = null, ?int $colSpan = null, ?string $title = null)
 {
     $class = formatClass($class);
     $colSpan = formatColSpan($colSpan);
@@ -147,10 +105,7 @@ function echoTableHeadEnd()
     echo "</thead>" . PHP_EOL . PHP_EOL;
 }
 
-/**
- * @param null|string $class
- */
-function echoTableBodyStart($class = null)
+function echoTableBodyStart(?string $class = null)
 {
     $class = formatClass($class);
 
@@ -159,13 +114,7 @@ function echoTableBodyStart($class = null)
     echo "<tbody$id$class>" . PHP_EOL;
 }
 
-/**
- * @param string $text
- * @param null|string $class
- * @param null|string $href
- * @param null|string $colSpan
- */
-function echoTableTD($text, $class = null, $href = null, $colSpan = null)
+function echoTableTD(string $text, ?string $class = null, ?string $href = null, ?int $colSpan = null)
 {
     $class = formatClass($class);
     if ($href) {

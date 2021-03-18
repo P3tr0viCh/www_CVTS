@@ -13,17 +13,14 @@ require_once "FileNames.php";
 
 class CheckUser
 {
-    private static $powerUsers = null;
+    private static array $powerUsers;
 
     private static function readPowerUsersFile()
     {
         self::$powerUsers = explode(PHP_EOL, file_get_contents("../" . FileNames::POWER_USERS));
     }
 
-    /**
-     * @return bool
-     */
-    public static function isPowerUser()
+    public static function isPowerUser(): bool
     {
         if (!isset($_SERVER['PHP_AUTH_USER'])) {
             return true;

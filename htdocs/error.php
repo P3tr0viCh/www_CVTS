@@ -52,7 +52,7 @@ if ($newDesign) {
     $styles[] = "/styles/error_compat.css";
 }
 
-echoHead($newDesign, $errorNum, $styles, null, null, false);
+echoHead($newDesign, $errorNum, $styles, null, false);
 
 echoStartBody($newDesign);
 
@@ -72,9 +72,9 @@ echo '<h2 class="result-message color-text--secondary">' . $errorSubHeader . '</
 echo S::TAB . S::TAB . S::TAB;
 
 $href = Builder::getInstance()
-	->setUrl("index.php")
-	->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
-	->build();
+    ->setUrl("index.php")
+    ->setParam(getCookieAsBool(ParamName::NEW_DESIGN) ? ParamName::NEW_DESIGN : null, true)
+    ->build();
 $href = "http://" . $_SERVER['HTTP_HOST'] . "/" . $href;
 
 echo "<h2 class='result-message link'><a href='$href'>" . S::ERROR_GOTO_START . "</a></h2>" . PHP_EOL;

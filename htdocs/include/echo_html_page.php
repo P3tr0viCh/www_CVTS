@@ -39,7 +39,7 @@ function echoStartPage()
  * @param string $value
  * @param string $content
  */
-function echoMeta($name, $value, $content)
+function echoMeta(string $name, string $value, string $content)
 {
     echo S::TAB;
     echo "<meta $name=\"$value\" content=\"$content\">" . PHP_EOL;
@@ -50,10 +50,9 @@ function echoMeta($name, $value, $content)
  * @param null|string $title
  * @param null|string|string[] $styles
  * @param null|string|string[] $javaScripts
- * @param null|string|string[] $oldIEStyles
  * @param bool $default Вывод стандартных стилей и скриптов
  */
-function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null, $oldIEStyles = null, $default = true)
+function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts = null, bool $default = true)
 {
     /** @noinspection HtmlRequiredTitleElement */
     echo '<head>' . PHP_EOL;
@@ -116,12 +115,6 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
         } else {
             echo S::TAB;
             echo '<link rel="stylesheet" href="/styles/common_compat.css">' . PHP_EOL;
-            echo S::TAB;
-            echo "<!--[if lt IE 9]>" . PHP_EOL;
-            echo S::TAB . S::TAB;
-            echo '<link rel="stylesheet" href="/styles/common_compat_ie.css">' . PHP_EOL;
-            echo S::TAB;
-            echo "<![endif]-->" . PHP_EOL;
         }
     }
 
@@ -135,22 +128,6 @@ function echoHead($newDesign, $title = null, $styles = null, $javaScripts = null
                 echo "<link rel='stylesheet' href='$style'>" . PHP_EOL;
             }
         }
-    }
-
-    if ($oldIEStyles) {
-        echo S::TAB;
-        echo "<!--[if lt IE 9]>" . PHP_EOL;
-        if (is_string($oldIEStyles)) {
-            echo S::TAB . S::TAB;
-            echo "<link rel='stylesheet' href='$oldIEStyles'>" . PHP_EOL;
-        } elseif (is_array($oldIEStyles)) {
-            foreach ($oldIEStyles as $style) {
-                echo S::TAB . S::TAB;
-                echo "<link rel='stylesheet' href='$style'>" . PHP_EOL;
-            }
-        }
-        echo S::TAB;
-        echo "<![endif]-->" . PHP_EOL;
     }
 
     if ($default) {
@@ -240,11 +217,7 @@ function echoEndMain($newDesign)
     }
 }
 
-/**
- * @param string $error
- * @param string $errorDetails
- */
-function echoErrorPage($error, $errorDetails)
+function echoErrorPage(string $error, ?string $errorDetails)
 {
     echo '<div class="div-center-outer">' . PHP_EOL;
     echo S::TAB;

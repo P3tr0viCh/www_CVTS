@@ -6,8 +6,6 @@ require_once "include/QueryDateTime.php";
 require_once "include/Constants.php";
 require_once "include/Strings.php";
 
-require_once "include/Database.php";
-
 require_once "include/Functions.php";
 require_once "include/CheckBrowser.php";
 require_once "include/ResultMessage.php";
@@ -55,7 +53,7 @@ if ($mysqli) {
         if ($result) {
             $row = $result->fetch_array();
 
-            $datetime = $row[Database\Columns::DATETIME_NOW];
+            $datetime = $row[database\Columns::DATETIME_NOW];
 
             echo S::TAB . S::TAB . S::TAB;
             echo "<h2 class='mysql_datetime color-text--primary'>$datetime</h2>" . PHP_EOL;

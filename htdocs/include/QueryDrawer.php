@@ -1,10 +1,9 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryDrawer extends QueryBase
 {

@@ -1,7 +1,6 @@
 <?php
 require_once "Strings.php";
 require_once "Constants.php";
-require_once "Database.php";
 require_once "Functions.php";
 require_once "builders/href_builder/Builder.php";
 
@@ -10,21 +9,17 @@ require_once "QueryDrawer.php";
 require_once "HtmlBase.php";
 
 use HrefBuilder\Builder;
+use JetBrains\PhpStorm\Pure;
 use Strings as S;
 
 class HtmlDrawer extends HtmlBase
 {
-    private $mysqli;
+    private ?mysqli $mysqli;
 
-    private $isStartPage;
-    private $useBackup;
+    private bool $isStartPage;
+    private bool $useBackup;
 
-    /**
-     * HtmlDrawer constructor.
-     * @param bool $newDesign
-     * @param null|mysqli $mysqli
-     */
-    public function __construct($newDesign, $mysqli)
+    #[Pure] public function __construct(bool $newDesign, ?mysqli $mysqli)
     {
         parent::__construct($newDesign);
 
@@ -34,21 +29,13 @@ class HtmlDrawer extends HtmlBase
         $this->useBackup = false;
     }
 
-    /**
-     * @param bool $isStartPage
-     * @return HtmlDrawer
-     */
-    public function setStartPage($isStartPage)
+    public function setStartPage(bool $isStartPage): static
     {
         $this->isStartPage = $isStartPage;
         return $this;
     }
 
-    /**
-     * @param bool $useBackup
-     * @return HtmlDrawer
-     */
-    public function setUseBackup($useBackup)
+    public function setUseBackup(bool $useBackup): static
     {
         $this->useBackup = $useBackup;
         return $this;
@@ -102,15 +89,15 @@ class HtmlDrawer extends HtmlBase
             }
 
             while ($row = $result->fetch_array()) {
-                if ($row[Database\Columns::SCALE_NUM] == 1981) continue;
+                if ($row[database\Columns::SCALE_NUM] == 1981) continue;
 
-                if ($row[Database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
+                if ($row[database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
 
                 $href = $hrefBuilder
-                    ->setParam(ParamName::SCALE_NUM, $row[Database\Columns::SCALE_NUM])
+                    ->setParam(ParamName::SCALE_NUM, $row[database\Columns::SCALE_NUM])
                     ->build();
 
-                echoLink(latin1ToUtf8($row[Database\Columns::SCALE_PLACE]), $href);
+                echoLink(latin1ToUtf8($row[database\Columns::SCALE_PLACE]), $href);
             }
 
             $result->free();
@@ -179,6 +166,5 @@ class HtmlDrawer extends HtmlBase
 
     protected function drawCompat()
     {
-        return;
     }
 }

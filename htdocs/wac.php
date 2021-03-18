@@ -16,7 +16,7 @@ require_once "include/ResultMessage.php";
 require_once "include/echo_html_page.php";
 require_once "include/echo_table.php";
 
-use Database\Info;
+use database\Info;
 use Strings as S;
 
 // debug
@@ -38,15 +38,12 @@ $departmentName = null;
 
 echoStartPage();
 
-$oldIEStyle = null;
-
 $styles = array();
 $styles[] = '/styles/wac_common.css';
 if ($newDesign) {
     $styles[] = '/styles/wac.css';
 } else {
     $styles[] = '/styles/wac_compat.css';
-    $oldIEStyle = '/styles/wac_compat_ie.css';
 }
 
 if ($debug) {
@@ -67,13 +64,13 @@ if ($showTemp) {
     $javaScripts[] = '/javascript/wac_temp.js';
 }
 
-echoHead($newDesign, S::TITLE_WAC, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_WAC, $styles, $javaScripts);
 
 echoStartBody($newDesign);
 
 $resultMessage = null;
 
-$mysqli = MySQLConnection::getInstance($useBackup, Info::CVTS);
+$mysqli = MySQLConnection::getInstance($useBackup, Info::CVTS, Info::CHARSET_UTF8);
 
 if ($mysqli) {
     if (!$mysqli->connect_errno) {
@@ -90,9 +87,9 @@ if ($mysqli) {
         if ($result) {
             $row = $result->fetch_array();
 
-            $companyDate = $row[Database\Columns::COMPANY_DATE];
-            $departmentDate = $row[Database\Columns::DEPARTMENT_DATE];
-            $departmentName = latin1ToUtf8($row[Database\Columns::DEPARTMENT_NAME]);
+            $companyDate = $row[database\Columns::COMPANY_DATE];
+            $departmentDate = $row[database\Columns::DEPARTMENT_DATE];
+            $departmentName = $row[database\Columns::DEPARTMENT_NAME];
 
             if (is_null($departmentName)) {
                 $departmentName = sprintf(S::HEADER_WAC_DEPARTMENT, $department);

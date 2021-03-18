@@ -3,15 +3,7 @@ require_once "Strings.php";
 
 use Strings as S;
 
-/**
- * @param string $name
- * @param string $href
- * @param null|string $onSubmit
- * @param null|string $onReset
- * @param bool $methodGet
- * @param bool $blank
- */
-function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $methodGet = true, $blank = false)
+function echoFormStart(string $name, string $href, ?string $onSubmit = null, ?string $onReset = null, bool $methodGet = true, bool $blank = false)
 {
     if ($blank) {
         $blank = "target='_blank'";
@@ -32,11 +24,7 @@ function echoFormStart($name, $href, $onSubmit = null, $onReset = null, $methodG
     echo "<form id='$name' name='$name' method='$method' action='$href' $params>" . PHP_EOL;
 }
 
-/**
- * @param string $name
- * @param mixed $value
- */
-function echoHidden($name, $value)
+function echoHidden(string $name, mixed $value)
 {
     $id = $name . '_hidden';
 
@@ -44,13 +32,7 @@ function echoHidden($name, $value)
     echo "<input type='hidden' id='$id' name='$name' value='$value'>" . PHP_EOL;
 }
 
-/**
- * @param $newDesign
- * @param $text
- * @param $name
- * @param $value
- */
-function echoButton($newDesign, $text, $name, $value)
+function echoButton(bool $newDesign, string $text, string $name, int $value)
 {
     $buttonClass = $newDesign ?
         "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" : "input-button submit";
@@ -84,18 +66,8 @@ function echoButtonReset($newDesign)
     echo PHP_EOL;
 }
 
-/**
- * @param bool $newDesign
- * @param string $id
- * @param string $name
- * @param string|null $title
- * @param string $pattern
- * @param int $size
- * @param int $maxLength
- * @param bool $width80
- * @param bool $showName
- */
-function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, $width80 = false, $showName = true)
+function echoInput(bool $newDesign, string $id, string $name, ?string $title, string $pattern, ?int $size, ?int $maxLength,
+                   bool $width80 = false, bool $showName = true)
 {
     echo S::TAB;
 
@@ -136,16 +108,10 @@ function echoInput($newDesign, $id, $name, $title, $pattern, $size, $maxLength, 
     echo "</div>" . PHP_EOL;
 }
 
-/**
- * @param bool $newDesign
- * @param string $id
- * @param string $name
- * @param string|null $title
- */
-function echoTextArea($newDesign, $id, $name, $title)
+function echoTextArea(bool $newDesign, string $id, string $name, ?string $title)
 {
     $cols = 40;
-    $rows= 20;
+    $rows = 20;
 
     echo S::TAB;
 
@@ -184,13 +150,7 @@ function echoTextArea($newDesign, $id, $name, $title)
     echo "</div>" . PHP_EOL;
 }
 
-/**
- * @param bool $newDesign
- * @param string $id
- * @param string $name
- * @param bool $checked
- */
-function echoCheckBox($newDesign, $id, $name, $checked = false)
+function echoCheckBox(bool $newDesign, string $id, string $name, bool $checked = false)
 {
     if ($newDesign) {
         $labelClass = 'mdl-switch mdl-js-switch mdl-js-ripple-effect';

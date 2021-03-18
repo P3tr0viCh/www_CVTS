@@ -16,7 +16,6 @@ require_once "include/QueryVanListLastTare.php";
 require_once "include/QueryCompare.php";
 
 require_once "include/Strings.php";
-require_once "include/Database.php";
 require_once "include/ColumnsStrings.php";
 require_once "include/ColumnsTitleStrings.php";
 
@@ -37,9 +36,10 @@ require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 
 use HrefBuilder\Builder;
+use JetBrains\PhpStorm\Pure;
 use Strings as S;
 
-use Database\Columns as C;
+use database\Columns as C;
 
 /**
  * @param null|string $error
@@ -101,8 +101,8 @@ $dtEndMinute = null;
 $dateTimeStart = null;
 $dateTimeEnd = null;
 
-$orderByDesc = null;
-$from20to20 = null;
+$orderByDesc = false;
+$from20to20 = false;
 
 $vanList = null;
 
@@ -113,7 +113,7 @@ switch ($reportType) {
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM);
         $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
 
-        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
 
         $filter
             ->setVanNumber(getParamGETAsString(ParamName::VAN_NUMBER))
@@ -123,11 +123,10 @@ switch ($reportType) {
             ->setInvoiceRecipient(getParamGETAsString(ParamName::INVOICE_RECIPIENT))
             ->setOnlyChark(getParamGETAsBool(ParamName::ONLY_CHARK))
             ->setScalesFilter(getParamGETAsString(ParamName::SCALES))
-            ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS))
+            ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
             ->setShowCargoDate(getParamGETAsBool(ParamName::SHOW_CARGO_DATE))
             ->setShowDeltas(getParamGETAsBool(ParamName::SHOW_DELTAS))
             ->setShowDeltasMi3115(getParamGETAsBool(ParamName::SHOW_DELTAS_MI_3115))
-            ->setOrderByDateTime(getParamGETAsBool(ParamName::ORDER_BY_DATETIME))
             ->setCompareForward(getParamGETAsBool(ParamName::COMPARE_FORWARD))
             ->setCompareByBrutto(getParamGETAsBool(ParamName::COMPARE_BY_BRUTTO));
 
@@ -136,7 +135,7 @@ switch ($reportType) {
         // TODO: old style form with POST
         if (empty($resultType)) {
 
-            function getResultType($type)
+            #[Pure] function getResultType(int $type): ?int
             {
                 $param = getParamGETAsString(ParamName::RESULT_TYPE . "_" . $type);
                 return empty($param) ? null : $type;
@@ -198,9 +197,9 @@ switch ($reportType) {
         $dtEndHour = getParamGETAsInt(ParamName::DATETIME_END_HOUR);
         $dtEndMinute = getParamGETAsInt(ParamName::DATETIME_END_MINUTES);
 
-        $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC);
+        $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC, $orderByDesc);
 
-        $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20);
+        $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20, $from20to20);
 
         $vanList = vanListStringToArray(getParamGETAsString(ParamName::VANLIST));
 
@@ -224,7 +223,7 @@ switch ($reportType) {
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
-        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
 
         $filter
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
@@ -239,7 +238,7 @@ switch ($reportType) {
 
         $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
-        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
+        $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
 
         $filter
             ->setFull(getParamGETAsBool(ParamName::ALL_FIELDS, false))
@@ -327,6 +326,7 @@ if ($mysqli) {
             }
 
             switch ($resultType) {
+                case ResultType::TRAIN_DYNAMIC:
                 case ResultType::IRON:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
                         $dateTimeStart = $dateTimeBuilder
@@ -369,15 +369,10 @@ if ($mysqli) {
                 throwBadRequest('empty subHeader');
             }
 
-            switch ($resultType) {
-                case ResultType::IRON:
-                case ResultType::VANLIST_WEIGHS:
-                case ResultType::VANLIST_LAST_TARE:
-                    $formatDateTimeF = 'formatDate';
-                    break;
-                default:
-                    $formatDateTimeF = 'formatDateTime';
-            }
+            $formatDateTimeF = match ($resultType) {
+                ResultType::IRON, ResultType::VANLIST_WEIGHS, ResultType::VANLIST_LAST_TARE => 'formatDate',
+                default => 'formatDateTime',
+            };
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
                 $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
@@ -408,13 +403,7 @@ if ($mysqli) {
                 ->setDateTimeStart($dateTimeStart)
                 ->setDateTimeEnd($dateTimeEnd);
 
-            /**
-             * @param string $name
-             * @param string $value
-             * @param string $html
-             * @return string
-             */
-            function formatWhereHeader($name, $value, $html)
+            function formatWhereHeader(string $name, ?string $value, string $html): string
             {
                 if ($value) {
                     if ($html) {
@@ -427,20 +416,16 @@ if ($mysqli) {
                 }
             }
 
-            switch ($resultType) {
-                case ResultType::AUTO_BRUTTO:
-                case ResultType::AUTO_TARE:
-                case ResultType::VAN_DYNAMIC_BRUTTO:
-                case ResultType::VAN_DYNAMIC_TARE:
-                case ResultType::VAN_STATIC_BRUTTO:
-                case ResultType::VAN_STATIC_TARE:
-                case ResultType::COMPARE_DYNAMIC:
-                case ResultType::COMPARE_STATIC:
-                    $whereHeader = formatWhereHeader($scaleInfo->getType() == ScaleType::AUTO ?
-                        S::HEADER_RESULT_SEARCH_AUTO_NUMBER :
-                        S::HEADER_RESULT_SEARCH_VAN_NUMBER,
-                        $filter->getVanNumber(), $newDesign);
-            }
+            $whereHeader = match ($resultType) {
+                ResultType::AUTO_BRUTTO, ResultType::AUTO_TARE,
+                ResultType::VAN_DYNAMIC_BRUTTO, ResultType::VAN_DYNAMIC_TARE,
+                ResultType::VAN_STATIC_BRUTTO, ResultType::VAN_STATIC_TARE,
+                ResultType::COMPARE_DYNAMIC, ResultType::COMPARE_STATIC =>
+                formatWhereHeader($scaleInfo->getType() == ScaleType::AUTO ?
+                    S::HEADER_RESULT_SEARCH_AUTO_NUMBER : S::HEADER_RESULT_SEARCH_VAN_NUMBER,
+                    $filter->getVanNumber(), $newDesign),
+                default => "",
+            };
 
             if ($resultType == ResultType::TRAIN_DYNAMIC_ONE ||
                 $resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
@@ -544,6 +529,7 @@ if (!$resultMessage) {
     $queryResult = null;
 
     try {
+        /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
         switch ($resultType) {
             case ResultType::IRON:
                 $queryResult = (new QueryIron())
@@ -749,8 +735,8 @@ if (!$resultMessage) {
                     $queryCompare = new QueryCompare();
 
                     $queryCompare
-                        ->setCompareForward($filter->isCompareForward())
-                        ->setCompareByBrutto($filter->isCompareByBrutto());
+                        ->setCompareForward($filter->isCompareForward() ?: false)
+                        ->setCompareByBrutto($filter->isCompareByBrutto() ?: false);
 
                     if ($scaleNum != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                         $queryCompare->setScaleNum($scaleNum);
@@ -964,7 +950,7 @@ if (!$resultMessage) {
                     echoTableTRStart(getRowColorClass($numColor));
 
                     echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
-                    echoTableTD("", null);
+                    echoTableTD("");
                     echoTableTD("", null, null, $colSpanTotalValue);
 
                     echoTableTREnd();
@@ -1017,22 +1003,13 @@ if (!$resultMessage) {
 
                 echoFormStart('formExcel', 'excel.php', null, null, false, true);
 
-                switch ($scaleNum) {
-                    case Constants::SCALE_NUM_ALL_TRAIN_SCALES:
-                        $fileName = "AT";
-                        break;
-                    case Constants::SCALE_NUM_REPORT_IRON:
-                        $fileName = "IR";
-                        break;
-                    case Constants::SCALE_NUM_REPORT_IRON_CONTROL:
-                        $fileName = "IC";
-                        break;
-                    case Constants::SCALE_NUM_REPORT_VANLIST:
-                        $fileName = "VL_T";
-                        break;
-                    default:
-                        $fileName = "SN-" . $scaleNum;
-                }
+                $fileName = match ($scaleNum) {
+                    Constants::SCALE_NUM_ALL_TRAIN_SCALES => "AT",
+                    Constants::SCALE_NUM_REPORT_IRON => "IR",
+                    Constants::SCALE_NUM_REPORT_IRON_CONTROL => "IC",
+                    Constants::SCALE_NUM_REPORT_VANLIST => "VL_T",
+                    default => "SN-" . $scaleNum,
+                };
                 $fileName .= "_" . date("Y.m.d_H-i-s") . ".csv";
                 echoHidden(ParamName::EXCEL_FILENAME, $fileName);
 
@@ -1070,7 +1047,7 @@ if (!$resultMessage) {
                 $resultMessage = new ResultMessage(S::ERROR_RESULT_MAX_ROWS, sprintf(S::ERROR_RESULT_MAX_ROWS_DETAILS, $numRows));
             }
         } else {
-            $resultMessage = new ResultMessage(S::TEXT_ZERO_RESULT, null);
+            $resultMessage = new ResultMessage(S::TEXT_ZERO_RESULT);
         }
     } else {
         $resultMessage = queryError($mysqli);

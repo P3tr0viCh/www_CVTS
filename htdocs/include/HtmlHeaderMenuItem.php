@@ -2,43 +2,28 @@
 
 class HtmlHeaderMenuItem
 {
-    private $id;
-    private $text;
-    private $onClick;
+    private string $id;
+    private string $text;
+    private string $onClick;
 
-    /**
-     * HtmlHeaderMenuItem constructor.
-     * @param string $id
-     * @param string $text
-     * @param string $onClick
-     */
-    public function __construct($id, $text, $onClick)
+    public function __construct(string $id, string $text, string $onClick)
     {
         $this->id = $id;
         $this->text = $text;
         $this->onClick = $onClick;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @return string
-     */
-    public function getOnClick()
+    public function getOnClick(): string
     {
         return $this->onClick;
     }

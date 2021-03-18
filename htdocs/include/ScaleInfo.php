@@ -1,57 +1,27 @@
 <?php
-
-use Database\Columns;
-
 require_once "QueryScaleInfo.php";
 
 require_once "Strings.php";
 require_once "Constants.php";
 
-require_once "Database.php";
-
 require_once "ResultMessage.php";
+
+use database\Columns;
 
 class ScaleInfo
 {
-    /**
-     * @var int
-     */
-    private $scaleNum;
+    private int $scaleNum;
+    private string $place;
+    private string $header;
+    private int $type;
+    private int $class;
 
-    /**
-     * @var string
-     */
-    private $place;
-
-    /**
-     * @var string
-     */
-    private $header;
-
-    /**
-     * @var int
-     */
-    private $type;
-
-    /**
-     * @var int
-     */
-    private $class;
-
-    /**
-     * ScaleInfo constructor.
-     * @param int $scaleNum
-     */
-    public function __construct($scaleNum)
+    public function __construct(int $scaleNum)
     {
         $this->scaleNum = $scaleNum;
     }
 
-    /**
-     * @param mysqli $mysqli
-     * @return null|ResultMessage
-     */
-    public function query($mysqli)
+    public function query(mysqli $mysqli): ?ResultMessage
     {
         switch ($this->scaleNum) {
             case Constants::SCALE_NUM_ALL_TRAIN_SCALES:
@@ -95,12 +65,12 @@ class ScaleInfo
 
                     if ($result->num_rows > 0) {
                         if ($row = $result->fetch_array()) {
-                            $this->place = latin1ToUtf8($row[Columns::SCALE_PLACE]);
+                            $this->place = (string)latin1ToUtf8($row[Columns::SCALE_PLACE]);
 
                             $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
-                            $this->type = $row[Database\Columns::SCALE_TYPE];
+                            $this->type = $row[database\Columns::SCALE_TYPE];
 
-                            if ($row[Database\Columns::SCALE_TYPE_DYN] == 0) {
+                            if ($row[database\Columns::SCALE_TYPE_DYN] == 0) {
                                 $this->class = ScaleClass::CLASS_STATIC;
                             } else {
                                 $this->class = ScaleClass::CLASS_DYNAMIC;
@@ -117,42 +87,27 @@ class ScaleInfo
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getScaleNum()
+    public function getScaleNum(): int
     {
         return $this->scaleNum;
     }
 
-    /**
-     * @return string
-     */
-    public function getPlace()
+    public function getPlace(): string
     {
         return $this->place;
     }
 
-    /**
-     * @return string
-     */
-    public function getHeader()
+    public function getHeader(): string
     {
         return $this->header;
     }
 
-    /**
-     * @return int
-     */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
-    public function getClass()
+    public function getClass(): int
     {
         return $this->class;
     }

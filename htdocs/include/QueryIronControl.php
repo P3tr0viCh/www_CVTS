@@ -1,13 +1,12 @@
 <?php
 require_once "builders/query_builder/Builder.php";
 require_once "Constants.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
-use Database\Aliases as A;
+use database\Tables as T;
+use database\Columns as C;
+use database\Aliases as A;
 
 class QueryIronControl extends QueryBase
 {
@@ -15,25 +14,17 @@ class QueryIronControl extends QueryBase
 
     const MYSQL_DATETIME_FORMAT = "YmdHis";
 
-    private $dateStart;
-    private $dateStartSta;
-    private $dateEnd;
+    private mixed $dateStart;
+    private mixed $dateStartSta;
+    private mixed $dateEnd;
 
-    /**
-     * @param int $dateStart
-     * @return QueryIronControl
-     */
-    public function setDateStart($dateStart)
+    public function setDateStart(?int $dateStart): static
     {
         $this->dateStart = $dateStart;
         return $this;
     }
 
-    /**
-     * @param int $dateEnd
-     * @return QueryIronControl
-     */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd(?int $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
         return $this;

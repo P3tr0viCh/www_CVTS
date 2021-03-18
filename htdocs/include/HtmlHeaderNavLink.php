@@ -2,21 +2,13 @@
 
 class HtmlHeaderNavLink
 {
-    private $id;
-    private $icon;
-    private $text;
-    private $onClick;
-    private $hidden;
+    private string $id;
+    private string $icon;
+    private string $text;
+    private string $onClick;
+    private bool $hidden;
 
-    /**
-     * HtmlHeaderNavLink constructor.
-     * @param string $id
-     * @param string $icon
-     * @param string $text
-     * @param string $onClick
-     * @param bool $hidden
-     */
-    public function __construct($id, $icon, $text, $onClick, $hidden = false)
+    public function __construct(string $id, string $icon, string $text, string $onClick, bool $hidden = false)
     {
         $this->id = $id;
         $this->icon = $icon;
@@ -25,42 +17,27 @@ class HtmlHeaderNavLink
         $this->hidden = $hidden;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return bool
-     */
-    public function getHidden()
+    public function getHidden(): bool
     {
         return $this->hidden;
     }
 
-    /**
-     * @return string
-     */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @return string
-     */
-    public function getOnClick()
+    public function getOnClick(): string
     {
         return $this->onClick;
     }

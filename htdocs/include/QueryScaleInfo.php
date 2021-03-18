@@ -1,25 +1,19 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryScaleInfo extends QueryBase
 {
-    /**
-     * @var int
-     */
-    private $scaleNum;
+    private int $scaleNum;
 
-    /**
-     * @param int $scaleNum
-     */
-    public function setScaleNum($scaleNum)
+    public function setScaleNum(int $scaleNum): static
     {
         $this->scaleNum = $scaleNum;
+        return $this;
     }
 
     protected function makeQuery()

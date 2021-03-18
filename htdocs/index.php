@@ -7,8 +7,6 @@ require_once "include/Strings.php";
 require_once "include/Constants.php";
 require_once "include/ColumnsStrings.php";
 
-require_once "include/Database.php";
-
 require_once "include/Functions.php";
 require_once "include/CheckBrowser.php";
 require_once "include/ResultMessage.php";
@@ -23,7 +21,7 @@ require_once "include/HtmlDrawer.php";
 require_once "include/HtmlFooter.php";
 
 use HrefBuilder\Builder;
-use Database\Columns as DBC;
+use database\Columns as DBC;
 use Strings as S;
 use Constants as C;
 use ParamName as PN;
@@ -66,8 +64,6 @@ setCookieAsString(PN::SHOW_DELTAS, null);
 setCookieAsString(PN::COMPARE_FORWARD, null);
 setCookieAsString(PN::COMPARE_BY_BRUTTO, null);
 setCookieAsString(PN::SCALES, null);
-
-setCookieAsString(PN::ORDER_BY_DATETIME, null);
 
 echoStartPage();
 
@@ -219,7 +215,7 @@ if ($mysqli) {
              * @param string $name
              * @param int $value
              */
-            function addRowQuery($name, $value)
+            function addRowQuery(string $name, int $value)
             {
                 global $numColor, $hrefBuilder, $newDesign, $class, $numColumns;
 

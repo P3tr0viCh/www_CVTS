@@ -16,7 +16,7 @@ class CheckBrowser
      *
      * @return bool
      */
-    public static function isCompatibleVersion()
+    public static function isCompatibleVersion(): bool
     {
         $agent = $_SERVER['HTTP_USER_AGENT'];
 

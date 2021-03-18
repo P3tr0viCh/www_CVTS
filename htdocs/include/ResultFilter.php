@@ -3,247 +3,142 @@ require_once "Functions.php";
 
 class ResultFilter
 {
-    private $scaleNum;
-    private $trainNum;
+    private ?int $scaleNum = null;
+    private ?int $trainNum = null;
 
-    private $dateTimeStart;
-    private $dateTimeEnd;
+    private ?int $dateTimeStart = null;
+    private ?int $dateTimeEnd = null;
 
-    private $trainUnixTime;
-    private $trainDateTime;
+    private ?int $trainUnixTime = null;
+    private ?int $trainDateTime = null;
 
-    private $vanNumber;
-    private $cargoType;
-    private $invoiceNum;
-    private $invoiceSupplier;
-    private $invoiceRecipient;
-    private $onlyChark;
-    private $scalesFilter;
+    private ?string $vanNumber = null;
+    private ?string $cargoType = null;
+    private ?string $invoiceNum = null;
+    private ?string $invoiceSupplier = null;
+    private ?string $invoiceRecipient = null;
+    private ?bool $onlyChark = null;
+    private ?string $scalesFilter = null;
 
-    private $full;
-    private $showCargoDate;
-    private $showDeltas;
-    private $showDeltasMi3115;
-    private $orderByDateTime;
-    private $compareForward;
-    private $compareByBrutto;
+    private ?bool $full = null;
+    private ?bool $showCargoDate = null;
+    private ?bool $showDeltas = null;
+    private ?bool $showDeltasMi3115 = null;
+    private ?bool $compareForward = null;
+    private ?bool $compareByBrutto = null;
 
-    /**
-     * @return ResultFilter
-     */
-    public static function getInstance()
-    {
-        return new self();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getDateTimeStart()
-    {
-        return $this->dateTimeStart;
-    }
-
-    /**
-     * @param int $dateTimeStart
-     * @return $this
-     */
-    public function setDateTimeStart($dateTimeStart)
-    {
-        $this->dateTimeStart = $dateTimeStart;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getDateTimeEnd()
-    {
-        return $this->dateTimeEnd;
-    }
-
-    /**
-     * @param int $dateTimeEnd
-     * @return $this
-     */
-    public function setDateTimeEnd($dateTimeEnd)
-    {
-        $this->dateTimeEnd = $dateTimeEnd;
-        return $this;
-    }
-
-    /**
-     * Для доменных печей: выводить только "Кокс".
-     *
-     * @param bool $onlyChark
-     * @return $this
-     */
-    public function setOnlyChark($onlyChark)
-    {
-        $this->onlyChark = $onlyChark;
-        return $this;
-    }
-
-    /**
-     * Сортировать по полю bdatetime (иначе по wtime).
-     *
-     * @param bool $orderByDateTime
-     * @return $this
-     */
-    public function setOrderByDateTime($orderByDateTime)
-    {
-        $this->orderByDateTime = $orderByDateTime;
-        return $this;
-    }
-
-    /**
-     * Выводить время изменения рода груза.
-     *
-     * @param bool $showCargoDate
-     * @return $this
-     */
-    public function setShowCargoDate($showCargoDate)
-    {
-        $this->showCargoDate = $showCargoDate;
-        return $this;
-    }
-
-    /**
-     * Выводить предельно допускаемые погрешности.
-     *
-     * @param bool $showDeltas
-     * @return $this
-     */
-    public function setShowDeltas($showDeltas)
-    {
-        $this->showDeltas = $showDeltas;
-        return $this;
-    }
-
-    /**
-     * Выводить редельные расхождения по МИ 3115.
-     *
-     * @param bool $showDeltasMi3115
-     * @return $this
-     */
-    public function setShowDeltasMi3115($showDeltasMi3115)
-    {
-        $this->showDeltasMi3115 = $showDeltasMi3115;
-        return $this;
-    }
-
-    /**
-     * Показывать все поля таблицы.
-     *
-     * @param bool $full
-     * @return $this
-     */
-    public function setFull($full)
-    {
-        $this->full = $full;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getScaleNum()
-    {
-        return $this->scaleNum;
-    }
-
-    /**
-     * @param int $scaleNum
-     * @return $this
-     */
-    public function setScaleNum($scaleNum)
+    public function setScaleNum(?int $scaleNum): static
     {
         $this->scaleNum = (int)$scaleNum;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getTrainNum()
+    public function getScaleNum(): ?int
     {
-        return (int)$this->trainNum;
+        return $this->scaleNum;
     }
 
-    /**
-     * @param int $trainNum
-     * @return $this
-     */
-    public function setTrainNum($trainNum)
+    public function setTrainNum(?int $trainNum): static
     {
         $this->trainNum = $trainNum;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getVanNumber()
+    public function getTrainNum(): ?int
     {
-        return $this->vanNumber;
+        return (int)$this->trainNum;
     }
 
-    /**
-     * Номер вагона или автомобиля.
-     *
-     * @param string $vanNumber
-     * @return $this
-     */
-    public function setVanNumber($vanNumber)
+    public function setDateTimeStart(?int $dateTimeStart): static
+    {
+        $this->dateTimeStart = $dateTimeStart;
+        return $this;
+    }
+
+    public function getDateTimeStart(): ?int
+    {
+        return $this->dateTimeStart;
+    }
+
+    public function setDateTimeEnd(?int $dateTimeEnd): static
+    {
+        $this->dateTimeEnd = $dateTimeEnd;
+        return $this;
+    }
+
+    public function getDateTimeEnd(): ?int
+    {
+        return $this->dateTimeEnd;
+    }
+
+    public function setTrainUnixTime(?int $trainUnixTime): static
+    {
+        $this->trainUnixTime = $trainUnixTime;
+        return $this;
+    }
+
+    public function getTrainUnixTime(): ?int
+    {
+        return $this->trainUnixTime;
+    }
+
+    public function setTrainDateTime(?int $trainDateTime): static
+    {
+        $this->trainDateTime = $trainDateTime;
+        return $this;
+    }
+
+    public function getTrainDateTime(): ?int
+    {
+        return $this->trainDateTime;
+    }
+
+    public function setVanNumber(?string $vanNumber): static
     {
         $this->vanNumber = $vanNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCargoType()
+    public function getVanNumber(): ?string
     {
-        return $this->cargoType;
+        return $this->vanNumber;
     }
 
-    /**
-     * Род груза.
-     *
-     * @param string $cargoType
-     * @return $this
-     */
-    public function setCargoType($cargoType)
+    public function setCargoType(?string $cargoType): static
     {
         $this->cargoType = $cargoType;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getInvoiceNum()
+    public function getCargoType(): ?string
     {
-        return $this->invoiceNum;
+        return $this->cargoType;
     }
 
-    /**
-     * Номер накладной.
-     *
-     * @param string $invoiceNum
-     * @return $this
-     */
-    public function setInvoiceNum($invoiceNum)
+    public function setInvoiceNum(?string $invoiceNum): static
     {
         $this->invoiceNum = $invoiceNum;
         return $this;
     }
 
+    public function getInvoiceNum(): ?string
+    {
+        return $this->invoiceNum;
+    }
+
     /**
-     * @return string|null
+     * Грузоотправитель.
+     *
+     * @param string|null $invoiceSupplier
+     * @return $this
      */
-    public function getInvoiceSupplier()
+    public function setInvoiceSupplier(?string $invoiceSupplier): static
+    {
+        $this->invoiceSupplier = $invoiceSupplier;
+        return $this;
+    }
+
+    public function getInvoiceSupplier(): ?string
     {
         return $this->invoiceSupplier;
     }
@@ -251,172 +146,141 @@ class ResultFilter
     /**
      * Грузополучатель.
      *
-     * @param string $invoiceSupplier
+     * @param string|null $invoiceRecipient
      * @return $this
      */
-    public function setInvoiceSupplier($invoiceSupplier)
-    {
-        $this->invoiceSupplier = $invoiceSupplier;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getInvoiceRecipient()
-    {
-        return $this->invoiceRecipient;
-    }
-
-    /**
-     * Грузоотправитель.
-     *
-     * @param string $invoiceRecipient
-     * @return $this
-     */
-    public function setInvoiceRecipient($invoiceRecipient)
+    public function setInvoiceRecipient(?string $invoiceRecipient): static
     {
         $this->invoiceRecipient = $invoiceRecipient;
         return $this;
     }
 
+    public function getInvoiceRecipient(): ?string
+    {
+        return $this->invoiceRecipient;
+    }
+
     /**
-     * @return bool|null
+     * Для доменных печей: выводить только "Кокс".
+     *
+     * @param bool|null $onlyChark
+     * @return ResultFilter
      */
-    public function isOnlyChark()
+    public function setOnlyChark(?bool $onlyChark): static
+    {
+        $this->onlyChark = $onlyChark;
+        return $this;
+    }
+
+    public function isOnlyChark(): ?bool
     {
         return $this->onlyChark;
     }
 
     /**
-     * @return string|null
-     */
-    public function getScalesFilter()
-    {
-        return $this->scalesFilter;
-    }
-
-    /**
      * Номера весов.
      *
-     * @param string $scalesFilter
-     * @return $this
+     * @param string|null $scalesFilter
+     * @return ResultFilter
      */
-    public function setScalesFilter($scalesFilter)
+    public function setScalesFilter(?string $scalesFilter): static
     {
         $this->scalesFilter = $scalesFilter;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isFull()
+    public function getScalesFilter(): ?string
     {
-        return (bool)$this->full;
+        return $this->scalesFilter;
     }
 
     /**
-     * @return bool|null
+     * Показывать все поля таблицы.
+     *
+     * @param bool|null $full
+     * @return ResultFilter
      */
-    public function isShowCargoDate()
+    public function setFull(?bool $full): static
+    {
+        $this->full = $full;
+        return $this;
+    }
+
+    public function isFull(): ?bool
+    {
+        return $this->full;
+    }
+
+    /**
+     * Выводить время изменения рода груза.
+     *
+     * @param bool|null $showCargoDate
+     * @return ResultFilter
+     */
+    public function setShowCargoDate(?bool $showCargoDate): static
+    {
+        $this->showCargoDate = $showCargoDate;
+        return $this;
+    }
+
+    public function isShowCargoDate(): ?bool
     {
         return $this->showCargoDate;
     }
 
     /**
-     * @return bool|null
+     * Выводить предельно допускаемые погрешности.
+     *
+     * @param bool|null $showDeltas
+     * @return ResultFilter
      */
-    public function isShowDeltas()
+    public function setShowDeltas(?bool $showDeltas): static
+    {
+        $this->showDeltas = $showDeltas;
+        return $this;
+    }
+
+    public function isShowDeltas(): ?bool
     {
         return $this->showDeltas;
     }
 
     /**
-     * @return bool|null
+     * Выводить редельные расхождения по МИ 3115.
+     *
+     * @param bool|null $showDeltasMi3115
+     * @return ResultFilter
      */
-    public function isShowDeltasMi3115()
+    public function setShowDeltasMi3115(?bool $showDeltasMi3115): static
+    {
+        $this->showDeltasMi3115 = $showDeltasMi3115;
+        return $this;
+    }
+
+    public function isShowDeltasMi3115(): ?bool
     {
         return $this->showDeltasMi3115;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isOrderByDateTime()
+    public function setCompareForward(?bool $compareForward): static
     {
-        return $this->orderByDateTime;
+        $this->compareForward = $compareForward;
+        return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isCompareForward()
+    public function isCompareForward(): ?bool
     {
         return $this->compareForward;
     }
 
-    /**
-     * @param bool $compareForward
-     * @return $this
-     */
-    public function setCompareForward($compareForward)
+    public function setCompareByBrutto(?bool $compareByBrutto): static
     {
-        $this->compareForward = (bool)$compareForward;
+        $this->compareByBrutto = $compareByBrutto;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isCompareByBrutto()
+    public function isCompareByBrutto(): ?bool
     {
         return $this->compareByBrutto;
-    }
-
-    /**
-     * @param bool $compareByBrutto
-     * @return $this
-     */
-    public function setCompareByBrutto($compareByBrutto)
-    {
-        $this->compareByBrutto = (bool)$compareByBrutto;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTrainUnixTime()
-    {
-        return $this->trainUnixTime;
-    }
-
-    /**
-     * @param int $trainUnixTime
-     * @return $this
-     */
-    public function setTrainUnixTime($trainUnixTime)
-    {
-        $this->trainUnixTime = $trainUnixTime;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTrainDateTime()
-    {
-        return $this->trainDateTime;
-    }
-
-    /**
-     * @param mixed $trainDateTime
-     * @return $this
-     */
-    public function setTrainDateTime($trainDateTime)
-    {
-        $this->trainDateTime = $trainDateTime;
-        return $this;
     }
 }

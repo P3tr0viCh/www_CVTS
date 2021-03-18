@@ -1,121 +1,65 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 require_once "ResultFilter.php";
 
+use JetBrains\PhpStorm\Pure;
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryResult extends QueryBase
 {
     const MYSQL_DATETIME_FORMAT = "YmdHis";
 
-    /**
-     * @var ResultFilter
-     */
-    private $filter;
+    private ResultFilter $filter;
 
-    /**
-     * @param int $scaleType
-     * @return QueryResult
-     */
-    public function setScaleType($scaleType)
+    private int $scaleType;
+    private int $resultType;
+
+    public function setScaleType(int $scaleType): static
     {
         $this->scaleType = $scaleType;
         return $this;
     }
 
-    /**
-     * @var int
-     * @see ScaleType
-     */
-    private $scaleType;
-
-    /**
-     * @var int
-     * @see ReportType;
-     */
-    private $resultType;
-
-    /**
-     * @param int $resultType
-     * @return QueryResult
-     */
-    public function setResultType($resultType)
+    public function setResultType(int $resultType): static
     {
         $this->resultType = $resultType;
         return $this;
     }
 
-    /**
-     * @param ResultFilter $filter
-     * @return QueryResult
-     */
-    public function setFilter($filter)
+    public function setFilter(ResultFilter $filter): static
     {
         $this->filter = $filter;
         return $this;
     }
 
-    private $showCargoDate;
-    private $showDeltas;
-    private $showDeltasMi3115;
+    private bool $showCargoDate;
+    private bool $showDeltas;
+    private bool $showDeltasMi3115;
 
-    private function getTableName()
+    #[Pure] private function getTableName(): string
     {
-        switch ($this->resultType) {
-            case ResultType::VAN_DYNAMIC_BRUTTO:
-                return T::VAN_DYNAMIC_BRUTTO;
-            case ResultType::VAN_DYNAMIC_TARE:
-                return T::VAN_DYNAMIC_TARE;
-            case ResultType::VAN_STATIC_BRUTTO:
-                return T::VAN_STATIC_BRUTTO;
-            case ResultType::VAN_STATIC_TARE:
-                return T::VAN_STATIC_TARE;
-
-            case ResultType::TRAIN_DYNAMIC:
-                return T::TRAIN_DYNAMIC;
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::TRAIN_DYNAMIC_ONE:
-                return T::VAN_DYNAMIC_BRUTTO;
-
-            case ResultType::AUTO_BRUTTO:
-                return T::AUTO_BRUTTO;
-            case ResultType::AUTO_TARE:
-                return T::AUTO_TARE;
-
-            case ResultType::KANAT:
-                return T::KANAT;
-
-            case ResultType::DP:
-            case ResultType::DP_SUM:
-                return T::DP;
-
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::CARGO_LIST_DYNAMIC:
-                return T::VAN_DYNAMIC_BRUTTO;
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::CARGO_LIST_STATIC:
-                return T::VAN_STATIC_BRUTTO;
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::CARGO_LIST_AUTO:
-                return T::AUTO_BRUTTO;
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::COMPARE_DYNAMIC:
-                return T::VAN_DYNAMIC_BRUTTO;
-            /** @noinspection PhpDuplicateSwitchCaseBodyInspection */
-            case ResultType::COMPARE_STATIC:
-                return T::VAN_STATIC_BRUTTO;
-
-            case ResultType::COEFFS:
-                return T::COEFFS;
-
-            default:
-                throw new InvalidArgumentException("Unknown resultType ($this->resultType)");
-        }
+        return match ($this->resultType) {
+            ResultType::TRAIN_DYNAMIC => T::TRAIN_DYNAMIC,
+            ResultType::TRAIN_DYNAMIC_ONE,
+            ResultType::VAN_DYNAMIC_BRUTTO,
+            ResultType::COMPARE_DYNAMIC,
+            ResultType::CARGO_LIST_DYNAMIC => T::VAN_DYNAMIC_BRUTTO,
+            ResultType::VAN_DYNAMIC_TARE => T::VAN_DYNAMIC_TARE,
+            ResultType::VAN_STATIC_BRUTTO,
+            ResultType::COMPARE_STATIC,
+            ResultType::CARGO_LIST_STATIC => T::VAN_STATIC_BRUTTO,
+            ResultType::VAN_STATIC_TARE => T::VAN_STATIC_TARE,
+            ResultType::AUTO_BRUTTO, ResultType::CARGO_LIST_AUTO => T::AUTO_BRUTTO,
+            ResultType::AUTO_TARE => T::AUTO_TARE,
+            ResultType::KANAT => T::KANAT,
+            ResultType::DP, ResultType::DP_SUM => T::DP,
+            ResultType::COEFFS => T::COEFFS,
+            default => throw new InvalidArgumentException("Unknown resultType ($this->resultType)"),
+        };
     }
 
     private function setColumns()
@@ -302,13 +246,10 @@ class QueryResult extends QueryBase
 
     private function setWhere()
     {
-        switch ($this->resultType) {
-            case ResultType::COEFFS:
-                $dateTimeColumn = C::DATETIME_END;
-                break;
-            default:
-                $dateTimeColumn = C::DATETIME;
-        }
+        $dateTimeColumn = match ($this->resultType) {
+            ResultType::COEFFS => C::DATETIME_END,
+            default => C::DATETIME,
+        };
 
         if ($this->filter->getScaleNum() != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
             $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->filter->getScaleNum());

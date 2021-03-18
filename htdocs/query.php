@@ -318,14 +318,10 @@ if (!$resultMessage) {
     echo PHP_EOL;
     echo S::TAB . S::TAB;
     echo '<h6>';
-    switch ($scaleType) {
-        case ScaleType::IRON:
-        case ScaleType::VANLIST:
-            echo S::HEADER_DATE_START;
-            break;
-        default:
-            echo S::HEADER_DATETIME_START;
-    }
+    echo match ($scaleType) {
+        ScaleType::IRON, ScaleType::VANLIST => S::HEADER_DATE_START,
+        default => S::HEADER_DATETIME_START,
+    };
     echo '</h6>' . PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_START_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
@@ -374,14 +370,10 @@ if (!$resultMessage) {
 
     echo S::TAB . S::TAB;
     echo '<h6>';
-    switch ($scaleType) {
-        case ScaleType::IRON:
-        case ScaleType::VANLIST:
-            echo S::HEADER_DATE_END;
-            break;
-        default:
-            echo S::HEADER_DATETIME_END;
-    }
+    echo match ($scaleType) {
+        ScaleType::IRON, ScaleType::VANLIST => S::HEADER_DATE_END,
+        default => S::HEADER_DATETIME_END,
+    };
     echo '</h6>' . PHP_EOL;
 
     echoInput($newDesign, ParamName::DATETIME_END_DAY, S::INPUT_DAY, S::INPUT_DAY_HELP, S::INPUT_DAY_PATTERN, 2, 2, true, false);
@@ -428,14 +420,10 @@ if (!$resultMessage) {
         echo '<br>' . PHP_EOL;
         echo S::TAB . S::TAB;
         echo '<small>';
-        switch ($scaleType) {
-            case ScaleType::IRON:
-            case ScaleType::VANLIST:
-                echo S::HELP_DATE_OLD;
-                break;
-            default:
-                echo S::HELP_DATETIME_OLD;
-        }
+        echo match ($scaleType) {
+            ScaleType::IRON, ScaleType::VANLIST => S::HELP_DATE_OLD,
+            default => S::HELP_DATETIME_OLD,
+        };
         echo '</small>' . PHP_EOL;
     }
 
@@ -528,7 +516,7 @@ if (!$resultMessage) {
                 case ScaleType::DEFAULT_TYPE:
                 case ScaleType::WMR:
                 case ScaleType::AUTO:
-                    echoInput($newDesign, ParamName::CARGO_TYPE, S::INPUT_CARGO_TYPE, "", "", "", "");
+                    echoInput($newDesign, ParamName::CARGO_TYPE, S::INPUT_CARGO_TYPE, "", "", null, null);
                     echo S::TAB . S::TAB;
                     echo '<br>' . PHP_EOL;
 
@@ -536,11 +524,11 @@ if (!$resultMessage) {
                     echo S::TAB . S::TAB;
                     echo '<br>' . PHP_EOL;
 
-                    echoInput($newDesign, ParamName::INVOICE_SUPPLIER, S::INPUT_INVOICE_SUPPLIER, "", "", 20, "");
+                    echoInput($newDesign, ParamName::INVOICE_SUPPLIER, S::INPUT_INVOICE_SUPPLIER, "", "", 20, null);
                     echo S::TAB . S::TAB;
                     echo '<br>' . PHP_EOL;
 
-                    echoInput($newDesign, ParamName::INVOICE_RECIPIENT, S::INPUT_INVOICE_RECIPIENT, "", "", 20, "");
+                    echoInput($newDesign, ParamName::INVOICE_RECIPIENT, S::INPUT_INVOICE_RECIPIENT, "", "", 20, null);
                     echo S::TAB . S::TAB;
                     echo '<br>' . PHP_EOL;
 
@@ -564,7 +552,7 @@ if (!$resultMessage) {
             }
 
             if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, "", "");
+                echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, null, null);
 
                 if ($newDesign) {
                     echo S::TAB . S::TAB;
@@ -586,14 +574,10 @@ if (!$resultMessage) {
             }
     }
 
-    switch ($scaleType) {
-        case ScaleType::VANLIST:
-        case ScaleType::IRON_CONTROL:
-            $showSettings = false;
-            break;
-        default:
-            $showSettings = true;
-    }
+    $showSettings = match ($scaleType) {
+        ScaleType::VANLIST, ScaleType::IRON_CONTROL => false,
+        default => true,
+    };
 
 // ------------- Поле "Настройки" --------------------------------------------------------------------------------------
     if ($showSettings) {
@@ -627,7 +611,7 @@ if (!$resultMessage) {
 
         switch ($scaleType) {
             case ScaleType::IRON:
-                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC, false);
+                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC);
 
                 echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20, true);
                 break;

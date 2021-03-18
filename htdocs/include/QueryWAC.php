@@ -1,11 +1,10 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryWAC extends QueryBase
 {
@@ -13,15 +12,9 @@ class QueryWAC extends QueryBase
     const SUB_QUERY_DATE = 'IFNULL((%s), NOW())';
     const SUB_QUERY_NAME = '(%s)';
 
-    /**
-     * @var int
-     */
-    private $department;
+    private int $department;
 
-    /**
-     * @param int $department
-     */
-    public function setDepartment($department)
+    public function setDepartment(int $department)
     {
         $this->department = $department;
     }

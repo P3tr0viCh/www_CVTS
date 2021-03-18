@@ -14,15 +14,12 @@ $nightMode = getParamGETAsBool(ParamName::NIGHT_MODE);
 
 echoStartPage();
 
-$oldIEStyle = null;
-
 $styles = array();
 $styles[] = '/styles/temp_common.css';
 if ($newDesign) {
     $styles[] = '/styles/temp.css';
 } else {
     $styles[] = '/styles/temp_compat.css';
-    $oldIEStyle = '/styles/temp_compat_ie.css';
 }
 
 if ($debug) {
@@ -35,7 +32,7 @@ $javaScripts[] = '/javascript/temp.js';
 $javaScripts[] = '/javascript/night_mode.js';
 $javaScripts[] = '/javascript/hide_cursor.js';
 
-echoHead($newDesign, S::TITLE_TEMP, $styles, $javaScripts, $oldIEStyle);
+echoHead($newDesign, S::TITLE_TEMP, $styles, $javaScripts);
 
 echoStartBody($newDesign, 'temp()');
 

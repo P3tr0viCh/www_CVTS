@@ -10,15 +10,15 @@ use Strings as S;
 
 class HtmlHeader extends HtmlBase
 {
-    private $mainPage;
+    private bool $mainPage = true;
 
-    private $header;
-    private $subHeader;
+    private string $header = "";
+    private ?string $subHeader = null;
 
-    private $useBackup;
+    private bool $useBackup = false;
 
-    private $navLinks;
-    private $menuItems;
+    private ?array $navLinks = null;
+    private ?array $menuItems = null;
 
     /**
      * Заголовок выводится на главной странице.
@@ -26,41 +26,25 @@ class HtmlHeader extends HtmlBase
      * @param bool $mainPage
      * @return HtmlHeader
      */
-    public function setMainPage($mainPage)
+    public function setMainPage(bool $mainPage): static
     {
         $this->mainPage = $mainPage;
         return $this;
     }
 
-    /**
-     * Текст заголовка.
-     *
-     * @param string $header
-     * @return HtmlHeader
-     */
-    public function setHeader($header)
+    public function setHeader(string $header): static
     {
         $this->header = $header;
         return $this;
     }
 
-    /**
-     * Текст подзаголовка.
-     *
-     * @param string $subHeader
-     * @return HtmlHeader
-     */
-    public function setSubHeader($subHeader)
+    public function setSubHeader(?string $subHeader): static
     {
         $this->subHeader = $subHeader;
         return $this;
     }
 
-    /**
-     * @param bool $useBackup
-     * @return HtmlHeader
-     */
-    public function setUseBackup($useBackup)
+    public function setUseBackup(bool $useBackup): static
     {
         $this->useBackup = $useBackup;
         return $this;
@@ -72,7 +56,7 @@ class HtmlHeader extends HtmlBase
      * @param array HtmlHeaderNavLink $navLinks
      * @return HtmlHeader
      */
-    public function setNavLinks($navLinks)
+    public function setNavLinks($navLinks): static
     {
         $this->navLinks = $navLinks;
         return $this;
@@ -84,15 +68,15 @@ class HtmlHeader extends HtmlBase
      * @param array HtmlHeaderMenuItem $menuItems
      * @return HtmlHeader
      */
-    public function setMenuItems($menuItems)
+    public function setMenuItems($menuItems): static
     {
         $this->menuItems = $menuItems;
         return $this;
     }
 
-    private function getSubHeader()
+    private function getSubHeader(): ?string
     {
-        return $this->subHeader ?
+        return !empty($this->subHeader) ?
             ($this->useBackup ? $this->subHeader . " (" . S::HEADER_PAGE_MAIN_BACKUP . ")" : $this->subHeader) :
             ($this->useBackup ? S::HEADER_PAGE_MAIN_BACKUP : null);
     }
@@ -114,7 +98,7 @@ class HtmlHeader extends HtmlBase
         echo $this->header;
         echo "</h1>" . PHP_EOL;
 
-        if ($this->subHeader || $this->useBackup) {
+        if (!empty($this->subHeader) || $this->useBackup) {
             $subHeaderClass = $this->mainPage ? "main-header" : "header";
 
             if ($this->useBackup) {
@@ -151,7 +135,7 @@ class HtmlHeader extends HtmlBase
         echo S::TAB . S::TAB;
         echo "<div class='mdl-layout-spacer'></div>" . PHP_EOL;
 
-        if ($this->navLinks) {
+        if (!empty($this->navLinks)) {
             echo S::TAB . S::TAB;
             echo '<nav class="mdl-navigation">' . PHP_EOL;
 
@@ -162,7 +146,6 @@ class HtmlHeader extends HtmlBase
                 $idIcon = $id . 'Icon';
                 $idText = $id . 'Text';
                 $hidden = $navLink->getHidden() ? ' hidden' : '';
-                /** @var string $onClick */
                 $onClick = $navLink->getOnClick();
 
                 if (isset($onClick)) {
@@ -180,7 +163,7 @@ class HtmlHeader extends HtmlBase
             echo '</nav>' . PHP_EOL;
         }
 
-        if ($this->menuItems) {
+        if (!empty($this->menuItems)) {
             echo S::TAB . S::TAB;
             echo '<span id="menuMore" class="material-icons cursor-pointer">more_vert</span>' . PHP_EOL;
         }
@@ -188,7 +171,7 @@ class HtmlHeader extends HtmlBase
         echo S::TAB;
         echo '</div> <!-- class="mdl-layout__header-row" -->' . PHP_EOL;
 
-        if ($this->subHeader || $this->useBackup) {
+        if (!empty($this->subHeader) || $this->useBackup) {
             $subHeaderClass = "mdl-layout-title mdl-layout-title__subtitle";
 
             if ($this->useBackup) {
@@ -207,7 +190,7 @@ class HtmlHeader extends HtmlBase
 
         echo '</header>' . PHP_EOL . PHP_EOL;
 
-        if ($this->menuItems) {
+        if (isset($this->menuItems)) {
             /** @noinspection HtmlUnknownAttribute */
             echo '<ul id="menuMoreList" class="mdl-menu mdl-menu--bottom-right mdl-js-menu hidden" for="menuMore">' . PHP_EOL;
 

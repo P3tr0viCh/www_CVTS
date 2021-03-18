@@ -1,56 +1,39 @@
 <?php
 require_once "builders/query_builder/Builder.php";
 require_once "Constants.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
-use Database\Aliases as A;
+use database\Tables as T;
+use database\Columns as C;
+use database\Aliases as A;
 
 class QueryVanListWeighs extends QueryBase
 {
     const ALIAS = '(%s) %s';
     const UNION = '%s UNION %s';
-    const NULL = '%s UNION %s';
 
     const MYSQL_DATE_START_FORMAT = "Ymd000000";
     const MYSQL_DATE_END_FORMAT = "Ymd235959";
 
-    private $dateStart;
-    private $dateEnd;
+    private mixed $dateStart;
+    private mixed $dateEnd;
 
-    private $vanList;
+    private array $vanList;
 
-    /**
-     * @param int $dateStart
-     * @return QueryVanListWeighs
-     *
-     */
-    public function setDateStart($dateStart)
+    public function setDateStart(?int $dateStart): static
     {
         $this->dateStart = $dateStart;
         return $this;
     }
 
-    /**
-     * @param int $dateEnd
-     * @return QueryVanListWeighs
-     *
-     */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd(?int $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
         return $this;
     }
 
-    /**
-     * @param null|array $vanList
-     * @return QueryVanListWeighs
-     *
-     */
-    public function setVanList($vanList)
+    public function setVanList(array $vanList): static
     {
         $this->vanList = $vanList;
         return $this;

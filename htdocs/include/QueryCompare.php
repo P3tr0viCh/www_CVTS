@@ -1,11 +1,10 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "Database.php";
 require_once "QueryBase.php";
 
 use QueryBuilder\Builder as B;
-use Database\Tables as T;
-use Database\Columns as C;
+use database\Tables as T;
+use database\Columns as C;
 
 class QueryCompare extends QueryBase
 {
@@ -16,72 +15,37 @@ class QueryCompare extends QueryBase
      */
     const COMPARE_PERIOD = 2678400;
 
-    /**
-     * @var int
-     */
-    private $scaleNum;
-    /**
-     * @var string
-     */
-    private $vanNumber;
-    /**
-     * @var bool
-     */
-    private $compareByBrutto;
-    /**
-     * @var bool
-     */
-    private $compareForward;
-    /**
-     * @var int
-     */
-    private $dateTime;
+    private int $scaleNum;
+    private string $vanNumber;
+    private bool $compareByBrutto;
+    private bool $compareForward;
+    private int $dateTime;
 
-    /**
-     * @param int $scaleNum
-     * @return $this
-     */
-    public function setScaleNum($scaleNum)
+    public function setScaleNum(int $scaleNum): static
     {
         $this->scaleNum = $scaleNum;
         return $this;
     }
 
-    /**
-     * @param string $vanNumber
-     * @return $this
-     */
-    public function setVanNumber($vanNumber)
+    public function setVanNumber(string $vanNumber): static
     {
         $this->vanNumber = $vanNumber;
         return $this;
     }
 
-    /**
-     * @param boolean $compareByBrutto
-     * @return $this
-     */
-    public function setCompareByBrutto($compareByBrutto)
+    public function setCompareByBrutto(bool $compareByBrutto): static
     {
         $this->compareByBrutto = $compareByBrutto;
         return $this;
     }
 
-    /**
-     * @param boolean $compareForward
-     * @return $this
-     */
-    public function setCompareForward($compareForward)
+    public function setCompareForward(bool $compareForward): static
     {
         $this->compareForward = $compareForward;
         return $this;
     }
 
-    /**
-     * @param int $dateTime
-     * @return $this
-     */
-    public function setDateTime($dateTime)
+    public function setDateTime(int $dateTime): static
     {
         $this->dateTime = $dateTime;
         return $this;
