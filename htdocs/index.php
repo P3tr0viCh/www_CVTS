@@ -40,30 +40,31 @@ setCookieAsBool(PN::NEW_DESIGN, $newDesign);
 setCookieAsBool(PN::SHOW_DISABLED, $showDisabled);
 setCookieAsBool(PN::SHOW_METROLOGY, $showMetrology);
 
-setCookieAsString(PN::DATETIME_START_DAY, null);
-setCookieAsString(PN::DATETIME_START_MONTH, null);
-setCookieAsString(PN::DATETIME_START_YEAR, null);
-setCookieAsString(PN::DATETIME_START_HOUR, null);
-setCookieAsString(PN::DATETIME_START_MINUTES, null);
-setCookieAsString(PN::DATETIME_END_DAY, null);
-setCookieAsString(PN::DATETIME_END_MONTH, null);
-setCookieAsString(PN::DATETIME_END_YEAR, null);
-setCookieAsString(PN::DATETIME_END_HOUR, null);
-setCookieAsString(PN::DATETIME_END_MINUTES, null);
+deleteCookie(PN::DATETIME_START_DAY);
+deleteCookie(PN::DATETIME_START_MONTH);
+deleteCookie(PN::DATETIME_START_YEAR);
+deleteCookie(PN::DATETIME_START_HOUR);
+deleteCookie(PN::DATETIME_START_MINUTES);
+deleteCookie(PN::DATETIME_END_DAY);
+deleteCookie(PN::DATETIME_END_MONTH);
+deleteCookie(PN::DATETIME_END_YEAR);
+deleteCookie(PN::DATETIME_END_HOUR);
+deleteCookie(PN::DATETIME_END_MINUTES);
 
-setCookieAsString(PN::VAN_NUMBER, null);
-setCookieAsString(PN::CARGO_TYPE, null);
-setCookieAsString(PN::INVOICE_NUM, null);
-setCookieAsString(PN::INVOICE_SUPPLIER, null);
-setCookieAsString(PN::INVOICE_RECIPIENT, null);
-setCookieAsString(PN::ONLY_CHARK, null);
+deleteCookie(PN::VAN_NUMBER);
+deleteCookie(PN::CARGO_TYPE);
+deleteCookie(PN::INVOICE_NUM);
+deleteCookie(PN::INVOICE_SUPPLIER);
+deleteCookie(PN::INVOICE_RECIPIENT);
+deleteCookie(PN::ONLY_CHARK);
 
-setCookieAsString(PN::ALL_FIELDS, null);
-setCookieAsString(PN::SHOW_CARGO_DATE, null);
-setCookieAsString(PN::SHOW_DELTAS, null);
-setCookieAsString(PN::COMPARE_FORWARD, null);
-setCookieAsString(PN::COMPARE_BY_BRUTTO, null);
-setCookieAsString(PN::SCALES, null);
+deleteCookie(PN::ALL_FIELDS);
+deleteCookie(PN::SHOW_CARGO_DATE);
+deleteCookie(PN::SHOW_DELTAS);
+deleteCookie(PN::SHOW_TOTAL_SUMS);
+deleteCookie(PN::COMPARE_FORWARD);
+deleteCookie(PN::COMPARE_BY_BRUTTO);
+deleteCookie(PN::SCALES);
 
 echoStartPage();
 

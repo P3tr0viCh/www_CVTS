@@ -101,10 +101,19 @@ $dtEndMinute = null;
 $dateTimeStart = null;
 $dateTimeEnd = null;
 
-$orderByDesc = false;
+$orderByDesc = true;
 $from20to20 = false;
 
 $vanList = null;
+
+$showTotalSums = false;
+$totalSumBrutto = 0.0;
+$totalSumTare = 0.0;
+$totalSumNetto = 0.0;
+
+$ironControlTotalAvg = 0.0;
+$ironControlTotalSum = 0.0;
+$ironControlTotalCount = 0;
 
 $filter = new ResultFilter();
 
@@ -130,7 +139,7 @@ switch ($reportType) {
             ->setCompareForward(getParamGETAsBool(ParamName::COMPARE_FORWARD))
             ->setCompareByBrutto(getParamGETAsBool(ParamName::COMPARE_BY_BRUTTO));
 
-        $resultType = getParamGETAsString(ParamName::RESULT_TYPE);
+        $resultType = getParamGETAsInt(ParamName::RESULT_TYPE);
 
         // TODO: old style form with POST
         if (empty($resultType)) {
@@ -197,7 +206,9 @@ switch ($reportType) {
         $dtEndHour = getParamGETAsInt(ParamName::DATETIME_END_HOUR);
         $dtEndMinute = getParamGETAsInt(ParamName::DATETIME_END_MINUTES);
 
-        $orderByDesc = getParamGETAsBool(ParamName::ORDER_BY_DESC, $orderByDesc);
+        $orderByDesc = !getParamGETAsBool(ParamName::ORDER_BY_DATETIME_ASC, !$orderByDesc);
+
+        $filter->setOrderByDesc($orderByDesc);
 
         $from20to20 = getParamGETAsBool(ParamName::DATETIME_FROM_20_TO_20, $from20to20);
 
@@ -260,6 +271,11 @@ if (isResultTypeCompare($resultType)) {
     $filter->setFull(false);
 }
 
+$showTotalSums = match ($resultType) {
+    ResultType::DP, ResultType::KANAT => getParamGETAsBool(ParamName::SHOW_TOTAL_SUMS),
+    default => false
+};
+
 echoStartPage();
 
 $mysqli = MySQLConnection::getInstance($useBackup);
@@ -307,7 +323,6 @@ if ($mysqli) {
                     break;
                 case ReportType::IRON:
                 default:
-
                     $dateTimeStart = $dateTimeBuilder
                         ->setDay($dtStartDay)
                         ->setMonth($dtStartMonth)
@@ -326,7 +341,17 @@ if ($mysqli) {
             }
 
             switch ($resultType) {
+                case ResultType::DP:
+                case ResultType::KANAT:
+                    if ($dateTimeStart == null && $dateTimeEnd == null) {
+                        $currDate = getdate();
+                        $dateTimeStart = $dateTimeBuilder
+                            ->setDay($currDate["mday"])
+                            ->buildStartDate();
+                    }
+                    break;
                 case ResultType::TRAIN_DYNAMIC:
+                case ResultType::DP_SUM:
                 case ResultType::IRON:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
                         $dateTimeStart = $dateTimeBuilder
@@ -746,11 +771,6 @@ if (!$resultMessage) {
                     $queryCompare = null;
                 }
 
-
-                $ironControlTotalAvg = 0.0;
-                $ironControlTotalSum = 0.0;
-                $ironControlTotalCount = 0;
-
 // ------------- Перебор строк -----------------------------------------------------------------------------------------
                 while ($row = $result->fetch_array()) {
                     $rowColorClass = getRowColorClass($numColor);
@@ -815,6 +835,12 @@ if (!$resultMessage) {
                             null;
 
                         $cellColor = null;
+
+                        if ($showTotalSums) {
+                            if ($fieldsInfo[$fieldNum]->name == C::BRUTTO) $totalSumBrutto += $row[C::BRUTTO];
+                            if ($fieldsInfo[$fieldNum]->name == C::TARE) $totalSumTare += $row[C::TARE];
+                            if ($fieldsInfo[$fieldNum]->name == C::NETTO) $totalSumNetto += $row[C::NETTO];
+                        }
 
                         if ($resultType == ResultType::IRON_CONTROL) {
                             if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_DYN_STA) {
@@ -940,10 +966,58 @@ if (!$resultMessage) {
 
 // ----------------- Итого ---------------------------------------------------------------------------------------------
 
+                if ($showTotalSums) {
+                    $colSpanTotal = match ($resultType) {
+                        ResultType::DP => $filter->isFull() ? 9 : 4,
+                        ResultType::KANAT => $filter->isFull() ? 4 : 2,
+                        default => throw new InvalidArgumentException("Unhandled resultType for sums ($resultType)"),
+                    };
+                    $colSpanTotalEnd = match ($resultType) {
+                        ResultType::DP => $filter->isFull() ? 2 : 0,
+                        ResultType::KANAT => 0,
+                        default => throw new InvalidArgumentException("Unhandled resultType for sums ($resultType)"),
+                    };
+
+                    echoTableTRStart(getRowColorClass($numColor));
+
+                    echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
+
+                    $excelData .= formatExcelData(S::TEXT_TOTAL);
+                    for ($i = 0; $i < $colSpanTotal - 1; $i++) $excelData .= S::EXCEL_SEPARATOR;
+
+                    switch ($resultType) {
+                        case ResultType::DP:
+                            $field = formatFieldValue(C::NETTO, $totalSumNetto, $filter->isFull());
+                            echoTableTD($field);
+                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+                            break;
+                        case ResultType::KANAT:
+                            $field = formatFieldValue(C::BRUTTO, $totalSumBrutto, $filter->isFull());
+                            echoTableTD($field);
+                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+                            $field = formatFieldValue(C::TARE, $totalSumTare, $filter->isFull());
+                            echoTableTD($field);
+                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+                            $field = formatFieldValue(C::NETTO, $totalSumNetto, $filter->isFull());
+                            echoTableTD($field);
+                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
+                            break;
+                        default:
+                            throw new InvalidArgumentException("Unhandled resultType for sums ($resultType)");
+                    }
+
+                    if ($colSpanTotalEnd > 0) {
+                        echoTableTD("", null, null, $colSpanTotalEnd);
+                    }
+
+                    echoTableTREnd();
+
+                    $excelData .= S::EXCEL_EOL;
+                }
+
 // ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
                 if ($resultType == ResultType::IRON_CONTROL) {
-// --------------------------------------------------------------------
-
+// ---------------------------------------------------------------------------------------------------------------------
                     $colSpanTotal = 8;
                     $colSpanTotalValue = 5;
 

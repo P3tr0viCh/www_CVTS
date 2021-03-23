@@ -231,6 +231,7 @@ class ParamName
     const SHOW_CARGO_DATE = 'show_cargo_date';
     const SHOW_DELTAS = 'show_deltas';
     const SHOW_DELTAS_MI_3115 = 'show_deltas_mi_3115';
+    const SHOW_TOTAL_SUMS = 'show_total_sums';
     const COMPARE_FORWARD = 'compare_forward';
     const COMPARE_BY_BRUTTO = 'compare_by_brutto';
 
@@ -245,7 +246,7 @@ class ParamName
     const DATETIME_END_HOUR = 'date_time_end_hour';
     const DATETIME_END_MINUTES = 'date_time_end_minutes';
 
-    const ORDER_BY_DESC = 'order_by_desc';
+    const ORDER_BY_DATETIME_ASC = 'order_by_datetime_asc';
 
     const DATETIME_FROM_20_TO_20 = 'datetime_from_20_to_20';
 

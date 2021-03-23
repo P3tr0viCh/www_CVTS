@@ -146,13 +146,14 @@ class Strings
     const BUTTON_CLEAR = 'Очистить';
 
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
-    const CHECKBOX_SHOW_CARGO_DATE = 'Показать время изменения рода груза';
+    const CHECKBOX_SHOW_CARGO_DATE = 'Время изменения рода груза';
 //    const CHECKBOX_SHOW_DELTAS = 'Показать предельно допускаемые погрешности';
-    const CHECKBOX_SHOW_DELTAS_MI_3115 = 'Показать предельные расхождения по МИ 3115';
+    const CHECKBOX_SHOW_DELTAS_MI_3115 = 'Предельные расхождения по МИ 3115';
+    const CHECKBOX_SHOW_TOTAL_SUMS = 'Итоговые суммы';
     const CHECKBOX_COMPARE_FORWARD = 'Поиск «вперёд»';
     const CHECKBOX_COMPARE_BY_BRUTTO = 'Сравнивать брутто';
     const CHECKBOX_ONLY_CHARK = 'Только кокс';
-    const CHECKBOX_DATETIME_ORDER_BY_DESC = 'Сортировка по дате от новых к старым';
+    const CHECKBOX_DATETIME_ORDER_BY_ASC = 'Сортировка по дате от новых к старым';
     const CHECKBOX_DATETIME_FROM_20_TO_20 = 'Начало суток с 20:00 предыдущего дня';
 
     const MENU_DATES_CURRENT_DAY = 'Начало текущего дня';

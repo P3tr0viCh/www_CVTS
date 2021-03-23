@@ -380,9 +380,12 @@ class QueryResult extends QueryBase
             }
             $this->builder->order(C::DATETIME_END, true);
         } else {
-            $orderColumn = C::DATETIME;
+            $orderByDesc = match ($this->resultType) {
+                ResultType::DP, ResultType::KANAT => $this->filter->isOrderByDesc(),
+                default => true
+            };
 
-            $this->builder->order($orderColumn, true);
+            $this->builder->order(C::DATETIME, $orderByDesc);
 
             if (($this->filter->getScaleNum() != Constants::SCALE_NUM_ALL_TRAIN_SCALES) &&
                 ($this->resultType == ResultType::VAN_DYNAMIC_BRUTTO ||

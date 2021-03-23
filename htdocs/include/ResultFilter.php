@@ -24,6 +24,7 @@ class ResultFilter
     private ?bool $showCargoDate = null;
     private ?bool $showDeltas = null;
     private ?bool $showDeltasMi3115 = null;
+    private ?bool $orderByDesc = null;
     private ?bool $compareForward = null;
     private ?bool $compareByBrutto = null;
 
@@ -260,6 +261,17 @@ class ResultFilter
     public function isShowDeltasMi3115(): ?bool
     {
         return $this->showDeltasMi3115;
+    }
+
+    public function setOrderByDesc(?bool $orderByDesc): static
+    {
+        $this->orderByDesc = $orderByDesc;
+        return $this;
+    }
+
+    public function isOrderByDesc(): ?bool
+    {
+        return $this->orderByDesc;
     }
 
     public function setCompareForward(?bool $compareForward): static

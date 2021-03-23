@@ -611,15 +611,27 @@ if (!$resultMessage) {
 
         switch ($scaleType) {
             case ScaleType::IRON:
-                echoCheckBox($newDesign, ParamName::ORDER_BY_DESC, S::CHECKBOX_DATETIME_ORDER_BY_DESC);
-
-                echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20, true);
-                break;
             case ScaleType::IRON_CONTROL:
             case ScaleType::VANLIST:
                 break;
             default:
                 echoCheckBox($newDesign, ParamName::ALL_FIELDS, S::CHECKBOX_ALL_FIELDS);
+                break;
+        }
+
+        switch ($scaleType) {
+            case ScaleType::DP:
+            case ScaleType::KANAT:
+                echoCheckBox($newDesign, ParamName::SHOW_TOTAL_SUMS, S::CHECKBOX_SHOW_TOTAL_SUMS);
+                echoCheckBox($newDesign, ParamName::ORDER_BY_DATETIME_ASC, S::CHECKBOX_DATETIME_ORDER_BY_ASC);
+                break;
+        }
+
+        switch ($scaleType) {
+            case ScaleType::IRON:
+                echoCheckBox($newDesign, ParamName::ORDER_BY_DATETIME_ASC, S::CHECKBOX_DATETIME_ORDER_BY_ASC);
+
+                echoCheckBox($newDesign, ParamName::DATETIME_FROM_20_TO_20, S::CHECKBOX_DATETIME_FROM_20_TO_20, true);
                 break;
         }
 
@@ -716,11 +728,12 @@ if (!$resultMessage) {
         PHP_EOL .
         S::TAB . S::TAB .
         "'" . ParamName::ALL_FIELDS . "', " .
-        "'" . ParamName::SHOW_CARGO_DATE . "', " .
+        "'" . ParamName::ORDER_BY_DATETIME_ASC . "'," .
         "'" . ParamName::SHOW_DELTAS . "', " .
+        "'" . ParamName::SHOW_CARGO_DATE . "', " .
+        "'" . ParamName::SHOW_TOTAL_SUMS . "'," .
         "'" . ParamName::COMPARE_FORWARD . "', " .
         "'" . ParamName::COMPARE_BY_BRUTTO . "', " .
-        "'" . ParamName::ORDER_BY_DESC . "'," .
         "'" . ParamName::DATETIME_FROM_20_TO_20 . "'" .
         ");";
     echo PHP_EOL . PHP_EOL;
