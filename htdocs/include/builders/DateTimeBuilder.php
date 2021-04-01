@@ -1,77 +1,54 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
+
+use JetBrains\PhpStorm\Pure;
 
 class DateTimeBuilder
 {
-    private $day;
-    private $month;
-    private $year;
-    private $hour;
-    private $minute;
+    private ?int $day = null;
+    private ?int $month = null;
+    private ?int $year = null;
+    private ?int $hour = null;
+    private ?int $minute = null;
 
-    /**
-     * @return DateTimeBuilder
-     */
-    public static function getInstance()
+    #[Pure] public static function getInstance(): DateTimeBuilder
     {
         return new self();
     }
 
-    /**
-     * @param int $day
-     * @return DateTimeBuilder
-     */
-    public function setDay($day)
+    public function setDay(?int $day): static
     {
         $this->day = $day;
         return $this;
     }
 
-    /**
-     * @param int $month
-     * @return DateTimeBuilder
-     */
-    public function setMonth($month)
+    public function setMonth(?int $month): static
     {
         $this->month = $month;
         return $this;
     }
 
-    /**
-     * @param int $year
-     * @return DateTimeBuilder
-     */
-    public function setYear($year)
+    public function setYear(?int $year): static
     {
         $this->year = $year;
         return $this;
     }
 
-    /**
-     * @param int $hour
-     * @return DateTimeBuilder
-     */
-    public function setHour($hour)
+    public function setHour(?int $hour): static
     {
         $this->hour = $hour;
         return $this;
     }
 
-    /**
-     * @param int $minute
-     * @return DateTimeBuilder
-     */
-    public function setMinute($minute)
+    public function setMinute(?int $minute): static
     {
         $this->minute = $minute;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
-    public function buildStartDate()
+    public function buildStartDate(): ?int
     {
         $hasDate = $this->day || $this->month || $this->year || $this->hour || $this->minute;
+
         if ($hasDate) {
             $currDate = getdate();
 
@@ -84,17 +61,15 @@ class DateTimeBuilder
             $result = mktime($this->hour, $this->minute, 0, $this->month, $this->day, $this->year);
 
             return $result === false ? null : $result;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @return int|null
-     */
-    public function buildEndDate()
+    public function buildEndDate(): ?int
     {
         $hasDate = $this->day || $this->month || $this->year || $this->hour || $this->minute;
+
         if ($hasDate) {
             $currDate = getdate();
 
@@ -107,8 +82,8 @@ class DateTimeBuilder
             $result = mktime($this->hour, $this->minute, 59, $this->month, $this->day, $this->year);
 
             return $result === false ? null : $result;
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
