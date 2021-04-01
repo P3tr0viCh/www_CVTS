@@ -315,15 +315,13 @@ if ($mysqli) {
                 $menuItems[] = new HtmlHeaderMenuItem('copyTableBodyIronPrev3Day', S::MENU_COPY_TABLE_BODY_IRON_PREV_3_DAY, 'copyToClipboard("tableBodyIronPrev3Day")');
             }
 
-            $dateTimeBuilder = DateTimeBuilder::getInstance();
-
             switch ($reportType) {
                 case ReportType::TRAINS:
                 case ReportType::CARGO_TYPES:
                     break;
                 case ReportType::IRON:
                 default:
-                    $dateTimeStart = $dateTimeBuilder
+                    $dateTimeStart = DateTimeBuilder::getInstance()
                         ->setDay($dtStartDay)
                         ->setMonth($dtStartMonth)
                         ->setYear($dtStartYear)
@@ -331,7 +329,7 @@ if ($mysqli) {
                         ->setMinute($dtStartMinute)
                         ->buildStartDate();
 
-                    $dateTimeEnd = $dateTimeBuilder
+                    $dateTimeEnd = DateTimeBuilder::getInstance()
                         ->setDay($dtEndDay)
                         ->setMonth($dtEndMonth)
                         ->setYear($dtEndYear)
@@ -345,7 +343,7 @@ if ($mysqli) {
                 case ResultType::KANAT:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
                         $currDate = getdate();
-                        $dateTimeStart = $dateTimeBuilder
+                        $dateTimeStart = DateTimeBuilder::getInstance()
                             ->setDay($currDate["mday"])
                             ->buildStartDate();
                     }
@@ -354,23 +352,24 @@ if ($mysqli) {
                 case ResultType::DP_SUM:
                 case ResultType::IRON:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
-                        $dateTimeStart = $dateTimeBuilder
+                        $dateTimeStart = DateTimeBuilder::getInstance()
                             ->setDay(1)
                             ->buildStartDate();
                     }
                     break;
                 case ResultType::IRON_CONTROL:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
-                        $prevDate = getdate(date_sub(new DateTime(), new DateInterval('P1D'))->getTimestamp());
+                        $prevDate = getdate(date_sub(date_create(), new DateInterval('P1D'))->getTimestamp());
 
-                        $dateTimeStart = $dateTimeBuilder
+                        $dateTimeStart = DateTimeBuilder::getInstance()
                             ->setDay($prevDate["mday"])
+                            ->setMonth($prevDate["mon"])
                             ->setHour(6)
                             ->buildStartDate();
 
                         $currDate = getdate();
 
-                        $dateTimeEnd = $dateTimeBuilder
+                        $dateTimeEnd = DateTimeBuilder::getInstance()
                             ->setDay($currDate["mday"])
                             ->setHour(5)
                             ->setMinute(59)
@@ -381,7 +380,7 @@ if ($mysqli) {
                 case ResultType::VANLIST_WEIGHS:
                 case ResultType::VANLIST_LAST_TARE:
                     if ($dateTimeStart == null && $dateTimeEnd == null && count($vanList) == 0) {
-                        $dateTimeStart = $dateTimeBuilder
+                        $dateTimeStart = DateTimeBuilder::getInstance()
                             ->setDay(1)
                             ->buildStartDate();
                     }

@@ -65,7 +65,7 @@ class QueryIronControl extends QueryBase
             ->table(T::VAN_STATIC_BRUTTO);
 
         if ($this->dateStart) {
-            $this->dateStartSta = date_sub((new DateTime())->setTimestamp($this->dateStart),
+            $this->dateStartSta = date_sub(date_create()->setTimestamp($this->dateStart),
                 new DateInterval('P' . TimePeriods::IRON_COMPARE_FIND . 'D'))->getTimestamp();
 
             $this->dateStart = (float)date(self::MYSQL_DATETIME_FORMAT, $this->dateStart);
