@@ -27,6 +27,8 @@ class Tables
     const SCALES = 'scalesinfo';
     const SCALES_ADD = 'scalesinfo_add';
 
+    const LST_WCLASS = 'lst_wclass';
+
     const COEFFS = 'wcalver';
 
     const ACCIDENTS = 'accidents';

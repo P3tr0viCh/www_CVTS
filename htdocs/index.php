@@ -179,7 +179,6 @@ if ($mysqli) {
                     $class = null;
                     switch ($columns[$i]) {
                         case DBC::SCALE_TYPE_TEXT:
-                        case DBC::SCALE_CLASS_STATIC:
                             if ($newDesign) {
                                 $class = "mdl-data-table__cell--non-numeric";
                             }

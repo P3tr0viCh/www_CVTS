@@ -19,7 +19,7 @@ class Columns
 
     const SCALE_TYPE_DYN = 'typedyn';
     const SCALE_WTYPE = 'wtype';
-    const SCALE_CLASS = 'wclass';
+    const SCALE_WCLASS = 'wclass';
     const SCALE_MIN_CAPACITY = 'wmin';
     const SCALE_MAX_CAPACITY = 'wmax';
     const SCALE_DISCRETENESS = 'wdiv';
@@ -149,6 +149,8 @@ class Columns
     const ID = 'id';
     const NAME = 'name';
     const DEPARTMENT_NAME = 'department_name';
+
+    const TEXT = 'text';
 
     const MI_DELTA_ABS_BRUTTO = 'delta_abs_brutto';
     const MI_DELTA_ABS_BRUTTO_E = 'delta_abs_brutto_exact';

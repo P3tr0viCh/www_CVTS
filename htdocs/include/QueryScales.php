@@ -9,8 +9,8 @@ class QueryScales extends QueryBase
 {
     protected static function getScaleClass($typeDyn): string
     {
-        return 'IF(' . ($typeDyn ? '' : '!') . C::SCALE_TYPE_DYN . ', ' .
-            C::SCALE_WTYPE . ' * 100 + ' . C::SCALE_CLASS . ', NULL)';
+        return 'IF(' . C::SCALE_TYPE_DYN . '=' . ($typeDyn ? '1' : '0') . ', ' .
+            T::LST_WCLASS . '.' . C::TEXT . ', NULL)';
     }
 
     protected function makeQuery()
@@ -27,6 +27,7 @@ class QueryScales extends QueryBase
             ->column(C::SCALE_DISABLED)
             ->table(T::SCALES)
             ->join(T::SCALES_ADD, C::SCALE_NUM)
+            ->join(T::LST_WCLASS, C::SCALE_WCLASS)
             ->order(C::SCALE_PLACE, false, 'latin1_bin');
     }
 }

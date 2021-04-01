@@ -197,30 +197,6 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::COEFFICIENT_T2:
                 return num_fmt($fieldValue, 1);
 
-            case C::SCALE_CLASS_STATIC:
-            case C::SCALE_CLASS_DYNAMIC:
-                /**
-                 * Значение задаётся в @uses  \QueryScales::getScaleClass.
-                 * Значения от 0 до 100 соответствуют железнодорожным весам в динамике,
-                 * от 100 до 199 - статическим железнодорожным весам,
-                 * от 200 до 299 - автомобильным весам,
-                 * от 300 до 399 - доменным печам,
-                 * от 400 до 499 - вагонеточным весам.
-                 */
-                /** @noinspection PhpDuplicateMatchArmBodyInspection */
-                return match ((int)$fieldValue) {
-                    0 => S::TEXT_SCALE_CLASS_DYNAMIC_0,
-                    1 => S::TEXT_SCALE_CLASS_DYNAMIC_1,
-                    2 => S::TEXT_SCALE_CLASS_DYNAMIC_2,
-                    3 => S::TEXT_SCALE_CLASS_DYNAMIC_3,
-                    4 => S::TEXT_SCALE_CLASS_DYNAMIC_4,
-                    100, 200, 300 => S::TEXT_SCALE_CLASS_STATIC_0,
-                    101, 201, 301 => S::TEXT_SCALE_CLASS_STATIC_1,
-                    102, 202, 302 => S::TEXT_SCALE_CLASS_STATIC_2,
-                    400 => S::TEXT_SCALE_CLASS_DYNAMIC_3,
-                    default => S::TEXT_SIDE_UNKNOWN,
-                };
-
             case C::TARE_SCALE_NUMBER:
             case C::MI_TARE_DYN_SCALES:
             case C::MI_TARE_STA_SCALES:
@@ -542,7 +518,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             C::MI_3115_LOSS_SUPPLIER, C::MI_3115_DELTA_SUPPLIER,
             C::MI_3115_DELTA_FROM_TABLES, C::MI_3115_DELTA_FOR_STATIONS,
             C::MI_3115_DELTA, C::MI_3115_TOLERANCE, C::MI_3115_RESULT,
-            C::SCALE_CLASS_DYNAMIC,
+            C::SCALE_CLASS_STATIC, C::SCALE_CLASS_DYNAMIC,
             C::IRON_ESPC_RAZL, C::IRON_ESPC, C::IRON_RAZL, C::IRON_SHCH, C::IRON_INGOT,
             C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
             C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
