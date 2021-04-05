@@ -6,7 +6,7 @@ class ColumnsStrings
     const SCALE_TYPE_TEXT = 'Тип';
     const SCALE_CLASS_STATIC = 'Статика';
     const SCALE_CLASS_DYNAMIC = 'Динамика';
-    const SCALE_NAME = 'Название';
+    const SCALE_PLACE = 'Название';
     const SCALE_MIN_CAPACITY = 'НмПВ';
     const SCALE_MAX_CAPACITY = 'НПВ';
     const SCALE_DISCRETENESS = 'Дискретность';
@@ -170,4 +170,29 @@ class ColumnsStrings
     const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
     const IRON_CONTROL_DIFF_SIDE = 'Динамика: Борта';
     const IRON_CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
+
+    const SENSOR_M1 = 'M1';
+    const SENSOR_M2 = 'M2';
+    const SENSOR_M3 = 'M3';
+    const SENSOR_M4 = 'M4';
+    const SENSOR_M5 = 'M5';
+    const SENSOR_M6 = 'M6';
+    const SENSOR_M7 = 'M7';
+    const SENSOR_M8 = 'M8';
+    const SENSOR_M9 = 'M9';
+    const SENSOR_M10 = 'M10';
+    const SENSOR_M11 = 'M11';
+    const SENSOR_M12 = 'M12';
+    const SENSOR_M13 = 'M13';
+    const SENSOR_M14 = 'M14';
+    const SENSOR_M15 = 'M15';
+    const SENSOR_M16 = 'M16';
+    const SENSOR_T1 = 'T1';
+    const SENSOR_T2 = 'T2';
+    const SENSOR_T3 = 'T3';
+    const SENSOR_T4 = 'T4';
+    const SENSOR_T5 = 'T5';
+    const SENSOR_T6 = 'T6';
+    const SENSOR_T7 = 'T7';
+    const SENSOR_T8 = 'T8';
 }

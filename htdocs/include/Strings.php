@@ -90,6 +90,9 @@ class Strings
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
     const HEADER_COEFF = 'Коэффициенты';
+    const SENSORS_ZEROS = 'Датчики, нули';
+    const SENSORS_TEMPS = 'Датчики, температуры';
+    const SENSORS_STATUS = 'Датчики, статус';
     const HEADER_IRON = 'Сумма нетто посуточно';
     const HEADER_IRON_CONTROL = 'Сравнение массы';
     const HEADER_VANLIST_WEIGHS = 'Взвешивание по всем весам';
@@ -143,6 +146,9 @@ class Strings
     const BUTTON_VIEW = 'Просмотр';
     const BUTTON_SUM_FOR_PERIOD = 'Сумма за период';
     const BUTTON_COEFFS = 'Коэффициенты';
+    const BUTTON_SENSORS_ZEROS = 'Датчики, нули';
+    const BUTTON_SENSORS_TEMPS = 'Датчики, температуры';
+    const BUTTON_SENSORS_STATUS = 'Датчики, статус';
     const BUTTON_CLEAR = 'Очистить';
 
     const CHECKBOX_ALL_FIELDS = 'Подробные таблицы';
@@ -237,6 +243,9 @@ class Strings
     const TEXT_SUM = "Сумма";
     const TEXT_AVG = "Среднее";
     const TEXT_TOTAL = "Итого";
+
+    const TEXT_ON = "ON";
+    const TEXT_OFF = "OFF";
 
     const TEXT_DELTA_MI_3115_OK = "Норма";
 

@@ -31,6 +31,10 @@ class Tables
 
     const COEFFS = 'wcalver';
 
+    const SENSORS_ZEROS = 'wd30log_z';
+    const SENSORS_TEMPS = 'wd30log_t';
+    const SENSORS_STATUS = 'wd30log_s';
+
     const ACCIDENTS = 'accidents';
     const DEPARTMENTS = 'departments';
 }

@@ -176,6 +176,12 @@ if (!$resultMessage) {
                     echo '<h5>' . S::HEADER_SERVICE . '</h5>' . PHP_EOL . PHP_EOL;
 
                     echoButton($newDesign, S::BUTTON_COEFFS, ParamName::RESULT_TYPE, ResultType::COEFFS);
+
+                    if ($scaleInfo->getClass() != ScaleClass::CLASS_STATIC) {
+                        echoButton($newDesign, S::BUTTON_SENSORS_ZEROS, ParamName::RESULT_TYPE, ResultType::SENSORS_ZEROS);
+                        echoButton($newDesign, S::BUTTON_SENSORS_TEMPS, ParamName::RESULT_TYPE, ResultType::SENSORS_TEMPS);
+                        echoButton($newDesign, S::BUTTON_SENSORS_STATUS, ParamName::RESULT_TYPE, ResultType::SENSORS_STATUS);
+                    }
                 }
             }
             break;

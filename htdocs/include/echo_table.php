@@ -114,7 +114,7 @@ function echoTableBodyStart(?string $class = null)
     echo "<tbody$id$class>" . PHP_EOL;
 }
 
-function echoTableTD(string $text, ?string $class = null, ?string $href = null, ?int $colSpan = null)
+function echoTableTD(string $text, ?string $class = null, ?string $href = null, ?int $colSpan = null, ?string $title = null)
 {
     $class = formatClass($class);
     if ($href) {
@@ -123,7 +123,8 @@ function echoTableTD(string $text, ?string $class = null, ?string $href = null, 
     $colSpan = formatColSpan($colSpan);
 
     echo S::TAB . S::TAB;
-    echo "<td$class$colSpan>";
+    $title = formatAttr("title", $title);
+    echo "<td$class$colSpan$title>";
     echo $text;
     echo "</td>";
     echo PHP_EOL;

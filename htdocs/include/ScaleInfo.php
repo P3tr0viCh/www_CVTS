@@ -16,6 +16,9 @@ class ScaleInfo
     private int $type;
     private int $class;
 
+    private int $sensorsMCount = 0;
+    private int $sensorsTCount = 0;
+
     public function __construct(int $scaleNum)
     {
         $this->scaleNum = $scaleNum;
@@ -70,6 +73,9 @@ class ScaleInfo
                             $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
                             $this->type = $row[database\Columns::SCALE_TYPE];
 
+                            $this->sensorsMCount = (int)$row[database\Columns::SCALE_SENSORS_M_COUNT];
+                            $this->sensorsTCount = (int)$row[database\Columns::SCALE_SENSORS_T_COUNT];
+
                             if ($row[database\Columns::SCALE_TYPE_DYN] == 0) {
                                 $this->class = ScaleClass::CLASS_STATIC;
                             } else {
@@ -110,5 +116,15 @@ class ScaleInfo
     public function getClass(): int
     {
         return $this->class;
+    }
+
+    public function getSensorsMCount(): int
+    {
+        return $this->sensorsMCount;
+    }
+
+    public function getSensorsTCount(): int
+    {
+        return $this->sensorsTCount;
     }
 }

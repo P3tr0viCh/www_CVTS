@@ -117,7 +117,7 @@ if ($mysqli) {
                 echoTableTH(CS::SCALE_TYPE_TEXT);
                 echoTableTH(CS::SCALE_CLASS_STATIC);
                 echoTableTH(CS::SCALE_CLASS_DYNAMIC);
-                echoTableTH(CS::SCALE_NAME, $newDesign ? "mdl-data-table__cell--add-padding" : null);
+                echoTableTH(CS::SCALE_PLACE, $newDesign ? "mdl-data-table__cell--add-padding" : null);
 
                 $numColumns = 5;
 

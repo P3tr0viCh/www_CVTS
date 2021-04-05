@@ -185,6 +185,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::COEFFICIENT_Q1:
             case C::COEFFICIENT_Q2:
                 return num_fmt($fieldValue, 0);
+
             case C::TEMPERATURE_1:
             case C::TEMPERATURE_2:
             case C::TEMPERATURE_3:
@@ -195,6 +196,14 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::TEMPERATURE_8:
             case C::COEFFICIENT_T1:
             case C::COEFFICIENT_T2:
+            case C::SENSOR_T1:
+            case C::SENSOR_T2:
+            case C::SENSOR_T3:
+            case C::SENSOR_T4:
+            case C::SENSOR_T5:
+            case C::SENSOR_T6:
+            case C::SENSOR_T7:
+            case C::SENSOR_T8:
                 return num_fmt($fieldValue, 1);
 
             case C::TARE_SCALE_NUMBER:
@@ -277,6 +286,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             Constants::SCALE_NUM_ALL_TRAIN_SCALES, Constants::SCALE_NUM_REPORT_VANLIST => true,
             default => false,
         },
+        C::SCALE_PLACE,
         C::DATETIME,
         C::TRAIN_NUMBER,
         C::BRUTTO, C::TARE, C::NETTO,
@@ -305,7 +315,14 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::IRON_CONTROL_SCALES_DYN, C::IRON_CONTROL_DATETIME_DYN,
         C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
         C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
-        C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE => true,
+        C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
+        C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+        C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+        C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+        C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
+        C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+        C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => true,
+
         C::OVERLOAD, C::CARRYING => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
             $resultType == ResultType::COMPARE_DYNAMIC ||
             $resultType == ResultType::COMPARE_STATIC ||
@@ -316,15 +333,17 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::SEQUENCE_NUMBER => ($resultType != ResultType::TRAIN_DYNAMIC) &&
             ($resultType != ResultType::KANAT),
         C::DATETIME_END => $resultType == ResultType::COEFFS,
+
         default => false,
     };
 }
 
-#[Pure] function columnName(string $fieldName, int $scaleType, int $resultType = null): string
+#[Pure] function columnName(string $fieldName, int $scaleType = null, int $resultType = null): string
 {
     return match ($fieldName) {
         C::TRAIN_NUM => ColumnsStrings::TRAIN_NUM,
         C::SCALE_NUM => ColumnsStrings::SCALE_NUM,
+        C::SCALE_PLACE => ColumnsStrings::SCALE_PLACE,
         C::SCALE_MIN_CAPACITY => ColumnsStrings::SCALE_MIN_CAPACITY,
         C::SCALE_MAX_CAPACITY => ColumnsStrings::SCALE_MAX_CAPACITY,
         C::SCALE_DISCRETENESS => ColumnsStrings::SCALE_DISCRETENESS,
@@ -466,6 +485,30 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::IRON_CONTROL_DIFF_DYN_STA => ColumnsStrings::IRON_CONTROL_DIFF_DYN_STA,
         C::IRON_CONTROL_DIFF_SIDE => ColumnsStrings::IRON_CONTROL_DIFF_SIDE,
         C::IRON_CONTROL_DIFF_CARRIAGE => ColumnsStrings::IRON_CONTROL_DIFF_CARRIAGE,
+        C::SENSOR_M1 => ColumnsStrings::SENSOR_M1,
+        C::SENSOR_M2 => ColumnsStrings::SENSOR_M2,
+        C::SENSOR_M3 => ColumnsStrings::SENSOR_M3,
+        C::SENSOR_M4 => ColumnsStrings::SENSOR_M4,
+        C::SENSOR_M5 => ColumnsStrings::SENSOR_M5,
+        C::SENSOR_M6 => ColumnsStrings::SENSOR_M6,
+        C::SENSOR_M7 => ColumnsStrings::SENSOR_M7,
+        C::SENSOR_M8 => ColumnsStrings::SENSOR_M8,
+        C::SENSOR_M9 => ColumnsStrings::SENSOR_M9,
+        C::SENSOR_M10 => ColumnsStrings::SENSOR_M10,
+        C::SENSOR_M11 => ColumnsStrings::SENSOR_M11,
+        C::SENSOR_M12 => ColumnsStrings::SENSOR_M12,
+        C::SENSOR_M13 => ColumnsStrings::SENSOR_M13,
+        C::SENSOR_M14 => ColumnsStrings::SENSOR_M14,
+        C::SENSOR_M15 => ColumnsStrings::SENSOR_M15,
+        C::SENSOR_M16 => ColumnsStrings::SENSOR_M16,
+        C::SENSOR_T1 => ColumnsStrings::SENSOR_T1,
+        C::SENSOR_T2 => ColumnsStrings::SENSOR_T2,
+        C::SENSOR_T3 => ColumnsStrings::SENSOR_T3,
+        C::SENSOR_T4 => ColumnsStrings::SENSOR_T4,
+        C::SENSOR_T5 => ColumnsStrings::SENSOR_T5,
+        C::SENSOR_T6 => ColumnsStrings::SENSOR_T6,
+        C::SENSOR_T7 => ColumnsStrings::SENSOR_T7,
+        C::SENSOR_T8 => ColumnsStrings::SENSOR_T8,
         default => $fieldName,
     };
 }
@@ -522,7 +565,13 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             C::IRON_ESPC_RAZL, C::IRON_ESPC, C::IRON_RAZL, C::IRON_SHCH, C::IRON_INGOT,
             C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
             C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
-            C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE => false,
+            C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
+            C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+            C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+            C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+            C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
+            C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+            C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => false,
             default => true,
         };
     } else {
@@ -679,6 +728,9 @@ function getPOSTParam(string $param): mixed
         ResultType::CARGO_LIST_DYNAMIC, ResultType::CARGO_LIST_STATIC, ResultType::CARGO_LIST_AUTO => S::HEADER_RESULT_CARGO_LIST,
         ResultType::COMPARE_DYNAMIC, ResultType::COMPARE_STATIC => S::HEADER_RESULT_COMPARE,
         ResultType::COEFFS => S::HEADER_COEFF,
+        ResultType::SENSORS_ZEROS => S::SENSORS_ZEROS,
+        ResultType::SENSORS_TEMPS => S::SENSORS_TEMPS,
+        ResultType::SENSORS_STATUS => S::SENSORS_STATUS,
         ResultType::IRON => S::HEADER_IRON,
         ResultType::IRON_CONTROL => S::HEADER_IRON_CONTROL,
         ResultType::VANLIST_WEIGHS => S::HEADER_VANLIST_WEIGHS,

@@ -30,6 +30,9 @@ class Constants
      * Максимальное число строк для страницы результата.
      */
     const RESULT_MAX_ROWS = 32000;
+
+    const SENSORS_M_MAX_COUNT = 16;
+    const SENSORS_T_MAX_COUNT = 10;
 }
 
 /**
@@ -187,6 +190,9 @@ class ResultType
     const COMPARE_STATIC = 71;
 
     const COEFFS = 80;
+    const SENSORS_ZEROS = 81;
+    const SENSORS_TEMPS = 82;
+    const SENSORS_STATUS = 83;
 
     const IRON = 90;
     const IRON_CONTROL = 91;

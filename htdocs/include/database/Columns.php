@@ -23,6 +23,8 @@ class Columns
     const SCALE_MIN_CAPACITY = 'wmin';
     const SCALE_MAX_CAPACITY = 'wmax';
     const SCALE_DISCRETENESS = 'wdiv';
+    const SCALE_SENSORS_M_COUNT = 'sensors_m_count';
+    const SCALE_SENSORS_T_COUNT = 'sensors_t_count';
 
     const SEQUENCE_NUMBER = 'num';
 
@@ -198,4 +200,31 @@ class Columns
     const IRON_CONTROL_DIFF_DYN_STA = 'diff_dyn_sta';
     const IRON_CONTROL_DIFF_SIDE = 'diff_side';
     const IRON_CONTROL_DIFF_CARRIAGE = 'diff_carriage';
+
+    const SENSOR_M = 'm';
+    const SENSOR_M1 = 'm1';
+    const SENSOR_M2 = 'm2';
+    const SENSOR_M3 = 'm3';
+    const SENSOR_M4 = 'm4';
+    const SENSOR_M5 = 'm5';
+    const SENSOR_M6 = 'm6';
+    const SENSOR_M7 = 'm7';
+    const SENSOR_M8 = 'm8';
+    const SENSOR_M9 = 'm9';
+    const SENSOR_M10 = 'm10';
+    const SENSOR_M11 = 'm11';
+    const SENSOR_M12 = 'm12';
+    const SENSOR_M13 = 'm13';
+    const SENSOR_M14 = 'm14';
+    const SENSOR_M15 = 'm15';
+    const SENSOR_M16 = 'm16';
+    const SENSOR_T = 't';
+    const SENSOR_T1 = 't1';
+    const SENSOR_T2 = 't2';
+    const SENSOR_T3 = 't3';
+    const SENSOR_T4 = 't4';
+    const SENSOR_T5 = 't5';
+    const SENSOR_T6 = 't6';
+    const SENSOR_T7 = 't7';
+    const SENSOR_T8 = 't8';
 }

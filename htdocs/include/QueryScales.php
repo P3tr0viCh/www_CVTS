@@ -2,6 +2,7 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
+use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
 
@@ -28,6 +29,6 @@ class QueryScales extends QueryBase
             ->table(T::SCALES)
             ->join(T::SCALES_ADD, C::SCALE_NUM)
             ->join(T::LST_WCLASS, C::SCALE_WCLASS)
-            ->order(C::SCALE_PLACE, false, 'latin1_bin');
+            ->order(C::SCALE_PLACE, false, I::COLLATE_LATIN);
     }
 }

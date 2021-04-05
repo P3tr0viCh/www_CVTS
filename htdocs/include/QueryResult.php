@@ -6,6 +6,7 @@ require_once "ResultFilter.php";
 
 use JetBrains\PhpStorm\Pure;
 use QueryBuilder\Builder as B;
+use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
 
@@ -373,7 +374,7 @@ class QueryResult extends QueryBase
     private function setOrder()
     {
         if (isResultTypeCargoList($this->resultType)) {
-            $this->builder->order(C::CARGO_TYPE, false, 'latin1_bin');
+            $this->builder->order(C::CARGO_TYPE, false, I::COLLATE_LATIN);
         } elseif ($this->resultType == ResultType::COEFFS) {
             if ($this->filter->getScaleNum() == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                 $this->builder->order(C::SCALE_NUM);

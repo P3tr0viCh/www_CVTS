@@ -126,6 +126,16 @@ td.color--gray {
     background-color: #E9E9E9;
 }
 
+td.color--sensors-status-on {
+    color: green;
+    background-color: green;
+}
+
+td.color--sensors-status-off {
+    color: #F44336;
+    background-color: #F44336;
+}
+
 .bk-color--white {
     background-color: white;
 }
@@ -150,4 +160,16 @@ table.center {
 
 .width--15-percents {
     width: 15%;
+}
+
+.width--sensors-zeros {
+    width: 56px;
+}
+
+.width--sensors-temps {
+    width: 48px;
+}
+
+.width--sensors-status {
+    width: 32px;
 }

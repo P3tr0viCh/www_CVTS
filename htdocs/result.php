@@ -8,12 +8,13 @@ require_once "include/Constants.php";
 
 require_once "include/MySQLConnection.php";
 
-require_once "include/QueryResult.php";
 require_once "include/QueryIron.php";
+require_once "include/QueryResult.php";
+require_once "include/QueryCompare.php";
+require_once "include/QuerySensors.php";
 require_once "include/QueryIronControl.php";
 require_once "include/QueryVanListWeighs.php";
 require_once "include/QueryVanListLastTare.php";
-require_once "include/QueryCompare.php";
 
 require_once "include/Strings.php";
 require_once "include/ColumnsStrings.php";
@@ -580,6 +581,17 @@ if (!$resultMessage) {
                     ->setDateEnd($dateTimeEnd)
                     ->setVanList($vanList);
                 break;
+            case ResultType::SENSORS_ZEROS:
+            case ResultType::SENSORS_TEMPS:
+            case ResultType::SENSORS_STATUS:
+                $queryResult = (new QuerySensors())
+                    ->setScaleNum($scaleNum)
+                    ->setDateTimeStart($dateTimeStart)
+                    ->setDateTimeEnd($dateTimeEnd)
+                    ->setResultType($resultType)
+                    ->setSensorsMCount($scaleInfo->getSensorsMCount())
+                    ->setSensorsTCount($scaleInfo->getSensorsTCount());
+                break;
             default:
                 $queryResult = (new QueryResult())
                     ->setScaleType($scaleInfo->getType())
@@ -630,6 +642,8 @@ if (!$resultMessage) {
                 }
 
                 echoTableStart($tableClass);
+
+// ------------- Начало заголовка таблицы ------------------------------------------------------------------------------
                 echoTableHeadStart();
 
                 if (isResultTypeCompare($resultType)) {
@@ -673,6 +687,7 @@ if (!$resultMessage) {
                 for ($i = 0; $i < $result->field_count; $i++) {
                     if ($fieldsInfo[$i]->visible) {
                         $class = null;
+
                         if (isResultTypeCompare($resultType)) {
                             if ($fieldsInfo[$i]->name == C::SIDE_DIFFERENCE ||
                                 $fieldsInfo[$i]->name == C::CARRIAGE_DIFFERENCE
@@ -680,6 +695,20 @@ if (!$resultMessage) {
                                 $class = "compare width--15-percents";
                             }
                         }
+
+                        $class = match ($fieldsInfo[$i]->name) {
+                            C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+                            C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+                            C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+                            C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
+                            C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+                            C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => match ($resultType) {
+                                ResultType::SENSORS_ZEROS => "width--sensors-zeros",
+                                ResultType::SENSORS_TEMPS => "width--sensors-temps",
+                                ResultType::SENSORS_STATUS => "width--sensors-status",
+                            },
+                            default => null
+                        };
 
                         $cell = columnName($fieldsInfo[$i]->name, $scaleInfo->getType(), $resultType);
 
@@ -816,8 +845,43 @@ if (!$resultMessage) {
 
                         $field = latin1ToUtf8($row[$fieldNum]);
 
-                        $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field,
-                            $filter->isFull());
+                        if ($resultType == ResultType::SENSORS_STATUS) {
+                            switch ($fieldsInfo[$fieldNum]->name) {
+                                case C::SENSOR_M1:
+                                case C::SENSOR_M2:
+                                case C::SENSOR_M3:
+                                case C::SENSOR_M4:
+                                case C::SENSOR_M5:
+                                case C::SENSOR_M6:
+                                case C::SENSOR_M7:
+                                case C::SENSOR_M8:
+                                case C::SENSOR_M9:
+                                case C::SENSOR_M10:
+                                case C::SENSOR_M11:
+                                case C::SENSOR_M12:
+                                case C::SENSOR_M13:
+                                case C::SENSOR_M14:
+                                case C::SENSOR_M15:
+                                case C::SENSOR_M16:
+                                case C::SENSOR_T1:
+                                case C::SENSOR_T2:
+                                case C::SENSOR_T3:
+                                case C::SENSOR_T4:
+                                case C::SENSOR_T5:
+                                case C::SENSOR_T6:
+                                case C::SENSOR_T7:
+                                case C::SENSOR_T8:
+                                    $field = is_null($row[$fieldNum]) ? "" : ($row[$fieldNum] > 0 ? Strings::TEXT_ON : Strings::TEXT_OFF);
+                                    $title = is_null($row[$fieldNum]) ? null : (columnName($fieldsInfo[$fieldNum]->name));
+                                    break;
+                                default:
+                                    $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull());
+                                    $title = null;
+                            }
+                        } else {
+                            $field = formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull());
+                            $title = null;
+                        }
 
                         $excelData .= S::EXCEL_SEPARATOR . formatExcelData($field);
 
@@ -828,12 +892,8 @@ if (!$resultMessage) {
                         }
 
                         $class = $fieldsInfo[$fieldNum]->leftAlign ?
-                            ($newDesign ?
-                                'mdl-data-table__cell--non-numeric' :
-                                'text-align--left') :
+                            ($newDesign ? 'mdl-data-table__cell--non-numeric' : 'text-align--left') :
                             null;
-
-                        $cellColor = null;
 
                         if ($showTotalSums) {
                             if ($fieldsInfo[$fieldNum]->name == C::BRUTTO) $totalSumBrutto += $row[C::BRUTTO];
@@ -841,29 +901,44 @@ if (!$resultMessage) {
                             if ($fieldsInfo[$fieldNum]->name == C::NETTO) $totalSumNetto += $row[C::NETTO];
                         }
 
-                        if ($resultType == ResultType::IRON_CONTROL) {
-                            if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_DYN_STA) {
-                                $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
+                        $cellColor = null;
 
-                                if ($value != "") {
-                                    $ironControlTotalCount++;
+                        switch ($resultType) {
+                            case ResultType::IRON_CONTROL:
+                                switch ($fieldsInfo[$fieldNum]->name) {
+                                    case C::IRON_CONTROL_DIFF_DYN_STA:
+                                        $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
 
-                                    $ironControlTotalSum += $value;
+                                        if ($value != "") {
+                                            $ironControlTotalCount++;
+
+                                            $ironControlTotalSum += $value;
+                                        }
+
+                                        $cellColor = getCellWarningColor($value,
+                                            Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW,
+                                            Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED);
+
+                                        break;
+                                    case C::IRON_CONTROL_DIFF_SIDE:
+                                        $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_SIDE],
+                                            Constants::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW,
+                                            Constants::IRON_CONTROL_DIFF_SIDE_WARNING_RED);
+                                        break;
+                                    case C::IRON_CONTROL_DIFF_CARRIAGE:
+                                        $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_CARRIAGE],
+                                            Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW,
+                                            Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
+                                        break;
                                 }
-
-                                $cellColor = getCellWarningColor($value,
-                                    Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED);
-                            }
-
-                            if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_SIDE) {
-                                $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_SIDE],
-                                    Constants::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_SIDE_WARNING_RED);
-                            }
-
-                            if ($fieldsInfo[$fieldNum]->name == C::IRON_CONTROL_DIFF_CARRIAGE) {
-                                $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_CARRIAGE],
-                                    Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
-                            }
+                                break;
+                            case ResultType::SENSORS_STATUS:
+                                $cellColor = match ($field) {
+                                    Strings::TEXT_ON => 'color--sensors-status-on',
+                                    Strings::TEXT_OFF => 'color--sensors-status-off',
+                                    default => null
+                                };
+                                break;
                         }
 
                         $class = concatStrings($class, $cellColor, Strings::SPACE);
@@ -879,7 +954,7 @@ if (!$resultMessage) {
                             }
                         }
 
-                        echoTableTD($field, $class, $showHref ? $href : null);
+                        echoTableTD($field, $class, $showHref ? $href : null, null, $title);
                     }
 
                     if (isResultTypeCompare($resultType)) {
