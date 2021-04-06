@@ -131,6 +131,10 @@ input, select, textarea {
     width: 160px;
 }
 
+.input-button.submit.width-plus {
+    width: 200px;
+}
+
 .input-button.reset {
     text-align: center;
     width: 100px;
@@ -252,15 +256,20 @@ td.footer--right-section {
     text-align: right;
 }
 
+img.main-logo {
+    height: 60px;
+    padding-bottom: 8px;
+}
+
 .row-color--odd {
     background: #FFFFFF;
 }
 
 .row-color--even {
-    background: #BADBF3;
+    background: #badbf3;
 }
 
-img.main-logo {
-    height: 60px;
-    padding-bottom: 8px;
+.row-sub_header {
+    font-weight: bold;
+    background: #F1F4F6;
 }

@@ -518,6 +518,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
     return match ($fieldName) {
         C::IRON_CONTROL_DIFF_SIDE => ColumnsTitleStrings::IRON_CONTROL_DIFF_SIDE,
         C::IRON_CONTROL_DIFF_CARRIAGE => ColumnsTitleStrings::IRON_CONTROL_DIFF_CARRIAGE,
+        C::IRON_INGOT => ColumnsTitleStrings::IRON_INGOT,
         default => null,
     };
 }

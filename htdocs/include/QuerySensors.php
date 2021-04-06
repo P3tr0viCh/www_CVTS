@@ -1,6 +1,6 @@
 <?php
 require_once "builders/query_builder/Builder.php";
-require_once "QueryBase.php";
+require_once "QueryBaseDates.php";
 
 use JetBrains\PhpStorm\Pure;
 use QueryBuilder\Builder as B;
@@ -8,14 +8,9 @@ use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
 
-class QuerySensors extends QueryBase
+class QuerySensors extends QueryBaseDates
 {
-    const MYSQL_DATETIME_FORMAT = "YmdHis";
-
     private ?int $scaleNum = null;
-
-    private ?int $dateTimeStart = null;
-    private ?int $dateTimeEnd = null;
 
     private int $resultType;
 
@@ -25,18 +20,6 @@ class QuerySensors extends QueryBase
     public function setScaleNum(?int $scaleNum): static
     {
         $this->scaleNum = (int)$scaleNum;
-        return $this;
-    }
-
-    public function setDateTimeStart(?int $dateTimeStart): static
-    {
-        $this->dateTimeStart = $dateTimeStart;
-        return $this;
-    }
-
-    public function setDateTimeEnd(?int $dateTimeEnd): static
-    {
-        $this->dateTimeEnd = $dateTimeEnd;
         return $this;
     }
 
@@ -58,7 +41,8 @@ class QuerySensors extends QueryBase
         return $this;
     }
 
-    #[Pure] private function isAllScales(): bool {
+    #[Pure] private function isAllScales(): bool
+    {
         return $this->scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 
@@ -95,12 +79,31 @@ class QuerySensors extends QueryBase
         }
     }
 
-    private function setOrder() {
+    private function setWhere()
+    {
+        if (!$this->isAllScales()) {
+            $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
+        }
+
+        $this->builder
+            ->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->getDateTimeStart())
+            ->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->getDateTimeEnd());
+    }
+
+    private function setOrder()
+    {
         if ($this->isAllScales()) {
             $this->builder->order(C::SCALE_PLACE, false, I::COLLATE_LATIN);
         }
 
         $this->builder->order(C::DATETIME, true);
+    }
+
+    private function setJoin()
+    {
+        if ($this->isAllScales()) {
+            $this->builder->join(T::SCALES, C::SCALE_NUM);
+        }
     }
 
     protected function makeQuery()
@@ -109,32 +112,9 @@ class QuerySensors extends QueryBase
 
         $this->setColumns();
 
-        $dateTimeStart = $this->dateTimeStart;
-        $dateTimeEnd = $this->dateTimeEnd;
+        $this->setJoin();
 
-        if ($this->scaleNum != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-            $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
-        }
-
-        if ($dateTimeStart) {
-            $dateTimeStart = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeStart);
-        }
-        if ($dateTimeEnd) {
-            $dateTimeEnd = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeEnd);
-        }
-
-        if ($dateTimeStart) {
-            $this->builder
-                ->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $dateTimeStart);
-        }
-        if ($dateTimeEnd) {
-            $this->builder
-                ->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $dateTimeEnd);
-        }
-
-        if ($this->isAllScales()) {
-            $this->builder->join(T::SCALES, C::SCALE_NUM);
-        }
+        $this->setWhere();
 
         $this->setOrder();
     }

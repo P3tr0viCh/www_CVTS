@@ -32,10 +32,14 @@ function echoHidden(string $name, mixed $value)
     echo "<input type='hidden' id='$id' name='$name' value='$value'>" . PHP_EOL;
 }
 
-function echoButton(bool $newDesign, string $text, string $name, int $value)
+function echoButton(bool $newDesign, string $text, string $name, int $value, ?string $class = null)
 {
     $buttonClass = $newDesign ?
         "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" : "input-button submit";
+
+    if ($class) {
+        $buttonClass .= Strings::SPACE . $class;
+    }
 
     echo S::TAB . S::TAB;
     if ($newDesign) {

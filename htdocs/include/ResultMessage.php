@@ -36,7 +36,7 @@ class ResultMessage
 {
     return new ResultMessage(
         Strings::ERROR_MYSQL_CONNECTION,
-        sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->connect_errno, latin1ToUtf8($mysqli->connect_error)));
+        sprintf(Strings::ERROR_MYSQL_DETAILS, $mysqli->connect_errno, $mysqli->connect_error));
 }
 
 #[Pure] function queryError(mysqli $mysqli): ResultMessage

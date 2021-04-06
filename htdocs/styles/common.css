@@ -31,23 +31,15 @@ h2.result-message.link {
     margin-bottom: 16px;
 }
 
-/*noinspection CssOptimizeSimilarProperties*/
 .page-content {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin: 8px;
 }
 
-/*noinspection CssOptimizeSimilarProperties*/
 div.result-message {
     font-size: 12pt;
     font-weight: normal;
     line-height: 1;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 32px;
-    margin-bottom: 16px;
+    margin: 32px auto 16px;
     display: inline-block;
     text-align: left;
 }
@@ -108,7 +100,7 @@ div.hr {
 }
 
 .color-text--error {
-    color: rgb(213, 0, 0);
+    color: #D50000;
 }
 
 td.color--red {
@@ -127,8 +119,8 @@ td.color--gray {
 }
 
 td.color--sensors-status-on {
-    color: green;
-    background-color: green;
+    color: #4CAF50;
+    background-color: #4CAF50;
 }
 
 td.color--sensors-status-off {

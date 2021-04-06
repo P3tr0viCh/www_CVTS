@@ -178,12 +178,13 @@ if (!$resultMessage) {
                     echoButton($newDesign, S::BUTTON_COEFFS, ParamName::RESULT_TYPE, ResultType::COEFFS);
 
                     if ($scaleInfo->getClass() != ScaleClass::CLASS_STATIC) {
-                        echoButton($newDesign, S::BUTTON_SENSORS_ZEROS, ParamName::RESULT_TYPE, ResultType::SENSORS_ZEROS);
-                        echoButton($newDesign, S::BUTTON_SENSORS_TEMPS, ParamName::RESULT_TYPE, ResultType::SENSORS_TEMPS);
-                        echoButton($newDesign, S::BUTTON_SENSORS_STATUS, ParamName::RESULT_TYPE, ResultType::SENSORS_STATUS);
+                        echoButton($newDesign, S::BUTTON_SENSORS_ZEROS, ParamName::RESULT_TYPE, ResultType::SENSORS_ZEROS, 'width-plus');
+                        echoButton($newDesign, S::BUTTON_SENSORS_TEMPS, ParamName::RESULT_TYPE, ResultType::SENSORS_TEMPS, 'width-plus');
+                        echoButton($newDesign, S::BUTTON_SENSORS_STATUS, ParamName::RESULT_TYPE, ResultType::SENSORS_STATUS, 'width-plus');
                     }
                 }
             }
+
             break;
         case ScaleType::WMR:
             echo S::TAB . S::TAB;

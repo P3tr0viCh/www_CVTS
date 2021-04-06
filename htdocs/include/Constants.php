@@ -2,6 +2,9 @@
 
 class Constants
 {
+    const DEBUG_SHOW_ERROR = false;
+    const DEBUG_SHOW_QUERY = false;
+
     /**
      * Все железнодорожные весы.
      */
@@ -32,7 +35,7 @@ class Constants
     const RESULT_MAX_ROWS = 32000;
 
     const SENSORS_M_MAX_COUNT = 16;
-    const SENSORS_T_MAX_COUNT = 10;
+    const SENSORS_T_MAX_COUNT = 8;
 }
 
 /**

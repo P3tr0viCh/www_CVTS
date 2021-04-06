@@ -58,7 +58,6 @@ class QueryResult extends QueryBase
             ResultType::AUTO_TARE => T::AUTO_TARE,
             ResultType::KANAT => T::KANAT,
             ResultType::DP, ResultType::DP_SUM => T::DP,
-            ResultType::COEFFS => T::COEFFS,
             default => throw new InvalidArgumentException("Unknown resultType ($this->resultType)"),
         };
     }
@@ -90,7 +89,6 @@ class QueryResult extends QueryBase
             case ResultType::VAN_STATIC_TARE:
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
-            case ResultType::COEFFS:
                 if ($this->filter->getScaleNum() == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                     $this->builder->column(C::SCALE_NUM);
                 }
@@ -232,16 +230,6 @@ class QueryResult extends QueryBase
             case ResultType::CARGO_LIST_AUTO:
                 $this->builder->column(C::CARGO_TYPE);
                 break;
-            case ResultType::COEFFS:
-                $this->builder
-                    ->column(C::DATETIME_END)
-                    ->column(C::COEFFICIENT_P1)
-                    ->column(C::COEFFICIENT_Q1)
-                    ->column(C::TEMPERATURE_1, null, C::COEFFICIENT_T1)
-                    ->column(C::COEFFICIENT_P2)
-                    ->column(C::COEFFICIENT_Q2)
-                    ->column(C::TEMPERATURE_2, null, C::COEFFICIENT_T2);
-                break;
         }
     }
 
@@ -260,10 +248,10 @@ class QueryResult extends QueryBase
         $dateTimeEnd = $this->filter->getDateTimeEnd();
 
         if ($dateTimeStart) {
-            $dateTimeStart = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeStart);
+            $dateTimeStart = (int)date(self::MYSQL_DATETIME_FORMAT, $dateTimeStart);
         }
         if ($dateTimeEnd) {
-            $dateTimeEnd = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeEnd);
+            $dateTimeEnd = (int)date(self::MYSQL_DATETIME_FORMAT, $dateTimeEnd);
         }
 
         if ($dateTimeStart) {
@@ -352,34 +340,12 @@ class QueryResult extends QueryBase
                     $this->builder->where(C::NETTO, B::COMPARISON_NOT_EQUAL, 0);
                 }
         }
-
-        if (($this->resultType == ResultType::COEFFS) && (!$this->filter->isFull())) {
-            $innerBuilder = B::getInstance();
-            $innerBuilder
-                ->column('max(' . C::DATETIME_END . ')')
-                ->table(T::COEFFS);
-            if ($this->filter->getScaleNum() != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                $innerBuilder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->filter->getScaleNum());
-            } else {
-                $innerBuilder->where(C::SCALE_NUM, B::COMPARISON_IN, $this->filter->getScalesFilter());
-                $innerBuilder->group(C::SCALE_NUM);
-            }
-            $innerBuilder->group('year(' . C::DATETIME_END . ')');
-            $innerBuilder->group('dayofyear(' . C::DATETIME_END . ')');
-
-            $this->builder->where(C::DATETIME_END, B::COMPARISON_IN, $innerBuilder);
-        }
     }
 
     private function setOrder()
     {
         if (isResultTypeCargoList($this->resultType)) {
             $this->builder->order(C::CARGO_TYPE, false, I::COLLATE_LATIN);
-        } elseif ($this->resultType == ResultType::COEFFS) {
-            if ($this->filter->getScaleNum() == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                $this->builder->order(C::SCALE_NUM);
-            }
-            $this->builder->order(C::DATETIME_END, true);
         } else {
             $orderByDesc = match ($this->resultType) {
                 ResultType::DP, ResultType::KANAT => $this->filter->isOrderByDesc(),
@@ -426,11 +392,9 @@ class QueryResult extends QueryBase
                 $this->resultType == ResultType::VAN_DYNAMIC_BRUTTO ||
                 $this->resultType == ResultType::VAN_STATIC_BRUTTO);
 
-        $table = $this->getTableName();
-
         $this->builder
             ->params(B::SELECT_SQL_BUFFER_RESULT)
-            ->table($table);
+            ->table($this->getTableName());
 
         $this->setWhere();
 

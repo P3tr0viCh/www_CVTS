@@ -181,7 +181,7 @@ tr.rowclick:hover {
 }
 
 .mdl-layout-title__subtitle.color-text--error {
-    color: rgb(255, 133, 123);
+    color: #FF857B;
 }
 
 .mdl-tooltip {
@@ -199,4 +199,10 @@ tr.rowclick:hover {
 
 .row-color--even {
     background: #E2E8EA;
+}
+
+.row-sub_header {
+    color: rgba(0, 0, 0, .54);
+    font-weight: 700;
+    background: #FCFCFC;
 }
