@@ -22,15 +22,15 @@ use Strings as S;
 $newDesign = isNewDesign();
 $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
-$scales = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+$scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
 echoStartPage();
 
-if ($scales < 0) {
-    if ($scales !== Constants::SCALE_NUM_REPORT_VANLIST &&
-        $scales !== Constants::SCALE_NUM_REPORT_IRON &&
-        $scales !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
-        $scales = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
+if ($scaleNum < 0) {
+    if ($scaleNum !== Constants::SCALE_NUM_REPORT_VANLIST and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
+        $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 }
 
@@ -39,7 +39,7 @@ $title = S::TITLE_ERROR;
 $scaleInfo = null;
 $resultMessage = null;
 
-$header = null;
+$header = "";
 $navLinks = null;
 
 $mysqli = MySQLConnection::getInstance($useBackup);
@@ -48,7 +48,7 @@ if ($mysqli) {
     if ($mysqli->connect_errno) {
         $resultMessage = connectionError($mysqli);
     } else {
-        $scaleInfo = new ScaleInfo($scales);
+        $scaleInfo = new ScaleInfo($scaleNum);
 
         $resultMessage = $scaleInfo->query($mysqli);
 
@@ -94,7 +94,7 @@ echoStartContent();
 if (!$resultMessage) {
     echoFormStart("formResult", "result.php", "saveInputs();", "clearInputs();");
 
-    echoHidden(ParamName::SCALE_NUM, (int)$scales);
+    echoHidden(ParamName::SCALE_NUM, (int)$scaleNum);
     echoHidden(ParamName::NEW_DESIGN, (bool)$newDesign);
     echoHidden(ParamName::USE_BACKUP, (bool)$useBackup);
     echo PHP_EOL;
@@ -136,7 +136,7 @@ if (!$resultMessage) {
 
     switch ($scaleType) {
         case ScaleType::DEFAULT_TYPE:
-            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) ||
+            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) or
                 ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC)
             ) {
                 echo S::TAB . S::TAB;
@@ -154,7 +154,7 @@ if (!$resultMessage) {
                 echo '<br>' . PHP_EOL . PHP_EOL;
             }
 
-            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) ||
+            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) or
                 ($scaleInfo->getClass() == ScaleClass::CLASS_STATIC)
             ) {
                 echo S::TAB . S::TAB;
@@ -166,7 +166,7 @@ if (!$resultMessage) {
                 echoButton($newDesign, S::BUTTON_COMPARE, ParamName::RESULT_TYPE, ResultType::COMPARE_STATIC);
             }
 
-            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) ||
+            if (($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC_AND_STATIC) or
                 ($scaleInfo->getClass() == ScaleClass::CLASS_DYNAMIC)
             ) {
                 if (CheckUser::isPowerUser()) {
@@ -558,7 +558,7 @@ if (!$resultMessage) {
                     break;
             }
 
-            if ($scales == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+            if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                 echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, null, null);
 
                 if ($newDesign) {

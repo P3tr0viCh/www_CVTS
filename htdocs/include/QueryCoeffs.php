@@ -10,11 +10,19 @@ use database\Columns as C;
 
 class QueryCoeffs extends QueryBaseDates
 {
-    private ?int $scaleNum = null;
+    private int $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 
-    public function setScaleNum(?int $scaleNum): static
+    private bool $showDisabled = false;
+
+    public function setScaleNum(int $scaleNum): static
     {
-        $this->scaleNum = (int)$scaleNum;
+        $this->scaleNum = $scaleNum;
+        return $this;
+    }
+
+    public function setShowDisabled(int $showDisabled): static
+    {
+        $this->showDisabled = $showDisabled;
         return $this;
     }
 
@@ -65,13 +73,16 @@ class QueryCoeffs extends QueryBaseDates
             ->where(C::DATETIME_END, B::COMPARISON_LESS_OR_EQUAL, $this->getDateTimeEnd());
 
         if ($this->isAllScales()) {
-            $this->builder
-                ->where(C::SCALE_TYPE_DYN, B::COMPARISON_EQUAL, true)
-                ->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+            $this->builder->where(C::SCALE_TYPE_DYN, B::COMPARISON_EQUAL, true);
+
+            if (!$this->showDisabled) {
+                $this->builder->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+            }
         }
     }
 
-    private function setJoin() {
+    private function setJoin()
+    {
         if ($this->isAllScales()) {
             $this->builder->join(T::SCALES, C::SCALE_NUM);
             $this->builder->join(T::SCALES_ADD, C::SCALE_NUM);

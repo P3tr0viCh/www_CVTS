@@ -10,16 +10,18 @@ use database\Columns as C;
 
 class QuerySensors extends QueryBaseDates
 {
-    private ?int $scaleNum = null;
+    private int $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 
     private int $resultType;
 
     private int $sensorsMCount = 0;
     private int $sensorsTCount = 0;
 
-    public function setScaleNum(?int $scaleNum): static
+    private bool $showDisabled = false;
+
+    public function setScaleNum(int $scaleNum): static
     {
-        $this->scaleNum = (int)$scaleNum;
+        $this->scaleNum = $scaleNum;
         return $this;
     }
 
@@ -38,6 +40,12 @@ class QuerySensors extends QueryBaseDates
     public function setSensorsTCount(int $sensorsTCount): static
     {
         $this->sensorsTCount = $sensorsTCount == 0 || $sensorsTCount > Constants::SENSORS_T_MAX_COUNT ? Constants::SENSORS_T_MAX_COUNT : $sensorsTCount;
+        return $this;
+    }
+
+    public function setShowDisabled(int $showDisabled): static
+    {
+        $this->showDisabled = $showDisabled;
         return $this;
     }
 
@@ -79,6 +87,14 @@ class QuerySensors extends QueryBaseDates
         }
     }
 
+    private function setJoin()
+    {
+        if ($this->isAllScales()) {
+            $this->builder->join(T::SCALES, C::SCALE_NUM);
+            $this->builder->join(T::SCALES_ADD, C::SCALE_NUM);
+        }
+    }
+
     private function setWhere()
     {
         if (!$this->isAllScales()) {
@@ -88,6 +104,11 @@ class QuerySensors extends QueryBaseDates
         $this->builder
             ->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->getDateTimeStart())
             ->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->getDateTimeEnd());
+
+        if ($this->isAllScales() and !$this->showDisabled) {
+            $this->builder
+                ->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+        }
     }
 
     private function setOrder()
@@ -97,13 +118,6 @@ class QuerySensors extends QueryBaseDates
         }
 
         $this->builder->order(C::DATETIME, true);
-    }
-
-    private function setJoin()
-    {
-        if ($this->isAllScales()) {
-            $this->builder->join(T::SCALES, C::SCALE_NUM);
-        }
     }
 
     protected function makeQuery()

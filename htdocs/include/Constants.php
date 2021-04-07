@@ -146,17 +146,17 @@ class ScaleType
 class ScaleClass
 {
     /**
-     * Класс весов: динамические и статические.
+     * Класс весов: статические.
      */
-    const CLASS_DYNAMIC_AND_STATIC = 1;
+    const CLASS_STATIC = 0;
     /**
      * Класс весов: динамические.
      */
-    const CLASS_DYNAMIC = 2;
+    const CLASS_DYNAMIC = 1;
     /**
-     * Класс весов: статические.
+     * Класс весов: динамические и статические.
      */
-    const CLASS_STATIC = 3;
+    const CLASS_DYNAMIC_AND_STATIC = 2;
 }
 
 class ReportType

@@ -100,6 +100,8 @@ $dateTimeEnd = null;
 $orderByDesc = true;
 $from20to20 = false;
 
+$showDisabled = false;
+
 $vanList = null;
 
 $showTotalSums = false;
@@ -113,12 +115,22 @@ $ironControlTotalCount = 0;
 
 $filter = new ResultFilter();
 
+$scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
+
+if ($scaleNum < 0) {
+    if ($scaleNum !== Constants::SCALE_NUM_REPORT_VANLIST and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
+        $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
+    }
+}
+
 switch ($reportType) {
     case ReportType::TYPE_DEFAULT:
-        $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM);
-        $scaleNum = $scaleNum == null ? Constants::SCALE_NUM_ALL_TRAIN_SCALES : (int)$scaleNum;
 
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
+
+        $showDisabled = getCookieAsBool(ParamName::SHOW_DISABLED);
 
         $filter
             ->setVanNumber(getParamGETAsString(ParamName::VAN_NUMBER))
@@ -228,8 +240,6 @@ switch ($reportType) {
                 throwBadRequest('ReportType::CARGO_TYPES - wrong resultType');
         }
 
-        $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
-
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
 
         $filter
@@ -242,8 +252,6 @@ switch ($reportType) {
         break;
     case ReportType::TRAINS:
         $resultType = ResultType::TRAIN_DYNAMIC_ONE;
-
-        $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAIN_SCALES);
 
         $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, $useBackup);
 
@@ -593,7 +601,8 @@ if (!$resultMessage) {
                 $queryResult = (new QueryCoeffs())
                     ->setScaleNum($scaleNum)
                     ->setDateTimeStart($dateTimeStart)
-                    ->setDateTimeEnd($dateTimeEnd);
+                    ->setDateTimeEnd($dateTimeEnd)
+                    ->setShowDisabled($showDisabled);
                 break;
             case ResultType::SENSORS_ZEROS:
             case ResultType::SENSORS_TEMPS:
@@ -604,7 +613,8 @@ if (!$resultMessage) {
                     ->setDateTimeEnd($dateTimeEnd)
                     ->setResultType($resultType)
                     ->setSensorsMCount($scaleInfo->getSensorsMCount())
-                    ->setSensorsTCount($scaleInfo->getSensorsTCount());
+                    ->setSensorsTCount($scaleInfo->getSensorsTCount())
+                    ->setShowDisabled($showDisabled);
                 break;
             default:
                 $queryResult = (new QueryResult())

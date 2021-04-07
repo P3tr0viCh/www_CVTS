@@ -11,8 +11,8 @@ use database\Columns;
 class ScaleInfo
 {
     private int $scaleNum;
-    private string $place;
-    private string $header;
+    private string $place = "";
+    private string $header = "";
     private int $type;
     private int $class;
 
@@ -34,7 +34,6 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
-
             case Constants::SCALE_NUM_REPORT_VANLIST:
                 $this->place = Strings::SCALE_INFO_VANLIST_PLACE;
                 $this->header = Strings::SCALE_INFO_VANLIST_PLACE_HEADER;
@@ -42,7 +41,6 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
-
             case Constants::SCALE_NUM_REPORT_IRON:
                 $this->place = Strings::SCALE_INFO_IRON_PLACE;
                 $this->header = Strings::SCALE_INFO_IRON_HEADER;
@@ -57,7 +55,6 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
-
             default:
                 if ($mysqli->connect_errno) {
                     return connectionError($mysqli);
@@ -66,28 +63,32 @@ class ScaleInfo
                     $query->setScaleNum($this->scaleNum);
                     $result = $mysqli->query($query->getQuery());
 
-                    if ($result->num_rows > 0) {
-                        if ($row = $result->fetch_array()) {
-                            $this->place = (string)latin1ToUtf8($row[Columns::SCALE_PLACE]);
+                    if ($result) {
+                        if ($result->num_rows > 0) {
+                            if ($row = $result->fetch_array()) {
+                                $this->place = (string)latin1ToUtf8($row[Columns::SCALE_PLACE]);
 
-                            $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
-                            $this->type = $row[database\Columns::SCALE_TYPE];
+                                $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
+                                $this->type = $row[database\Columns::SCALE_TYPE];
 
-                            $this->sensorsMCount = (int)$row[database\Columns::SCALE_SENSORS_M_COUNT];
-                            $this->sensorsTCount = (int)$row[database\Columns::SCALE_SENSORS_T_COUNT];
+                                $this->sensorsMCount = (int)$row[database\Columns::SCALE_SENSORS_M_COUNT];
+                                $this->sensorsTCount = (int)$row[database\Columns::SCALE_SENSORS_T_COUNT];
 
-                            if ($row[database\Columns::SCALE_TYPE_DYN] == 0) {
-                                $this->class = ScaleClass::CLASS_STATIC;
+                                $this->class = match ((int)$row[database\Columns::SCALE_TYPE_DYN]) {
+                                    0 => ScaleClass::CLASS_STATIC,
+                                    1 => ScaleClass::CLASS_DYNAMIC,
+                                    default => ScaleClass::CLASS_DYNAMIC_AND_STATIC,
+                                };
+
+                                return null;
                             } else {
-                                $this->class = ScaleClass::CLASS_DYNAMIC;
+                                return queryError($mysqli);
                             }
-
-                            return null;
                         } else {
-                            return queryError($mysqli);
+                            return new ResultMessage(sprintf(Strings::ERROR_MYSQL_BAD_SCALE_NUM, $this->scaleNum), null);
                         }
                     } else {
-                        return new ResultMessage(sprintf(Strings::ERROR_MYSQL_BAD_SCALE_NUM, $this->scaleNum), null);
+                        return queryError($mysqli);
                     }
                 }
         }
