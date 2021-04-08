@@ -19,6 +19,7 @@ require_once "include/ColumnsStrings.php";
 require_once "include/ColumnsTitleStrings.php";
 
 require_once "include/Functions.php";
+require_once "include/CheckUser.php";
 require_once "include/CheckBrowser.php";
 
 require_once "include/ScaleInfo.php";
@@ -40,15 +41,15 @@ use Strings as S;
 
 use database\Columns as C;
 
-function throwBadRequest(?string $error = null)
+function throwBadRequest(?string $error = null, int $errorNum = 412)
 {
     if (Constants::DEBUG_SHOW_ERROR) {
         if (empty($error)) $error = "UNKNOWN";
-        echo '<b><span class="color-text--error">' . 'ERROR: ' . $error . '</span></b>';
+        echo '<b><span class="color-text--error">' . "ERROR $errorNum: $error" . '</span></b>';
         return;
     }
 
-    header("Location: error.php?412");
+    header("Location: error.php?$errorNum");
     exit();
 }
 
@@ -59,6 +60,18 @@ if (!isset($_GET[ParamName::SCALE_NUM])) {
         }
     }
 }
+
+ini_set('display_errors', false);
+
+register_shutdown_function(function () {
+    $error = error_get_last();
+
+    if ($error) {
+        $errorNum = str_starts_with($error['message'], 'Allowed memory size') ? 530 : 500;
+
+        throwBadRequest(json_encode($error), $errorNum);
+    }
+});
 
 $newDesign = isNewDesign();
 
@@ -265,6 +278,16 @@ switch ($reportType) {
         break;
     default:
         throwBadRequest('wrong reportType');
+}
+
+switch ($resultType) {
+    case ResultType::COEFFS:
+    case ResultType::SENSORS_ZEROS:
+    case ResultType::SENSORS_TEMPS:
+    case ResultType::SENSORS_STATUS:
+        if (!CheckUser::isPowerUser()) {
+            throwBadRequest('report for power users', 403);
+        }
 }
 
 if ($resultType == ResultType::IRON_CONTROL) {
@@ -570,58 +593,43 @@ if (!$resultMessage) {
     $queryResult = null;
 
     try {
-        /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
-        switch ($resultType) {
-            case ResultType::IRON:
-                $queryResult = (new QueryIron())
-                    ->setDateStart($dateTimeStart)
-                    ->setDateEnd($dateTimeEnd)
-                    ->setOrderByDesc($orderByDesc)
-                    ->setFrom20to20($from20to20);
-                break;
-            case ResultType::IRON_CONTROL:
-                $queryResult = (new QueryIronControl())
-                    ->setDateStart($dateTimeStart)
-                    ->setDateEnd($dateTimeEnd);
-                break;
-
-            case ResultType::VANLIST_WEIGHS:
-                $queryResult = (new QueryVanListWeighs())
-                    ->setDateStart($dateTimeStart)
-                    ->setDateEnd($dateTimeEnd)
-                    ->setVanList($vanList);
-                break;
-            case ResultType::VANLIST_LAST_TARE:
-                $queryResult = (new QueryVanListLastTare())
-                    ->setDateStart($dateTimeStart)
-                    ->setDateEnd($dateTimeEnd)
-                    ->setVanList($vanList);
-                break;
-            case ResultType::COEFFS:
-                $queryResult = (new QueryCoeffs())
-                    ->setScaleNum($scaleNum)
-                    ->setDateTimeStart($dateTimeStart)
-                    ->setDateTimeEnd($dateTimeEnd)
-                    ->setShowDisabled($showDisabled);
-                break;
-            case ResultType::SENSORS_ZEROS:
-            case ResultType::SENSORS_TEMPS:
-            case ResultType::SENSORS_STATUS:
-                $queryResult = (new QuerySensors())
-                    ->setScaleNum($scaleNum)
-                    ->setDateTimeStart($dateTimeStart)
-                    ->setDateTimeEnd($dateTimeEnd)
-                    ->setResultType($resultType)
-                    ->setSensorsMCount($scaleInfo->getSensorsMCount())
-                    ->setSensorsTCount($scaleInfo->getSensorsTCount())
-                    ->setShowDisabled($showDisabled);
-                break;
-            default:
-                $queryResult = (new QueryResult())
-                    ->setScaleType($scaleInfo->getType())
-                    ->setResultType($resultType)
-                    ->setFilter($filter);
-        }
+        $queryResult = match ($resultType) {
+            ResultType::IRON => (new QueryIron())
+                ->setDateStart($dateTimeStart)
+                ->setDateEnd($dateTimeEnd)
+                ->setOrderByDesc($orderByDesc)
+                ->setFrom20to20($from20to20),
+            ResultType::IRON_CONTROL => (new QueryIronControl())
+                ->setDateStart($dateTimeStart)
+                ->setDateEnd($dateTimeEnd),
+            ResultType::VANLIST_WEIGHS => (new QueryVanListWeighs())
+                ->setDateStart($dateTimeStart)
+                ->setDateEnd($dateTimeEnd)
+                ->setVanList($vanList),
+            ResultType::VANLIST_LAST_TARE => (new QueryVanListLastTare())
+                ->setDateStart($dateTimeStart)
+                ->setDateEnd($dateTimeEnd)
+                ->setVanList($vanList),
+            ResultType::COEFFS => (new QueryCoeffs())
+                ->setScaleNum($scaleNum)
+                ->setDateTimeStart($dateTimeStart)
+                ->setDateTimeEnd($dateTimeEnd)
+                ->setShowDisabled($showDisabled),
+            ResultType::SENSORS_ZEROS,
+            ResultType::SENSORS_TEMPS,
+            ResultType::SENSORS_STATUS => (new QuerySensors())
+                ->setScaleNum($scaleNum)
+                ->setDateTimeStart($dateTimeStart)
+                ->setDateTimeEnd($dateTimeEnd)
+                ->setResultType($resultType)
+                ->setSensorsMCount($scaleInfo->getSensorsMCount())
+                ->setSensorsTCount($scaleInfo->getSensorsTCount())
+                ->setShowDisabled($showDisabled),
+            default => (new QueryResult())
+                ->setScaleType($scaleInfo->getType())
+                ->setResultType($resultType)
+                ->setFilter($filter),
+        };
     } catch (Exception $e) {
         throwBadRequest($e->getMessage());
     }

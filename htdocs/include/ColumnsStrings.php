@@ -81,9 +81,9 @@ class ColumnsStrings
     const DATETIME_FAILURE = 'Дата появления сбоя';
     const SCALE_CLASS = 'Режим взвешивания';
     const MESSAGE = 'Сообщение';
-    const UNIX_TIME_END = 'Системное время окончания калибровки (поверки';
+    const UNIX_TIME_END = 'Системное время окончания калибровки (поверки)';
     const UNIT_NUMBER = '№ грузоприемного устройства';
-    const DATETIME_T = 'Следующая калибровка (поверка';
+    const DATETIME_T = 'Следующая калибровка (поверка)';
     const OPERATION_TYPE = 'Тип операции';
     const ACCURACY_CLASS = 'Класс точности';
     const DISCRETENESS = 'Дискретность';

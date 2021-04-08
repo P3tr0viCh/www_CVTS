@@ -34,9 +34,12 @@ switch ($errorNum) {
         $errorHeader = S::ERROR_412_HEADER;
         $errorSubHeader = S::ERROR_412_SUB_HEADER;
         break;
+    case 530:
+        $errorHeader = S::ERROR_530_HEADER;
+        $errorSubHeader = S::ERROR_530_SUB_HEADER;
+        break;
     case 500:
     default:
-        $errorNum = 500;
         $errorHeader = S::ERROR_500_HEADER;
         $errorSubHeader = S::ERROR_500_SUB_HEADER;
 }

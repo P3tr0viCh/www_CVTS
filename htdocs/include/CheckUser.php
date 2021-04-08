@@ -22,6 +22,8 @@ class CheckUser
 
     public static function isPowerUser(): bool
     {
+//        echo "<b>USER: " . $_SERVER['PHP_AUTH_USER']. "</b>". PHP_EOL;
+
         if (!isset($_SERVER['PHP_AUTH_USER'])) {
             return true;
         }

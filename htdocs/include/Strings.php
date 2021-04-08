@@ -89,7 +89,7 @@ class Strings
     const HEADER_RESULT_DP_SUM = 'Сумма провесок';
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
-    const HEADER_COEFF = 'Коэффициенты';
+    const HEADER_COEFFS = 'Коэффициенты';
     const SENSORS_ZEROS = 'Датчики, нули';
     const SENSORS_TEMPS = 'Датчики, температуры';
     const SENSORS_STATUS = 'Датчики, статус';
@@ -283,6 +283,9 @@ class Strings
 
     const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
     const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
+
+    const ERROR_530_HEADER = 'Недостаточно памяти для обработки запроса';
+    const ERROR_530_SUB_HEADER = 'Попробуйте указать меньший период времени<br>и/или задайте параметры поиска';
 
     const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
 

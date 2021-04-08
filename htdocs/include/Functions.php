@@ -728,7 +728,7 @@ function getPOSTParam(string $param): mixed
         ResultType::DP_SUM => S::HEADER_RESULT_DP_SUM,
         ResultType::CARGO_LIST_DYNAMIC, ResultType::CARGO_LIST_STATIC, ResultType::CARGO_LIST_AUTO => S::HEADER_RESULT_CARGO_LIST,
         ResultType::COMPARE_DYNAMIC, ResultType::COMPARE_STATIC => S::HEADER_RESULT_COMPARE,
-        ResultType::COEFFS => S::HEADER_COEFF,
+        ResultType::COEFFS => S::HEADER_COEFFS,
         ResultType::SENSORS_ZEROS => S::SENSORS_ZEROS,
         ResultType::SENSORS_TEMPS => S::SENSORS_TEMPS,
         ResultType::SENSORS_STATUS => S::SENSORS_STATUS,
@@ -750,7 +750,7 @@ function getPOSTParam(string $param): mixed
  *
  * @param string|null $s
  * @return string|null
- * @see \database\Info::CHARSET
+ * @see \database\Info::CHARSET_LATIN
  */
 #[Pure] function latin1ToUtf8(?string $s): ?string
 {
