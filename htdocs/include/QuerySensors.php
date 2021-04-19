@@ -54,7 +54,7 @@ class QuerySensors extends QueryBaseDates
         return $this->scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 
-    #[Pure] private function getTableName(): string
+    private function getTableName(): string
     {
         return match ($this->resultType) {
             ResultType::SENSORS_ZEROS => T::SENSORS_ZEROS,

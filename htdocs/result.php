@@ -10,6 +10,7 @@ require_once "include/QueryCoeffs.php";
 require_once "include/QueryResult.php";
 require_once "include/QueryCompare.php";
 require_once "include/QuerySensors.php";
+require_once "include/QuerySensorsInfo.php";
 require_once "include/QueryIronControl.php";
 require_once "include/QueryVanListWeighs.php";
 require_once "include/QueryVanListLastTare.php";
@@ -36,17 +37,18 @@ require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 
 use HrefBuilder\Builder;
+use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 use Strings as S;
 
 use database\Columns as C;
 
-function throwBadRequest(?string $error = null, int $errorNum = 412)
+#[NoReturn] function throwBadRequest(?string $error = null, int $errorNum = 412)
 {
     if (Constants::DEBUG_SHOW_ERROR) {
         if (empty($error)) $error = "UNKNOWN";
         echo '<b><span class="color-text--error">' . "ERROR $errorNum: $error" . '</span></b>';
-        return;
+        exit();
     }
 
     header("Location: error.php?$errorNum");
@@ -288,10 +290,16 @@ switch ($resultType) {
         if (!CheckUser::isPowerUser()) {
             throwBadRequest('report for power users', 403);
         }
-}
-
-if ($resultType == ResultType::IRON_CONTROL) {
-    $scaleNum = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
+        break;
+    case ResultType::SENSORS_INFO:
+        if (!CheckUser::isPowerUser()) {
+            throwBadRequest('report for power users', 403);
+        }
+        $scaleNum = Constants::SCALE_NUM_REPORT_SENSORS_INFO;
+        break;
+    case ResultType::IRON_CONTROL:
+        $scaleNum = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
+        break;
 }
 
 if (isResultTypeCompare($resultType)) {
@@ -426,38 +434,36 @@ if ($mysqli) {
 
             $subHeader = getResultHeader($resultType);
 
-            if (empty($subHeader)) {
-                throwBadRequest('empty subHeader');
-            }
+            if (!empty($subHeader)) {
+                $formatDateTimeF = match ($resultType) {
+                    ResultType::IRON, ResultType::VANLIST_WEIGHS, ResultType::VANLIST_LAST_TARE => 'formatDate',
+                    default => 'formatDateTime',
+                };
 
-            $formatDateTimeF = match ($resultType) {
-                ResultType::IRON, ResultType::VANLIST_WEIGHS, ResultType::VANLIST_LAST_TARE => 'formatDate',
-                default => 'formatDateTime',
-            };
-
-            if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
-                $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
-                    $formatDateTimeF($filter->getTrainDateTime()));
-            } else {
-                if ($dateTimeStart && $dateTimeEnd) {
-                    $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM_TO, $subHeader,
-                        $formatDateTimeF($dateTimeStart), $formatDateTimeF($dateTimeEnd));
-                } else if ($dateTimeStart) {
-                    $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM, $subHeader,
-                        $formatDateTimeF($dateTimeStart));
-                } elseif ($dateTimeEnd) {
-                    $subHeader = sprintf(S::HEADER_RESULT_PERIOD_TO, $subHeader,
-                        $formatDateTimeF($dateTimeEnd));
+                if ($resultType == ResultType::TRAIN_DYNAMIC_ONE) {
+                    $subHeader = sprintf(S::HEADER_RESULT_PERIOD_DATE, $subHeader,
+                        $formatDateTimeF($filter->getTrainDateTime()));
                 } else {
-                    $subHeader = sprintf(S::HEADER_RESULT_PERIOD_ALL, $subHeader);
+                    if ($dateTimeStart && $dateTimeEnd) {
+                        $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM_TO, $subHeader,
+                            $formatDateTimeF($dateTimeStart), $formatDateTimeF($dateTimeEnd));
+                    } else if ($dateTimeStart) {
+                        $subHeader = sprintf(S::HEADER_RESULT_PERIOD_FROM, $subHeader,
+                            $formatDateTimeF($dateTimeStart));
+                    } elseif ($dateTimeEnd) {
+                        $subHeader = sprintf(S::HEADER_RESULT_PERIOD_TO, $subHeader,
+                            $formatDateTimeF($dateTimeEnd));
+                    } else {
+                        $subHeader = sprintf(S::HEADER_RESULT_PERIOD_ALL, $subHeader);
+                    }
                 }
-            }
 
-            if ($resultType == ResultType::IRON && $from20to20) {
-                $subHeader .= S::HEADER_RESULT_PERIOD_FROM_20_TO_20;
-            }
+                if ($resultType == ResultType::IRON && $from20to20) {
+                    $subHeader .= S::HEADER_RESULT_PERIOD_FROM_20_TO_20;
+                }
 
-            $excelData .= $subHeader . S::EXCEL_EOL;
+                $excelData .= $subHeader . S::EXCEL_EOL;
+            }
 
             $filter
                 ->setScaleNum($scaleNum)
@@ -518,6 +524,8 @@ if ($mysqli) {
                 $whereHeader = S::HEADER_RESULT_SEARCH . S::SPACE . $whereHeader;
                 $excelData .= formatExcelData($whereHeader) . S::EXCEL_EOL;
             }
+        } else {
+            $header = S::ERROR_ERROR;
         }
     }
 } else {
@@ -625,6 +633,8 @@ if (!$resultMessage) {
                 ->setSensorsMCount($scaleInfo->getSensorsMCount())
                 ->setSensorsTCount($scaleInfo->getSensorsTCount())
                 ->setShowDisabled($showDisabled),
+            ResultType::SENSORS_INFO => (new QuerySensorsInfo())
+                ->setShowDisabled($showDisabled),
             default => (new QueryResult())
                 ->setScaleType($scaleInfo->getType())
                 ->setResultType($resultType)
@@ -699,14 +709,10 @@ if (!$resultMessage) {
                     echoTableTREnd();
 
                     $excelData .= formatExcelData($compareHeader1);
-                    for ($i = 0; $i < $compareHeader1ColSpan; $i++) {
-                        $excelData .= S::EXCEL_SEPARATOR;
-                    }
+                    $excelData .= str_repeat(S::EXCEL_SEPARATOR, $compareHeader1ColSpan);
 
                     $excelData .= formatExcelData($compareHeader2);
-                    for ($i = 0; $i < $compareHeader2ColSpan; $i++) {
-                        $excelData .= S::EXCEL_SEPARATOR;
-                    }
+                    $excelData .= str_repeat(S::EXCEL_SEPARATOR, $compareHeader2ColSpan);
 
                     $excelData .= S::EXCEL_EOL;
                 }
@@ -722,6 +728,7 @@ if (!$resultMessage) {
                         case ResultType::SENSORS_ZEROS:
                         case ResultType::SENSORS_TEMPS:
                         case ResultType::SENSORS_STATUS:
+                        case ResultType::SENSORS_INFO:
                             switch ($fieldsInfo[$i]->name) {
                                 case C::SCALE_NUM:
                                 case C::SCALE_PLACE:
@@ -751,6 +758,16 @@ if (!$resultMessage) {
                                 ResultType::SENSORS_ZEROS => "width--sensors-zeros",
                                 ResultType::SENSORS_TEMPS => "width--sensors-temps",
                                 ResultType::SENSORS_STATUS => "width--sensors-status",
+                                ResultType::SENSORS_INFO => match ($fieldsInfo[$i]->name) {
+                                    C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+                                    C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+                                    C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+                                    C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16 => "width--sensors-zeros",
+                                    C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+                                    C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => "width--sensors-temps",
+                                    default => ""
+                                },
+                                default => ""
                             },
                             default => null
                         };
@@ -871,7 +888,10 @@ if (!$resultMessage) {
                         case ResultType::SENSORS_ZEROS:
                         case ResultType::SENSORS_TEMPS:
                         case ResultType::SENSORS_STATUS:
-                            if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES and $scaleNumGroup != $row[C::SCALE_NUM]) {
+                        case ResultType::SENSORS_INFO:
+                            if (($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES ||
+                                    $scaleNum == Constants::SCALE_NUM_REPORT_SENSORS_INFO)
+                                && $scaleNumGroup != $row[C::SCALE_NUM]) {
                                 $scaleNumGroup = $row[C::SCALE_NUM];
 
                                 $rowIndex = 0;
@@ -920,7 +940,9 @@ if (!$resultMessage) {
                             case ResultType::SENSORS_ZEROS:
                             case ResultType::SENSORS_TEMPS:
                             case ResultType::SENSORS_STATUS:
-                                if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                            case ResultType::SENSORS_INFO:
+                                if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES ||
+                                    $scaleNum == Constants::SCALE_NUM_REPORT_SENSORS_INFO) {
                                     switch ($fieldsInfo[$fieldNum]->name) {
                                         case C::SCALE_NUM:
                                         case C::SCALE_PLACE:
@@ -943,11 +965,24 @@ if (!$resultMessage) {
                                 => is_null($row[$fieldNum]) ? "" : ($row[$fieldNum] > 0 ? Strings::TEXT_ON : Strings::TEXT_OFF),
                                 default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
                             },
+                            ResultType::SENSORS_INFO => match ($fieldsInfo[$fieldNum]->name) {
+                                C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+                                C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+                                C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+                                C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
+                                C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+                                C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8
+                                => $rowIndex == 1 ?
+                                    (is_null($row[$fieldNum]) ? "" : ($row[$fieldNum] > 0 ? Strings::TEXT_ON : Strings::TEXT_OFF)) :
+                                    formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
+                                default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
+                            },
                             default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
                         };
 
                         $title = match ($resultType) {
-                            ResultType::SENSORS_ZEROS, ResultType::SENSORS_TEMPS, ResultType::SENSORS_STATUS =>
+                            ResultType::SENSORS_ZEROS, ResultType::SENSORS_TEMPS, ResultType::SENSORS_STATUS,
+                            ResultType::SENSORS_INFO =>
                             match ($fieldsInfo[$fieldNum]->name) {
                                 C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
                                 C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
@@ -1011,6 +1046,7 @@ if (!$resultMessage) {
                                 }
                                 break;
                             case ResultType::SENSORS_STATUS:
+                            case ResultType::SENSORS_INFO:
                                 $cellColor = match ($field) {
                                     Strings::TEXT_ON => 'color--sensors-status-on',
                                     Strings::TEXT_OFF => 'color--sensors-status-off',
@@ -1135,7 +1171,7 @@ if (!$resultMessage) {
                     echoTableTD("<b>" . S::TEXT_TOTAL . "<b>", $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
 
                     $excelData .= formatExcelData(S::TEXT_TOTAL);
-                    for ($i = 0; $i < $colSpanTotal - 1; $i++) $excelData .= S::EXCEL_SEPARATOR;
+                    $excelData .= str_repeat(S::EXCEL_SEPARATOR, $colSpanTotal - 1);
 
                     switch ($resultType) {
                         case ResultType::DP:

@@ -8,6 +8,7 @@ require_once "include/Constants.php";
 require_once "include/ColumnsStrings.php";
 
 require_once "include/Functions.php";
+require_once "include/CheckUser.php";
 require_once "include/CheckBrowser.php";
 require_once "include/ResultMessage.php";
 
@@ -26,9 +27,6 @@ use Strings as S;
 use Constants as C;
 use ParamName as PN;
 use ColumnsStrings as CS;
-
-// debug
-$showQuery = false;
 
 $newDesign = isNewDesign();
 
@@ -95,7 +93,7 @@ if ($mysqli) {
     if (!$mysqli->connect_errno) {
         $query = new QueryScales();
 
-        if ($showQuery) {
+        if (C::DEBUG_SHOW_QUERY) {
             echo $query->getQuery() . PHP_EOL;
         }
 
@@ -211,19 +209,30 @@ if ($mysqli) {
 
             $class = $newDesign ? "mdl-data-table__cell--non-numeric mdl-data-table__cell--add-padding" : null;
 
-            /**
-             * @param string $name
-             * @param int $value
-             */
-            function addRowQuery(string $name, int $value)
+            function addRow(string $name, int $value, bool $showQuery)
             {
-                global $numColor, $hrefBuilder, $newDesign, $class, $numColumns;
+                global $numColor, $newDesign, $useBackup, $class, $numColumns;
 
                 $rowColorClass = getRowColorClass($numColor);
 
-                $href = $hrefBuilder
-                    ->setParam(PN::SCALE_NUM, $value)
-                    ->build();
+                $hrefBuilder = Builder::getInstance();
+                $hrefBuilder
+                    ->setUrl("query.php")
+                    ->setParam($newDesign ? PN::NEW_DESIGN : null, true)
+                    ->setParam($useBackup ? PN::USE_BACKUP : null, true);
+
+                $href = match ($showQuery) {
+                    true =>
+                    $hrefBuilder
+                        ->setUrl("query.php")
+                        ->setParam(PN::SCALE_NUM, $value)
+                        ->build(),
+                    false =>
+                    $hrefBuilder
+                        ->setUrl("result.php")
+                        ->setParam(PN::RESULT_TYPE, $value)
+                        ->build()
+                };
 
                 echoTableTRStart($newDesign ? "rowclick $rowColorClass" : $rowColorClass,
                     $newDesign ? "location.href=\"$href\"" : null);
@@ -235,13 +244,15 @@ if ($mysqli) {
                 $numColor = !$numColor;
             }
 
-            addRowQuery(S::SHOW_ALL_TRAIN_SCALES, C::SCALE_NUM_ALL_TRAIN_SCALES);
+            addRow(S::SHOW_ALL_TRAIN_SCALES, C::SCALE_NUM_ALL_TRAIN_SCALES, true);
 
-            addRowQuery(S::SHOW_VANLIST_QUERY, C::SCALE_NUM_REPORT_VANLIST);
+            if (CheckUser::isPowerUser()) {
+                addRow(S::SHOW_SENSORS_INFO_RESULT, ResultType::SENSORS_INFO, false);
+            }
 
-            addRowQuery(S::SHOW_IRON_QUERY, C::SCALE_NUM_REPORT_IRON);
-
-            addRowQuery(S::SHOW_IRON_CONTROL_QUERY, C::SCALE_NUM_REPORT_IRON_CONTROL);
+            addRow(S::SHOW_VANLIST_QUERY, C::SCALE_NUM_REPORT_VANLIST, true);
+            addRow(S::SHOW_IRON_QUERY, C::SCALE_NUM_REPORT_IRON, true);
+            addRow(S::SHOW_IRON_CONTROL_QUERY, C::SCALE_NUM_REPORT_IRON_CONTROL, true);
 
 // end
             echoTableBodyEnd();

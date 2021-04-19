@@ -2,7 +2,7 @@
 
 class Constants
 {
-    const DEBUG_SHOW_ERROR = false;
+    const DEBUG_SHOW_ERROR = true;
     const DEBUG_SHOW_QUERY = false;
 
     /**
@@ -14,6 +14,8 @@ class Constants
 
     const SCALE_NUM_REPORT_IRON = -200;
     const SCALE_NUM_REPORT_IRON_CONTROL = -201;
+
+    const SCALE_NUM_REPORT_SENSORS_INFO = -300;
 
     const COMPARE_VALUE_WARNING_YELLOW = 1;
     const COMPARE_VALUE_WARNING_RED = 2;
@@ -202,6 +204,8 @@ class ResultType
 
     const VANLIST_WEIGHS = 100;
     const VANLIST_LAST_TARE = 101;
+
+    const SENSORS_INFO = 200;
 }
 
 class ParamName

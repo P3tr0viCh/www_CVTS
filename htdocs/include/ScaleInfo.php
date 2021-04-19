@@ -55,6 +55,13 @@ class ScaleInfo
                 $this->class = ScaleClass::CLASS_DYNAMIC_AND_STATIC;
 
                 return null;
+            case Constants::SCALE_NUM_REPORT_SENSORS_INFO:
+                $this->place = Strings::SCALE_INFO_SENSORS_INFO_PLACE;
+                $this->header = Strings::SCALE_INFO_SENSORS_INFO_HEADER;
+                $this->type = ScaleType::DEFAULT_TYPE;
+                $this->class = ScaleClass::CLASS_DYNAMIC;
+
+                return null;
             default:
                 if ($mysqli->connect_errno) {
                     return connectionError($mysqli);

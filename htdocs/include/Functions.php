@@ -283,7 +283,9 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
 {
     return match ($fieldName) {
         C::SCALE_NUM => match ($scalesInfo->getScaleNum()) {
-            Constants::SCALE_NUM_ALL_TRAIN_SCALES, Constants::SCALE_NUM_REPORT_VANLIST => true,
+            Constants::SCALE_NUM_ALL_TRAIN_SCALES,
+            Constants::SCALE_NUM_REPORT_VANLIST,
+            Constants::SCALE_NUM_REPORT_SENSORS_INFO => true,
             default => false,
         },
         C::SCALE_PLACE,
@@ -673,11 +675,11 @@ function isNewDesign(bool $default = false): bool
 
 function getPOSTParam(string $param): mixed
 {
-    if (isset($_POST[(string)$param])) {
-        if ($_POST[(string)$param] == "") {
+    if (isset($_POST[$param])) {
+        if ($_POST[$param] == "") {
             return null;
         } else {
-            return $_POST[(string)$param];
+            return $_POST[$param];
         }
     } else {
         return null;
@@ -712,7 +714,7 @@ function getPOSTParam(string $param): mixed
         $resultType == ResultType::CARGO_LIST_AUTO;
 }
 
-#[Pure] function getResultHeader(int $resultType): string
+function getResultHeader(int $resultType): string
 {
     return match ($resultType) {
         ResultType::VAN_DYNAMIC_BRUTTO => S::HEADER_RESULT_VN_DYN_B,
@@ -732,6 +734,7 @@ function getPOSTParam(string $param): mixed
         ResultType::SENSORS_ZEROS => S::SENSORS_ZEROS,
         ResultType::SENSORS_TEMPS => S::SENSORS_TEMPS,
         ResultType::SENSORS_STATUS => S::SENSORS_STATUS,
+        ResultType::SENSORS_INFO => S::SENSORS_INFO,
         ResultType::IRON => S::HEADER_IRON,
         ResultType::IRON_CONTROL => S::HEADER_IRON_CONTROL,
         ResultType::VANLIST_WEIGHS => S::HEADER_VANLIST_WEIGHS,
@@ -755,20 +758,18 @@ function getPOSTParam(string $param): mixed
 #[Pure] function latin1ToUtf8(?string $s): ?string
 {
     if ($s == null) return null;
-    $s = iconv('Windows-1251', 'UTF-8', $s);
-    return $s;
+    return iconv('Windows-1251', 'UTF-8', $s);
 }
 
 #[Pure] function utf8ToLatin1(?string $s): ?string
 {
     if ($s == null) return null;
-    $s = iconv('UTF-8', 'Windows-1251', $s);
-    return $s;
+    return iconv('UTF-8', 'Windows-1251', $s);
 }
 
 #[Pure] function getCookieAsBool(?string $param): bool
 {
-    return isset($param) && isset($_COOKIE[$param]) ? var_to_bool($_COOKIE[$param]) : false;
+    return isset($param) && isset($_COOKIE[$param]) && var_to_bool($_COOKIE[$param]);
 }
 
 function deleteCookie(string $param)
