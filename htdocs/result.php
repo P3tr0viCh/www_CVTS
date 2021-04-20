@@ -1,4 +1,5 @@
 <?php
+ob_start();
 $timeStart = microtime(true);
 
 require_once "include/Constants.php";
@@ -17,7 +18,6 @@ require_once "include/QueryVanListLastTare.php";
 
 require_once "include/Strings.php";
 require_once "include/ColumnsStrings.php";
-require_once "include/ColumnsTitleStrings.php";
 
 require_once "include/Functions.php";
 require_once "include/CheckUser.php";
@@ -51,7 +51,8 @@ use database\Columns as C;
         exit();
     }
 
-    header("Location: error.php?$errorNum");
+    ob_end_clean();
+    header("Location: error.php?$errorNum", true, 303);
     exit();
 }
 
@@ -695,13 +696,12 @@ if (!$resultMessage) {
                         $compareHeader1 = ColumnsStrings::COMPARE_ALL_SCALES;
                         $compareHeader1ColSpan = 10;
                         $compareHeader2 = ColumnsStrings::COMPARE_COMPARE_VALUES;
-                        $compareHeader2ColSpan = 4;
                     } else {
                         $compareHeader1 = sprintf(ColumnsStrings::COMPARE_SCALE_NUM, $scaleNum);
                         $compareHeader1ColSpan = 9;
                         $compareHeader2 = ColumnsStrings::COMPARE_OTHER_SCALES;
-                        $compareHeader2ColSpan = 4;
                     }
+                    $compareHeader2ColSpan = 4;
 
                     echoTableTH($compareHeader1, 'compare width--70-percents', $compareHeader1ColSpan);
                     echoTableTH($compareHeader2, 'compare', $compareHeader2ColSpan);
@@ -1334,3 +1334,4 @@ echoEndPage();
 
 echo PHP_EOL . PHP_EOL;
 echo "<!-- execution time == " . number_format(microtime(true) - $timeStart, 5) . " sec -->" . PHP_EOL;
+ob_end_flush();

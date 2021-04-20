@@ -95,7 +95,7 @@ if (!$resultMessage) {
     echoFormStart("formResult", "result.php", "saveInputs();", "clearInputs();");
 
     echoHidden(ParamName::SCALE_NUM, (int)$scaleNum);
-    echoHidden(ParamName::NEW_DESIGN, (bool)$newDesign);
+    echoHidden(ParamName::NEW_DESIGN, $newDesign);
     echoHidden(ParamName::USE_BACKUP, (bool)$useBackup);
     echo PHP_EOL;
 
@@ -106,13 +106,12 @@ if (!$resultMessage) {
         echo PHP_EOL;
     }
 
+    echo S::TAB;
     if ($newDesign) {
-        echo S::TAB;
         echo '<div class="mdl-grid mdl-cell--stretch">' . PHP_EOL;
         echo S::TAB;
         echo '<div class="mdl-cell mdl-cell--4-col mdl-cell--stretch">' . PHP_EOL;
     } else {
-        echo S::TAB;
         echo '<table class="query">' . PHP_EOL;
 
         echo S::TAB;
@@ -198,7 +197,7 @@ if (!$resultMessage) {
             break;
         case ScaleType::AUTO:
             echo S::TAB . S::TAB;
-            echo '<h5>' . S::HEADER_STATIC . '</h5>' . PHP_EOL . PHP_EOL;
+            echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
 
             echoButton($newDesign, S::BUTTON_BRUTTO, ParamName::RESULT_TYPE, ResultType::AUTO_BRUTTO);
             echoButton($newDesign, S::BUTTON_TARE, ParamName::RESULT_TYPE, ResultType::AUTO_TARE);
@@ -561,8 +560,8 @@ if (!$resultMessage) {
             if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                 echoInput($newDesign, ParamName::SCALES, S::INPUT_SCALES, S::INPUT_SCALES_HELP, S::INPUT_SCALES_PATTERN, null, null);
 
+                echo S::TAB . S::TAB;
                 if ($newDesign) {
-                    echo S::TAB . S::TAB;
                     echo '<span class="div-help material-icons color--grey cursor-help" id="scales_find_help">help</span>' . PHP_EOL;
 
                     echo S::TAB . S::TAB;
@@ -573,7 +572,6 @@ if (!$resultMessage) {
                     echo S::TAB . S::TAB;
                     echo '</div>' . PHP_EOL . PHP_EOL;
                 } else {
-                    echo S::TAB . S::TAB;
                     echo '<br>' . PHP_EOL;
                     echo S::TAB . S::TAB;
                     echo '<small>' . S::HELP_SCALES_OLD . '</small>';
@@ -696,11 +694,10 @@ if (!$resultMessage) {
     }
 
 // ------------- Конец таблицы -----------------------------------------------------------------------------------------
+    echo PHP_EOL . S::TAB;
     if ($newDesign) {
-        echo PHP_EOL . S::TAB;
         echo '</div> <!-- mdl-grid -->' . PHP_EOL;
     } else {
-        echo PHP_EOL . S::TAB;
         echo '</table>' . PHP_EOL;
     }
 

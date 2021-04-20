@@ -53,6 +53,7 @@ class ColumnsStrings
     const ACCELERATION = 'Ускорение';
     const CARGO_TYPE = 'Род груза';
     const CARGO_TYPE_CODE = 'Код рода груза';
+    const COUNT = 'Количество';
     const DATETIME_CARGO = 'Дата и время изменения рода груза';
     const AXIS_COUNT = 'Число осей';
     const COUNTRY = 'Принадлежность';
@@ -156,12 +157,19 @@ class ColumnsStrings
     const DATE = 'Дата';
     const IRON_ESPC_RAZL = 'ЭСПЦ + Разливка';
     const IRON_ESPC = 'ЭСПЦ';
+    const IRON_ESPC_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
     const IRON_RAZL = 'Разливка';
+    const IRON_RAZL_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
     const IRON_SHCH = 'СХЧ';
-    const IRON_INGOT = 'Чугун передельный';
+    const IRON_SHCH_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
+    const IRON_INGOT = 'Чугун чушковый';
+    const IRON_INGOT_TITLE = ColumnsStrings::CARGO_TYPE . ": %s" . PHP_EOL .
+    ColumnsStrings::INVOICE_SUPPLIER . ": %s" . PHP_EOL . ColumnsStrings::INVOICE_RECIPIENT . ": %s";
 
     const IRON_CONTROL_SCALES_STA = 'Статика: № весов';
+    const IRON_CONTROL_SCALES_STA_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
     const IRON_CONTROL_SCALES_DYN = 'Динамика: № весов';
+    const IRON_CONTROL_SCALES_DYN_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
     const IRON_CONTROL_DATETIME_STA = 'Статика: Дата и время';
     const IRON_CONTROL_DATETIME_DYN = 'Динамика: Дата и время';
     const IRON_CONTROL_NETTO_STA = 'Статика: Нетто';
@@ -169,7 +177,9 @@ class ColumnsStrings
     const IRON_CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
     const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
     const IRON_CONTROL_DIFF_SIDE = 'Динамика: Борта';
+    const IRON_CONTROL_DIFF_SIDE_TITLE = 'Разница между весом ближнего борта и дальнего';
     const IRON_CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
+    const IRON_CONTROL_DIFF_CARRIAGE_TITLE = 'Разница между весом первой тележки и второй';
 
     const SENSOR_M1 = 'M1';
     const SENSOR_M2 = 'M2';

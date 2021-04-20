@@ -80,13 +80,12 @@ function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts =
         echo S::TAB;
         echo '<link rel="icon" href="/images/logo.png" type="image/png">' . PHP_EOL;
 
+        echo S::TAB;
         if ($newDesign) {
-            echo S::TAB;
             echo '<link rel="icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
             echo S::TAB;
             echo '<link rel="shortcut icon" href="/images/favicon.png" type="image/png">' . PHP_EOL;
         } else {
-            echo S::TAB;
             echo '<link rel="icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
             echo S::TAB;
             echo '<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">' . PHP_EOL;
@@ -99,8 +98,8 @@ function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts =
         echo S::TAB;
         echo '<link rel="stylesheet" href="/styles/common.css">' . PHP_EOL;
 
+        echo S::TAB;
         if ($newDesign) {
-            echo S::TAB;
             echo '<link rel="stylesheet" href="/mdl/material.min.css">' . PHP_EOL;
             echo S::TAB;
             echo '<link rel="stylesheet" href="/styles/common_new_design.css">' . PHP_EOL;
@@ -113,7 +112,6 @@ function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts =
             echo S::TAB;
             echo '<link rel="stylesheet" href="/materialicons/materialicons.css">' . PHP_EOL;
         } else {
-            echo S::TAB;
             echo '<link rel="stylesheet" href="/styles/common_compat.css">' . PHP_EOL;
         }
     }
@@ -132,11 +130,10 @@ function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts =
 
     if ($default) {
         echo PHP_EOL;
+        echo S::TAB;
         if ($newDesign) {
-            echo S::TAB;
             echo '<script src="/mdl/material.min.js" type="text/javascript"></script>' . PHP_EOL;
         } else {
-            echo S::TAB;
             echo '<script type="text/javascript">';
             echo PHP_EOL;
             echo S::TAB . S::TAB;

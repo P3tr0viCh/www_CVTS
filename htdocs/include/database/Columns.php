@@ -44,6 +44,7 @@ class Columns
 
     const VAN_COUNT = 'nvans';
     const AXIS_COUNT = 'naxis';
+    const COUNT = 'count_x';
 
     const CARRYING = 'carrying';
     const LOAD_NORM = 'loadnorm';

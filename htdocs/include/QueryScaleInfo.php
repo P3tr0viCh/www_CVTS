@@ -21,6 +21,7 @@ class QueryScaleInfo extends QueryBase
         $this->builder
             ->column(C::SCALE_PLACE)
             ->column(C::SCALE_TYPE)
+            ->column(C::SCALE_WTYPE)
             ->column(C::SCALE_TYPE_DYN)
             ->column(C::SCALE_SENSORS_M_COUNT)
             ->column(C::SCALE_SENSORS_T_COUNT)

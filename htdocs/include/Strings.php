@@ -92,6 +92,8 @@ class Strings
     const HEADER_RESULT_DP = 'Список провесок';
     const HEADER_RESULT_DP_SUM = 'Сумма провесок';
     const HEADER_RESULT_CARGO_LIST = 'Список грузов';
+    const HEADER_RESULT_CARGO_LIST_DYNAMIC = 'Список грузов (динамика)';
+    const HEADER_RESULT_CARGO_LIST_STATIC = 'Список грузов (статика)';
     const HEADER_RESULT_COMPARE = 'Взвешивание вагонов, брутто';
     const HEADER_COEFFS = 'Коэффициенты';
     const SENSORS_ZEROS = 'Датчики, нули';

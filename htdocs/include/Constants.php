@@ -2,7 +2,7 @@
 
 class Constants
 {
-    const DEBUG_SHOW_ERROR = true;
+    const DEBUG_SHOW_ERROR = false;
     const DEBUG_SHOW_QUERY = false;
 
     /**
@@ -84,11 +84,13 @@ class TimePeriods
  */
 class CargoTypes
 {
+    const CHARK = 'Кокс';
+
     /**
      * Провеска чугуна.
      */
     const IRON = 'Чугун';
-    const IRON_INGOT = 'Чугун передельный чушковый';
+    const IRON_INGOT = "'Чугун передельный чушковый', 'Чугун литейный чушковый'";
 
     /**
      * Контрольная провеска чугуна.

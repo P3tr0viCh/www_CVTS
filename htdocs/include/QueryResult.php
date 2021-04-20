@@ -4,7 +4,6 @@ require_once "QueryBase.php";
 
 require_once "ResultFilter.php";
 
-use JetBrains\PhpStorm\Pure;
 use QueryBuilder\Builder as B;
 use database\Info as I;
 use database\Tables as T;
@@ -12,6 +11,8 @@ use database\Columns as C;
 
 class QueryResult extends QueryBase
 {
+    const COUNT_F = 'count(%s)';
+
     const MYSQL_DATETIME_FORMAT = "YmdHis";
 
     private ResultFilter $filter;
@@ -41,7 +42,7 @@ class QueryResult extends QueryBase
     private bool $showDeltas;
     private bool $showDeltasMi3115;
 
-    #[Pure] private function getTableName(): string
+    private function getTableName(): string
     {
         return match ($this->resultType) {
             ResultType::TRAIN_DYNAMIC => T::TRAIN_DYNAMIC,
@@ -228,7 +229,10 @@ class QueryResult extends QueryBase
             case ResultType::CARGO_LIST_DYNAMIC:
             case ResultType::CARGO_LIST_STATIC:
             case ResultType::CARGO_LIST_AUTO:
-                $this->builder->column(C::CARGO_TYPE);
+                $this->builder
+                    ->column(C::CARGO_TYPE)
+                    ->column($this->filter->isFull() ? sprintf(self::COUNT_F, C::CARGO_TYPE) : null,
+                        null, C::COUNT);
                 break;
         }
     }
@@ -317,7 +321,7 @@ class QueryResult extends QueryBase
             case ResultType::DP_SUM:
                 if ($this->filter->isOnlyChark()) {
                     $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL,
-                        utf8ToLatin1('Кокс'));
+                        utf8ToLatin1(CargoTypes::CHARK));
                 }
         }
 

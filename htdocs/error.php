@@ -55,7 +55,7 @@ if ($newDesign) {
     $styles[] = "/styles/error_compat.css";
 }
 
-echoHead($newDesign, $errorNum, $styles, null, false);
+echoHead($newDesign, S::TITLE_ERROR . " " . $errorNum, $styles, null, false);
 
 echoStartBody($newDesign);
 

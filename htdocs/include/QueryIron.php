@@ -108,7 +108,7 @@ class QueryIron extends QueryBase
         $builderIngot
             ->column(B::sum(C::NETTO), null, C::IRON_INGOT)
             ->table(T::VAN_DYNAMIC_BRUTTO)
-            ->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, utf8ToLatin1(CargoTypes::IRON_INGOT))
+            ->where(C::CARGO_TYPE, B::COMPARISON_IN, utf8ToLatin1(CargoTypes::IRON_INGOT))
             ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE, utf8ToLatin1(SuppliersAndRecipients::IRON_SUPPLIER))
             ->where(C::INVOICE_RECIPIENT, B::COMPARISON_EQUAL, utf8ToLatin1(SuppliersAndRecipients::IRON_RECIPIENT));
 
