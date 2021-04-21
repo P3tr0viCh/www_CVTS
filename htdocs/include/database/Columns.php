@@ -202,6 +202,9 @@ class Columns
     const IRON_CONTROL_DIFF_SIDE = 'diff_side';
     const IRON_CONTROL_DIFF_CARRIAGE = 'diff_carriage';
 
+    const AVG = 'avg_x';
+    const SUM = 'sum_x';
+
     const SENSOR_M = 'm';
     const SENSOR_M1 = 'm1';
     const SENSOR_M2 = 'm2';

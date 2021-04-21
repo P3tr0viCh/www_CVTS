@@ -118,11 +118,11 @@ class ColumnsStrings
     const COUNT_ID = 'Количество подач';
 
     const COMPARE = 'Разница';
+    const COMPARE_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
     const COMPARE_ALL_SCALES = 'Список вагонов по всем весам';
     const COMPARE_COMPARE_VALUES = 'Сравнение значений';
     const COMPARE_SCALE_NUM = 'Весы №%d';
-    const COMPARE_OTHER_SCALES = 'Остальные весы';
     const COMPARE_NUM = '№';
 
     const MI_DELTA_ABS_BRUTTO = 'Δб';
@@ -176,10 +176,16 @@ class ColumnsStrings
     const IRON_CONTROL_NETTO_DYN = 'Динамика: Нетто';
     const IRON_CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
     const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
+    const IRON_CONTROL_DIFF_DYN_STA_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
     const IRON_CONTROL_DIFF_SIDE = 'Динамика: Борта';
-    const IRON_CONTROL_DIFF_SIDE_TITLE = 'Разница между весом ближнего борта и дальнего';
+    const IRON_CONTROL_DIFF_SIDE_TITLE = 'Разница между весом ближнего борта и дальнего' . PHP_EOL .
+    'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
     const IRON_CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
-    const IRON_CONTROL_DIFF_CARRIAGE_TITLE = 'Разница между весом первой тележки и второй';
+    const IRON_CONTROL_DIFF_CARRIAGE_TITLE = 'Разница между весом первой тележки и второй' . PHP_EOL .
+    'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
+
+    const AVG_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
+    const SUM_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
     const SENSOR_M1 = 'M1';
     const SENSOR_M2 = 'M2';

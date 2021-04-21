@@ -66,11 +66,17 @@ if (!isset($_GET[ParamName::SCALE_NUM])) {
 
 ini_set('display_errors', false);
 
-register_shutdown_function(function () {
+register_shutdown_function(callback: function () {
     $error = error_get_last();
 
     if ($error) {
-        $errorNum = str_starts_with($error['message'], 'Allowed memory size') ? 530 : 500;
+        if (str_starts_with($error['message'], 'Allowed memory size')) {
+            $errorNum = 530;
+        } elseif (str_starts_with($error['message'], 'Maximum execution time')) {
+            $errorNum = 531;
+        } else {
+            $errorNum = 500;
+        }
 
         throwBadRequest(json_encode($error), $errorNum);
     }
@@ -660,9 +666,6 @@ if (!$resultMessage) {
 
         if ($numRows > 0) {
             if ($numRows <= Constants::RESULT_MAX_ROWS) {
-                /** @var FieldInfo[] $fieldsInfo */
-                $fieldsInfo = array();
-
                 $fieldsInfo = getFieldsInfo($result, $newDesign, $filter->isFull(), $scaleInfo, $resultType);
 
                 if ($newDesign) {
@@ -695,12 +698,11 @@ if (!$resultMessage) {
                     if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                         $compareHeader1 = ColumnsStrings::COMPARE_ALL_SCALES;
                         $compareHeader1ColSpan = 10;
-                        $compareHeader2 = ColumnsStrings::COMPARE_COMPARE_VALUES;
                     } else {
                         $compareHeader1 = sprintf(ColumnsStrings::COMPARE_SCALE_NUM, $scaleNum);
                         $compareHeader1ColSpan = 9;
-                        $compareHeader2 = ColumnsStrings::COMPARE_OTHER_SCALES;
                     }
+                    $compareHeader2 = ColumnsStrings::COMPARE_COMPARE_VALUES;
                     $compareHeader2ColSpan = 4;
 
                     echoTableTH($compareHeader1, 'compare width--70-percents', $compareHeader1ColSpan);
@@ -806,7 +808,7 @@ if (!$resultMessage) {
                     $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
 
                     $cell = columnName(C::COMPARE, $scaleInfo->getType());
-                    echoTableTH($cell);
+                    echoTableTH($cell, null, null, columnTitle(C::COMPARE));
                     $excelData .= S::EXCEL_SEPARATOR . formatExcelData($cell);
                 }
 
@@ -856,7 +858,6 @@ if (!$resultMessage) {
                     if ($scaleNum != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
                         $queryCompare->setScaleNum($scaleNum);
                     }
-
                 } else {
                     $queryCompare = null;
                 }
@@ -1072,71 +1073,89 @@ if (!$resultMessage) {
                     }
 
                     if (isResultTypeCompare($resultType)) {
-                        if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-                            $queryCompare->setScaleNum($row[C::SCALE_NUM]);
-                        }
-                        $queryCompare
-                            ->setVanNumber($row[C::VAN_NUMBER])
-                            ->setDateTime((int)$row[C::UNIX_TIME]);
+                        if (!empty($row[C::VAN_NUMBER])) {
+                            if ($scaleNum == Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
+                                $queryCompare->setScaleNum($row[C::SCALE_NUM]);
+                            }
+                            $queryCompare
+                                ->setVanNumber($row[C::VAN_NUMBER])
+                                ->setDateTime(mysqlDateTimeToUnixTime($row[C::DATETIME]));
 
-                        $queryCompareStr = $queryCompare->getQuery();
+                            $queryCompareStr = $queryCompare->getQuery();
 
-//                    echo $queryCompareStr . "<br>";
-
-                        $resultCompare = $mysqli->query($queryCompareStr);
-
-                        if ($resultCompare->num_rows > 0) {
-                            $fieldsCompareInfo = array();
-
-                            $fieldsCompareInfo = getFieldsInfo($resultCompare, $newDesign,
-                                false, $scaleInfo, $resultType);
-
-                            $rowCompare = $resultCompare->fetch_array();
-
-                            for ($i = 0; $i < $resultCompare->field_count; $i++) {
-                                $fieldCompare = formatFieldValue($fieldsCompareInfo[$i]->name,
-                                    $rowCompare[$i], $filter->isFull());
-
-                                if ($fieldsCompareInfo[$i]->name == C::BRUTTO) {
-                                    $fieldCompare = "<b>" . $fieldCompare . "</b>";
-                                }
-
-                                $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
-
-                                $class = $fieldsInfo[$i]->leftAlign ?
-                                    ($newDesign ?
-                                        'mdl-data-table__cell--non-numeric' :
-                                        'text-align--left') :
-                                    null;
-
-                                echoTableTD($fieldCompare, $class);
+                            if (Constants::DEBUG_SHOW_QUERY) {
+                                echo "Query: " . latin1ToUtf8($queryCompareStr) . "<br>" . PHP_EOL;
                             }
 
-                            $compareColumn = $filter->isCompareByBrutto() ?
-                                C::BRUTTO :
-                                C::NETTO;
+                            $resultCompare = $mysqli->query($queryCompareStr);
 
-                            $value = $row[$compareColumn];
-                            $valueCompare = $rowCompare[$compareColumn];
+                            if ($resultCompare) {
+                                if ($resultCompare->num_rows > 0) {
+                                    $fieldsCompareInfo = array();
 
-                            $fieldCompare = $value - $valueCompare;
+                                    $fieldsCompareInfo = getFieldsInfo($resultCompare, $newDesign,
+                                        false, $scaleInfo, $resultType);
 
-                            if ($valueCompare == 0.0) {
-                                if (abs($value) < 1) {
-                                    $class = null;
+                                    $rowCompare = $resultCompare->fetch_array();
+
+                                    for ($i = 0; $i < $resultCompare->field_count; $i++) {
+                                        $fieldCompare = formatFieldValue($fieldsCompareInfo[$i]->name,
+                                            $rowCompare[$i], $filter->isFull());
+
+                                        if ($fieldsCompareInfo[$i]->name == C::BRUTTO) {
+                                            $fieldCompare = "<b>" . $fieldCompare . "</b>";
+                                        }
+
+                                        $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
+
+                                        $class = $fieldsInfo[$i]->leftAlign ?
+                                            ($newDesign ?
+                                                'mdl-data-table__cell--non-numeric' :
+                                                'text-align--left') :
+                                            null;
+
+                                        echoTableTD($fieldCompare, $class);
+                                    }
+
+                                    $compareColumn = $filter->isCompareByBrutto() ?
+                                        C::BRUTTO :
+                                        C::NETTO;
+
+                                    $value = $row[$compareColumn];
+                                    $valueCompare = $rowCompare[$compareColumn];
+
+                                    $fieldCompare = $value - $valueCompare;
+
+                                    if ($valueCompare == 0.0) {
+                                        if (abs($value) < 1) {
+                                            $class = null;
+                                        } else {
+                                            $class = 'color--gray';
+                                        }
+                                    } else {
+                                        $class = getCellWarningColor($fieldCompare,
+                                            Constants::COMPARE_VALUE_WARNING_YELLOW, Constants::COMPARE_VALUE_WARNING_RED);
+                                    }
+
+                                    $fieldCompare = formatFieldValue(C::COMPARE, $fieldCompare, $filter->isFull());
+
+                                    echoTableTD($fieldCompare, $class);
+
+                                    $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
                                 } else {
-                                    $class = 'color--gray';
+                                    for ($i = 0; $i < 4; $i++) {
+                                        echoTableTD("");
+                                        $excelData .= S::EXCEL_SEPARATOR;
+                                    }
                                 }
                             } else {
-                                $class = getCellWarningColor($fieldCompare,
-                                    Constants::COMPARE_VALUE_WARNING_YELLOW, Constants::COMPARE_VALUE_WARNING_RED);
+                                $error = queryError($mysqli);
+
+                                echoTableTD($error->getError(), $class);
+                                echoTableTD($error->getErrorDetails(), $class);
+                                echoTableTD("");
+                                echoTableTD("");
                             }
-
-                            $fieldCompare = formatFieldValue(C::COMPARE, $fieldCompare, $filter->isFull());
-
-                            echoTableTD($fieldCompare, $class);
-
-                            $excelData .= S::EXCEL_SEPARATOR . formatExcelData($fieldCompare);
                         } else {
                             for ($i = 0; $i < 4; $i++) {
                                 echoTableTD("");
@@ -1222,7 +1241,8 @@ if (!$resultMessage) {
 
                     echoTableTRStart(getRowColorClass($numColor));
 
-                    echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
+                    echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal,
+                    columnTitle(C::AVG));
 
                     if ($ironControlTotalCount > 0) {
                         $ironControlTotalAvg = $ironControlTotalSum / $ironControlTotalCount;
@@ -1244,7 +1264,8 @@ if (!$resultMessage) {
 
                     echoTableTRStart(getRowColorClass($numColor));
 
-                    echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal);
+                    echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal,
+                        columnTitle(C::SUM));
 
                     $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
 
@@ -1269,7 +1290,8 @@ if (!$resultMessage) {
                     Constants::SCALE_NUM_ALL_TRAIN_SCALES => "AT",
                     Constants::SCALE_NUM_REPORT_IRON => "IR",
                     Constants::SCALE_NUM_REPORT_IRON_CONTROL => "IC",
-                    Constants::SCALE_NUM_REPORT_VANLIST => "VL_T",
+                    Constants::SCALE_NUM_REPORT_VANLIST => "VL",
+                    Constants::SCALE_NUM_REPORT_SENSORS_INFO => "SI",
                     default => "SN-" . $scaleNum,
                 };
                 $fileName .= "_" . date("Y.m.d_H-i-s") . ".csv";

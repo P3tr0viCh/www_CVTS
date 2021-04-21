@@ -9,7 +9,6 @@ class Tables
     const VAN_STATIC_BRUTTO = 'vnstab';
     const VAN_STATIC_TARE = 'vnstat';
 
-    const VAN_DYNAMIC_AND_STATIC_BRUTTO = 'vndynb_temp';
     const VAN_BRUTTO_ADD = 'vnb_add';
 
     const VAN_DELTAS = 'vnb_delta';

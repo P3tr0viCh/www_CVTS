@@ -6,6 +6,8 @@ use QueryBuilder\Builder;
 
 abstract class QueryBase
 {
+    const MYSQL_DATETIME_FORMAT = "YmdHis";
+
     protected Builder $builder;
 
     public function __construct()

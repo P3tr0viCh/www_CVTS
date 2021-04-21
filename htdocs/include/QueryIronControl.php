@@ -12,8 +12,6 @@ class QueryIronControl extends QueryBase
 {
     const SUB_QUERY = '(%s) %s %s';
 
-    const MYSQL_DATETIME_FORMAT = "YmdHis";
-
     private mixed $dateStart;
     private mixed $dateStartSta;
     private mixed $dateEnd;
@@ -66,7 +64,7 @@ class QueryIronControl extends QueryBase
 
         if ($this->dateStart) {
             $this->dateStartSta = date_sub(date_create()->setTimestamp($this->dateStart),
-                new DateInterval('P' . TimePeriods::IRON_COMPARE_FIND . 'D'))->getTimestamp();
+                new DateInterval('P' . TimePeriods::IRON_COMPARE . 'D'))->getTimestamp();
 
             $this->dateStart = (float)date(self::MYSQL_DATETIME_FORMAT, $this->dateStart);
             $this->dateStartSta = (float)date(self::MYSQL_DATETIME_FORMAT, $this->dateStartSta);

@@ -274,25 +274,21 @@ class Strings
     const ERROR_JS_DISABLED = 'JavaScript отключен';
     const ERROR_JS_DISABLED_DETAILS = 'Для правильного функционирования данной страницы JavaScript должен быть разрешён';
 
+    const ERROR_XXX_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
     const ERROR_401_HEADER = 'Требуется аутентификация';
     const ERROR_401_SUB_HEADER = 'Для доступа к данному ресурсу требуется указать имя пользователя и пароль';
-
-    const ERROR_XXX_SUB_HEADER = 'Но вы держитесь. Всего вам доброго, хорошего настроения и здоровья';
-
     const ERROR_403_HEADER = 'Доступ запрещён';
     const ERROR_403_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
-
     const ERROR_404_HEADER = 'Такой страницы нет';
     const ERROR_404_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
-
     const ERROR_412_HEADER = 'Неверный формат запроса';
     const ERROR_412_SUB_HEADER = 'При проверке на сервере одного или более полей запроса обнаружено несоответствие';
-
     const ERROR_500_HEADER = 'Внутренняя ошибка сервера';
     const ERROR_500_SUB_HEADER = Strings::ERROR_XXX_SUB_HEADER;
-
     const ERROR_530_HEADER = 'Недостаточно памяти для обработки запроса';
     const ERROR_530_SUB_HEADER = 'Попробуйте указать меньший период времени<br>и/или задайте параметры поиска';
+    const ERROR_531_HEADER = 'Долгая обработка запроса';
+    const ERROR_531_SUB_HEADER = 'Попробуйте указать меньший период времени<br>и/или задайте параметры поиска';
 
     const ERROR_INCOMPATIBLE_BROWSER_HEADER = 'Несовместимый браузер';
 

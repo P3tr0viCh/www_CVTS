@@ -71,18 +71,13 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
                     return S::TEXT_TABLE_CELL_EMPTY;
                 }
 
-                $year = substr($fieldValue, 0, 4);
-                $month = substr($fieldValue, 5, 2);
-                $day = substr($fieldValue, 8, 2);
-                $hour = substr($fieldValue, 11, 2);
-                $minute = substr($fieldValue, 14, 2);
-                $second = substr($fieldValue, 17, 2);
+                $dateTime = mysqlDateTimeToArray($fieldValue);
 
-                $d = $day . "." . $month . "." . $year;
+                $d = $dateTime['day'] . "." . $dateTime['month'] . "." . $dateTime['year'];
                 $d .= "&nbsp;";
-                $d .= $hour . ":" . $minute;
+                $d .= $dateTime['hour'] . ":" . $dateTime['minute'];
                 if ($full) {
-                    $d .= ":" . $second;
+                    $d .= ":" . $dateTime['second'];
                 }
 
                 return $d;
@@ -520,8 +515,18 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
 function columnTitle(string $fieldName): ?string
 {
     return match ($fieldName) {
-        C::IRON_CONTROL_DIFF_SIDE => CS::IRON_CONTROL_DIFF_SIDE_TITLE,
-        C::IRON_CONTROL_DIFF_CARRIAGE => CS::IRON_CONTROL_DIFF_CARRIAGE_TITLE,
+        C::COMPARE => sprintf(CS::COMPARE_TITLE,
+            Constants::COMPARE_VALUE_WARNING_YELLOW, Constants::COMPARE_VALUE_WARNING_RED),
+        C::IRON_CONTROL_DIFF_DYN_STA => sprintf(CS::IRON_CONTROL_DIFF_DYN_STA_TITLE,
+            Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED),
+        C::IRON_CONTROL_DIFF_SIDE => sprintf(CS::IRON_CONTROL_DIFF_SIDE_TITLE,
+            Constants::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_SIDE_WARNING_RED),
+        C::IRON_CONTROL_DIFF_CARRIAGE => sprintf(CS::IRON_CONTROL_DIFF_CARRIAGE_TITLE,
+            Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW, Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED),
+        C::AVG =>sprintf(CS::AVG_TITLE,
+            Constants::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_AVG_VALUE_WARNING_RED),
+        C::SUM =>sprintf(CS::SUM_TITLE,
+            Constants::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_SUM_VALUE_WARNING_RED),
         C::IRON_ESPC => sprintf(CS::IRON_ESPC_TITLE, ScaleNums::IRON_ESPC, CargoTypes::IRON),
         C::IRON_RAZL => sprintf(CS::IRON_RAZL_TITLE, ScaleNums::IRON_RAZL, CargoTypes::IRON),
         C::IRON_SHCH => sprintf(CS::IRON_SHCH_TITLE, ScaleNums::IRON_SHCH, CargoTypes::IRON),
@@ -613,6 +618,26 @@ function columnTitle(string $fieldName): ?string
 #[Pure] function formatDate($timestamp): string
 {
     return date("d.m.Y", $timestamp);
+}
+
+#[Pure] function mysqlDateTimeToArray($dateTime): array
+{
+    $result = array();
+// 1981-03-29 00:00:00
+    $result['year'] = substr($dateTime, 0, 4);
+    $result['month'] = substr($dateTime, 5, 2);
+    $result['day'] = substr($dateTime, 8, 2);
+    $result['hour'] = substr($dateTime, 11, 2);
+    $result['minute'] = substr($dateTime, 14, 2);
+    $result['second'] = substr($dateTime, 17, 2);
+
+    return $result;
+}
+
+#[Pure] function mysqlDateTimeToUnixTime($dateTime): int
+{
+    $dt = mysqlDateTimeToArray($dateTime);
+    return mktime($dt['hour'], $dt['minute'], $dt['second'], $dt['month'], $dt['day'], $dt['year']);
 }
 
 function formatExcelData(string $value): string

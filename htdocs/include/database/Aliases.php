@@ -4,6 +4,8 @@ namespace database;
 
 class Aliases
 {
+    const NU = 'x';
+
     const IRON_CONTROL_STA = 'sta';
     const IRON_CONTROL_DYN = 'dyn';
 
@@ -12,7 +14,6 @@ class Aliases
     const VANLIST_LAST_TARE_UNION = 'u';
     const VANLIST_LAST_TARE_QUERY = 'q';
 
-    const SENSORS_INFO_NU = 'x';
     const SENSORS_INFO_ZEROS_LAST = 'z_m';
     const SENSORS_INFO_ZEROS_VAL = 'z_v';
     const SENSORS_INFO_TEMPS_LAST = 't_m';

@@ -74,9 +74,14 @@ class ScaleNums
 class TimePeriods
 {
     /**
+     * Сравнение массы: глубина поиска в днях.
+     */
+    const COMPARE = 31;
+
+    /**
      * Контрольная провеска чугуна: глубина поиска в днях.
      */
-    const IRON_COMPARE_FIND = 3;
+    const IRON_COMPARE = 3;
 }
 
 /**

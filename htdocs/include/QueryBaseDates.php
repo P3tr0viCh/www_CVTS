@@ -4,8 +4,6 @@ require_once "QueryBase.php";
 
 abstract class QueryBaseDates extends QueryBase
 {
-    const MYSQL_DATETIME_FORMAT = "YmdHis";
-
     private ?int $dateTimeStart = null;
     private ?int $dateTimeEnd = null;
 
