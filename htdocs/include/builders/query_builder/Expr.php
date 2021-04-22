@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
 
 class Expr
 {

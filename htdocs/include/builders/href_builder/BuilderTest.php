@@ -1,23 +1,22 @@
 <?php
 
-namespace HrefBuilder;
+namespace builders\href_builder;
 
 require "Builder.php";
 
 class BuilderTest
 {
-
-    private $failureCount = 0;
+    private int $failureCount = 0;
 
     /**
      * @return int
      */
-    public function getFailureCount()
+    public function getFailureCount(): int
     {
         return $this->failureCount;
     }
 
-    private function getFailCharIndex($result, $expected)
+    private function getFailCharIndex($result, $expected): int
     {
         $resultLength = strlen($result);
         for ($i = 0, $l = strlen($expected); $i < $l; $i++) {
@@ -31,15 +30,16 @@ class BuilderTest
         return $i;
     }
 
+    /** @noinspection PhpSameParameterValueInspection */
     private function assertEquals($result, $expected, $line)
     {
         echo "<p>";
         if ($result === $expected) {
-            echo "OK: " . str_replace("&", "&amp;", $result) . PHP_EOL;
+            echo "<span class='OK'>OK</span>: " . str_replace("&", "&amp;", $result) . PHP_EOL;
         } else {
             $this->failureCount++;
 
-            echo "FAIL on line $line:<br>" . PHP_EOL;
+            echo "<span class='FAIL'>FAIL</span> on line $line:<br>" . PHP_EOL;
             echo "expected:<br>" . PHP_EOL;
             echo str_replace("&", "&amp;", $expected);
             echo "<br>" . PHP_EOL;
@@ -127,10 +127,21 @@ class BuilderTest
     }
 }
 
+/** @noinspection HtmlRequiredTitleElement */
 echo "<head>" . PHP_EOL;
 echo "<title>" . PHP_EOL;
 echo "Href Builder test" . PHP_EOL;
 echo "</title>" . PHP_EOL;
+echo "<style>" . PHP_EOL;
+echo ".OK {". PHP_EOL;
+echo "color: forestgreen;". PHP_EOL;
+echo "font-weight: bold". PHP_EOL;
+echo "}". PHP_EOL;
+echo ".FAIL {". PHP_EOL;
+echo "color: red;". PHP_EOL;
+echo "font-weight: bold". PHP_EOL;
+echo "}". PHP_EOL;
+echo "</style>" . PHP_EOL;
 echo "</head>" . PHP_EOL;
 
 echo "<body>" . PHP_EOL;
@@ -144,9 +155,9 @@ $failureCount = $builderTest->getFailureCount();
 
 echo "<p>";
 if ($failureCount == 0) {
-    echo "All tests OK";
+    echo "<span class='OK'>All tests OK</span>";
 } else {
-    echo "FAILURES: $failureCount";
+    echo "<span class='FAIL'>FAILURES</span>: $failureCount";
 }
 
 echo "<p>";

@@ -1,125 +1,67 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
+
+use JetBrains\PhpStorm\Pure;
 
 require_once "Expr.php";
 require_once "Join.php";
 require_once "Where.php";
 require_once "Order.php";
+require_once "Comparison.php";
 
 /**
  * Строитель запроса SELECT.
  *
  * Использование: см. BuilderTest.php
  *
- * @package QueryBuilder
+ * @package query_builder
  */
 class Builder
 {
-    /**
-     * Сравнение WHERE "равно (=)".
-     */
-    const COMPARISON_EQUAL = 0;
-
-    /**
-     * Сравнение WHERE "не равно (<>)".
-     */
-    const COMPARISON_NOT_EQUAL = 1;
-
-    /**
-     * Сравнение WHERE "меньше (<)".
-     */
-    const COMPARISON_LESS = 2;
-
-    /**
-     * Сравнение WHERE "меньше или равно (<=)".
-     */
-    const COMPARISON_LESS_OR_EQUAL = 3;
-
-    /**
-     * Сравнение WHERE "больше (>)".
-     */
-    const COMPARISON_GREATER = 4;
-
-    /**
-     * Сравнение WHERE " больше или равно (>=)".
-     */
-    const COMPARISON_GREATER_OR_EQUAL = 5;
-
-    /**
-     * Сравнение WHERE "LIKE 'значение'".
-     */
-    const COMPARISON_LIKE = 6;
-
-    /**
-     * Сравнение WHERE "IN (значение_1, значение_2)".
-     */
-    const COMPARISON_IN = 7;
-
     /**
      * Параметр запроса SQL_BUFFER_RESULT;
      */
     const SELECT_SQL_BUFFER_RESULT = 1;
 
-    /**
-     * @var null|int
-     */
-    private $params;
+    private ?int $params = null;
 
     /**
-     * @var null|string[]
+     * @var string|null[]
      */
-    private $columns;
+    private ?array $columns = null;
 
     /**
-     * @var null|string
+     * @var string|null[]
      */
-    private $table;
+    private ?array $table = null;
 
     /**
      * @var null|Join[]
      */
-    private $join;
+    private ?array $join = null;
 
     /**
      * @var null|Where[]
      */
-    private $where;
+    private ?array $where = null;
 
     /**
-     * @var null|string[string]
+     * @var string|null[]
      */
-    private $group;
+    private ?array $group = null;
 
     /**
-     * @var null|Order[string]
+     * @var null|Order[]
      */
-    private $order;
+    private ?array $order = null;
 
-    /**
-     * @var null|int
-     */
-    private $limit;
+    private ?int $limit = null;
 
-    /**
-     * @param null|string $text
-     * @return bool
-     */
-    private static function isTextNotEmpty($text)
+    private static function concat(?string $s1, ?string $s2, ?string $separator): ?string
     {
-        return isset($text) && is_string($text) && $text != "";
-    }
-
-    /**
-     * @param null|string $s1
-     * @param null|string $s2
-     * @param null|string $separator
-     * @return null|string
-     */
-    private static function concat($s1, $s2, $separator)
-    {
-        $s1NotEmpty = self::isTextNotEmpty($s1);
-        $s2NotEmpty = self::isTextNotEmpty($s2);
+        $s1NotEmpty = !empty($s1);
+        $s2NotEmpty = !empty($s2);
 
         if ($s1NotEmpty && $s2NotEmpty) {
             return $s1 . $separator . $s2;
@@ -132,11 +74,7 @@ class Builder
         }
     }
 
-    /**
-     * @param null|mixed $value
-     * @return string
-     */
-    private static function format($value)
+    private static function format(mixed $value): string
     {
         if ($value === null) {
             return "''";
@@ -154,15 +92,17 @@ class Builder
         return (string)$value;
     }
 
-    public static function sum($column)
+    public static function sum(string $column): string
     {
         return "sum(" . $column . ")";
     }
 
-    /**
-     * @return null|string
-     */
-    private function getParams()
+    public static function max(string $column): string
+    {
+        return "max(" . $column . ")";
+    }
+
+    #[Pure] private function getParams(): ?string
     {
         $result = null;
 
@@ -173,10 +113,7 @@ class Builder
         return $result;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getColumns()
+    #[Pure] private function getColumns(): ?string
     {
         $result = null;
 
@@ -189,23 +126,24 @@ class Builder
         return $result != null ? $result : Expr::ALL;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getTable()
+    #[Pure] private function getTable(): ?string
     {
-        return self::isTextNotEmpty($this->table) ? Expr::FROM . Expr::SPACE . $this->table : null;
+        $result = null;
+
+        if ($this->table) {
+            foreach ($this->table as $table) {
+                $result = self::concat($result, $table, Expr::COMMA . Expr::SPACE);
+            }
+        }
+
+        return $result != null ? Expr::FROM . Expr::SPACE . $result : null;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getJoin()
+    #[Pure] private function getJoin(): ?string
     {
         $result = null;
 
         if ($this->join) {
-            /** @var Join $join */
             foreach ($this->join as $join) {
                 $table = $join->getTable();
                 $columnsArray = $join->getColumns();
@@ -222,15 +160,11 @@ class Builder
         return $result;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getWhere()
+    private function getWhere(): ?string
     {
         $result = null;
 
         if ($this->where) {
-            /** @var Where $where */
             foreach ($this->where as $where) {
                 $column = $where->getColumn();
                 $comparison = $where->getComparison();
@@ -239,9 +173,9 @@ class Builder
                     $value = "";
                 }
 
-                if ($comparison == self::COMPARISON_LIKE) {
+                if ($comparison == Comparison::LIKE) {
                     $expr = sprintf(Expr::LIKE, Builder::format((string)$value));
-                } elseif ($comparison == self::COMPARISON_IN) {
+                } elseif ($comparison == Comparison::IN) {
                     if (($value instanceof Builder)) {
                         $expr = sprintf(Expr::IN, $value->build());
                     } else {
@@ -269,27 +203,14 @@ class Builder
                         $expr = sprintf(Expr::IN, $values);
                     }
                 } else {
-                    switch ($comparison) {
-                        default:
-                        case self::COMPARISON_EQUAL:
-                            $expr = Expr::EQUAL;
-                            break;
-                        case self::COMPARISON_NOT_EQUAL:
-                            $expr = Expr::NOT_EQUAL;
-                            break;
-                        case self::COMPARISON_LESS:
-                            $expr = Expr::LESS;
-                            break;
-                        case self::COMPARISON_LESS_OR_EQUAL:
-                            $expr = Expr::LESS_OR_EQUAL;
-                            break;
-                        case self::COMPARISON_GREATER:
-                            $expr = Expr::GREATER;
-                            break;
-                        case self::COMPARISON_GREATER_OR_EQUAL:
-                            $expr = Expr::GREATER_OR_EQUAL;
-                            break;
-                    }
+                    $expr = match ($comparison) {
+                        Comparison::NOT_EQUAL => Expr::NOT_EQUAL,
+                        Comparison::LESS => Expr::LESS,
+                        Comparison::LESS_OR_EQUAL => Expr::LESS_OR_EQUAL,
+                        Comparison::GREATER => Expr::GREATER,
+                        Comparison::GREATER_OR_EQUAL => Expr::GREATER_OR_EQUAL,
+                        default => Expr::EQUAL,
+                    };
 
                     $value = Builder::format($value);
 
@@ -305,15 +226,12 @@ class Builder
         return $result != null ? Expr::WHERE . Expr::SPACE . $result : null;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getGroup()
+    #[Pure] private function getGroup(): ?string
     {
         $result = null;
 
         if ($this->group) {
-            foreach ($this->group as $column => $column) {
+            foreach ($this->group as $column) {
                 $result = self::concat($result, $column, Expr::COMMA . Expr::SPACE);
             }
         }
@@ -321,18 +239,14 @@ class Builder
         return $result != null ? Expr::GROUP . Expr::SPACE . $result : null;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getOrder()
+    #[Pure] private function getOrder(): ?string
     {
         $result = null;
 
         if ($this->order) {
-            /** @var Order $order */
             foreach ($this->order as $column => $order) {
                 $collate = $order->getCollate();
-                if (self::isTextNotEmpty($collate)) {
+                if (!empty($collate)) {
                     $column = $column . Expr::SPACE . Expr::COLLATE . Expr::SPACE . $collate;
                 }
                 if ($order->isDesc()) {
@@ -345,10 +259,7 @@ class Builder
         return $result != null ? Expr::ORDER . Expr::SPACE . $result : null;
     }
 
-    /**
-     * @return null|string
-     */
-    private function getLimit()
+    #[Pure] private function getLimit(): ?string
     {
         return isset($this->limit) ? Expr::LIMIT . Expr::SPACE . $this->limit : null;
     }
@@ -358,7 +269,7 @@ class Builder
      *
      * @return Builder
      */
-    public static function getInstance()
+    #[Pure] public static function getInstance(): Builder
     {
         return new self;
     }
@@ -368,7 +279,7 @@ class Builder
      *
      * @return $this
      */
-    public function clear()
+    public function clear(): static
     {
         $this->params = null;
         $this->columns = null;
@@ -389,7 +300,7 @@ class Builder
      * @return $this
      * @see Builder::SELECT_SQL_BUFFER_RESULT
      */
-    public function params($params)
+    public function params(int $params): static
     {
         $this->params = $params;
         return $this;
@@ -407,19 +318,19 @@ class Builder
      * <p>
      * имя_колонки AS псевдоним
      *
-     * @param string $column Имя колонки.
-     * @param null|string $table Имя таблицы, которой принадлежит колонка.
-     * @param null|string $alias Псевдоним для колонки.
+     * @param string|null $column Имя колонки.
+     * @param string|null $table Имя таблицы, которой принадлежит колонка.
+     * @param string|null $alias Псевдоним для колонки.
      *
      * @return $this
      */
-    public function column($column, $table = null, $alias = null)
+    public function column(?string $column, ?string $table = null, ?string $alias = null): static
     {
-        if (self::isTextNotEmpty($column)) {
-            if (self::isTextNotEmpty($table)) {
+        if (!empty($column)) {
+            if (!empty($table)) {
                 $column = $table . Expr::DOT . $column;
             }
-            if (self::isTextNotEmpty($alias)) {
+            if (!empty($alias)) {
                 $column = $column . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
             }
 
@@ -431,16 +342,21 @@ class Builder
     /**
      * Добавление таблицы в запрос.
      * <p>
-     * FROM имя_таблицы. Поддерживается только одна таблица в запросе (кроме присоединённых JOIN).
+     * FROM имя_таблицы. Поддерживается несколько таблиц в запросе.
      *
-     * @param string $table
+     * @param string|null $table
+     * @param string|null $alias Псевдоним для таблицы.
      *
      * @return $this
      */
-    public function table($table)
+    public function table(?string $table, ?string $alias = null): static
     {
-        if (self::isTextNotEmpty($table)) {
-            $this->table = $table;
+        if (!empty($table)) {
+            if (!empty($alias)) {
+                $table = $table . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
+            }
+
+            $this->table[] = $table;
         }
         return $this;
     }
@@ -450,17 +366,22 @@ class Builder
      * <p>
      * LEFT JOIN имя_таблицы USING (имя_колонки1, имя_колонки2...).
      *
-     * @param string $table Имя таблицы.
-     * @param string|array $columns Имя колонки (string) или имена колонок (array).
+     * @param string|null $table Имя таблицы.
+     * @param array|string $columns Имя колонки (string) или имена колонок (array).
+     * @param string|null $alias Псевдоним для таблицы.
      *
      * @return $this
      */
-    public function join($table, $columns)
+    public function join(?string $table, array|string $columns, ?string $alias = null): static
     {
-        if (self::isTextNotEmpty($table)) {
+        if (!empty($table)) {
             if (!is_array($columns)) {
                 $columns = array($columns);
             }
+            if (!empty($alias)) {
+                $table = $table . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
+            }
+
             $this->join[] = new Join($table, $columns);
         }
 
@@ -474,24 +395,24 @@ class Builder
      * <p>
      * Поддерживается только AND.
      *
-     * @param string $column Имя колонки.
+     * @param string|null $column Имя колонки.
      * @param int $comparison Сравнение.
      * @param mixed $value Значение.
      *
      * @return $this
      *
-     * @see Builder::COMPARISON_EQUAL
-     * @see Builder::COMPARISON_NOT_EQUAL
-     * @see Builder::COMPARISON_LESS
-     * @see Builder::COMPARISON_LESS_OR_EQUAL
-     * @see Builder::COMPARISON_GREATER
-     * @see Builder::COMPARISON_GREATER_OR_EQUAL
-     * @see Builder::COMPARISON_LIKE
-     * @see Builder::COMPARISON_IN
+     * @see Comparison::EQUAL
+     * @see Comparison::NOT_EQUAL
+     * @see Comparison::LESS
+     * @see Comparison::LESS_OR_EQUAL
+     * @see Comparison::GREATER
+     * @see Comparison::GREATER_OR_EQUAL
+     * @see Comparison::LIKE
+     * @see Comparison::IN
      */
-    public function where($column, $comparison, $value)
+    public function where(?string $column, int $comparison, mixed $value): static
     {
-        if (self::isTextNotEmpty($column) && $value !== null) {
+        if (!empty($column) && $value !== null) {
             $this->where[] = new Where($column, $comparison, $value);
         }
         return $this;
@@ -502,14 +423,14 @@ class Builder
      * <p>
      * GROUP BY имя_колонки_1, имя_колонки_2...
      *
-     * @param string $column Имя колонки.
+     * @param string|null $column Имя колонки.
      *
      * @return $this
      */
-    public function group($column)
+    public function group(?string $column): static
     {
-        if (self::isTextNotEmpty($column)) {
-            $this->group[$column] = "+";
+        if (!empty($column)) {
+            $this->group[] = $column;
         }
         return $this;
     }
@@ -519,16 +440,16 @@ class Builder
      * <p>
      * ORDER BY имя_колонки_1, имя_колонки_2 DESC, имя_колонки_3 COLLATE latin1_bin.
      *
-     * @param string $column Имя колонки
+     * @param string|null $column Имя колонки
      * @param bool $desc Направление сортировки (ASC|DESC).
-     * @param null|string $collate Кодировка колонки.
+     * @param string|null $collate Кодировка колонки.
      *
      * @return $this
      */
-    public function order($column, $desc = false, $collate = null)
+    public function order(?string $column, bool $desc = false, ?string $collate = null): static
     {
-        if (self::isTextNotEmpty($column)) {
-            $this->order[$column] = new Order((bool)$desc, $collate);
+        if (!empty($column)) {
+            $this->order[$column] = new Order($desc, $collate);
         }
         return $this;
     }
@@ -538,22 +459,22 @@ class Builder
      * <p>
      * Поддерживается только LIMIT число_строк.
      *
-     * @param int $count
+     * @param int|null $count
      *
      * @return $this
      */
-    public function limit($count)
+    public function limit(?int $count): static
     {
-        $this->limit = isset($count) && (int)$count > 0 ? (int)$count : null;
+        $this->limit = isset($count) && $count > 0 ? $count : null;
         return $this;
     }
 
     /**
      * Возвращает построенный запрос.
      *
-     * @return null|string
+     * @return string|null
      */
-    public function build()
+    public function build(): ?string
     {
         $result = self::concat(Expr::SELECT, $this->getParams(), Expr::SPACE);
         $result = self::concat($result, $this->getColumns(), Expr::SPACE);
@@ -562,8 +483,6 @@ class Builder
         $result = self::concat($result, $this->getWhere(), Expr::SPACE);
         $result = self::concat($result, $this->getGroup(), Expr::SPACE);
         $result = self::concat($result, $this->getOrder(), Expr::SPACE);
-        $result = self::concat($result, $this->getLimit(), Expr::SPACE);
-
-        return $result;
+        return self::concat($result, $this->getLimit(), Expr::SPACE);
     }
 }

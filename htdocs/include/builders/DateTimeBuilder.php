@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpIllegalPsrClassPathInspection */
+<?php
+
+namespace builders;
 
 use JetBrains\PhpStorm\Pure;
 

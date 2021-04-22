@@ -1,67 +1,41 @@
 <?php
 
-namespace HrefBuilder;
+namespace builders\href_builder;
+
+use JetBrains\PhpStorm\Pure;
 
 class Builder
 {
-    /**
-     * @var string
-     */
-    private $url;
-    /**
-     * @var array
-     */
-    private $params;
+    private ?string $url = null;
+    private ?array $params = null;
 
-    /**
-     * Создание нового экземпляра Builder.
-     *
-     * @return Builder
-     */
-    public static function getInstance()
+    #[Pure] public static function getInstance(): Builder
     {
         return new self;
     }
 
-    /**
-     * Очистка.
-     *
-     * @return $this
-     */
-    public function clear()
+    public function clear(): static
     {
         $this->url = null;
         $this->params = null;
         return $this;
     }
 
-    /**
-     * @param string $url
-     * @return $this
-     */
-    function setUrl($url)
+    function setUrl(?string $url): static
     {
         $this->url = $url;
         return $this;
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return $this
-     */
-    function setParam($name, $value)
+    function setParam(?string $name, mixed $value): static
     {
-        if (isset($name) && is_string($name) && $name != "") {
+        if (isset($name) && !empty($name) && is_string($name)) {
             $this->params[$name] = $value;
         }
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    function build()
+    function build(): ?string
     {
         $query = null;
 
@@ -88,7 +62,7 @@ class Builder
         } elseif ($query) {
             return $query;
         } else {
-            return "";
+            return null;
         }
     }
 }

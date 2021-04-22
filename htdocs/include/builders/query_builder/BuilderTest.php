@@ -1,23 +1,19 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
 
 require "Builder.php";
 
 class BuilderTest
 {
+    private int $failureCount = 0;
 
-    private $failureCount = 0;
-
-    /**
-     * @return int
-     */
-    public function getFailureCount()
+    public function getFailureCount(): int
     {
         return $this->failureCount;
     }
 
-    private function getFailCharIndex($result, $expected)
+    private function getFailCharIndex($result, $expected): int
     {
         $resultLength = strlen($result);
         for ($i = 0, $l = strlen($expected); $i < $l; $i++) {
@@ -31,6 +27,7 @@ class BuilderTest
         return $i;
     }
 
+    /** @noinspection PhpSameParameterValueInspection */
     private function assertEquals($result, $expected, $line)
     {
         echo "<p>";
@@ -60,6 +57,10 @@ class BuilderTest
         }
     }
 
+    /**
+     * @noinspection SqlResolve
+     * @noinspection SqlCheckUsingColumns
+     */
     function test()
     {
         $queryBuilder = Builder::getInstance();
@@ -76,13 +77,20 @@ class BuilderTest
             $queryBuilder
                 ->clear()
                 ->column("column_1")
+                ->column("column_1")
                 ->column("column_2")
                 ->column("column_2", null, "column_2_alias")
                 ->column("")
-                ->table("yyy")
                 ->table("xxx")
                 ->build(),
-            "SELECT column_1, column_2, column_2 AS column_2_alias FROM xxx", __LINE__);
+            "SELECT column_1, column_1, column_2, column_2 AS column_2_alias FROM xxx", __LINE__);
+
+        $this->assertEquals(
+            $queryBuilder
+                ->clear()
+                ->table("xxx", 'x')
+                ->build(),
+            "SELECT * FROM xxx AS x", __LINE__);
 
         $this->assertEquals(
             $queryBuilder
@@ -90,20 +98,30 @@ class BuilderTest
                 ->column("column_1", "xxx")
                 ->column("column_2", "yyy")
                 ->column("column_3")
-                ->table("zzz")
+                ->table("xxx")
+                ->table("yyy")
                 ->build(),
-            "SELECT xxx.column_1, yyy.column_2, column_3 FROM zzz", __LINE__);
+            "SELECT xxx.column_1, yyy.column_2, column_3 FROM xxx, yyy", __LINE__);
+
+        $this->assertEquals(
+            $queryBuilder
+                ->clear()
+                ->column(Builder::sum("column_1"))
+                ->column(Builder::max("column_2"))
+                ->table("xxx")
+                ->build(),
+            "SELECT sum(column_1), max(column_2) FROM xxx", __LINE__);
 
         $this->assertEquals(
             $queryBuilder
                 ->clear()
                 ->table("xxx")
-                ->where("column_null", Builder::COMPARISON_EQUAL, null)
-                ->where("column_str", Builder::COMPARISON_EQUAL, "123")
-                ->where("column_str_empty", Builder::COMPARISON_EQUAL, "")
-                ->where("column_int", Builder::COMPARISON_LESS, 123)
-                ->where("column_bool", Builder::COMPARISON_EQUAL, true)
-                ->where("column_float", Builder::COMPARISON_GREATER_OR_EQUAL, 1.234)
+                ->where("column_null", Comparison::EQUAL, null)
+                ->where("column_str", Comparison::EQUAL, "123")
+                ->where("column_str_empty", Comparison::EQUAL, "")
+                ->where("column_int", Comparison::LESS, 123)
+                ->where("column_bool", Comparison::EQUAL, true)
+                ->where("column_float", Comparison::GREATER_OR_EQUAL, 1.234)
                 ->build(),
             "SELECT * FROM xxx WHERE " .
             "column_str = '123' AND " .
@@ -116,10 +134,10 @@ class BuilderTest
             $queryBuilder
                 ->clear()
                 ->table("xxx")
-                ->where("column_like", Builder::COMPARISON_LIKE, "%qwerty%")
-                ->where("column_in_null", Builder::COMPARISON_IN, null)
-                ->where("column_in_num", Builder::COMPARISON_IN, "123,456.789")
-                ->where("column_in_str", Builder::COMPARISON_IN, "qwerty, '456', \"\", '\"', '''")
+                ->where("column_like", Comparison::LIKE, "%qwerty%")
+                ->where("column_in_null", Comparison::IN, null)
+                ->where("column_in_num", Comparison::IN, "123,456.789")
+                ->where("column_in_str", Comparison::IN, "qwerty, '456', \"\", '\"', '''")
                 ->build(),
             "SELECT * FROM xxx WHERE " .
             "column_like LIKE '%qwerty%' AND " .
@@ -130,8 +148,8 @@ class BuilderTest
             $queryBuilder
                 ->clear()
                 ->table("xxx")
-                ->where("column_1", Builder::COMPARISON_LIKE, "'%qwerty%'")
-                ->where("column_2", Builder::COMPARISON_EQUAL, "';'qwerty" . PHP_EOL)
+                ->where("column_1", Comparison::LIKE, "'%qwerty%'")
+                ->where("column_2", Comparison::EQUAL, "';'qwerty" . PHP_EOL)
                 ->build(),
             "SELECT * FROM xxx WHERE " .
             "column_1 LIKE '\'%qwerty%\'' AND " .
@@ -158,8 +176,9 @@ class BuilderTest
                 ->table("xxx")
                 ->group("column_1")
                 ->group("column_1")
+                ->group("column_2")
                 ->build(),
-            "SELECT * FROM xxx GROUP BY column_1", __LINE__);
+            "SELECT * FROM xxx GROUP BY column_1, column_1, column_2", __LINE__);
 
         $this->assertEquals(
             $queryBuilder
@@ -181,9 +200,9 @@ class BuilderTest
             $queryBuilder
                 ->clear()
                 ->table("xxx")
-                ->join("yyy", "column_1")
+                ->join("yyy", "column_1", "y")
                 ->build(),
-            "SELECT * FROM xxx LEFT JOIN yyy USING (column_1)", __LINE__);
+            "SELECT * FROM xxx LEFT JOIN yyy AS y USING (column_1)", __LINE__);
 
         $this->assertEquals(
             $queryBuilder
@@ -195,20 +214,20 @@ class BuilderTest
     }
 }
 
+/** @noinspection HtmlRequiredTitleElement */
 echo "<head>" . PHP_EOL;
 echo "<title>" . PHP_EOL;
 echo "Query Builder test" . PHP_EOL;
 echo "</title>" . PHP_EOL;
-
 echo "<style>" . PHP_EOL;
-echo ".OK {". PHP_EOL;
-echo "color: forestgreen;". PHP_EOL;
-echo "font-weight: bold". PHP_EOL;
-echo "}". PHP_EOL;
-echo ".FAIL {". PHP_EOL;
-echo "color: red;". PHP_EOL;
-echo "font-weight: bold". PHP_EOL;
-echo "}". PHP_EOL;
+echo ".OK {" . PHP_EOL;
+echo "color: forestgreen;" . PHP_EOL;
+echo "font-weight: bold" . PHP_EOL;
+echo "}" . PHP_EOL;
+echo ".FAIL {" . PHP_EOL;
+echo "color: red;" . PHP_EOL;
+echo "font-weight: bold" . PHP_EOL;
+echo "}" . PHP_EOL;
 echo "</style>" . PHP_EOL;
 echo "</head>" . PHP_EOL;
 

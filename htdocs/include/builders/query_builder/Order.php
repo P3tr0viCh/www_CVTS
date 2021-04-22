@@ -1,41 +1,24 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
 
 class Order
 {
-    /**
-     * @var bool
-     */
-    private $order;
-    /**
-     * @var null|string
-     */
-    private $collate;
+    private bool $order;
+    private ?string $collate;
 
-    /**
-     * Order constructor.
-     * @param bool $order
-     * @param null|string $collate
-     */
-    public function __construct($order, $collate = null)
+    public function __construct(bool $order, ?string $collate = null)
     {
         $this->order = $order;
         $this->collate = $collate;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isDesc()
+    public function isDesc(): bool
     {
         return $this->order;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getCollate()
+    public function getCollate(): ?string
     {
         return $this->collate;
     }

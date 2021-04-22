@@ -1,54 +1,31 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
 
 class Where
 {
-    /**
-     * @var string
-     */
-    private $column;
-    /**
-     * @var int
-     */
-    private $comparison;
-    /**
-     * @var mixed
-     */
-    private $value;
+    private string $column;
+    private int $comparison;
+    private mixed $value;
 
-    /**
-     * @param string $column
-     * @param int $comparison
-     * @param mixed $value
-     */
-    public function __construct($column, $comparison, $value)
+    public function __construct(string $column, int $comparison, mixed $value)
     {
         $this->column = $column;
         $this->comparison = $comparison;
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getColumn()
+    public function getColumn(): string
     {
         return $this->column;
     }
 
-    /**
-     * @return int
-     */
-    public function getComparison()
+    public function getComparison(): int
     {
         return $this->comparison;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

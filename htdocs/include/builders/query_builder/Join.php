@@ -1,43 +1,25 @@
 <?php
 
-namespace QueryBuilder;
+namespace builders\query_builder;
 
 class Join
 {
-    /**
-     * @var string
-     */
-    private $table;
+    private string $table;
+    private array $columns;
 
-    /**
-     * @var string[]
-     */
-    private $columns;
+    public function __construct(string $table, array $columns)
+    {
+        $this->table = $table;
+        $this->columns = $columns;
+    }
 
-    /**
-     * @return string
-     */
-    public function getTable()
+    public function getTable(): string
     {
         return $this->table;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getColumns()
+    public function getColumns(): array
     {
         return $this->columns;
-    }
-
-    /**
-     * Join constructor.
-     * @param string $table
-     * @param string[] $columns
-     */
-    public function __construct($table, $columns)
-    {
-        $this->table = $table;
-        $this->columns = $columns;
     }
 }
