@@ -4,7 +4,8 @@ require_once "QueryBase.php";
 
 require_once "ResultFilter.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
@@ -245,7 +246,7 @@ class QueryResult extends QueryBase
         };
 
         if ($this->filter->getScaleNum() != Constants::SCALE_NUM_ALL_TRAIN_SCALES) {
-            $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->filter->getScaleNum());
+            $this->builder->where(C::SCALE_NUM, Comparison::EQUAL, $this->filter->getScaleNum());
         }
 
         $dateTimeStart = $this->filter->getDateTimeStart();
@@ -260,11 +261,11 @@ class QueryResult extends QueryBase
 
         if ($dateTimeStart) {
             $this->builder
-                ->where($dateTimeColumn, B::COMPARISON_GREATER_OR_EQUAL, $dateTimeStart);
+                ->where($dateTimeColumn, Comparison::GREATER_OR_EQUAL, $dateTimeStart);
         }
         if ($dateTimeEnd) {
             $this->builder
-                ->where($dateTimeColumn, B::COMPARISON_LESS_OR_EQUAL, $dateTimeEnd);
+                ->where($dateTimeColumn, Comparison::LESS_OR_EQUAL, $dateTimeEnd);
         }
 
         switch ($this->resultType) {
@@ -279,7 +280,7 @@ class QueryResult extends QueryBase
                 $this->builder
                     ->where($this->scaleType == ScaleType::AUTO ?
                         C::AUTO_NUMBER :
-                        C::VAN_NUMBER, B::COMPARISON_LIKE,
+                        C::VAN_NUMBER, Comparison::LIKE,
                         utf8ToLatin1($this->filter->getVanNumber()));
         }
 
@@ -294,7 +295,7 @@ class QueryResult extends QueryBase
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
                 $this->builder
-                    ->where(C::CARGO_TYPE, B::COMPARISON_LIKE,
+                    ->where(C::CARGO_TYPE, Comparison::LIKE,
                         utf8ToLatin1($this->filter->getCargoType()));
         }
 
@@ -306,21 +307,21 @@ class QueryResult extends QueryBase
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
                 $this->builder
-                    ->where(C::INVOICE_NUMBER, B::COMPARISON_LIKE,
+                    ->where(C::INVOICE_NUMBER, Comparison::LIKE,
                         utf8ToLatin1($this->filter->getInvoiceNum()))
-                    ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE,
+                    ->where(C::INVOICE_SUPPLIER, Comparison::LIKE,
                         utf8ToLatin1($this->filter->getInvoiceSupplier()))
-                    ->where(C::INVOICE_RECIPIENT, B::COMPARISON_LIKE,
+                    ->where(C::INVOICE_RECIPIENT, Comparison::LIKE,
                         utf8ToLatin1($this->filter->getInvoiceRecipient()));
         }
 
-        $this->builder->where(C::SCALE_NUM, B::COMPARISON_IN, $this->filter->getScalesFilter());
+        $this->builder->where(C::SCALE_NUM, Comparison::IN, $this->filter->getScalesFilter());
 
         switch ($this->resultType) {
             case ResultType::DP:
             case ResultType::DP_SUM:
                 if ($this->filter->isOnlyChark()) {
-                    $this->builder->where(C::PRODUCT, B::COMPARISON_EQUAL,
+                    $this->builder->where(C::PRODUCT, Comparison::EQUAL,
                         utf8ToLatin1(CargoTypes::CHARK));
                 }
         }
@@ -328,20 +329,20 @@ class QueryResult extends QueryBase
         switch ($this->resultType) {
             case ResultType::TRAIN_DYNAMIC_ONE:
                 $this->builder
-                    ->where(C::TRAIN_NUM, B::COMPARISON_EQUAL,
+                    ->where(C::TRAIN_NUM, Comparison::EQUAL,
                         $this->filter->getTrainNum())
-                    ->where(C::UNIX_TIME, B::COMPARISON_EQUAL,
+                    ->where(C::UNIX_TIME, Comparison::EQUAL,
                         $this->filter->getTrainUnixTime());
                 break;
             case ResultType::CARGO_LIST_AUTO:
             case ResultType::CARGO_LIST_DYNAMIC:
             case ResultType::CARGO_LIST_STATIC:
-                $this->builder->where(C::CARGO_TYPE, B::COMPARISON_NOT_EQUAL, '');
+                $this->builder->where(C::CARGO_TYPE, Comparison::NOT_EQUAL, '');
                 break;
             case ResultType::COMPARE_DYNAMIC:
             case ResultType::COMPARE_STATIC:
                 if (!$this->filter->isCompareByBrutto()) {
-                    $this->builder->where(C::NETTO, B::COMPARISON_NOT_EQUAL, 0);
+                    $this->builder->where(C::NETTO, Comparison::NOT_EQUAL, 0);
                 }
         }
     }

@@ -3,7 +3,7 @@ require_once "builders/query_builder/Builder.php";
 require_once "QueryBaseDates.php";
 
 use JetBrains\PhpStorm\Pure;
-use QueryBuilder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
@@ -98,16 +98,16 @@ class QuerySensors extends QueryBaseDates
     private function setWhere()
     {
         if (!$this->isAllScales()) {
-            $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
+            $this->builder->where(C::SCALE_NUM, Comparison::EQUAL, $this->scaleNum);
         }
 
         $this->builder
-            ->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->getDateTimeStart())
-            ->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->getDateTimeEnd());
+            ->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->getDateTimeStart())
+            ->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->getDateTimeEnd());
 
         if ($this->isAllScales() and !$this->showDisabled) {
             $this->builder
-                ->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+                ->where(C::SCALE_DISABLED, Comparison::EQUAL, false);
         }
     }
 

@@ -2,7 +2,7 @@
 
 require_once "builders/query_builder/Builder.php";
 
-use QueryBuilder\Builder;
+use builders\query_builder\Builder;
 
 abstract class QueryBase
 {

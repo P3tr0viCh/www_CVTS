@@ -3,7 +3,7 @@ require_once "builders/query_builder/Builder.php";
 require_once "QueryBaseDates.php";
 
 use JetBrains\PhpStorm\Pure;
-use QueryBuilder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
@@ -65,18 +65,18 @@ class QueryCoeffs extends QueryBaseDates
     private function setWhere()
     {
         if (!$this->isAllScales()) {
-            $this->builder->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
+            $this->builder->where(C::SCALE_NUM, Comparison::EQUAL, $this->scaleNum);
         }
 
         $this->builder
-            ->where(C::DATETIME_END, B::COMPARISON_GREATER_OR_EQUAL, $this->getDateTimeStart())
-            ->where(C::DATETIME_END, B::COMPARISON_LESS_OR_EQUAL, $this->getDateTimeEnd());
+            ->where(C::DATETIME_END, Comparison::GREATER_OR_EQUAL, $this->getDateTimeStart())
+            ->where(C::DATETIME_END, Comparison::LESS_OR_EQUAL, $this->getDateTimeEnd());
 
         if ($this->isAllScales()) {
-            $this->builder->where(C::SCALE_TYPE_DYN, B::COMPARISON_EQUAL, true);
+            $this->builder->where(C::SCALE_TYPE_DYN, Comparison::EQUAL, true);
 
             if (!$this->showDisabled) {
-                $this->builder->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+                $this->builder->where(C::SCALE_DISABLED, Comparison::EQUAL, false);
             }
         }
     }

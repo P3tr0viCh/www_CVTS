@@ -1,3 +1,5 @@
 .idea
 MYSQL_CONNECTION
 POWER_USERS
+htdocs/include/builders/href_builder/.htaccess
+htdocs/include/builders/query_builder/.htaccess

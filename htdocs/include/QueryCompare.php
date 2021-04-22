@@ -2,8 +2,9 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Expr as E;
-use QueryBuilder\Builder as B;
+use builders\query_builder\Expr as E;
+use builders\query_builder\Builder;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 use database\Aliases as A;
@@ -66,7 +67,7 @@ class QueryCompare extends QueryBase
         $dateTimeStart = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeStart);
         $dateTimeEnd = (float)date(self::MYSQL_DATETIME_FORMAT, $dateTimeEnd);
 
-        $builder = B::getInstance();
+        $builder = Builder::getInstance();
 
         $builder
             ->column(C::SCALE_NUM)
@@ -74,10 +75,10 @@ class QueryCompare extends QueryBase
                 C::BRUTTO :
                 C::NETTO)
             ->column(C::DATETIME)
-            ->where(C::SCALE_NUM, B::COMPARISON_NOT_EQUAL, $this->scaleNum)
-            ->where(C::DATETIME, B::COMPARISON_GREATER, $dateTimeStart)
-            ->where(C::DATETIME, B::COMPARISON_LESS, $dateTimeEnd)
-            ->where(C::VAN_NUMBER, B::COMPARISON_EQUAL, $this->vanNumber);
+            ->where(C::SCALE_NUM, Comparison::NOT_EQUAL, $this->scaleNum)
+            ->where(C::DATETIME, Comparison::GREATER, $dateTimeStart)
+            ->where(C::DATETIME, Comparison::LESS, $dateTimeEnd)
+            ->where(C::VAN_NUMBER, Comparison::EQUAL, $this->vanNumber);
 
         $builderDyn = clone $builder;
         $builderSta = clone $builder;

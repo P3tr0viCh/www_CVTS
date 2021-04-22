@@ -21,7 +21,7 @@ require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 require_once "include/HtmlFooter.php";
 
-use HrefBuilder\Builder;
+use builders\href_builder\Builder;
 use database\Columns as DBC;
 use Strings as S;
 use Constants as C;

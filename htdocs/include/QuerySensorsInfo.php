@@ -2,8 +2,9 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Expr as E;
-use QueryBuilder\Builder as B;
+use builders\query_builder\Expr as E;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Info as I;
 use database\Tables as T;
 use database\Columns as C;
@@ -99,7 +100,7 @@ class QuerySensorsInfo extends QueryBase
 
         if (!$this->showDisabled) {
             $this->builder
-                ->where(C::SCALE_DISABLED, B::COMPARISON_EQUAL, false);
+                ->where(C::SCALE_DISABLED, Comparison::EQUAL, false);
         }
     }
 }

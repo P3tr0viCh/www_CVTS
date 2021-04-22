@@ -15,7 +15,7 @@ require_once "include/echo_table.php";
 require_once "include/HtmlHeader.php";
 require_once "include/HtmlFooter.php";
 
-use HrefBuilder\Builder;
+use builders\href_builder\Builder;
 use Strings as S;
 
 $newDesign = isNewDesign(true);

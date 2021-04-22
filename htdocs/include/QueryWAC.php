@@ -2,7 +2,8 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 
@@ -30,12 +31,12 @@ class QueryWAC extends QueryBase
             ->table(T::ACCIDENTS)
             ->order(C::DATETIME, true)
             ->limit(1)
-            ->where(C::DEPARTMENT, B::COMPARISON_EQUAL, $this->department);
+            ->where(C::DEPARTMENT, Comparison::EQUAL, $this->department);
 
         $departmentNameBuilder = B::getInstance()
             ->column(C::NAME)
             ->table(T::DEPARTMENTS)
-            ->where(C::ID, B::COMPARISON_EQUAL, $this->department);
+            ->where(C::ID, Comparison::EQUAL, $this->department);
 
         $this->builder
             ->column(sprintf(self::SUB_QUERY_DATE, $companyDateBuilder->build()), null, C::COMPANY_DATE)

@@ -3,7 +3,8 @@ require_once "builders/query_builder/Builder.php";
 require_once "Constants.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 use database\Aliases as A;
@@ -45,13 +46,13 @@ class QueryIronControl extends QueryBase
             ->column(C::BRUTTO_NEAR_SIDE . ' - ' . C::BRUTTO_FAR_SIDE, null, C::IRON_CONTROL_DIFF_SIDE)
             ->column(C::BRUTTO_FIRST_CARRIAGE . ' - ' . C::BRUTTO_SECOND_CARRIAGE, null, C::IRON_CONTROL_DIFF_CARRIAGE)
             ->table(T::VAN_DYNAMIC_BRUTTO)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_COMPARE_DYN);
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_COMPARE_DYN);
 
         $builderCargo = clone $builder;
         $builderCargo
             ->column(C::VAN_NUMBER)
             ->table(T::VAN_DYNAMIC_BRUTTO)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_COMPARE_DYN);
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_COMPARE_DYN);
 
         $builderSta = clone $builder;
         $builderSta
@@ -59,7 +60,7 @@ class QueryIronControl extends QueryBase
             ->column(C::SCALE_NUM)
             ->column(C::DATETIME)
             ->column(C::NETTO)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_COMPARE_STA)
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_COMPARE_STA)
             ->table(T::VAN_STATIC_BRUTTO);
 
         if ($this->dateStart) {
@@ -74,25 +75,25 @@ class QueryIronControl extends QueryBase
         }
 
         if ($this->dateStart) {
-            $builderDyn->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
-            $builderCargo->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
+            $builderDyn->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->dateStart);
+            $builderCargo->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->dateStart);
 
-            $builderSta->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStartSta);
+            $builderSta->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->dateStartSta);
         }
         if ($this->dateEnd) {
-            $builderDyn->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
-            $builderSta->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
-            $builderCargo->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
+            $builderDyn->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->dateEnd);
+            $builderSta->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->dateEnd);
+            $builderCargo->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->dateEnd);
         }
 
         $cargoTypeIronDyn = utf8ToLatin1(CargoTypes::IRON_COMPARE_DYN);
         $cargoTypeIronSta = utf8ToLatin1(CargoTypes::IRON_COMPARE_STA);
 
-        $builderDyn->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronDyn);
-        $builderCargo->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronDyn);
+        $builderDyn->where(C::CARGO_TYPE, Comparison::EQUAL, $cargoTypeIronDyn);
+        $builderCargo->where(C::CARGO_TYPE, Comparison::EQUAL, $cargoTypeIronDyn);
 
-        $builderSta->where(C::VAN_NUMBER, B::COMPARISON_IN, $builderCargo);
-        $builderSta->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, $cargoTypeIronSta);
+        $builderSta->where(C::VAN_NUMBER, Comparison::IN, $builderCargo);
+        $builderSta->where(C::CARGO_TYPE, Comparison::EQUAL, $cargoTypeIronSta);
 
         $this->builder
             ->column(C::SCALE_NUM, A::IRON_CONTROL_STA, C::IRON_CONTROL_SCALES_STA)
@@ -107,8 +108,8 @@ class QueryIronControl extends QueryBase
             ->column(C::IRON_CONTROL_DIFF_CARRIAGE)
             ->column(C::DATETIME, A::IRON_CONTROL_DYN, C::IRON_CONTROL_DATETIME_DYN)
             ->column(C::SCALE_NUM, A::IRON_CONTROL_DYN, C::IRON_CONTROL_SCALES_DYN)
-            ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))
-            ->join(sprintf(self::SUB_QUERY, $builderSta->build(), QueryBuilder\Expr::EXPR_AS, A::IRON_CONTROL_STA), C::VAN_NUMBER)
+            ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), builders\query_builder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))
+            ->join(sprintf(self::SUB_QUERY, $builderSta->build(), builders\query_builder\Expr::EXPR_AS, A::IRON_CONTROL_STA), C::VAN_NUMBER)
             ->order(C::IRON_CONTROL_SCALES_DYN)
             ->order(C::IRON_CONTROL_DATETIME_DYN, true);
     }

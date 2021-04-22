@@ -2,7 +2,8 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 
@@ -88,44 +89,44 @@ class QueryIron extends QueryBase
         }
 
         if ($this->dateStart) {
-            $builder->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
+            $builder->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->dateStart);
         }
         if ($this->dateEnd) {
-            $builder->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
+            $builder->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->dateEnd);
         }
 
         $builderDyn = clone $builder;
         $builderDyn
             ->table(T::VAN_DYNAMIC_BRUTTO)
-            ->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, utf8ToLatin1(CargoTypes::IRON));
+            ->where(C::CARGO_TYPE, Comparison::EQUAL, utf8ToLatin1(CargoTypes::IRON));
 
         $builderSta = clone $builder;
         $builderSta
             ->table(T::VAN_STATIC_BRUTTO)
-            ->where(C::CARGO_TYPE, B::COMPARISON_EQUAL, utf8ToLatin1(CargoTypes::IRON));
+            ->where(C::CARGO_TYPE, Comparison::EQUAL, utf8ToLatin1(CargoTypes::IRON));
 
         $builderIngot = clone $builder;
         $builderIngot
             ->column(B::sum(C::NETTO), null, C::IRON_INGOT)
             ->table(T::VAN_DYNAMIC_BRUTTO)
-            ->where(C::CARGO_TYPE, B::COMPARISON_IN, utf8ToLatin1(CargoTypes::IRON_INGOT))
-            ->where(C::INVOICE_SUPPLIER, B::COMPARISON_LIKE, utf8ToLatin1(SuppliersAndRecipients::IRON_SUPPLIER))
-            ->where(C::INVOICE_RECIPIENT, B::COMPARISON_EQUAL, utf8ToLatin1(SuppliersAndRecipients::IRON_RECIPIENT));
+            ->where(C::CARGO_TYPE, Comparison::IN, utf8ToLatin1(CargoTypes::IRON_INGOT))
+            ->where(C::INVOICE_SUPPLIER, Comparison::LIKE, utf8ToLatin1(SuppliersAndRecipients::IRON_SUPPLIER))
+            ->where(C::INVOICE_RECIPIENT, Comparison::EQUAL, utf8ToLatin1(SuppliersAndRecipients::IRON_RECIPIENT));
 
         $builderEspc = clone $builderDyn;
         $builderEspc
             ->column(B::sum(C::NETTO), null, C::IRON_ESPC)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_ESPC);
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_ESPC);
 
         $builderRazl = clone $builderDyn;
         $builderRazl
             ->column(B::sum(C::NETTO), null, C::IRON_RAZL)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_RAZL);
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_RAZL);
 
         $builderShch = clone $builderSta;
         $builderShch
             ->column(B::sum(C::NETTO), null, C::IRON_SHCH)
-            ->where(C::SCALE_NUM, B::COMPARISON_IN, ScaleNums::IRON_SHCH);
+            ->where(C::SCALE_NUM, Comparison::IN, ScaleNums::IRON_SHCH);
 
         // Если первый селект ($builderRazl->build()) возвращает нулл, строка не выводится, даже если есть записи по другим селектам
         $this->builder
@@ -136,10 +137,10 @@ class QueryIron extends QueryBase
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_RAZL), null, C::IRON_RAZL)
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_SHCH), null, C::IRON_SHCH)
             ->column(sprintf(self::FUNCTION_IFNULL, C::IRON_INGOT), null, C::IRON_INGOT)
-            ->table(sprintf(self::SUB_QUERY, $builderRazl->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_RAZL))
-            ->join(sprintf(self::SUB_QUERY, $builderEspc->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_ESPC), C::IRON_DATE)
-            ->join(sprintf(self::SUB_QUERY, $builderShch->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_SHCH), C::IRON_DATE)
-            ->join(sprintf(self::SUB_QUERY, $builderIngot->build(), QueryBuilder\Expr::EXPR_AS, C::IRON_INGOT), C::IRON_DATE)
+            ->table(sprintf(self::SUB_QUERY, $builderRazl->build(), builders\query_builder\Expr::EXPR_AS, C::IRON_RAZL))
+            ->join(sprintf(self::SUB_QUERY, $builderEspc->build(), builders\query_builder\Expr::EXPR_AS, C::IRON_ESPC), C::IRON_DATE)
+            ->join(sprintf(self::SUB_QUERY, $builderShch->build(), builders\query_builder\Expr::EXPR_AS, C::IRON_SHCH), C::IRON_DATE)
+            ->join(sprintf(self::SUB_QUERY, $builderIngot->build(), builders\query_builder\Expr::EXPR_AS, C::IRON_INGOT), C::IRON_DATE)
             ->order(sprintf(self::FUNCTION_STR_TO_DATE, C::IRON_DATE, self::DATE_FORMAT), $this->orderByDesc);
     }
 }

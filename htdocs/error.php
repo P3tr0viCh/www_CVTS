@@ -9,7 +9,7 @@ require_once "include/echo_html_page.php";
 
 require_once "include/builders/href_builder/Builder.php";
 
-use HrefBuilder\Builder;
+use builders\href_builder\Builder;
 use Strings as S;
 
 $newDesign = isNewDesign(true);

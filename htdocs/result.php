@@ -36,12 +36,13 @@ require_once "include/echo_form.php";
 require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 
-use HrefBuilder\Builder;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
-use Strings as S;
 
+use builders\DateTimeBuilder;
+use builders\href_builder\Builder;
 use database\Columns as C;
+use Strings as S;
 
 #[NoReturn] function throwBadRequest(?string $error = null, int $errorNum = 412)
 {
@@ -1242,7 +1243,7 @@ if (!$resultMessage) {
                     echoTableTRStart(getRowColorClass($numColor));
 
                     echoTableTD(S::TEXT_AVG, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal,
-                    columnTitle(C::AVG));
+                        columnTitle(C::AVG));
 
                     if ($ironControlTotalCount > 0) {
                         $ironControlTotalAvg = $ironControlTotalSum / $ironControlTotalCount;

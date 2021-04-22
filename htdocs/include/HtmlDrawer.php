@@ -8,7 +8,7 @@ require_once "QueryDrawer.php";
 
 require_once "HtmlBase.php";
 
-use HrefBuilder\Builder;
+use builders\href_builder\Builder;
 use JetBrains\PhpStorm\Pure;
 use Strings as S;
 

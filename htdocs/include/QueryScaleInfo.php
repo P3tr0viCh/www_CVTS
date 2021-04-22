@@ -2,7 +2,7 @@
 require_once "builders/query_builder/Builder.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 
@@ -27,6 +27,6 @@ class QueryScaleInfo extends QueryBase
             ->column(C::SCALE_SENSORS_T_COUNT)
             ->table(T::SCALES)
             ->join(T::SCALES_ADD, C::SCALE_NUM)
-            ->where(C::SCALE_NUM, B::COMPARISON_EQUAL, $this->scaleNum);
+            ->where(C::SCALE_NUM, Comparison::EQUAL, $this->scaleNum);
     }
 }

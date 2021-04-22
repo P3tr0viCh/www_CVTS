@@ -3,7 +3,8 @@ require_once "builders/query_builder/Builder.php";
 require_once "Constants.php";
 require_once "QueryBase.php";
 
-use QueryBuilder\Builder as B;
+use builders\query_builder\Builder as B;
+use builders\query_builder\Comparison;
 use database\Tables as T;
 use database\Columns as C;
 use database\Aliases as A;
@@ -59,17 +60,17 @@ class QueryVanListLastTare extends QueryBase
         }
 
         if ($this->dateStart) {
-            $builder->where(C::DATETIME, B::COMPARISON_GREATER_OR_EQUAL, $this->dateStart);
+            $builder->where(C::DATETIME, Comparison::GREATER_OR_EQUAL, $this->dateStart);
         }
         if ($this->dateEnd) {
-            $builder->where(C::DATETIME, B::COMPARISON_LESS_OR_EQUAL, $this->dateEnd);
+            $builder->where(C::DATETIME, Comparison::LESS_OR_EQUAL, $this->dateEnd);
         }
 
         $vanList = vanListArrayToString($this->vanList);
         if (empty($vanList)) {
-            $builder->where(C::VAN_NUMBER, B::COMPARISON_NOT_EQUAL, "");
+            $builder->where(C::VAN_NUMBER, Comparison::NOT_EQUAL, "");
         } else {
-            $builder->where(C::VAN_NUMBER, B::COMPARISON_IN, $vanList);
+            $builder->where(C::VAN_NUMBER, Comparison::IN, $vanList);
         }
 
         $builderDyn = clone $builder;
