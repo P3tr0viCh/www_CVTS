@@ -17,6 +17,22 @@ class Constants
 
     const SCALE_NUM_REPORT_SENSORS_INFO = -300;
 
+    /**
+     * Максимальное число строк для страницы результата.
+     */
+    const RESULT_MAX_ROWS = 32000;
+
+    const SENSORS_M_MAX_COUNT = 16;
+
+    const SENSORS_T_MAX_COUNT = 8;
+    const COMPARE_VALUE_WARNING_YELLOW = 1;
+    const COMPARE_VALUE_WARNING_RED = 2;
+}
+
+/**
+ * Пороговые значения.
+ */
+class Thresholds {
     const COMPARE_VALUE_WARNING_YELLOW = 1;
     const COMPARE_VALUE_WARNING_RED = 2;
 
@@ -30,14 +46,6 @@ class Constants
     const IRON_CONTROL_AVG_VALUE_WARNING_RED = 0.10;
     const IRON_CONTROL_SUM_VALUE_WARNING_YELLOW = 5;
     const IRON_CONTROL_SUM_VALUE_WARNING_RED = 10;
-
-    /**
-     * Максимальное число строк для страницы результата.
-     */
-    const RESULT_MAX_ROWS = 32000;
-
-    const SENSORS_M_MAX_COUNT = 16;
-    const SENSORS_T_MAX_COUNT = 8;
 }
 
 /**

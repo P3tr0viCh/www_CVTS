@@ -1030,19 +1030,19 @@ if (!$resultMessage) {
                                         }
 
                                         $cellColor = getCellWarningColor($value,
-                                            Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW,
-                                            Constants::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED);
+                                            Thresholds::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW,
+                                            Thresholds::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED);
 
                                         break;
                                     case C::IRON_CONTROL_DIFF_SIDE:
                                         $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_SIDE],
-                                            Constants::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW,
-                                            Constants::IRON_CONTROL_DIFF_SIDE_WARNING_RED);
+                                            Thresholds::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW,
+                                            Thresholds::IRON_CONTROL_DIFF_SIDE_WARNING_RED);
                                         break;
                                     case C::IRON_CONTROL_DIFF_CARRIAGE:
                                         $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_CARRIAGE],
-                                            Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW,
-                                            Constants::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
+                                            Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW,
+                                            Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
                                         break;
                                 }
                                 break;
@@ -1251,7 +1251,7 @@ if (!$resultMessage) {
                     $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalAvg . "", $filter->isFull());
 
                     $class = getCellWarningColor($ironControlTotalAvg,
-                        Constants::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_AVG_VALUE_WARNING_RED);
+                        Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_RED);
 
                     echoTableTD($field, $class);
 
@@ -1270,7 +1270,7 @@ if (!$resultMessage) {
                     $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
 
                     $class = getCellWarningColor($ironControlTotalSum,
-                        Constants::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Constants::IRON_CONTROL_SUM_VALUE_WARNING_RED);
+                        Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_RED);
 
                     echoTableTD($field, $class);
 
