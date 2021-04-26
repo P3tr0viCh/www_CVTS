@@ -9,9 +9,8 @@ use database\Columns as C;
 
 class QueryWAC extends QueryBase
 {
-    const MAX_F = 'max(%s)';
+    const SUB_QUERY = '(%s)';
     const SUB_QUERY_DATE = 'IFNULL((%s), NOW())';
-    const SUB_QUERY_NAME = '(%s)';
 
     private int $department;
 
@@ -23,7 +22,7 @@ class QueryWAC extends QueryBase
     protected function makeQuery()
     {
         $companyDateBuilder = B::getInstance()
-            ->column(sprintf(self::MAX_F, C::DATETIME))
+            ->column(B::max(C::DATETIME))
             ->table(T::ACCIDENTS);
 
         $departmentDateBuilder = B::getInstance()
@@ -41,6 +40,6 @@ class QueryWAC extends QueryBase
         $this->builder
             ->column(sprintf(self::SUB_QUERY_DATE, $companyDateBuilder->build()), null, C::COMPANY_DATE)
             ->column(sprintf(self::SUB_QUERY_DATE, $departmentDateBuilder->build()), null, C::DEPARTMENT_DATE)
-            ->column(sprintf(self::SUB_QUERY_NAME, $departmentNameBuilder->build()), null, C::DEPARTMENT_NAME);
+            ->column(sprintf(self::SUB_QUERY, $departmentNameBuilder->build()), null, C::DEPARTMENT_NAME);
     }
 }

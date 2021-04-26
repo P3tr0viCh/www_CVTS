@@ -27,41 +27,46 @@ class Builder
     private ?int $params = null;
 
     /**
-     * @var string|null[]
+     * @var string[]|null
      */
     private ?array $columns = null;
 
     /**
-     * @var string|null[]
+     * @var string[]|null
      */
     private ?array $table = null;
 
     /**
-     * @var null|Join[]
+     * @var Join[]|null
      */
     private ?array $join = null;
 
     /**
-     * @var null|Where[]
+     * @var Where[]|null
      */
     private ?array $where = null;
 
     /**
-     * @var string|null[]
+     * @var string[]|null
      */
     private ?array $group = null;
 
     /**
-     * @var null|Order[]
+     * @var Order[]|null
      */
     private ?array $order = null;
 
     private ?int $limit = null;
 
-    private static function concat(?string $s1, ?string $s2, ?string $separator): ?string
+    private static function isTextNotEmpty(?string $text): bool
     {
-        $s1NotEmpty = !empty($s1);
-        $s2NotEmpty = !empty($s2);
+        return isset($text) && is_string($text) && $text != "";
+    }
+
+    #[Pure] private static function concat(?string $s1, ?string $s2, ?string $separator): ?string
+    {
+        $s1NotEmpty = self::isTextNotEmpty($s1);
+        $s2NotEmpty = self::isTextNotEmpty($s2);
 
         if ($s1NotEmpty && $s2NotEmpty) {
             return $s1 . $separator . $s2;
@@ -100,6 +105,11 @@ class Builder
     public static function max(string $column): string
     {
         return "max(" . $column . ")";
+    }
+
+    public static function count(string $column): string
+    {
+        return "count(" . $column . ")";
     }
 
     #[Pure] private function getParams(): ?string
@@ -246,7 +256,7 @@ class Builder
         if ($this->order) {
             foreach ($this->order as $column => $order) {
                 $collate = $order->getCollate();
-                if (!empty($collate)) {
+                if (self::isTextNotEmpty($collate)) {
                     $column = $column . Expr::SPACE . Expr::COLLATE . Expr::SPACE . $collate;
                 }
                 if ($order->isDesc()) {
@@ -326,11 +336,11 @@ class Builder
      */
     public function column(?string $column, ?string $table = null, ?string $alias = null): static
     {
-        if (!empty($column)) {
-            if (!empty($table)) {
+        if (self::isTextNotEmpty($column)) {
+            if (self::isTextNotEmpty($table)) {
                 $column = $table . Expr::DOT . $column;
             }
-            if (!empty($alias)) {
+            if (self::isTextNotEmpty($alias)) {
                 $column = $column . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
             }
 
@@ -351,8 +361,8 @@ class Builder
      */
     public function table(?string $table, ?string $alias = null): static
     {
-        if (!empty($table)) {
-            if (!empty($alias)) {
+        if (self::isTextNotEmpty($table)) {
+            if (self::isTextNotEmpty($alias)) {
                 $table = $table . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
             }
 
@@ -374,11 +384,11 @@ class Builder
      */
     public function join(?string $table, array|string $columns, ?string $alias = null): static
     {
-        if (!empty($table)) {
+        if (self::isTextNotEmpty($table)) {
             if (!is_array($columns)) {
                 $columns = array($columns);
             }
-            if (!empty($alias)) {
+            if (self::isTextNotEmpty($alias)) {
                 $table = $table . Expr::SPACE . Expr::EXPR_AS . Expr::SPACE . $alias;
             }
 
@@ -412,7 +422,7 @@ class Builder
      */
     public function where(?string $column, int $comparison, mixed $value): static
     {
-        if (!empty($column) && $value !== null) {
+        if (self::isTextNotEmpty($column) && $value !== null) {
             $this->where[] = new Where($column, $comparison, $value);
         }
         return $this;
@@ -429,7 +439,7 @@ class Builder
      */
     public function group(?string $column): static
     {
-        if (!empty($column)) {
+        if (self::isTextNotEmpty($column)) {
             $this->group[] = $column;
         }
         return $this;
@@ -448,7 +458,7 @@ class Builder
      */
     public function order(?string $column, bool $desc = false, ?string $collate = null): static
     {
-        if (!empty($column)) {
+        if (self::isTextNotEmpty($column)) {
             $this->order[$column] = new Order($desc, $collate);
         }
         return $this;

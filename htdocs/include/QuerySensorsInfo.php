@@ -12,9 +12,8 @@ use database\Aliases as A;
 
 class QuerySensorsInfo extends QueryBase
 {
-    const MAX_F = 'max(%s)';
-    const SUB_QUERY = '(%s) %s %s';
-    const SUB_QUERY_2 = '%s %s %s';
+    const SUB_QUERY = '(%s)';
+    const SUB_QUERY_2 = '(%s) %s %s';
     const UNION = '%s UNION %s';
 
     private bool $showDisabled = false;
@@ -40,7 +39,7 @@ class QuerySensorsInfo extends QueryBase
         $builderMaxBDateTime = B::getInstance();
         $builderMaxBDateTime
             ->column(C::SCALE_NUM)
-            ->column(sprintf(self::MAX_F, C::DATETIME), null, C::DATETIME);
+            ->column(B::max(C::DATETIME), null, C::DATETIME);
 
         $builderMaxBDateTimeZ = clone $builderMaxBDateTime;
         $builderMaxBDateTimeT = clone $builderMaxBDateTime;
@@ -50,25 +49,22 @@ class QuerySensorsInfo extends QueryBase
         $builderMaxBDateTimeT->table(T::SENSORS_TEMPS)->group(C::SCALE_NUM);
         $builderMaxBDateTimeS->table(T::SENSORS_STATUS)->group(C::SCALE_NUM);
 
-        // TODO: table with alias
-        // TODO: join with alias
-
         $builderS = B::getInstance();
         $builderS
             ->column(C::SCALE_NUM)
             ->column(C::DATETIME)
             ->column('0', null, A::SENSOR_INFO_TYPE)
-            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeS->build(), E::EXPR_AS, A::SENSORS_INFO_SENSORS_LAST))
+            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeS->build()), A::SENSORS_INFO_SENSORS_LAST)
             ->join(T::SENSORS_STATUS, array(C::SCALE_NUM, C::DATETIME));
         $this->setColumns($builderS);
 
         $builderZ = B::getInstance();
         $builderZ
-            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZ->build(), E::EXPR_AS, A::SENSORS_INFO_ZEROS_LAST))
-            ->join(sprintf(self::SUB_QUERY_2, T::SENSORS_ZEROS, E::EXPR_AS, A::SENSORS_INFO_ZEROS_LAST), array(C::SCALE_NUM, C::DATETIME));
+            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZ->build()), A::SENSORS_INFO_ZEROS_LAST)
+            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME), A::SENSORS_INFO_ZEROS_LAST);
         $builderT = B::getInstance();
         $builderT
-            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeT->build(), E::EXPR_AS, A::SENSORS_INFO_TEMPS_LAST))
+            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeT->build()), A::SENSORS_INFO_TEMPS_LAST)
             ->join(T::SENSORS_TEMPS, array(C::SCALE_NUM, C::DATETIME));
 
         $builderZT = B::getInstance();
@@ -76,22 +72,22 @@ class QuerySensorsInfo extends QueryBase
             ->column(C::SCALE_NUM)
             ->column(C::DATETIME, A::SENSORS_INFO_ZEROS_VAL)
             ->column('1', null, A::SENSOR_INFO_TYPE)
-            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZ->build(), E::EXPR_AS, A::SENSORS_INFO_ZEROS_LAST))
-            ->join(sprintf(self::SUB_QUERY_2, T::SENSORS_ZEROS, E::EXPR_AS, A::SENSORS_INFO_ZEROS_VAL), array(C::SCALE_NUM, C::DATETIME))
-            ->join(sprintf(self::SUB_QUERY, $builderT->build(), E::EXPR_AS, A::NU), C::SCALE_NUM);
+            ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZ->build()), A::SENSORS_INFO_ZEROS_LAST)
+            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME), A::SENSORS_INFO_ZEROS_VAL)
+            ->join(sprintf(self::SUB_QUERY, $builderT->build()), C::SCALE_NUM, A::NU);
         $this->setColumns($builderZT);
 
         $builderSZT = B::getInstance();
         $builderSZT
             ->table(sprintf(self::UNION,
-                sprintf(self::SUB_QUERY, $builderS->build(), E::EXPR_AS, A::NU),
+                sprintf(self::SUB_QUERY_2, $builderS->build(), E::EXPR_AS, A::NU),
                 $builderZT->build()));
 
         $this->builder
             ->column(C::SCALE_NUM)
             ->column(C::SCALE_PLACE)
             ->column(C::DATETIME)
-            ->table(sprintf(self::SUB_QUERY, $builderSZT->build(), E::EXPR_AS, A::NU))
+            ->table(sprintf(self::SUB_QUERY, $builderSZT->build()), A::NU)
             ->join(T::SCALES, C::SCALE_NUM)
             ->join(T::SCALES_ADD, C::SCALE_NUM)
             ->order(C::SCALE_PLACE, false, I::COLLATE_LATIN)

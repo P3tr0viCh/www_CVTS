@@ -11,7 +11,7 @@ use database\Aliases as A;
 
 class QueryVanListLastTare extends QueryBase
 {
-    const ALIAS = '(%s) %s';
+    const SUB_QUERY = '(%s)';
     const UNION = '%s UNION %s';
 
     const MYSQL_DATE_START_FORMAT = "Ymd000000";
@@ -81,13 +81,13 @@ class QueryVanListLastTare extends QueryBase
         $union = sprintf(self::UNION, $builderDyn->build(), $builderSta->build());
 
         $builderQuery = B::getInstance();
-        $builderQuery->table(sprintf(self::ALIAS, $union, A::VANLIST_LAST_TARE_UNION));
         $builderQuery
+            ->table(sprintf(self::SUB_QUERY, $union), A::NU)
             ->order(C::VAN_NUMBER)
             ->order(C::DATETIME, true);
 
         $this->builder
-            ->table(sprintf(self::ALIAS, $builderQuery->build(), A::VANLIST_LAST_TARE_QUERY))
+            ->table(sprintf(self::SUB_QUERY, $builderQuery->build()), A::NU)
             ->group(C::VAN_NUMBER);
     }
 }

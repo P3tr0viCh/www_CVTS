@@ -77,18 +77,18 @@ class ScaleInfo
 
                                 $this->header = sprintf(Strings::SCALE_INFO_HEADER, $this->place, $this->scaleNum);
 
-                                $this->type = match ((int)$row[database\Columns::SCALE_WTYPE]) {
+                                $this->type = match ((int)$row[Columns::SCALE_WTYPE]) {
                                     // Значения в таблице lst_wtype
                                     1 => ScaleType::AUTO,
                                     2 => ScaleType::DP,
                                     3 => ScaleType::KANAT,
-                                    default => $row[database\Columns::SCALE_TYPE],
+                                    default => $row[Columns::SCALE_TYPE],
                                 };
 
-                                $this->sensorsMCount = (int)$row[database\Columns::SCALE_SENSORS_M_COUNT];
-                                $this->sensorsTCount = (int)$row[database\Columns::SCALE_SENSORS_T_COUNT];
+                                $this->sensorsMCount = (int)$row[Columns::SCALE_SENSORS_M_COUNT];
+                                $this->sensorsTCount = (int)$row[Columns::SCALE_SENSORS_T_COUNT];
 
-                                $this->class = match ((int)$row[database\Columns::SCALE_TYPE_DYN]) {
+                                $this->class = match ((int)$row[Columns::SCALE_TYPE_DYN]) {
                                     // Значения в таблице lst_typedyn
                                     0 => ScaleClass::CLASS_STATIC,
                                     1 => ScaleClass::CLASS_DYNAMIC,

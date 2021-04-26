@@ -11,7 +11,7 @@ use database\Aliases as A;
 
 class QueryVanListWeighs extends QueryBase
 {
-    const ALIAS = '(%s) %s';
+    const SUB_QUERY = '(%s)';
     const UNION = '%s UNION %s';
 
     const MYSQL_DATE_START_FORMAT = "Ymd000000";
@@ -98,7 +98,7 @@ class QueryVanListWeighs extends QueryBase
         $union = sprintf(self::UNION, $union, $builderStaT->build());
 
         $this->builder
-            ->table(sprintf(self::ALIAS, $union, A::VANLIST_WEIGHS))
+            ->table(sprintf(self::SUB_QUERY, $union), A::NU)
             ->order(C::VAN_NUMBER)
             ->order(C::DATETIME)
             ->order(C::SCALE_NUM);

@@ -19,9 +19,6 @@ require_once "include/echo_table.php";
 use database\Info;
 use Strings as S;
 
-// debug
-$showQuery = false;
-
 $newDesign = isNewDesign(true);
 $useBackup = getParamGETAsBool(ParamName::USE_BACKUP, false);
 
@@ -78,7 +75,7 @@ if ($mysqli) {
 
         $query->setDepartment($department);
 
-        if ($showQuery) {
+        if (Constants::DEBUG_SHOW_QUERY) {
             echo $query->getQuery() . PHP_EOL;
         }
 

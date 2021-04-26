@@ -12,8 +12,6 @@ use database\Columns as C;
 
 class QueryResult extends QueryBase
 {
-    const COUNT_F = 'count(%s)';
-
     const MYSQL_DATETIME_FORMAT = "YmdHis";
 
     private ResultFilter $filter;
@@ -232,7 +230,7 @@ class QueryResult extends QueryBase
             case ResultType::CARGO_LIST_AUTO:
                 $this->builder
                     ->column(C::CARGO_TYPE)
-                    ->column($this->filter->isFull() ? sprintf(self::COUNT_F, C::CARGO_TYPE) : null,
+                    ->column($this->filter->isFull() ? B::count(C::CARGO_TYPE) : null,
                         null, C::COUNT);
                 break;
         }

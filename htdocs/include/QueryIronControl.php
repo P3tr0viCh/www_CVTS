@@ -11,7 +11,7 @@ use database\Aliases as A;
 
 class QueryIronControl extends QueryBase
 {
-    const SUB_QUERY = '(%s) %s %s';
+    const SUB_QUERY = '(%s)';
 
     private mixed $dateStart;
     private mixed $dateStartSta;
@@ -108,8 +108,8 @@ class QueryIronControl extends QueryBase
             ->column(C::IRON_CONTROL_DIFF_CARRIAGE)
             ->column(C::DATETIME, A::IRON_CONTROL_DYN, C::IRON_CONTROL_DATETIME_DYN)
             ->column(C::SCALE_NUM, A::IRON_CONTROL_DYN, C::IRON_CONTROL_SCALES_DYN)
-            ->table(sprintf(self::SUB_QUERY, $builderDyn->build(), builders\query_builder\Expr::EXPR_AS, A::IRON_CONTROL_DYN))
-            ->join(sprintf(self::SUB_QUERY, $builderSta->build(), builders\query_builder\Expr::EXPR_AS, A::IRON_CONTROL_STA), C::VAN_NUMBER)
+            ->table(sprintf(self::SUB_QUERY, $builderDyn->build()), A::IRON_CONTROL_DYN)
+            ->join(sprintf(self::SUB_QUERY, $builderSta->build()), C::VAN_NUMBER, A::IRON_CONTROL_STA)
             ->order(C::IRON_CONTROL_SCALES_DYN)
             ->order(C::IRON_CONTROL_DATETIME_DYN, true);
     }
