@@ -64,6 +64,11 @@ class QuerySensors extends QueryBaseDates
         };
     }
 
+    private function setTable()
+    {
+        $this->builder->table($this->getTableName());
+    }
+
     private function setColumns()
     {
         if ($this->isAllScales()) {
@@ -122,14 +127,10 @@ class QuerySensors extends QueryBaseDates
 
     protected function makeQuery()
     {
-        $this->builder->table($this->getTableName());
-
+        $this->setTable();
         $this->setColumns();
-
         $this->setJoin();
-
         $this->setWhere();
-
         $this->setOrder();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once "include/Constants.php";
+require_once "include/ParamName.php";
 require_once "include/Functions.php";
 
 $data = getPOSTParam(ParamName::EXCEL_DATA);

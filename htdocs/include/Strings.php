@@ -39,6 +39,8 @@ class Strings
     const DRAWER_TITLE_SETTINGS = 'Настройки';
     const DRAWER_SHOW_DISABLED_ON = 'Показать скрытые весы';
     const DRAWER_SHOW_DISABLED_OFF = 'Не отображать скрытые весы';
+    const DRAWER_SHOW_ALL_OPERATORS_ON = 'Показать весы всех операторов';
+    const DRAWER_SHOW_ALL_OPERATORS_OFF = 'Не отображать весы посторонних операторов';
     const DRAWER_SHOW_METROLOGY_ON = 'Показать метрологические параметры';
     const DRAWER_SHOW_METROLOGY_OFF = 'Не отображать метрологические параметры';
     const DRAWER_A = 'Карта сайта';

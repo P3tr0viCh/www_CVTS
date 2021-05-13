@@ -27,6 +27,7 @@ class Tables
     const SCALES_ADD = 'scalesinfo_add';
 
     const LST_WCLASS = 'lst_wclass';
+    const LST_OPERATOR = 'lst_operator';
 
     const COEFFS = 'wcalver';
 

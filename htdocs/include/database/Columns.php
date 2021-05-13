@@ -25,6 +25,7 @@ class Columns
     const SCALE_DISCRETENESS = 'wdiv';
     const SCALE_SENSORS_M_COUNT = 'sensors_m_count';
     const SCALE_SENSORS_T_COUNT = 'sensors_t_count';
+    const SCALE_OPERATOR = 'operator';
 
     const SEQUENCE_NUMBER = 'num';
 

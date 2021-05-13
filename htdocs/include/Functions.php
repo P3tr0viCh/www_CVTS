@@ -2,6 +2,7 @@
 require_once "MySQLConnection.php";
 require_once "Strings.php";
 require_once "Constants.php";
+require_once "ParamName.php";
 
 use JetBrains\PhpStorm\Pure;
 use database\Columns as C;

@@ -1,11 +1,10 @@
 <?php
-require_once "include/Strings.php";
-
 require_once "include/Links.php";
-
-require_once "include/Functions.php";
-require_once "include/CheckBrowser.php";
+require_once "include/Strings.php";
 require_once "include/MetaInfo.php";
+require_once "include/Functions.php";
+require_once "include/ParamName.php";
+require_once "include/CheckBrowser.php";
 
 require_once "include/builders/href_builder/Builder.php";
 

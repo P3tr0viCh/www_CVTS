@@ -1,10 +1,10 @@
 <?php
 require_once "include/MySQLConnection.php";
 
-require_once "include/Constants.php";
 require_once "include/Strings.php";
-
+require_once "include/Constants.php";
 require_once "include/Functions.php";
+require_once "include/ParamName.php";
 require_once "include/CheckUser.php";
 require_once "include/CheckBrowser.php";
 

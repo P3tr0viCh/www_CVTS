@@ -1,8 +1,7 @@
 <?php
-require_once "include/Constants.php";
 require_once "include/Strings.php";
 require_once "include/Functions.php";
-
+require_once "include/ParamName.php";
 require_once "include/CheckBrowser.php";
 
 require_once "include/echo_html_page.php";

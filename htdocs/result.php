@@ -3,6 +3,7 @@ ob_start();
 $timeStart = microtime(true);
 
 require_once "include/Constants.php";
+require_once "include/ParamName.php";
 
 require_once "include/MySQLConnection.php";
 
@@ -1135,7 +1136,7 @@ if (!$resultMessage) {
                                         }
                                     } else {
                                         $class = getCellWarningColor($fieldCompare,
-                                            Constants::COMPARE_VALUE_WARNING_YELLOW, Constants::COMPARE_VALUE_WARNING_RED);
+                                            Thresholds::COMPARE_VALUE_WARNING_YELLOW, Thresholds::COMPARE_VALUE_WARNING_RED);
                                     }
 
                                     $fieldCompare = formatFieldValue(C::COMPARE, $fieldCompare, $filter->isFull());

@@ -5,6 +5,7 @@ require_once "include/QueryScales.php";
 
 require_once "include/Strings.php";
 require_once "include/Constants.php";
+require_once "include/ParamName.php";
 require_once "include/ColumnsStrings.php";
 
 require_once "include/Functions.php";
@@ -32,11 +33,13 @@ $newDesign = isNewDesign();
 
 $showDisabled = getParamGETAsBool(PN::SHOW_DISABLED, false);
 $showMetrology = getParamGETAsBool(PN::SHOW_METROLOGY, false);
+$showAllOperators = getParamGETAsBool(PN::SHOW_ALL_OPERATORS, false);
 $useBackup = getParamGETAsBool(PN::USE_BACKUP, false);
 
 setCookieAsBool(PN::NEW_DESIGN, $newDesign);
 setCookieAsBool(PN::SHOW_DISABLED, $showDisabled);
 setCookieAsBool(PN::SHOW_METROLOGY, $showMetrology);
+setCookieAsBool(PN::SHOW_ALL_OPERATORS, $showAllOperators);
 
 deleteCookie(PN::DATETIME_START_DAY);
 deleteCookie(PN::DATETIME_START_MONTH);
@@ -91,7 +94,9 @@ echoStartContent();
 
 if ($mysqli) {
     if (!$mysqli->connect_errno) {
-        $query = new QueryScales();
+        $query = (new QueryScales())
+            ->setShowDisabled($showDisabled)
+            ->setShowAllOperators($showAllOperators);
 
         if (C::DEBUG_SHOW_QUERY) {
             echo $query->getQuery() . PHP_EOL;
@@ -148,8 +153,6 @@ if ($mysqli) {
             while ($row = $result->fetch_array()) {
                 // 1981 -- номер весов для отладки
                 if ($row[DBC::SCALE_NUM] == 1981) continue;
-
-                if ($row[DBC::SCALE_DISABLED] && !$showDisabled) continue;
 
                 $rowColorClass = getRowColorClass($numColor);
 

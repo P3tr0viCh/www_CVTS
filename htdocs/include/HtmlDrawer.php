@@ -2,9 +2,11 @@
 require_once "Strings.php";
 require_once "Constants.php";
 require_once "Functions.php";
+require_once "ParamName.php";
+
 require_once "builders/href_builder/Builder.php";
 
-require_once "QueryDrawer.php";
+require_once "QueryScales.php";
 
 require_once "HtmlBase.php";
 
@@ -46,9 +48,12 @@ class HtmlDrawer extends HtmlBase
         if (is_null($this->mysqli) || $this->mysqli->connect_error) return;
 
         $showDisabled = getCookieAsBool(ParamName::SHOW_DISABLED);
+        $showAllOperators = getCookieAsBool(ParamName::SHOW_ALL_OPERATORS);
         $showMetrology = getCookieAsBool(ParamName::SHOW_METROLOGY);
 
-        $query = new QueryDrawer();
+        $query = (new QueryScales())
+            ->setShowDisabled($showDisabled)
+            ->setShowAllOperators($showAllOperators);
 
 //        echo $query->getQuery() . PHP_EOL;
 
@@ -64,6 +69,7 @@ class HtmlDrawer extends HtmlBase
             $href = $hrefBuilder->setUrl("index.php")
                 ->setParam(ParamName::NEW_DESIGN, true)
                 ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                ->setParam($showAllOperators ? ParamName::SHOW_ALL_OPERATORS : null, true)
                 ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
                 ->setParam($this->useBackup ? ParamName::USE_BACKUP : null, true)
                 ->build();
@@ -85,13 +91,14 @@ class HtmlDrawer extends HtmlBase
                 echo S::TAB . S::TAB;
                 echo "<a class='mdl-navigation__link' href='//' onclick=\"this.href='$href'\">";
                 echo $name;
+                if (Constants::DEBUG_SHOW_QUERY) {
+                    echo "<br>" . $href;
+                }
                 echo '</a>' . PHP_EOL;
             }
 
             while ($row = $result->fetch_array()) {
                 if ($row[database\Columns::SCALE_NUM] == 1981) continue;
-
-                if ($row[database\Columns::SCALE_DISABLED] && !$showDisabled) continue;
 
                 $href = $hrefBuilder
                     ->setParam(ParamName::SCALE_NUM, $row[database\Columns::SCALE_NUM])
@@ -144,14 +151,25 @@ class HtmlDrawer extends HtmlBase
                 $hrefBuilderShowDisabled = clone $hrefBuilder;
                 $href = $hrefBuilderShowDisabled
                     ->setParam(!$showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam($showAllOperators ? ParamName::SHOW_ALL_OPERATORS : null, true)
                     ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
                     ->build();
 
                 echoLink($showDisabled ? S::DRAWER_SHOW_DISABLED_OFF : S::DRAWER_SHOW_DISABLED_ON, $href);
 
+                $hrefBuilderShowAllOperators = clone $hrefBuilder;
+                $href = $hrefBuilderShowAllOperators
+                    ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam(!$showAllOperators ? ParamName::SHOW_ALL_OPERATORS : null, true)
+                    ->setParam($showMetrology ? ParamName::SHOW_METROLOGY : null, true)
+                    ->build();
+
+                echoLink($showAllOperators ? S::DRAWER_SHOW_ALL_OPERATORS_OFF : S::DRAWER_SHOW_ALL_OPERATORS_ON, $href);
+
                 $hrefBuilderShowMetrology = clone $hrefBuilder;
                 $href = $hrefBuilderShowMetrology
                     ->setParam($showDisabled ? ParamName::SHOW_DISABLED : null, true)
+                    ->setParam($showAllOperators ? ParamName::SHOW_ALL_OPERATORS : null, true)
                     ->setParam(!$showMetrology ? ParamName::SHOW_METROLOGY : null, true)
                     ->build();
 
