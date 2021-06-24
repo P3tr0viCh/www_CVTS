@@ -166,22 +166,22 @@ class ColumnsStrings
     const IRON_INGOT_TITLE = ColumnsStrings::CARGO_TYPE . ": %s" . PHP_EOL .
     ColumnsStrings::INVOICE_SUPPLIER . ": %s" . PHP_EOL . ColumnsStrings::INVOICE_RECIPIENT . ": %s";
 
-    const IRON_CONTROL_SCALES_STA = 'Статика: № весов';
-    const IRON_CONTROL_SCALES_STA_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
-    const IRON_CONTROL_SCALES_DYN = 'Динамика: № весов';
-    const IRON_CONTROL_SCALES_DYN_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
-    const IRON_CONTROL_DATETIME_STA = 'Статика: Дата и время';
-    const IRON_CONTROL_DATETIME_DYN = 'Динамика: Дата и время';
-    const IRON_CONTROL_NETTO_STA = 'Статика: Нетто';
-    const IRON_CONTROL_NETTO_DYN = 'Динамика: Нетто';
-    const IRON_CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
-    const IRON_CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
-    const IRON_CONTROL_DIFF_DYN_STA_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
-    const IRON_CONTROL_DIFF_SIDE = 'Динамика: Борта';
-    const IRON_CONTROL_DIFF_SIDE_TITLE = 'Разница между весом ближнего борта и дальнего' . PHP_EOL .
+    const CONTROL_SCALES_STA = 'Статика: № весов';
+    const CONTROL_SCALES_STA_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
+    const CONTROL_SCALES_DYN = 'Динамика: № весов';
+    const CONTROL_SCALES_DYN_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
+    const CONTROL_DATETIME_STA = 'Статика: Дата и время';
+    const CONTROL_DATETIME_DYN = 'Динамика: Дата и время';
+    const CONTROL_NETTO_STA = 'Статика: Нетто';
+    const CONTROL_NETTO_DYN = 'Динамика: Нетто';
+    const CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
+    const CONTROL_DIFF_DYN_STA = 'Разница: Динамика и статика';
+    const CONTROL_DIFF_DYN_STA_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
+    const CONTROL_DIFF_SIDE = 'Динамика: Борта';
+    const CONTROL_DIFF_SIDE_TITLE = 'Разница между весом ближнего борта и дальнего' . PHP_EOL .
     'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
-    const IRON_CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
-    const IRON_CONTROL_DIFF_CARRIAGE_TITLE = 'Разница между весом первой тележки и второй' . PHP_EOL .
+    const CONTROL_DIFF_CARRIAGE = 'Динамика: Тележки';
+    const CONTROL_DIFF_CARRIAGE_TITLE = 'Разница между весом первой тележки и второй' . PHP_EOL .
     'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
     const AVG_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';

@@ -29,7 +29,8 @@ echoStartPage();
 if ($scaleNum < 0) {
     if ($scaleNum !== Constants::SCALE_NUM_REPORT_VANLIST and
         $scaleNum !== Constants::SCALE_NUM_REPORT_IRON and
-        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_SLAG_CONTROL) {
         $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 }
@@ -234,6 +235,13 @@ if (!$resultMessage) {
             echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::IRON_CONTROL);
 
             break;
+        case ScaleType::SLAG_CONTROL:
+            echo S::TAB . S::TAB;
+            echo '<h5>' . S::HEADER_RESULTS . '</h5>' . PHP_EOL . PHP_EOL;
+
+            echoButton($newDesign, S::BUTTON_VIEW, ParamName::RESULT_TYPE, ResultType::SLAG_CONTROL);
+
+            break;
 
         case ScaleType::VANLIST:
             echo S::TAB . S::TAB;
@@ -351,6 +359,7 @@ if (!$resultMessage) {
         case ScaleType::KANAT:
         case ScaleType::DP:
         case ScaleType::IRON_CONTROL:
+        case ScaleType::SLAG_CONTROL:
             echo S::TAB . S::TAB;
             echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
             echo PHP_EOL;
@@ -403,6 +412,7 @@ if (!$resultMessage) {
         case ScaleType::KANAT:
         case ScaleType::DP:
         case ScaleType::IRON_CONTROL:
+        case ScaleType::SLAG_CONTROL:
             echo S::TAB . S::TAB;
             echo $newDesign ? '<br>' : '<span>&nbsp;</span>';
             echo PHP_EOL;
@@ -580,7 +590,7 @@ if (!$resultMessage) {
     }
 
     $showSettings = match ($scaleType) {
-        ScaleType::VANLIST, ScaleType::IRON_CONTROL => false,
+        ScaleType::VANLIST, ScaleType::IRON_CONTROL, ScaleType::SLAG_CONTROL => false,
         default => true,
     };
 
@@ -617,6 +627,7 @@ if (!$resultMessage) {
         switch ($scaleType) {
             case ScaleType::IRON:
             case ScaleType::IRON_CONTROL:
+            case ScaleType::SLAG_CONTROL:
             case ScaleType::VANLIST:
                 break;
             default:

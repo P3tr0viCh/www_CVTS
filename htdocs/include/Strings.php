@@ -52,6 +52,7 @@ class Strings
     const SHOW_VANLIST_QUERY = 'Сводная информация по списку номеров вагонов';
     const SHOW_IRON_QUERY = 'Сводная информация по провескам чугуна';
     const SHOW_IRON_CONTROL_QUERY = 'Контрольная провеска чугуна';
+    const SHOW_SLAG_CONTROL_QUERY = 'Контрольная провеска шлака';
     const SHOW_SENSORS_INFO_RESULT = 'Сводная информация по датчикам ВД-30';
 
     const SCALE_INFO_ALL_TRAIN_PLACE = 'ЖД весы';
@@ -59,8 +60,10 @@ class Strings
     const SCALE_INFO_VANLIST_PLACE = 'Список вагонов';
     const SCALE_INFO_VANLIST_PLACE_HEADER = 'Сводная информация по списку номеров вагонов';
     const SCALE_INFO_IRON_PLACE = 'Чугун';
+    const SCALE_INFO_SLAG_PLACE = 'Шлак';
     const SCALE_INFO_IRON_HEADER = 'Провеска чугуна';
     const SCALE_INFO_IRON_CONTROL_HEADER = 'Контрольная провеска чугуна';
+    const SCALE_INFO_SLAG_CONTROL_HEADER = 'Контрольная провеска шлака';
     const SCALE_INFO_SENSORS_INFO_PLACE = 'Датчики ВД-30';
     const SCALE_INFO_SENSORS_INFO_HEADER = 'Сводная информация по датчикам ВД-30';
 
@@ -104,6 +107,7 @@ class Strings
     const SENSORS_INFO = '';
     const HEADER_IRON = 'Сумма нетто посуточно';
     const HEADER_IRON_CONTROL = 'Сравнение массы';
+    const HEADER_SLAG_CONTROL = 'Сравнение массы';
     const HEADER_VANLIST_WEIGHS = 'Взвешивание по всем весам';
     const HEADER_VANLIST_TARE = 'Последний вес тары по всем весам';
 

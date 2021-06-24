@@ -6,8 +6,8 @@ class Aliases
 {
     const NU = 'x';
 
-    const IRON_CONTROL_STA = 'sta';
-    const IRON_CONTROL_DYN = 'dyn';
+    const STA = 'sta';
+    const DYN = 'dyn';
 
     const SENSORS_INFO_ZEROS_LAST = 'z_m';
     const SENSORS_INFO_ZEROS_VAL = 'z_v';

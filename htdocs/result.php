@@ -13,7 +13,7 @@ require_once "include/QueryResult.php";
 require_once "include/QueryCompare.php";
 require_once "include/QuerySensors.php";
 require_once "include/QuerySensorsInfo.php";
-require_once "include/QueryIronControl.php";
+require_once "include/QueryControl.php";
 require_once "include/QueryVanListWeighs.php";
 require_once "include/QueryVanListLastTare.php";
 
@@ -144,7 +144,8 @@ $scaleNum = getParamGETAsInt(ParamName::SCALE_NUM, Constants::SCALE_NUM_ALL_TRAI
 if ($scaleNum < 0) {
     if ($scaleNum !== Constants::SCALE_NUM_REPORT_VANLIST and
         $scaleNum !== Constants::SCALE_NUM_REPORT_IRON and
-        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL) {
+        $scaleNum !== Constants::SCALE_NUM_REPORT_IRON_CONTROL and
+        $scaleNum !== Constants::SCALE_NUM_REPORT_SLAG_CONTROL) {
         $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
     }
 }
@@ -309,6 +310,9 @@ switch ($resultType) {
     case ResultType::IRON_CONTROL:
         $scaleNum = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
         break;
+    case ResultType::SLAG_CONTROL:
+        $scaleNum = Constants::SCALE_NUM_REPORT_SLAG_CONTROL;
+        break;
 }
 
 if (isResultTypeCompare($resultType)) {
@@ -402,6 +406,7 @@ if ($mysqli) {
                     }
                     break;
                 case ResultType::IRON_CONTROL:
+                case ResultType::SLAG_CONTROL:
                     if ($dateTimeStart == null && $dateTimeEnd == null) {
                         $prevDate = getdate(date_sub(date_create(), new DateInterval('P1D'))->getTimestamp());
 
@@ -616,7 +621,8 @@ if (!$resultMessage) {
                 ->setDateEnd($dateTimeEnd)
                 ->setOrderByDesc($orderByDesc)
                 ->setFrom20to20($from20to20),
-            ResultType::IRON_CONTROL => (new QueryIronControl())
+            ResultType::IRON_CONTROL, ResultType::SLAG_CONTROL => (new QueryControl())
+                ->setResultType($resultType)
                 ->setDateStart($dateTimeStart)
                 ->setDateEnd($dateTimeEnd),
             ResultType::VANLIST_WEIGHS => (new QueryVanListWeighs())
@@ -1021,6 +1027,7 @@ if (!$resultMessage) {
 
                         switch ($resultType) {
                             case ResultType::IRON_CONTROL:
+                            case ResultType::SLAG_CONTROL:
                                 switch ($fieldsInfo[$fieldNum]->name) {
                                     case C::IRON_CONTROL_DIFF_DYN_STA:
                                         $value = $row[C::IRON_CONTROL_DIFF_DYN_STA];
@@ -1045,6 +1052,31 @@ if (!$resultMessage) {
                                         $cellColor = getCellWarningColor($row[C::IRON_CONTROL_DIFF_CARRIAGE],
                                             Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW,
                                             Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED);
+                                        break;
+
+                                    case C::SLAG_CONTROL_DIFF_DYN_STA:
+                                        $value = $row[C::SLAG_CONTROL_DIFF_DYN_STA];
+
+                                        if ($value != "") {
+                                            $ironControlTotalCount++;
+
+                                            $ironControlTotalSum += $value;
+                                        }
+
+                                        $cellColor = getCellWarningColor($value,
+                                            Thresholds::SLAG_CONTROL_DIFF_DYN_STA_WARNING_YELLOW,
+                                            Thresholds::SLAG_CONTROL_DIFF_DYN_STA_WARNING_RED);
+
+                                        break;
+                                    case C::SLAG_CONTROL_DIFF_SIDE:
+                                        $cellColor = getCellWarningColor($row[C::SLAG_CONTROL_DIFF_SIDE],
+                                            Thresholds::SLAG_CONTROL_DIFF_SIDE_WARNING_YELLOW,
+                                            Thresholds::SLAG_CONTROL_DIFF_SIDE_WARNING_RED);
+                                        break;
+                                    case C::SLAG_CONTROL_DIFF_CARRIAGE:
+                                        $cellColor = getCellWarningColor($row[C::SLAG_CONTROL_DIFF_CARRIAGE],
+                                            Thresholds::SLAG_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW,
+                                            Thresholds::SLAG_CONTROL_DIFF_CARRIAGE_WARNING_RED);
                                         break;
                                 }
                                 break;
@@ -1224,8 +1256,8 @@ if (!$resultMessage) {
                     $excelData .= S::EXCEL_EOL;
                 }
 
-// ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
-                if ($resultType == ResultType::IRON_CONTROL) {
+// ----------------- Контрольная провеска чугуна|шлака -----------------------------------------------------------------
+                if ($resultType == ResultType::IRON_CONTROL || $resultType == ResultType::SLAG_CONTROL) {
 // ---------------------------------------------------------------------------------------------------------------------
                     $colSpanTotal = 8;
                     $colSpanTotalValue = 5;
@@ -1250,10 +1282,23 @@ if (!$resultMessage) {
                         $ironControlTotalAvg = $ironControlTotalSum / $ironControlTotalCount;
                     }
 
-                    $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalAvg . "", $filter->isFull());
+                    switch ($resultType) {
+                        case ResultType::IRON_CONTROL:
+                            $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalAvg . "", $filter->isFull());
 
-                    $class = getCellWarningColor($ironControlTotalAvg,
-                        Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_RED);
+                            $class = getCellWarningColor($ironControlTotalAvg,
+                                Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_RED);
+                            break;
+                        case ResultType::SLAG_CONTROL:
+                            $field = formatFieldValue(C::SLAG_CONTROL_DIFF_DYN_STA, $ironControlTotalAvg . "", $filter->isFull());
+
+                            $class = getCellWarningColor($ironControlTotalAvg,
+                                Thresholds::SLAG_CONTROL_AVG_VALUE_WARNING_YELLOW, Thresholds::SLAG_CONTROL_AVG_VALUE_WARNING_RED);
+                            break;
+                        default:
+                            $field = 'ERROR';
+                            $class = null;
+                    }
 
                     echoTableTD($field, $class);
 
@@ -1269,10 +1314,23 @@ if (!$resultMessage) {
                     echoTableTD(S::TEXT_SUM, $newDesign ? 'mdl-data-table__cell--right' : 'text-align--right', null, $colSpanTotal,
                         columnTitle(C::SUM));
 
-                    $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
+                    switch ($resultType) {
+                        case ResultType::IRON_CONTROL:
+                            $field = formatFieldValue(C::IRON_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
 
-                    $class = getCellWarningColor($ironControlTotalSum,
-                        Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_RED);
+                            $class = getCellWarningColor($ironControlTotalSum,
+                                Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_RED);
+                            break;
+                        case ResultType::SLAG_CONTROL:
+                            $field = formatFieldValue(C::SLAG_CONTROL_DIFF_DYN_STA, $ironControlTotalSum . "", $filter->isFull());
+
+                            $class = getCellWarningColor($ironControlTotalSum,
+                                Thresholds::SLAG_CONTROL_SUM_VALUE_WARNING_YELLOW, Thresholds::SLAG_CONTROL_SUM_VALUE_WARNING_RED);
+                            break;
+                        default:
+                            $field = 'ERROR';
+                            $class = null;
+                    }
 
                     echoTableTD($field, $class);
 
@@ -1280,7 +1338,7 @@ if (!$resultMessage) {
 
                     echoTableTREnd();
                 }
-// ----------------- Контрольная провеска чугуна -----------------------------------------------------------------------
+// ----------------- Контрольная провеска чугуна|шлака -----------------------------------------------------------------
 
                 echoTableBodyEnd();
                 echoTableEnd();

@@ -14,6 +14,7 @@ class Constants
 
     const SCALE_NUM_REPORT_IRON = -200;
     const SCALE_NUM_REPORT_IRON_CONTROL = -201;
+    const SCALE_NUM_REPORT_SLAG_CONTROL = -202;
 
     const SCALE_NUM_REPORT_SENSORS_INFO = -300;
 
@@ -46,6 +47,17 @@ class Thresholds
     const IRON_CONTROL_AVG_VALUE_WARNING_RED = 0.10;
     const IRON_CONTROL_SUM_VALUE_WARNING_YELLOW = 5;
     const IRON_CONTROL_SUM_VALUE_WARNING_RED = 10;
+
+    const SLAG_CONTROL_DIFF_DYN_STA_WARNING_YELLOW = 1;
+    const SLAG_CONTROL_DIFF_DYN_STA_WARNING_RED = 2;
+    const SLAG_CONTROL_DIFF_SIDE_WARNING_YELLOW = 3;
+    const SLAG_CONTROL_DIFF_SIDE_WARNING_RED = 5;
+    const SLAG_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW = 3;
+    const SLAG_CONTROL_DIFF_CARRIAGE_WARNING_RED = 5;
+    const SLAG_CONTROL_AVG_VALUE_WARNING_YELLOW = 0.05;
+    const SLAG_CONTROL_AVG_VALUE_WARNING_RED = 0.10;
+    const SLAG_CONTROL_SUM_VALUE_WARNING_YELLOW = 5;
+    const SLAG_CONTROL_SUM_VALUE_WARNING_RED = 10;
 }
 
 /**
@@ -74,6 +86,15 @@ class ScaleNums
      * Контрольная провеска чугуна: весы в статике (СХЧ).
      */
     const IRON_COMPARE_STA = '156, 31, 41';
+
+    /**
+     * Контрольная провеска шлака: весы в динамике (Сортировка).
+     */
+    const SLAG_COMPARE_DYN = '150, 164';
+    /**
+     * Контрольная провеска шлака: весы в статике (ШПУ-1).
+     */
+    const SLAG_COMPARE_STA = '99';
 }
 
 /**
@@ -90,6 +111,11 @@ class TimePeriods
      * Контрольная провеска чугуна: глубина поиска в днях.
      */
     const IRON_COMPARE = 3;
+
+    /**
+     * Контрольная провеска шлака: глубина поиска в днях.
+     */
+    const SLAG_COMPARE = 3;
 }
 
 /**
@@ -110,6 +136,11 @@ class CargoTypes
      */
     const IRON_COMPARE_DYN = 'Чугун (контрольная провеска)';
     const IRON_COMPARE_STA = 'Чугун';
+    /**
+     * Контрольная провеска шлака.
+     */
+    const SLAG_COMPARE_DYN = 'Шлак (контрольная провеска)';
+    const SLAG_COMPARE_STA = 'Шлак гранулированный';
 }
 
 /**
@@ -154,6 +185,10 @@ class ScaleType
      * Контрольная провеска чугуна.
      */
     const IRON_CONTROL = Constants::SCALE_NUM_REPORT_IRON_CONTROL;
+    /**
+     * Контрольная провеска шлака.
+     */
+    const SLAG_CONTROL = Constants::SCALE_NUM_REPORT_SLAG_CONTROL;
     /**
      * Сводная информация по списку номеров вагонов.
      */
@@ -216,6 +251,7 @@ class ResultType
 
     const IRON = 90;
     const IRON_CONTROL = 91;
+    const SLAG_CONTROL = 92;
 
     const VANLIST_WEIGHS = 100;
     const VANLIST_LAST_TARE = 101;

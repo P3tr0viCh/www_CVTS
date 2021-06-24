@@ -67,6 +67,8 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
 
             case C::IRON_CONTROL_DATETIME_STA:
             case C::IRON_CONTROL_DATETIME_DYN:
+            case C::SLAG_CONTROL_DATETIME_STA:
+            case C::SLAG_CONTROL_DATETIME_DYN:
                 if ($fieldValue == "0000-00-00 00:00:00" ||
                     $fieldValue == "1899-12-30 00:00:00") {
                     return S::TEXT_TABLE_CELL_EMPTY;
@@ -117,10 +119,16 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::IRON_CONTROL_DIFF_DYN_CARR:
             case C::IRON_CONTROL_DIFF_SIDE:
             case C::IRON_CONTROL_DIFF_CARRIAGE:
+            case C::SLAG_CONTROL_NETTO_STA:
+            case C::SLAG_CONTROL_NETTO_DYN:
+            case C::SLAG_CONTROL_DIFF_DYN_CARR:
+            case C::SLAG_CONTROL_DIFF_SIDE:
+            case C::SLAG_CONTROL_DIFF_CARRIAGE:
                 return num_fmt($fieldValue, 2);
 
             case C::NETTO:
             case C::IRON_CONTROL_DIFF_DYN_STA:
+            case C::SLAG_CONTROL_DIFF_DYN_STA:
                 $s = num_fmt($fieldValue, 2);
                 return "<b>" . $s . "</b>";
 
@@ -310,11 +318,20 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::MI_3115_DELTA_FOR_STATIONS, C::MI_3115_DELTA, C::MI_3115_TOLERANCE,
         C::MI_3115_RESULT,
         C::IRON_DATE, C::IRON_ESPC_RAZL, C::IRON_ESPC, C::IRON_RAZL, C::IRON_SHCH, C::IRON_INGOT,
-        C::IRON_CONTROL_SCALES_STA, C::IRON_CONTROL_DATETIME_STA,
-        C::IRON_CONTROL_SCALES_DYN, C::IRON_CONTROL_DATETIME_DYN,
+        C::IRON_CONTROL_SCALES_STA,
+        C::IRON_CONTROL_SCALES_DYN,
+        C::IRON_CONTROL_DATETIME_STA,
+        C::IRON_CONTROL_DATETIME_DYN,
         C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
         C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
         C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
+        C::SLAG_CONTROL_SCALES_STA,
+        C::SLAG_CONTROL_SCALES_DYN,
+        C::SLAG_CONTROL_DATETIME_STA,
+        C::SLAG_CONTROL_DATETIME_DYN,
+        C::SLAG_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_DYN,
+        C::SLAG_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_STA,
+        C::SLAG_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_CARRIAGE,
         C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
         C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
         C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
@@ -325,7 +342,8 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::OVERLOAD, C::CARRYING => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
             $resultType == ResultType::COMPARE_DYNAMIC ||
             $resultType == ResultType::COMPARE_STATIC ||
-            $resultType == ResultType::IRON_CONTROL,
+            $resultType == ResultType::IRON_CONTROL ||
+            $resultType == ResultType::SLAG_CONTROL,
         C::DEPART_STATION, C::PURPOSE_STATION => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE,
         C::INVOICE_NETTO, C::INVOICE_TARE, C::INVOICE_OVERLOAD => ($scalesInfo->getType() == ScaleType::WMR) ||
             ($scalesInfo->getType() == ScaleType::AUTO),
@@ -475,16 +493,18 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::IRON_RAZL => CS::IRON_RAZL,
         C::IRON_SHCH => CS::IRON_SHCH,
         C::IRON_INGOT => CS::IRON_INGOT,
-        C::IRON_CONTROL_SCALES_STA => CS::IRON_CONTROL_SCALES_STA,
-        C::IRON_CONTROL_DATETIME_STA => CS::IRON_CONTROL_DATETIME_STA,
-        C::IRON_CONTROL_SCALES_DYN => CS::IRON_CONTROL_SCALES_DYN,
-        C::IRON_CONTROL_DATETIME_DYN => CS::IRON_CONTROL_DATETIME_DYN,
-        C::IRON_CONTROL_NETTO_STA => CS::IRON_CONTROL_NETTO_STA,
-        C::IRON_CONTROL_NETTO_DYN => CS::IRON_CONTROL_NETTO_DYN,
-        C::IRON_CONTROL_DIFF_DYN_CARR => CS::IRON_CONTROL_DIFF_DYN_CARR,
-        C::IRON_CONTROL_DIFF_DYN_STA => CS::IRON_CONTROL_DIFF_DYN_STA,
-        C::IRON_CONTROL_DIFF_SIDE => CS::IRON_CONTROL_DIFF_SIDE,
-        C::IRON_CONTROL_DIFF_CARRIAGE => CS::IRON_CONTROL_DIFF_CARRIAGE,
+        C::IRON_CONTROL_SCALES_STA,
+        C::SLAG_CONTROL_SCALES_STA => CS::CONTROL_SCALES_STA,
+        C::IRON_CONTROL_SCALES_DYN,
+        C::SLAG_CONTROL_SCALES_DYN => CS::CONTROL_SCALES_DYN,
+        C::IRON_CONTROL_DATETIME_STA, C::SLAG_CONTROL_DATETIME_STA => CS::CONTROL_DATETIME_STA,
+        C::IRON_CONTROL_DATETIME_DYN, C::SLAG_CONTROL_DATETIME_DYN => CS::CONTROL_DATETIME_DYN,
+        C::IRON_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_STA => CS::CONTROL_NETTO_STA,
+        C::IRON_CONTROL_NETTO_DYN, C::SLAG_CONTROL_NETTO_DYN => CS::CONTROL_NETTO_DYN,
+        C::IRON_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_CARR => CS::CONTROL_DIFF_DYN_CARR,
+        C::IRON_CONTROL_DIFF_DYN_STA, C::SLAG_CONTROL_DIFF_DYN_STA => CS::CONTROL_DIFF_DYN_STA,
+        C::IRON_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_SIDE => CS::CONTROL_DIFF_SIDE,
+        C::IRON_CONTROL_DIFF_CARRIAGE, C::SLAG_CONTROL_DIFF_CARRIAGE => CS::CONTROL_DIFF_CARRIAGE,
         C::SENSOR_M1 => CS::SENSOR_M1,
         C::SENSOR_M2 => CS::SENSOR_M2,
         C::SENSOR_M3 => CS::SENSOR_M3,
@@ -518,23 +538,31 @@ function columnTitle(string $fieldName): ?string
     return match ($fieldName) {
         C::COMPARE => sprintf(CS::COMPARE_TITLE,
             Thresholds::COMPARE_VALUE_WARNING_YELLOW, Thresholds::COMPARE_VALUE_WARNING_RED),
-        C::IRON_CONTROL_DIFF_DYN_STA => sprintf(CS::IRON_CONTROL_DIFF_DYN_STA_TITLE,
+        C::IRON_CONTROL_DIFF_DYN_STA => sprintf(CS::CONTROL_DIFF_DYN_STA_TITLE,
             Thresholds::IRON_CONTROL_DIFF_DYN_STA_WARNING_YELLOW, Thresholds::IRON_CONTROL_DIFF_DYN_STA_WARNING_RED),
-        C::IRON_CONTROL_DIFF_SIDE => sprintf(CS::IRON_CONTROL_DIFF_SIDE_TITLE,
+        C::IRON_CONTROL_DIFF_SIDE => sprintf(CS::CONTROL_DIFF_SIDE_TITLE,
             Thresholds::IRON_CONTROL_DIFF_SIDE_WARNING_YELLOW, Thresholds::IRON_CONTROL_DIFF_SIDE_WARNING_RED),
-        C::IRON_CONTROL_DIFF_CARRIAGE => sprintf(CS::IRON_CONTROL_DIFF_CARRIAGE_TITLE,
+        C::IRON_CONTROL_DIFF_CARRIAGE => sprintf(CS::CONTROL_DIFF_CARRIAGE_TITLE,
             Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW, Thresholds::IRON_CONTROL_DIFF_CARRIAGE_WARNING_RED),
-        C::AVG =>sprintf(CS::AVG_TITLE,
+        C::SLAG_CONTROL_DIFF_DYN_STA => sprintf(CS::CONTROL_DIFF_DYN_STA_TITLE,
+            Thresholds::SLAG_CONTROL_DIFF_DYN_STA_WARNING_YELLOW, Thresholds::SLAG_CONTROL_DIFF_DYN_STA_WARNING_RED),
+        C::SLAG_CONTROL_DIFF_SIDE => sprintf(CS::CONTROL_DIFF_SIDE_TITLE,
+            Thresholds::SLAG_CONTROL_DIFF_SIDE_WARNING_YELLOW, Thresholds::SLAG_CONTROL_DIFF_SIDE_WARNING_RED),
+        C::SLAG_CONTROL_DIFF_CARRIAGE => sprintf(CS::CONTROL_DIFF_CARRIAGE_TITLE,
+            Thresholds::SLAG_CONTROL_DIFF_CARRIAGE_WARNING_YELLOW, Thresholds::SLAG_CONTROL_DIFF_CARRIAGE_WARNING_RED),
+        C::AVG => sprintf(CS::AVG_TITLE,
             Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_AVG_VALUE_WARNING_RED),
-        C::SUM =>sprintf(CS::SUM_TITLE,
+        C::SUM => sprintf(CS::SUM_TITLE,
             Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_YELLOW, Thresholds::IRON_CONTROL_SUM_VALUE_WARNING_RED),
         C::IRON_ESPC => sprintf(CS::IRON_ESPC_TITLE, ScaleNums::IRON_ESPC, CargoTypes::IRON),
         C::IRON_RAZL => sprintf(CS::IRON_RAZL_TITLE, ScaleNums::IRON_RAZL, CargoTypes::IRON),
         C::IRON_SHCH => sprintf(CS::IRON_SHCH_TITLE, ScaleNums::IRON_SHCH, CargoTypes::IRON),
         C::IRON_INGOT => sprintf(CS::IRON_INGOT_TITLE, str_replace("'", "", CargoTypes::IRON_INGOT),
             SuppliersAndRecipients::IRON_SUPPLIER, SuppliersAndRecipients::IRON_RECIPIENT),
-        C::IRON_CONTROL_SCALES_STA => sprintf(CS::IRON_CONTROL_SCALES_STA_TITLE, ScaleNums::IRON_COMPARE_STA, CargoTypes::IRON_COMPARE_STA),
-        C::IRON_CONTROL_SCALES_DYN => sprintf(CS::IRON_CONTROL_SCALES_DYN_TITLE, ScaleNums::IRON_COMPARE_DYN, CargoTypes::IRON_COMPARE_DYN),
+        C::IRON_CONTROL_SCALES_STA => sprintf(CS::CONTROL_SCALES_STA_TITLE, ScaleNums::IRON_COMPARE_STA, CargoTypes::IRON_COMPARE_STA),
+        C::IRON_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::IRON_COMPARE_DYN, CargoTypes::IRON_COMPARE_DYN),
+        C::SLAG_CONTROL_SCALES_STA => sprintf(CS::CONTROL_SCALES_STA_TITLE, ScaleNums::SLAG_COMPARE_STA, CargoTypes::SLAG_COMPARE_STA),
+        C::SLAG_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::SLAG_COMPARE_DYN, CargoTypes::SLAG_COMPARE_DYN),
         default => null,
     };
 }
@@ -547,6 +575,7 @@ function columnTitle(string $fieldName): ?string
             C::SCALE_MIN_CAPACITY, C::SCALE_MAX_CAPACITY,
             C::SCALE_DISCRETENESS,
             C::IRON_CONTROL_SCALES_STA, C::IRON_CONTROL_SCALES_DYN,
+            C::SLAG_CONTROL_SCALES_STA, C::SLAG_CONTROL_SCALES_DYN,
             C::UNIX_TIME, C::TRAIN_NUMBER,
             C::CARRYING, C::LOAD_NORM, C::VOLUME,
             C::TARE, C::BRUTTO, C::NETTO, C::OVERLOAD, C::VAN_COUNT,
@@ -582,6 +611,9 @@ function columnTitle(string $fieldName): ?string
             C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
             C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
             C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
+            C::SLAG_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_DYN,
+            C::SLAG_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_STA,
+            C::SLAG_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_CARRIAGE,
             C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
             C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
             C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
@@ -772,6 +804,7 @@ function getResultHeader(int $resultType): string
         ResultType::SENSORS_INFO => S::SENSORS_INFO,
         ResultType::IRON => S::HEADER_IRON,
         ResultType::IRON_CONTROL => S::HEADER_IRON_CONTROL,
+        ResultType::SLAG_CONTROL => S::HEADER_SLAG_CONTROL,
         ResultType::VANLIST_WEIGHS => S::HEADER_VANLIST_WEIGHS,
         ResultType::VANLIST_LAST_TARE => S::HEADER_VANLIST_TARE,
         default => throw new InvalidArgumentException("Unknown resultType ($resultType)"),

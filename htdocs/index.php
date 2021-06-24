@@ -256,6 +256,7 @@ if ($mysqli) {
             addRow(S::SHOW_VANLIST_QUERY, C::SCALE_NUM_REPORT_VANLIST, true);
             addRow(S::SHOW_IRON_QUERY, C::SCALE_NUM_REPORT_IRON, true);
             addRow(S::SHOW_IRON_CONTROL_QUERY, C::SCALE_NUM_REPORT_IRON_CONTROL, true);
+            addRow(S::SHOW_SLAG_CONTROL_QUERY, C::SCALE_NUM_REPORT_SLAG_CONTROL, true);
 
 // end
             echoTableBodyEnd();

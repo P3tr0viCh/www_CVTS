@@ -192,16 +192,27 @@ class Columns
     const IRON_SHCH = 'shch';
     const IRON_INGOT = 'ingot';
 
-    const IRON_CONTROL_SCALES_STA = 'scales_sta';
-    const IRON_CONTROL_DATETIME_STA = 'bdatetime_sta';
-    const IRON_CONTROL_SCALES_DYN = 'scales_dyn';
-    const IRON_CONTROL_DATETIME_DYN = 'bdatetime_dyn';
-    const IRON_CONTROL_NETTO_STA = 'netto_sta';
-    const IRON_CONTROL_NETTO_DYN = 'netto_dyn';
-    const IRON_CONTROL_DIFF_DYN_CARR = 'diff_dyn_carr';
-    const IRON_CONTROL_DIFF_DYN_STA = 'diff_dyn_sta';
-    const IRON_CONTROL_DIFF_SIDE = 'diff_side';
-    const IRON_CONTROL_DIFF_CARRIAGE = 'diff_carriage';
+    const IRON_CONTROL_SCALES_STA = 'iron_control_scales_sta';
+    const IRON_CONTROL_DATETIME_STA = 'iron_control_bdatetime_sta';
+    const IRON_CONTROL_SCALES_DYN = 'iron_control_scales_dyn';
+    const IRON_CONTROL_DATETIME_DYN = 'iron_control_bdatetime_dyn';
+    const IRON_CONTROL_NETTO_STA = 'iron_control_netto_sta';
+    const IRON_CONTROL_NETTO_DYN = 'iron_control_netto_dyn';
+    const IRON_CONTROL_DIFF_DYN_CARR = 'iron_control_diff_dyn_carr';
+    const IRON_CONTROL_DIFF_DYN_STA = 'iron_control_diff_dyn_sta';
+    const IRON_CONTROL_DIFF_SIDE = 'iron_control_diff_side';
+    const IRON_CONTROL_DIFF_CARRIAGE = 'iron_control_diff_carriage';
+
+    const SLAG_CONTROL_SCALES_STA = 'slag_control_scales_sta';
+    const SLAG_CONTROL_DATETIME_STA = 'slag_control_bdatetime_sta';
+    const SLAG_CONTROL_SCALES_DYN = 'slag_control_scales_dyn';
+    const SLAG_CONTROL_DATETIME_DYN = 'slag_control_bdatetime_dyn';
+    const SLAG_CONTROL_NETTO_STA = 'slag_control_netto_sta';
+    const SLAG_CONTROL_NETTO_DYN = 'slag_control_netto_dyn';
+    const SLAG_CONTROL_DIFF_DYN_CARR = 'slag_control_diff_dyn_carr';
+    const SLAG_CONTROL_DIFF_DYN_STA = 'slag_control_diff_dyn_sta';
+    const SLAG_CONTROL_DIFF_SIDE = 'slag_control_diff_side';
+    const SLAG_CONTROL_DIFF_CARRIAGE = 'slag_control_diff_carriage';
 
     const AVG = 'avg_x';
     const SUM = 'sum_x';
