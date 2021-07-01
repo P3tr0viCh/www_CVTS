@@ -61,6 +61,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::DATETIME_SHIPMENT:
             case C::DATETIME_FAILURE:
             case C::DATETIME_CARGO:
+            case C::DATETIME_SENSORS_INFO:
 
             case C::MI_TARE_DYN_DATETIME:
             case C::MI_TARE_STA_DATETIME:
@@ -210,6 +211,13 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
             case C::SENSOR_T7:
             case C::SENSOR_T8:
                 return num_fmt($fieldValue, 1);
+            case C::SENSORS_INFO_TYPE:
+                return match ((int)$fieldValue) {
+                    0 => S::TEXT_SENSORS_INFO_STATUS,
+                    1 => S::TEXT_SENSORS_INFO_ZEROS_CURRENT,
+                    2 => S::TEXT_SENSORS_INFO_ZEROS_INITIAL,
+                    default => $fieldValue
+                };
 
             case C::TARE_SCALE_NUMBER:
             case C::MI_TARE_DYN_SCALES:
@@ -295,6 +303,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         },
         C::SCALE_PLACE,
         C::DATETIME,
+        C::DATETIME_SENSORS_INFO,
         C::TRAIN_NUMBER,
         C::BRUTTO, C::TARE, C::NETTO,
         C::VAN_COUNT,
@@ -332,6 +341,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::SLAG_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_DYN,
         C::SLAG_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_STA,
         C::SLAG_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_CARRIAGE,
+        C::SENSORS_INFO_TYPE,
         C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
         C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
         C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
@@ -365,7 +375,8 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::SCALE_MAX_CAPACITY => CS::SCALE_MAX_CAPACITY,
         C::SCALE_DISCRETENESS => CS::SCALE_DISCRETENESS,
         C::UNIX_TIME => CS::UNIX_TIME,
-        C::DATETIME => CS::DATETIME,
+        C::DATETIME,
+        C::DATETIME_SENSORS_INFO => CS::DATETIME,
         C::DATETIME_END => $resultType == ResultType::COEFFS ? CS::DATETIME : CS::DATETIME_END,
         C::TRAIN_NUMBER => CS::TRAIN_NUMBER,
         C::CARRYING => CS::CARRYING,
@@ -529,6 +540,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         C::SENSOR_T6 => CS::SENSOR_T6,
         C::SENSOR_T7 => CS::SENSOR_T7,
         C::SENSOR_T8 => CS::SENSOR_T8,
+        C::SENSORS_INFO_TYPE => CS::SENSORS_INFO_TYPE,
         default => $fieldName,
     };
 }
@@ -563,6 +575,8 @@ function columnTitle(string $fieldName): ?string
         C::IRON_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::IRON_COMPARE_DYN, CargoTypes::IRON_COMPARE_DYN),
         C::SLAG_CONTROL_SCALES_STA => sprintf(CS::CONTROL_SCALES_STA_TITLE, ScaleNums::SLAG_COMPARE_STA, CargoTypes::SLAG_COMPARE_STA),
         C::SLAG_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::SLAG_COMPARE_DYN, CargoTypes::SLAG_COMPARE_DYN),
+        C::DATETIME_SENSORS_INFO => sprintf(CS::SENSORS_INFO_TITLE,
+            Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_YELLOW, Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_RED),
         default => null,
     };
 }

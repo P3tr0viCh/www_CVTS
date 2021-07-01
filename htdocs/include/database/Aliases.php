@@ -10,8 +10,8 @@ class Aliases
     const DYN = 'dyn';
 
     const SENSORS_INFO_ZEROS_LAST = 'z_m';
+    const SENSORS_INFO_ZEROS_INIT_LAST = 'z_m_i';
     const SENSORS_INFO_ZEROS_VAL = 'z_v';
     const SENSORS_INFO_TEMPS_LAST = 't_m';
     const SENSORS_INFO_SENSORS_LAST = 's_m';
-    const SENSOR_INFO_TYPE = 'type_i';
 }

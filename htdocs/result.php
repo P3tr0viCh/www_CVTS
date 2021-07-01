@@ -37,6 +37,7 @@ require_once "include/echo_form.php";
 require_once "include/HtmlHeader.php";
 require_once "include/HtmlDrawer.php";
 
+use database\Aliases;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 
@@ -983,7 +984,8 @@ if (!$resultMessage) {
                                 C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8
                                 => $rowIndex == 1 ?
                                     (is_null($row[$fieldNum]) ? "" : ($row[$fieldNum] > 0 ? Strings::TEXT_ON : Strings::TEXT_OFF)) :
-                                    formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
+                                    ($rowIndex == 2 ? formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()) :
+                                        ($row[$fieldNum] == Aliases::NU ? "" : formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()))),
                                 default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
                             },
                             default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
@@ -999,7 +1001,7 @@ if (!$resultMessage) {
                                 C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
                                 C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
                                 C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8
-                                => is_null($row[$fieldNum]) ? null : columnName($fieldsInfo[$fieldNum]->name),
+                                => empty($field) ? null : columnName($fieldsInfo[$fieldNum]->name),
                                 default => null
                             },
                             default => null
@@ -1082,11 +1084,25 @@ if (!$resultMessage) {
                                 break;
                             case ResultType::SENSORS_STATUS:
                             case ResultType::SENSORS_INFO:
-                                $cellColor = match ($field) {
-                                    Strings::TEXT_ON => 'color--sensors-status-on',
-                                    Strings::TEXT_OFF => 'color--sensors-status-off',
-                                    default => null
-                                };
+                                switch ($fieldsInfo[$fieldNum]->name) {
+                                    case C::DATETIME_SENSORS_INFO:
+                                        if ($rowIndex == 2) {
+                                            $diff = (new DateTime())->diff(
+                                                (new DateTime())->setTimestamp(
+                                                    mysqlDateTimeToUnixTime($row[C::DATETIME_SENSORS_INFO])), true);
+
+                                            $cellColor = getCellWarningColor($diff->days * 24 + $diff->h,
+                                                Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_YELLOW,
+                                                Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_RED);
+                                        }
+                                        break;
+                                    default:
+                                        $cellColor = match ($field) {
+                                            Strings::TEXT_ON => 'color--sensors-status-on',
+                                            Strings::TEXT_OFF => 'color--sensors-status-off',
+                                            default => null
+                                        };
+                                }
                                 break;
                         }
 

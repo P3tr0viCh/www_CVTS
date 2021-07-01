@@ -260,6 +260,10 @@ class Strings
     const TEXT_ON = "ON";
     const TEXT_OFF = "OFF";
 
+    const TEXT_SENSORS_INFO_STATUS = "Статус";
+    const TEXT_SENSORS_INFO_ZEROS_CURRENT = "Текущий ноль";
+    const TEXT_SENSORS_INFO_ZEROS_INITIAL = "Исходный ноль";
+
     const TEXT_DELTA_MI_3115_OK = "Норма";
 
     const TEXT_NIGHT_MODE = 'ДЕНЬ/НОЧЬ';

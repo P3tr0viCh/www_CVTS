@@ -40,6 +40,7 @@ class Columns
     const DATETIME_SHIPMENT = 'shipment_date';
     const DATETIME_FAILURE = 'wdatetime';
     const DATETIME_CARGO = 'cargotype_bdatetime';
+    const DATETIME_SENSORS_INFO = 'sensors_info_bdatetime';
 
     const TRAIN_NUMBER = 'rwnum';
 
@@ -234,6 +235,7 @@ class Columns
     const SENSOR_M14 = 'm14';
     const SENSOR_M15 = 'm15';
     const SENSOR_M16 = 'm16';
+    const SENSORS_INIT = 'init';
     const SENSOR_T = 't';
     const SENSOR_T1 = 't1';
     const SENSOR_T2 = 't2';
@@ -243,4 +245,5 @@ class Columns
     const SENSOR_T6 = 't6';
     const SENSOR_T7 = 't7';
     const SENSOR_T8 = 't8';
+    const SENSORS_INFO_TYPE = 'type_i';
 }

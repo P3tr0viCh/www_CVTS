@@ -33,7 +33,7 @@ use Strings as S;
 
 #[Pure] function getCellWarningColor(?float $value, float $yellowValue, float $redValue): ?string
 {
-    if (is_null($value) || !is_numeric($value)) return null;
+    if (!is_numeric($value)) return null;
 
     $value = abs($value);
 
