@@ -187,7 +187,8 @@ class ColumnsStrings
     const AVG_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
     const SUM_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
-    const SENSORS_INFO_TITLE = 'Жёлтое значение: %s часов' . PHP_EOL . 'Красное значение: %s часа';
+    const SENSORS_INFO_TITLE = Strings::TEXT_SENSORS_INFO_ZEROS_CURRENT . PHP_EOL .
+    'Жёлтое значение: %s часов' . PHP_EOL . 'Красное значение: %s часа';
 
     const SENSOR_M1 = 'M1';
     const SENSOR_M2 = 'M2';

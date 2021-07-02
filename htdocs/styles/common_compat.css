@@ -266,7 +266,11 @@ img.main-logo {
 }
 
 .row-color--even {
-    background: #badbf3;
+    background: #BADBF3;
+}
+
+.row-color--sensors_init {
+    background: #6FD070;
 }
 
 .row-sub_header {

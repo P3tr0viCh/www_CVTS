@@ -40,7 +40,7 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
         $fieldInfo = new FieldInfo();
 
         $fieldInfo->name = $field->name;
-        $fieldInfo->visible = $full || isFieldVisible($fieldInfo->name, $scaleInfo, $type);
+        $fieldInfo->visible = isFieldVisible($fieldInfo->name, $scaleInfo, $type, $full);
         $fieldInfo->leftAlign = isFieldLeftAlign($newDesign, $fieldInfo->name);
 
         $result[] = $fieldInfo;
@@ -292,77 +292,84 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
     return number_format($number, $decimals, S::DEC_POINT, "");
 }
 
-#[Pure] function isFieldVisible(string $fieldName, ScaleInfo $scalesInfo, int $resultType): bool
+#[Pure] function isFieldVisible(string $fieldName, ScaleInfo $scalesInfo, int $resultType, bool $full): bool
 {
-    return match ($fieldName) {
-        C::SCALE_NUM => match ($scalesInfo->getScaleNum()) {
-            Constants::SCALE_NUM_ALL_TRAIN_SCALES,
-            Constants::SCALE_NUM_REPORT_VANLIST,
-            Constants::SCALE_NUM_REPORT_SENSORS_INFO => true,
+    return $full ?
+        match ($fieldName) {
+            C::TAG2, C::UTIME,
+            C::RESERV1, C::RESERV2, C::RESERV3, C::RESERV4,
+            C::SENSORS_INIT => false,
+            default => true,
+        } :
+        match ($fieldName) {
+            C::SCALE_NUM => match ($scalesInfo->getScaleNum()) {
+                Constants::SCALE_NUM_ALL_TRAIN_SCALES,
+                Constants::SCALE_NUM_REPORT_VANLIST,
+                Constants::SCALE_NUM_REPORT_SENSORS_INFO => true,
+                default => false,
+            },
+            C::SCALE_PLACE,
+            C::DATETIME,
+            C::DATETIME_SENSORS_INFO,
+            C::TRAIN_NUMBER,
+            C::BRUTTO, C::TARE, C::NETTO,
+            C::VAN_COUNT,
+            C::OPERATOR, C::PRODUCT, C::LEFT_SIDE,
+            C::VAN_NUMBER, C::VAN_TYPE,
+            C::AUTO_NUMBER, C::DRIVER, C::DATETIME_TARE,
+            C::CARGO_TYPE, C::DATETIME_CARGO,
+            C::DATETIME_FAILURE,
+            C::WMODE, C::MESSAGE, C::UNIT_NUMBER,
+            C::DATETIME_T,
+            C::OPERATION_TYPE, C::ACCURACY_CLASS, C::DISCRETENESS,
+            C::COEFFICIENT_P1, C::COEFFICIENT_Q1, C::COEFFICIENT_T1,
+            C::COEFFICIENT_P2, C::COEFFICIENT_Q2, C::COEFFICIENT_T2,
+            C::VERIFIER, C::COMMENT,
+            C::INVOICE_NUMBER, C::INVOICE_SUPPLIER, C::INVOICE_RECIPIENT,
+            C::SIDE_DIFFERENCE, C::CARRIAGE_DIFFERENCE,
+            C::MI_DELTA_ABS_BRUTTO, C::MI_DELTA_ABS_TARE, C::MI_DELTA,
+            C::MI_TARE_DYN, C::MI_TARE_DYN_SCALES, C::MI_TARE_DYN_DATETIME, C::MI_DELTA_ABS_TARE_DYN, C::MI_DELTA_DYN,
+            C::MI_TARE_STA, C::MI_TARE_STA_SCALES, C::MI_TARE_STA_DATETIME, C::MI_DELTA_ABS_TARE_STA, C::MI_DELTA_STA,
+            C::MI_3115_LOSS_SUPPLIER, C::MI_3115_DELTA_SUPPLIER, C::MI_3115_DELTA_FROM_TABLES,
+            C::MI_3115_DELTA_FOR_STATIONS, C::MI_3115_DELTA, C::MI_3115_TOLERANCE,
+            C::MI_3115_RESULT,
+            C::IRON_DATE, C::IRON_ESPC_RAZL, C::IRON_ESPC, C::IRON_RAZL, C::IRON_SHCH, C::IRON_INGOT,
+            C::IRON_CONTROL_SCALES_STA,
+            C::IRON_CONTROL_SCALES_DYN,
+            C::IRON_CONTROL_DATETIME_STA,
+            C::IRON_CONTROL_DATETIME_DYN,
+            C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
+            C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
+            C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
+            C::SLAG_CONTROL_SCALES_STA,
+            C::SLAG_CONTROL_SCALES_DYN,
+            C::SLAG_CONTROL_DATETIME_STA,
+            C::SLAG_CONTROL_DATETIME_DYN,
+            C::SLAG_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_DYN,
+            C::SLAG_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_STA,
+            C::SLAG_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_CARRIAGE,
+            C::SENSORS_INFO_TYPE,
+            C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
+            C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
+            C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
+            C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
+            C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
+            C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => true,
+
+            C::OVERLOAD, C::CARRYING => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
+                $resultType == ResultType::COMPARE_DYNAMIC ||
+                $resultType == ResultType::COMPARE_STATIC ||
+                $resultType == ResultType::IRON_CONTROL ||
+                $resultType == ResultType::SLAG_CONTROL,
+            C::DEPART_STATION, C::PURPOSE_STATION => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE,
+            C::INVOICE_NETTO, C::INVOICE_TARE, C::INVOICE_OVERLOAD => ($scalesInfo->getType() == ScaleType::WMR) ||
+                ($scalesInfo->getType() == ScaleType::AUTO),
+            C::SEQUENCE_NUMBER => ($resultType != ResultType::TRAIN_DYNAMIC) &&
+                ($resultType != ResultType::KANAT),
+            C::DATETIME_END => $resultType == ResultType::COEFFS,
+
             default => false,
-        },
-        C::SCALE_PLACE,
-        C::DATETIME,
-        C::DATETIME_SENSORS_INFO,
-        C::TRAIN_NUMBER,
-        C::BRUTTO, C::TARE, C::NETTO,
-        C::VAN_COUNT,
-        C::OPERATOR, C::PRODUCT, C::LEFT_SIDE,
-        C::VAN_NUMBER, C::VAN_TYPE,
-        C::AUTO_NUMBER, C::DRIVER, C::DATETIME_TARE,
-        C::CARGO_TYPE, C::DATETIME_CARGO,
-        C::DATETIME_FAILURE,
-        C::WMODE, C::MESSAGE, C::UNIT_NUMBER,
-        C::DATETIME_T,
-        C::OPERATION_TYPE, C::ACCURACY_CLASS, C::DISCRETENESS,
-        C::COEFFICIENT_P1, C::COEFFICIENT_Q1, C::COEFFICIENT_T1,
-        C::COEFFICIENT_P2, C::COEFFICIENT_Q2, C::COEFFICIENT_T2,
-        C::VERIFIER, C::COMMENT,
-        C::INVOICE_NUMBER, C::INVOICE_SUPPLIER, C::INVOICE_RECIPIENT,
-        C::SIDE_DIFFERENCE, C::CARRIAGE_DIFFERENCE,
-        C::MI_DELTA_ABS_BRUTTO, C::MI_DELTA_ABS_TARE, C::MI_DELTA,
-        C::MI_TARE_DYN, C::MI_TARE_DYN_SCALES, C::MI_TARE_DYN_DATETIME, C::MI_DELTA_ABS_TARE_DYN, C::MI_DELTA_DYN,
-        C::MI_TARE_STA, C::MI_TARE_STA_SCALES, C::MI_TARE_STA_DATETIME, C::MI_DELTA_ABS_TARE_STA, C::MI_DELTA_STA,
-        C::MI_3115_LOSS_SUPPLIER, C::MI_3115_DELTA_SUPPLIER, C::MI_3115_DELTA_FROM_TABLES,
-        C::MI_3115_DELTA_FOR_STATIONS, C::MI_3115_DELTA, C::MI_3115_TOLERANCE,
-        C::MI_3115_RESULT,
-        C::IRON_DATE, C::IRON_ESPC_RAZL, C::IRON_ESPC, C::IRON_RAZL, C::IRON_SHCH, C::IRON_INGOT,
-        C::IRON_CONTROL_SCALES_STA,
-        C::IRON_CONTROL_SCALES_DYN,
-        C::IRON_CONTROL_DATETIME_STA,
-        C::IRON_CONTROL_DATETIME_DYN,
-        C::IRON_CONTROL_NETTO_STA, C::IRON_CONTROL_NETTO_DYN,
-        C::IRON_CONTROL_DIFF_DYN_CARR, C::IRON_CONTROL_DIFF_DYN_STA,
-        C::IRON_CONTROL_DIFF_SIDE, C::IRON_CONTROL_DIFF_CARRIAGE,
-        C::SLAG_CONTROL_SCALES_STA,
-        C::SLAG_CONTROL_SCALES_DYN,
-        C::SLAG_CONTROL_DATETIME_STA,
-        C::SLAG_CONTROL_DATETIME_DYN,
-        C::SLAG_CONTROL_NETTO_STA, C::SLAG_CONTROL_NETTO_DYN,
-        C::SLAG_CONTROL_DIFF_DYN_CARR, C::SLAG_CONTROL_DIFF_DYN_STA,
-        C::SLAG_CONTROL_DIFF_SIDE, C::SLAG_CONTROL_DIFF_CARRIAGE,
-        C::SENSORS_INFO_TYPE,
-        C::SENSOR_M1, C::SENSOR_M2, C::SENSOR_M3, C::SENSOR_M4,
-        C::SENSOR_M5, C::SENSOR_M6, C::SENSOR_M7, C::SENSOR_M8,
-        C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
-        C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
-        C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
-        C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => true,
-
-        C::OVERLOAD, C::CARRYING => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE ||
-            $resultType == ResultType::COMPARE_DYNAMIC ||
-            $resultType == ResultType::COMPARE_STATIC ||
-            $resultType == ResultType::IRON_CONTROL ||
-            $resultType == ResultType::SLAG_CONTROL,
-        C::DEPART_STATION, C::PURPOSE_STATION => $scalesInfo->getType() == ScaleType::DEFAULT_TYPE,
-        C::INVOICE_NETTO, C::INVOICE_TARE, C::INVOICE_OVERLOAD => ($scalesInfo->getType() == ScaleType::WMR) ||
-            ($scalesInfo->getType() == ScaleType::AUTO),
-        C::SEQUENCE_NUMBER => ($resultType != ResultType::TRAIN_DYNAMIC) &&
-            ($resultType != ResultType::KANAT),
-        C::DATETIME_END => $resultType == ResultType::COEFFS,
-
-        default => false,
-    };
+        };
 }
 
 #[Pure] function columnName(string $fieldName, int $scaleType = null, int $resultType = null): string
@@ -633,7 +640,8 @@ function columnTitle(string $fieldName): ?string
             C::SENSOR_M9, C::SENSOR_M10, C::SENSOR_M11, C::SENSOR_M12,
             C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
             C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
-            C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8 => false,
+            C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8,
+            C::SENSORS_INIT => false,
             default => true,
         };
     } else {

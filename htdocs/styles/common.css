@@ -105,7 +105,7 @@ div.hr {
 
 td.color--red {
     color: #F6F6F6;
-    background-color: #F44336;
+    background-color: #F5645B;
 }
 
 td.color--yellow {
@@ -119,13 +119,13 @@ td.color--gray {
 }
 
 td.color--sensors-status-on {
-    color: #4CAF50;
-    background-color: #4CAF50;
+    color: #6FD070;
+    background-color: #6FD070;
 }
 
 td.color--sensors-status-off {
-    color: #F44336;
-    background-color: #F44336;
+    color: #F5645B;
+    background-color: #F5645B;
 }
 
 .bk-color--white {

@@ -32,6 +32,13 @@ class Columns
     const UNIX_TIME = 'wtime';
     const UNIX_TIME_END = 'etime';
 
+    const TAG2 = 'tag2';
+    const UTIME = 'utime';
+    const RESERV1 = 'ireserv1';
+    const RESERV2 = 'ireserv2';
+    const RESERV3 = 'ireserv3';
+    const RESERV4 = 'ireserv4';
+
     const DATETIME = 'bdatetime';
     const DATETIME_END = 'edatetime';
     const DATETIME_T = 'tdatetime';

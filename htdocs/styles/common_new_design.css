@@ -201,6 +201,10 @@ tr.rowclick:hover {
     background: #E2E8EA;
 }
 
+.row-color--sensors_init {
+    background: #6FD070;
+}
+
 .row-sub_header {
     color: rgba(0, 0, 0, .54);
     font-weight: 700;

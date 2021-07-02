@@ -12,6 +12,8 @@ class QuerySensors extends QueryBaseDates
 {
     private int $scaleNum = Constants::SCALE_NUM_ALL_TRAIN_SCALES;
 
+    private ?string $scalesFilter = null;
+
     private int $resultType;
 
     private int $sensorsMCount = 0;
@@ -22,6 +24,12 @@ class QuerySensors extends QueryBaseDates
     public function setScaleNum(int $scaleNum): static
     {
         $this->scaleNum = $scaleNum;
+        return $this;
+    }
+
+    public function setScalesFilter(?string $scalesFilter): static
+    {
+        $this->scalesFilter = $scalesFilter;
         return $this;
     }
 
@@ -78,17 +86,20 @@ class QuerySensors extends QueryBaseDates
 
         $this->builder->column(C::DATETIME);
 
-        if ($this->resultType == ResultType::SENSORS_STATUS or
+        if ($this->resultType == ResultType::SENSORS_STATUS ||
             $this->resultType == ResultType::SENSORS_ZEROS) {
             for ($i = 1; $i <= $this->sensorsMCount; $i++) {
                 $this->builder->column(C::SENSOR_M . $i);
             }
         }
-        if ($this->resultType == ResultType::SENSORS_STATUS or
+        if ($this->resultType == ResultType::SENSORS_STATUS ||
             $this->resultType == ResultType::SENSORS_TEMPS) {
             for ($i = 1; $i <= $this->sensorsTCount; $i++) {
                 $this->builder->column(C::SENSOR_T . $i);
             }
+        }
+        if ($this->resultType == ResultType::SENSORS_ZEROS) {
+            $this->builder->column(C::SENSORS_INIT);
         }
     }
 
@@ -102,7 +113,9 @@ class QuerySensors extends QueryBaseDates
 
     private function setWhere()
     {
-        if (!$this->isAllScales()) {
+        if ($this->isAllScales()) {
+            $this->builder->where(C::SCALE_NUM, Comparison::IN, $this->scalesFilter);
+        } else {
             $this->builder->where(C::SCALE_NUM, Comparison::EQUAL, $this->scaleNum);
         }
 

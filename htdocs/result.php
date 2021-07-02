@@ -643,6 +643,7 @@ if (!$resultMessage) {
             ResultType::SENSORS_TEMPS,
             ResultType::SENSORS_STATUS => (new QuerySensors())
                 ->setScaleNum($scaleNum)
+                ->setScalesFilter($filter->getScalesFilter())
                 ->setDateTimeStart($dateTimeStart)
                 ->setDateTimeEnd($dateTimeEnd)
                 ->setResultType($resultType)
@@ -920,6 +921,12 @@ if (!$resultMessage) {
                     }
 
                     $rowColorClass = getRowColorClass($numColor);
+
+                    if ($resultType == ResultType::SENSORS_ZEROS) {
+                        if ($row[C::SENSORS_INIT]) {
+                            $rowColorClass = 'row-color--sensors_init';
+                        }
+                    }
 
                     if ($newDesign && $href) {
                         $class = "rowclick $rowColorClass";
