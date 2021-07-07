@@ -17,6 +17,8 @@ class HtmlHeader extends HtmlBase
 
     private bool $useBackup = false;
 
+    private ?string $drawerIcon = null;
+
     private ?array $navLinks = null;
     private ?array $menuItems = null;
 
@@ -47,6 +49,12 @@ class HtmlHeader extends HtmlBase
     public function setUseBackup(bool $useBackup): static
     {
         $this->useBackup = $useBackup;
+        return $this;
+    }
+
+    public function setDrawerIcon(?string $drawerIcon): static
+    {
+        $this->drawerIcon = $drawerIcon;
         return $this;
     }
 
@@ -123,6 +131,15 @@ class HtmlHeader extends HtmlBase
     protected function drawNewDesign()
     {
         echo "<header id='divHeader' class='mdl-layout__header'>" . PHP_EOL;
+
+        if (!empty($this->drawerIcon)) {
+            echo S::TAB;
+            echo "<div class='mdl-layout__drawer-button disabled'>" . PHP_EOL;
+            echo S::TAB . S::TAB;
+            echo "<span class='material-icons'>$this->drawerIcon</span>" . PHP_EOL;
+            echo S::TAB;
+            echo '</div>' . PHP_EOL;
+        }
 
         echo S::TAB;
         echo "<div class='mdl-layout__header-row'>" . PHP_EOL;

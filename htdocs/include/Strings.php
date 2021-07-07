@@ -21,6 +21,7 @@ class Strings
     const TITLE_ERROR_INCOMPATIBLE_BROWSER = 'Несовместимый браузер';
     const TITLE_HELP = 'Справка';
     const TITLE_A = 'Карта сайта';
+    const TITLE_SCHEMES = 'Схемы весов';
     const TITLE_ERROR = 'Ошибка';
 
     const HEADER_PAGE_MAIN = 'ВЕСОИЗМЕРИТЕЛЬНЫЕ ТЕХНОЛОГИЧЕСКИЕ СИСТЕМЫ';
@@ -29,6 +30,7 @@ class Strings
     const HEADER_PAGE_MYSQL_DATETIME = 'Дата и время на сервере MySQL';
     const HEADER_PAGE_HELP = 'Справка';
     const HEADER_PAGE_A = 'Карта сайта';
+    const HEADER_PAGE_SCHEMES = 'Схемы весов';
 
     const DRAWER_TITLE = 'Весы';
     const DRAWER_START_PAGE = 'Общий список';
@@ -193,6 +195,7 @@ class Strings
     const NAV_LINK_BACK = 'НАЗАД';
     const NAV_LINK_UPDATE = 'ОБНОВИТЬ';
     const NAV_LINK_SAVE = 'СОХРАНИТЬ';
+    const NAV_LINK_SCHEMES = 'СХЕМЫ ВЕСОВ';
     const NAV_LINK_SAVE_OLD = 'Сохранить в Excel';
 
     const INPUT_DAY = 'День';
@@ -308,6 +311,7 @@ class Strings
     const A_GOTO_MAIN = 'Список весовых';
     const A_GOTO_MAIN_COMPATIBLE = 'Список весовых в старом дизайне';
     const A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED = 'Список весовых в старом дизайне, включая закрытые весы';
+    const A_GOTO_SCHEMES = 'Схемы весов';
     const A_GOTO_WAC = 'Количество дней, отработанных без травм';
     const A_GOTO_DATETIME = 'Дата и время на компьютере';
     const A_GOTO_MYSQL_DATETIME = 'Дата и время на сервере MySQL';

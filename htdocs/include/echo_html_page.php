@@ -47,12 +47,12 @@ function echoMeta(string $name, string $value, string $content)
 
 /**
  * @param bool $newDesign
- * @param null|string $title
- * @param null|string|string[] $styles
- * @param null|string|string[] $javaScripts
+ * @param string|null $title
+ * @param string|string[]|null $styles
+ * @param string|string[]|null $javaScripts
  * @param bool $default Вывод стандартных стилей и скриптов
  */
-function echoHead(bool $newDesign, $title = null, $styles = null, $javaScripts = null, bool $default = true)
+function echoHead(bool $newDesign, string $title = null, array|string $styles = null, array|string $javaScripts = null, bool $default = true)
 {
     /** @noinspection HtmlRequiredTitleElement */
     echo '<head>' . PHP_EOL;
@@ -193,7 +193,7 @@ function echoStartMain($newDesign)
  *
  * @param bool $hidden
  */
-function echoStartContent($hidden = false)
+function echoStartContent(bool $hidden = false)
 {
     if ($hidden) {
         echo "<div id='divContent' class='page-content' style='display: none'>" . PHP_EOL;

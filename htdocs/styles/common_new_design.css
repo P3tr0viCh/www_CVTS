@@ -152,6 +152,13 @@ tr.rowclick:hover {
     top: 4px;
 }
 
+div.image-card {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
 .mdl-button.for-header {
     margin-top: -4px;
     left: 100px;
@@ -161,6 +168,10 @@ tr.rowclick:hover {
     outline: none;
     padding-top: 10px;
     height: 38px;
+}
+
+.mdl-layout__drawer-button.disabled {
+    cursor: default;
 }
 
 .mdl-navigation__link.mdl-navigation__link--padding-left {
@@ -191,6 +202,14 @@ tr.rowclick:hover {
 .mdl-grid {
     padding-top: 0;
     padding-bottom: 0;
+}
+
+.mdl-card {
+    width: auto;
+}
+
+.mdl-card__title-text {
+    font-size: 16px;
 }
 
 .row-color--odd {

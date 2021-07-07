@@ -349,6 +349,14 @@ if ($mysqli) {
 
             $navLinks = array();
 
+            if ($resultType == ResultType::SENSORS_INFO) {
+                $url = Builder::getInstance()
+                    ->setUrl("schemes.php")
+                    ->setParam($newDesign ? ParamName::NEW_DESIGN : null, true)
+                    ->build();
+                $navLinks[] = new HtmlHeaderNavLink('schemes', 'schema', S::NAV_LINK_SCHEMES, "goUrl(\"$url\", true)");
+            }
+
             $navLinks[] = new HtmlHeaderNavLink('save', 'save', S::NAV_LINK_SAVE, 'saveToExcel()', true);
             $navLinks[] = new HtmlHeaderNavLink('refresh', 'refresh', S::NAV_LINK_UPDATE, 'reloadData()');
             $navLinks[] = new HtmlHeaderNavLink('back', 'arrow_back', S::NAV_LINK_BACK, 'goBack()');
@@ -989,9 +997,10 @@ if (!$resultMessage) {
                                 C::SENSOR_M13, C::SENSOR_M14, C::SENSOR_M15, C::SENSOR_M16,
                                 C::SENSOR_T1, C::SENSOR_T2, C::SENSOR_T3, C::SENSOR_T4,
                                 C::SENSOR_T5, C::SENSOR_T6, C::SENSOR_T7, C::SENSOR_T8
-                                => $rowIndex == 1 ?
+                                => $row[C::SENSORS_INFO_TYPE] == SensorsInfoType::SENSORS_INFO_STATUS ?
                                     (is_null($row[$fieldNum]) ? "" : ($row[$fieldNum] > 0 ? Strings::TEXT_ON : Strings::TEXT_OFF)) :
-                                    ($rowIndex == 2 ? formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()) :
+                                    ($row[C::SENSORS_INFO_TYPE] == SensorsInfoType::SENSORS_INFO_ZEROS_CURRENT ?
+                                        formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()) :
                                         ($row[$fieldNum] == Aliases::NU ? "" : formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()))),
                                 default => formatFieldValue($fieldsInfo[$fieldNum]->name, $field, $filter->isFull()),
                             },
@@ -1093,14 +1102,27 @@ if (!$resultMessage) {
                             case ResultType::SENSORS_INFO:
                                 switch ($fieldsInfo[$fieldNum]->name) {
                                     case C::DATETIME_SENSORS_INFO:
-                                        if ($rowIndex == 2) {
-                                            $diff = (new DateTime())->diff(
-                                                (new DateTime())->setTimestamp(
-                                                    mysqlDateTimeToUnixTime($row[C::DATETIME_SENSORS_INFO])), true);
+                                        switch ($row[C::SENSORS_INFO_TYPE]) {
+                                            case SensorsInfoType::SENSORS_INFO_STATUS:
+                                            case SensorsInfoType::SENSORS_INFO_ZEROS_INITIAL:
+                                                $diff = (new DateTime())->diff(
+                                                    (new DateTime())->setTimestamp(
+                                                        mysqlDateTimeToUnixTime($row[C::DATETIME_SENSORS_INFO])), true);
 
-                                            $cellColor = getCellWarningColor($diff->days * 24 + $diff->h,
-                                                Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_YELLOW,
-                                                Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_RED);
+                                                $cellColor = getCellWarningColor($diff->days,
+                                                    Thresholds::SENSORS_INFO_DATETIME_STATUS_WARNING_YELLOW,
+                                                    Thresholds::SENSORS_INFO_DATETIME_STATUS_WARNING_RED,
+                                                    true);
+                                                break;
+                                            case SensorsInfoType::SENSORS_INFO_ZEROS_CURRENT:
+                                                $diff = (new DateTime())->diff(
+                                                    (new DateTime())->setTimestamp(
+                                                        mysqlDateTimeToUnixTime($row[C::DATETIME_SENSORS_INFO])), true);
+
+                                                $cellColor = getCellWarningColor($diff->days * 24 + $diff->h,
+                                                    Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_YELLOW,
+                                                    Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_RED);
+                                                break;
                                         }
                                         break;
                                     default:

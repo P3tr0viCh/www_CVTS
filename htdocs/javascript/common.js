@@ -9,3 +9,9 @@ function reloadData() {
 function goBack() {
     window.history.back();
 }
+
+//noinspection JSUnusedGlobalSymbols
+function goUrl(url, blank) {
+    if (blank) blank = "_blank";
+    window.open(url, blank);
+}

@@ -31,15 +31,21 @@ use Strings as S;
     return $odd ? "row-color--odd" : "row-color--even";
 }
 
-#[Pure] function getCellWarningColor(?float $value, float $yellowValue, float $redValue): ?string
+#[Pure] function getCellWarningColor(?float $value, float $yellowValue, float $redValue, bool $invert = false): ?string
 {
     if (!is_numeric($value)) return null;
 
     $value = abs($value);
 
-    if ($value >= $redValue)        return 'color--red';
-    elseif ($value >= $yellowValue) return 'color--yellow';
-    else                            return null;
+    if ($invert) {
+        if ($value <= $redValue) return 'color--red';
+        elseif ($value <= $yellowValue) return 'color--yellow';
+        else                            return null;
+    } else {
+        if ($value >= $redValue) return 'color--red';
+        elseif ($value >= $yellowValue) return 'color--yellow';
+        else                            return null;
+    }
 }
 
 #[Pure] function formatAttr(string $attr, ?string $value): ?string

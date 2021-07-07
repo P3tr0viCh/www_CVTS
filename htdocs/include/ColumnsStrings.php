@@ -172,6 +172,7 @@ class ColumnsStrings
     const CONTROL_SCALES_DYN_TITLE = ColumnsStrings::SCALE_NUM . ': %s' . PHP_EOL . ColumnsStrings::CARGO_TYPE . ': %s';
     const CONTROL_DATETIME_STA = 'Статика: Дата и время';
     const CONTROL_DATETIME_DYN = 'Динамика: Дата и время';
+    const CONTROL_DATETIME_DYN_TITLE = 'Глубина поиска, дней: %s';
     const CONTROL_NETTO_STA = 'Статика: Нетто';
     const CONTROL_NETTO_DYN = 'Динамика: Нетто';
     const CONTROL_DIFF_DYN_CARR = 'Разница: Динамика и ГП';
@@ -187,8 +188,12 @@ class ColumnsStrings
     const AVG_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
     const SUM_TITLE = 'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
-    const SENSORS_INFO_TITLE = Strings::TEXT_SENSORS_INFO_ZEROS_CURRENT . PHP_EOL .
-    'Жёлтое значение: %s часов' . PHP_EOL . 'Красное значение: %s часа';
+    const SENSORS_INFO_TITLE =
+        Strings::TEXT_SENSORS_INFO_STATUS . ', ' .
+        Strings::TEXT_SENSORS_INFO_ZEROS_INITIAL . ' (разница в днях, "меньше")' . PHP_EOL .
+        'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s' . PHP_EOL .
+        Strings::TEXT_SENSORS_INFO_ZEROS_CURRENT . ' (разница в часах, "больше")' . PHP_EOL .
+        'Жёлтое значение: %s' . PHP_EOL . 'Красное значение: %s';
 
     const SENSOR_M1 = 'M1';
     const SENSOR_M2 = 'M2';

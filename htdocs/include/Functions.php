@@ -213,9 +213,9 @@ function getFieldsInfo(mysqli_result $queryResult, bool $newDesign, bool $full, 
                 return num_fmt($fieldValue, 1);
             case C::SENSORS_INFO_TYPE:
                 return match ((int)$fieldValue) {
-                    0 => S::TEXT_SENSORS_INFO_STATUS,
-                    1 => S::TEXT_SENSORS_INFO_ZEROS_CURRENT,
-                    2 => S::TEXT_SENSORS_INFO_ZEROS_INITIAL,
+                    SensorsInfoType::SENSORS_INFO_STATUS => S::TEXT_SENSORS_INFO_STATUS,
+                    SensorsInfoType::SENSORS_INFO_ZEROS_CURRENT => S::TEXT_SENSORS_INFO_ZEROS_CURRENT,
+                    SensorsInfoType::SENSORS_INFO_ZEROS_INITIAL => S::TEXT_SENSORS_INFO_ZEROS_INITIAL,
                     default => $fieldValue
                 };
 
@@ -582,7 +582,10 @@ function columnTitle(string $fieldName): ?string
         C::IRON_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::IRON_COMPARE_DYN, CargoTypes::IRON_COMPARE_DYN),
         C::SLAG_CONTROL_SCALES_STA => sprintf(CS::CONTROL_SCALES_STA_TITLE, ScaleNums::SLAG_COMPARE_STA, CargoTypes::SLAG_COMPARE_STA),
         C::SLAG_CONTROL_SCALES_DYN => sprintf(CS::CONTROL_SCALES_DYN_TITLE, ScaleNums::SLAG_COMPARE_DYN, CargoTypes::SLAG_COMPARE_DYN),
+        C::IRON_CONTROL_DATETIME_DYN => sprintf(CS::CONTROL_DATETIME_DYN_TITLE, TimePeriods::IRON_COMPARE),
+        C::SLAG_CONTROL_DATETIME_DYN => sprintf(CS::CONTROL_DATETIME_DYN_TITLE, TimePeriods::SLAG_COMPARE),
         C::DATETIME_SENSORS_INFO => sprintf(CS::SENSORS_INFO_TITLE,
+            Thresholds::SENSORS_INFO_DATETIME_STATUS_WARNING_YELLOW, Thresholds::SENSORS_INFO_DATETIME_STATUS_WARNING_RED,
             Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_YELLOW, Thresholds::SENSORS_INFO_DATETIME_CURRENT_WARNING_RED),
         default => null,
     };
@@ -646,7 +649,7 @@ function columnTitle(string $fieldName): ?string
         };
     } else {
         return match ($fieldName) {
-            C::OPERATOR, C::DRIVER, C::MESSAGE, C::COMMENT => true,
+            C::OPERATOR, C::DRIVER, C::MESSAGE, C::COMMENT, C::SENSORS_INFO_TYPE => true,
             default => false,
         };
     }

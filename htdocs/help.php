@@ -37,6 +37,7 @@ echoStartBody($newDesign);
     ->setMainPage(true)
     ->setHeader(S::HEADER_PAGE_MAIN)
     ->setSubHeader(S::HEADER_PAGE_HELP)
+    ->setDrawerIcon("help_outline")
     ->draw();
 
 echoStartMain($newDesign);

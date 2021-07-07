@@ -33,6 +33,7 @@ echoStartBody($newDesign);
     ->setMainPage(true)
     ->setHeader(S::HEADER_PAGE_MAIN)
     ->setSubHeader(S::HEADER_PAGE_A)
+    ->setDrawerIcon("home")
     ->draw();
 
 echoStartMain($newDesign);
@@ -47,6 +48,8 @@ echo S::TAB;
 echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=false">' . S::A_GOTO_MAIN_COMPATIBLE . '</a>' . '</li>' . PHP_EOL;
 echo S::TAB;
 echo '<li>' . '<a href="/index.php?' . ParamName::NEW_DESIGN . '=false&' . ParamName::SHOW_DISABLED . '=true">' . S::A_GOTO_MAIN_COMPATIBLE_WITH_DISABLED . '</a>' . '</li>' . PHP_EOL;
+echo S::TAB;
+echo '<li>' . '<a href="/schemes.php?' . ParamName::NEW_DESIGN . '=true" target="_blank">' . S::A_GOTO_SCHEMES . '</a>' . '</li>' . PHP_EOL;
 
 echo S::TAB . '<br>' . PHP_EOL;
 
