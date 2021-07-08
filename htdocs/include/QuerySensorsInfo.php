@@ -44,6 +44,7 @@ class QuerySensorsInfo extends QueryBase
         $builderMaxBDateTimeS = clone $builderMaxBDateTime;
 
         $builderMaxBDateTimeZ
+            ->column(C::SENSORS_INIT)
             ->table(T::SENSORS_ZEROS)
             ->group(C::SCALE_NUM);
         $builderMaxBDateTimeZI = clone $builderMaxBDateTimeZ;
@@ -75,7 +76,7 @@ class QuerySensorsInfo extends QueryBase
             ->column(C::DATETIME, A::SENSORS_INFO_ZEROS_VAL)
             ->column('1', null, C::SENSORS_INFO_TYPE)
             ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZ->build()), A::SENSORS_INFO_ZEROS_LAST)
-            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME), A::SENSORS_INFO_ZEROS_VAL)
+            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME, C::SENSORS_INIT), A::SENSORS_INFO_ZEROS_VAL)
             ->join(sprintf(self::SUB_QUERY, $builderT->build()), C::SCALE_NUM, A::NU);
         $this->setColumnsArray($builderZT, C::SENSOR_M, Constants::SENSORS_M_MAX_COUNT);
         $this->setColumnsArray($builderZT, C::SENSOR_T, Constants::SENSORS_T_MAX_COUNT);
@@ -86,7 +87,7 @@ class QuerySensorsInfo extends QueryBase
             ->column(C::DATETIME)
             ->column('2', null, C::SENSORS_INFO_TYPE)
             ->table(sprintf(self::SUB_QUERY, $builderMaxBDateTimeZI->build()), A::SENSORS_INFO_ZEROS_INIT_LAST)
-            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME), A::SENSORS_INFO_ZEROS_VAL);
+            ->join(T::SENSORS_ZEROS, array(C::SCALE_NUM, C::DATETIME, C::SENSORS_INIT), A::SENSORS_INFO_ZEROS_VAL);
         $this->setColumnsArray($builderZI, C::SENSOR_M, Constants::SENSORS_M_MAX_COUNT);
         $this->setColumnsArray($builderZI, null, Constants::SENSORS_T_MAX_COUNT);
 
